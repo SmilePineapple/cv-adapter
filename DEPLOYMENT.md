@@ -26,10 +26,10 @@ In Vercel project settings, add these environment variables:
 # OpenAI (REQUIRED)
 OPENAI_API_KEY=your_openai_api_key_here
 
-# Supabase (Already configured)
-NEXT_PUBLIC_SUPABASE_URL=https://vuslzrevbkuugqeiadnq.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c2x6cmV2Ymt1dWdxZWlhZG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MjI3NTUsImV4cCI6MjA2MzI5ODc1NX0.lWAuqi4KZNn9n9AhxVF-w8jEswfXy64wwRBblFvAYAo
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1c2x6cmV2Ymt1dWdxZWlhZG5xIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NzcyMjc1NSwiZXhwIjoyMDYzMjk4NzU1fQ.W9P_F64afFXU-FH-oSDTaZySswE-3YE5yorcpbfBYZw
+# Supabase (Get from Supabase Dashboard → Settings → API)
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 # App Configuration
 NEXT_PUBLIC_APP_URL=https://your-app-name.vercel.app
