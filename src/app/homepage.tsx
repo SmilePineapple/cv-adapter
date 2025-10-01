@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield } from 'lucide-react'
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
+import { OAuthHandler } from '@/components/OAuthHandler'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
@@ -70,6 +71,7 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <>
+      <OAuthHandler />
       <StructuredData />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
