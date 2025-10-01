@@ -38,12 +38,12 @@ export default function LoginPage() {
     }
   }
 
-  const handleOAuthLogin = async (provider: 'google' | 'linkedin_oidc') => {
+  const handleOAuthLogin = async (provider: 'google') => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/auth/callback`
         }
       })
 
