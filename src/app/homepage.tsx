@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic'
 
 // SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
-  title: 'AI CV & Resume Builder | ATS-Optimised CV Generator UK & US | Free',
-  description: 'Upload your CV or resume, paste job description, and instantly generate an ATS-friendly CV with AI. 100 free generations/month. Used by job seekers in UK, US & worldwide.',
+  title: 'Free AI CV & Resume Builder | ATS Resume Generator UK & USA | My CV Buddy',
+  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free CV builder and resume maker for UK, USA & worldwide job seekers. 100 free AI generations per month.',
   keywords: [
     // UK Terms
     'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
@@ -113,26 +113,19 @@ export default function LandingPage() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
-            Land Your Dream Job with an{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI-Tailored CV</span>
+            Free AI CV & Resume Builder{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">for UK & USA</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Upload your resume, paste any job description, and get an ATS-optimized CV that passes applicant tracking systems and impresses recruiters. <strong>100% free to start.</strong>
+            Create professional CVs and resumes in seconds. Upload your CV or resume, paste any job description, and get an <strong>ATS-optimized</strong> document that passes applicant tracking systems. Perfect for UK and USA job seekers. <strong>100 free generations per month.</strong>
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
               href="/auth/signup" 
-              className="group bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-5 rounded-xl text-lg font-bold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center"
+              className="bg-blue-600 text-white px-10 py-5 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl"
             >
-              Start Free - No Credit Card
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link 
-              href="#demo" 
-              className="border-2 border-gray-300 text-gray-700 px-10 py-5 rounded-xl text-lg font-semibold hover:border-blue-600 hover:text-blue-600 transition-all"
-            >
-              Watch Demo
+              Get Started Free
             </Link>
           </div>
 
