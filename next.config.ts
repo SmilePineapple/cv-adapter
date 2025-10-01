@@ -10,9 +10,11 @@ const nextConfig: NextConfig = {
   // Webpack configuration to fix pdf-parse issue on Vercel
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Externalize pdf-parse to prevent bundling issues
+      // Externalize packages to prevent bundling issues
       config.externals = config.externals || [];
       config.externals.push('pdf-parse');
+      // Don't bundle chromium - it's too large
+      config.externals.push('@sparticuz/chromium');
     }
     return config;
   },
