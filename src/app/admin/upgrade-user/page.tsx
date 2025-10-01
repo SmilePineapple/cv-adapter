@@ -1,61 +1,85 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 
+const ADMIN_EMAILS = ['jakedalerourke@gmail.com'] // Add your admin emails here
+
 export default function AdminUpgradeUserPage() {
   const [email, setEmail] = useState('')
+  const [userId, setUserId] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const supabase = createSupabaseClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+      toast.error('Unauthorized - Admin access only')
+      router.push('/dashboard')
+      return
+    }
+    
+    setIsAuthorized(true)
+    setIsCheckingAuth(false)
+  }
 
   const upgradeUser = async () => {
-    if (!email) {
-      toast.error('Please enter an email')
+    if (!email && !userId) {
+      toast.error('Please enter an email or user ID')
       return
     }
 
     setIsLoading(true)
 
     try {
-      // Get user by email
-      const { data: users, error: userError } = await supabase
-        .from('auth.users')
-        .select('id, email')
-        .eq('email', email)
-        .single()
+      // Call API route to upgrade user
+      const response = await fetch('/api/admin/upgrade-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: email || undefined,
+          userId: userId || undefined
+        }),
+      })
 
-      if (userError || !users) {
-        toast.error('User not found')
-        setIsLoading(false)
-        return
-      }
+      const data = await response.json()
 
-      // Create/update subscription
-      const { error: subError } = await supabase
-        .from('subscriptions')
-        .upsert({
-          user_id: users.id,
-          status: 'active',
-          plan: 'pro',
-          stripe_customer_id: `test_customer_${email}`,
-          stripe_subscription_id: `test_sub_${email}`,
-          current_period_start: new Date().toISOString(),
-          current_period_end: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-          cancel_at_period_end: false
-        })
-
-      if (subError) {
-        toast.error(`Error: ${subError.message}`)
+      if (!response.ok) {
+        toast.error(data.error || 'Failed to upgrade user')
       } else {
-        toast.success(`✅ ${email} upgraded to Pro!`)
+        toast.success(`✅ ${data.email} upgraded to Pro!`)
         setEmail('')
+        setUserId('')
       }
     } catch (error) {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Checking authorization...</div>
+      </div>
+    )
+  }
+
+  if (!isAuthorized) {
+    return null
   }
 
   return (
@@ -78,8 +102,23 @@ export default function AdminUpgradeUserPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="tester@example.com"
+                placeholder="pameladalerourke@gmail.com"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div className="text-center text-gray-500 text-sm">OR</div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                User ID
+              </label>
+              <input
+                type="text"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder="43db75c8-26a7-4403-9c6f-9a36e78e071e"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
               />
             </div>
 
@@ -92,10 +131,10 @@ export default function AdminUpgradeUserPage() {
             </button>
           </div>
 
-          <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <h3 className="font-semibold text-yellow-900 mb-2">⚠️ Admin Only</h3>
-            <p className="text-sm text-yellow-800">
-              This page should only be accessible to admins. In production, add authentication check.
+          <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <h3 className="font-semibold text-green-900 mb-2">✅ Admin Authenticated</h3>
+            <p className="text-sm text-green-800">
+              Only users in ADMIN_EMAILS can access this page. Currently authorized: {ADMIN_EMAILS.join(', ')}
             </p>
           </div>
 
