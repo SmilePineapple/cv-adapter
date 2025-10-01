@@ -96,7 +96,12 @@ export async function POST(request: NextRequest) {
       case 'html':
         return handleHtmlExport(sections, template, jobTitle)
       case 'pdf':
-        return await handlePdfExport(sections, template, jobTitle)
+        // PDF generation requires Puppeteer which doesn't work on Vercel serverless
+        // Fallback to DOCX for now
+        return NextResponse.json({ 
+          error: 'PDF export temporarily unavailable. Please use DOCX format instead.',
+          fallback_format: 'docx'
+        }, { status: 503 })
       case 'docx':
         return await handleDocxExport(sections, template, jobTitle)
       case 'txt':
