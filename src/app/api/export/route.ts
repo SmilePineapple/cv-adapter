@@ -4,6 +4,29 @@ import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx'
 import puppeteer from 'puppeteer'
 import { CVSection } from '@/types/database'
 
+// Helper function to safely get string content from section
+const getSectionContent = (content: any): string => {
+  if (!content) return ''
+  
+  // If content is an array (like experience), format it
+  if (Array.isArray(content)) {
+    return content.map((item) => {
+      if (item.company && item.job_title) {
+        return `${item.job_title} | ${item.company}\n${item.responsibilities || item.description || ''}`
+      }
+      return JSON.stringify(item)
+    }).join('\n\n')
+  }
+  
+  // If content is an object, stringify it
+  if (typeof content === 'object') {
+    return JSON.stringify(content, null, 2)
+  }
+  
+  // Return as string
+  return String(content)
+}
+
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createSupabaseRouteClient()
@@ -224,13 +247,14 @@ function handleTxtExport(sections: CVSection[], jobTitle: string) {
   let content = ''
 
   sortedSections.forEach(section => {
+    const contentStr = getSectionContent(section.content)
     if (section.type === 'name') {
-      content += `${section.content}\n`
-      content += '='.repeat(section.content.length) + '\n\n'
+      content += `${contentStr}\n`
+      content += '='.repeat(contentStr.length) + '\n\n'
     } else {
       content += `${section.type.replace('_', ' ').toUpperCase()}\n`
       content += '-'.repeat(section.type.length) + '\n'
-      content += `${section.content}\n\n`
+      content += `${contentStr}\n\n`
     }
   })
 
@@ -368,19 +392,20 @@ function generateTemplateHtml(sections: CVSection[], templateId: string): string
   `
 
   sortedSections.forEach(section => {
+    const contentStr = getSectionContent(section.content)
     if (section.type === 'contact') {
-      html += `<div class="contact">${escapeHtml(section.content)}</div>`
+      html += `<div class="contact">${escapeHtml(contentStr)}</div>`
     } else if (section.type === 'name') {
       html += `
         <div class="header">
-          <div class="name">${escapeHtml(section.content)}</div>
+          <div class="name">${escapeHtml(contentStr)}</div>
         </div>
       `
     } else {
       html += `
         <div class="section">
           <div class="section-title">${escapeHtml(section.type.replace('_', ' '))}</div>
-          <div class="content">${escapeHtml(section.content)}</div>
+          <div class="content">${escapeHtml(contentStr)}</div>
         </div>
       `
     }
