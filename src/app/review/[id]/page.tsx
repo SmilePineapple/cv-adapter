@@ -19,6 +19,29 @@ import {
 } from 'lucide-react'
 // Simple diff implementation without external library
 
+// Helper function to format section content properly
+const formatSectionContent = (content: any): string => {
+  if (typeof content === 'string') {
+    return content
+  }
+  
+  // Handle array of experience objects
+  if (Array.isArray(content)) {
+    return content.map((item) => {
+      if (item.company && item.job_title) {
+        // Format as experience entry
+        const title = `${item.job_title} | ${item.company}`
+        const responsibilities = item.responsibilities || item.description || ''
+        return `${title}\n${responsibilities}`
+      }
+      return JSON.stringify(item, null, 2)
+    }).join('\n\n')
+  }
+  
+  // Fallback to JSON for other objects
+  return JSON.stringify(content, null, 2)
+}
+
 interface GenerationData {
   id: string
   job_title: string
@@ -353,7 +376,7 @@ export default function ReviewPage() {
                         Edit {section.type.replace('_', ' ')}
                       </label>
                       <textarea
-                        value={typeof section.content === 'string' ? section.content : JSON.stringify(section.content, null, 2)}
+                        value={formatSectionContent(section.content)}
                         onChange={(e) => handleSectionEdit(section.type, e.target.value)}
                         rows={6}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -364,25 +387,19 @@ export default function ReviewPage() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-700 mb-2">Original</h4>
                         <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
-                          {typeof originalSection?.content === 'string' 
-                            ? originalSection.content 
-                            : JSON.stringify(originalSection?.content, null, 2)}
+                          {formatSectionContent(originalSection?.content || '')}
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Tailored Version</h4>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">Generated</h4>
                         <div className="p-4 bg-blue-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
-                          {typeof section.content === 'string' 
-                            ? section.content 
-                            : JSON.stringify(section.content, null, 2)}
+                          {formatSectionContent(section.content)}
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
-                      {typeof section.content === 'string' 
-                        ? section.content 
-                        : JSON.stringify(section.content, null, 2)}
+                      {formatSectionContent(section.content)}
                     </div>
                   )}
 
