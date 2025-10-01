@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   
+  // Webpack configuration to fix pdf-parse issue on Vercel
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Externalize pdf-parse to prevent bundling issues
+      config.externals = config.externals || [];
+      config.externals.push('pdf-parse');
+    }
+    return config;
+  },
+  
   // Allow cross-origin requests from local network
   async headers() {
     return [
