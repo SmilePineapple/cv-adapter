@@ -11,30 +11,53 @@ export function OAuthHandler() {
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
+    // Check for OAuth hash fragments (Supabase implicit flow)
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
+    const refreshToken = hashParams.get('refresh_token')
+    
+    // Check for OAuth code (PKCE flow)
     const code = searchParams.get('code')
     
-    if (code && !isProcessing) {
+    if ((accessToken || code) && !isProcessing) {
       setIsProcessing(true)
       
-      // Exchange code for session
-      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
-        if (error) {
-          console.error('OAuth error:', error)
-          // Don't redirect on error - might be code already used
-          // Just remove the code from URL
-          router.replace('/')
-        } else if (data.session) {
-          // Successfully authenticated, redirect to dashboard
-          // Use replace to avoid back button issues
-          router.replace('/dashboard')
-        } else {
-          // No session created, remove code from URL
-          router.replace('/')
-        }
-      }).catch((err) => {
-        console.error('OAuth exception:', err)
-        router.replace('/')
-      })
+      if (accessToken && refreshToken) {
+        // Implicit flow - set session directly
+        supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        }).then(({ data, error }) => {
+          if (error) {
+            console.error('OAuth session error:', error)
+            router.replace('/auth/login')
+          } else if (data.session) {
+            router.replace('/dashboard')
+          }
+        })
+      } else if (code) {
+        // PKCE flow - exchange code for session
+        supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+          if (error) {
+            console.error('OAuth error:', error)
+            // Check if user is already logged in
+            supabase.auth.getSession().then(({ data: sessionData }) => {
+              if (sessionData.session) {
+                router.replace('/dashboard')
+              } else {
+                router.replace('/auth/login')
+              }
+            })
+          } else if (data.session) {
+            router.replace('/dashboard')
+          } else {
+            router.replace('/auth/login')
+          }
+        }).catch((err) => {
+          console.error('OAuth exception:', err)
+          router.replace('/auth/login')
+        })
+      }
     }
   }, [searchParams, router, supabase, isProcessing])
 
