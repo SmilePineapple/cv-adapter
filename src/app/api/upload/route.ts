@@ -40,7 +40,10 @@ interface FileMetadata {
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export async function POST(request: NextRequest) {
-  console.log('Upload API called')
+  console.log('[UPLOAD API] Called at:', new Date().toISOString())
+  console.log('[UPLOAD API] Request method:', request.method)
+  console.log('[UPLOAD API] Request URL:', request.url)
+  
   try {
     // Get the authorization header
     const authHeader = request.headers.get('authorization')
