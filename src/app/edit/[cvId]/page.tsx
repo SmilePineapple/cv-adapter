@@ -1317,15 +1317,37 @@ export default function CVEditorPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <button
-                    onClick={() => setShowAiOptions(!showAiOptions)}
-                    className="w-full flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                  >
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    AI Populate
-                  </button>
+                  {userPlan === 'free' ? (
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <Sparkles className="w-5 h-5 text-purple-600 mt-0.5" />
+                        <div className="flex-1">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-1">
+                            AI Section Population - Pro Feature
+                          </h4>
+                          <p className="text-xs text-gray-600 mb-3">
+                            Upgrade to Pro to use AI to automatically populate sections with professional content tailored to your experience.
+                          </p>
+                          <Link
+                            href="/subscription"
+                            className="inline-flex items-center px-3 py-1.5 bg-purple-600 text-white text-xs font-medium rounded-lg hover:bg-purple-700 transition-colors"
+                          >
+                            Upgrade to Pro
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setShowAiOptions(!showAiOptions)}
+                        className="w-full flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      >
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        AI Populate
+                      </button>
 
-                  {showAiOptions && (
+                      {showAiOptions && (
                     <div className="bg-gray-50 rounded-lg p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <h4 className="text-sm font-medium text-gray-900">AI Generation Options</h4>
@@ -1411,6 +1433,8 @@ export default function CVEditorPage() {
                         </div>
                       )}
                     </div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
