@@ -59,26 +59,53 @@ export async function POST(
 
     // Update sections
     for (const section of sections) {
-      const { error: updateError } = await supabase
-        .from('cv_sections')
-        .update({
-          section_type: section.type,
-          title: section.title,
-          content: section.content,
-          order_index: section.order,
-          metadata: section.metadata || {},
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', section.id)
-        .eq('cv_id', cvId)
+      // Check if ID is a valid UUID (not a generated ID like "gen-xxx")
+      const isValidUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(section.id)
+      
+      if (isValidUUID) {
+        // Update existing section
+        const { error: updateError } = await supabase
+          .from('cv_sections')
+          .update({
+            section_type: section.type,
+            title: section.title,
+            content: section.content,
+            order_index: section.order,
+            metadata: section.metadata || {},
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', section.id)
+          .eq('cv_id', cvId)
 
-      if (updateError) {
-        console.error('Section update error:', updateError)
-        return NextResponse.json({ 
-          error: 'Failed to update section',
-          section_id: section.id,
-          details: updateError.message 
-        }, { status: 500 })
+        if (updateError) {
+          console.error('Section update error:', updateError)
+          return NextResponse.json({ 
+            error: 'Failed to update section',
+            section_id: section.id,
+            details: updateError.message 
+          }, { status: 500 })
+        }
+      } else {
+        // Create new section for generated/temporary IDs
+        const { error: insertError } = await supabase
+          .from('cv_sections')
+          .insert({
+            cv_id: cvId,
+            section_type: section.type,
+            title: section.title,
+            content: section.content,
+            order_index: section.order,
+            metadata: section.metadata || {}
+          })
+
+        if (insertError) {
+          console.error('Section insert error:', insertError)
+          return NextResponse.json({ 
+            error: 'Failed to create section',
+            section_id: section.id,
+            details: insertError.message 
+          }, { status: 500 })
+        }
       }
     }
 
