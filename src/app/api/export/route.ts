@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx'
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-core'
+import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
 
 // Helper function to safely get string content from section
@@ -96,12 +97,7 @@ export async function POST(request: NextRequest) {
       case 'html':
         return handleHtmlExport(sections, template, jobTitle)
       case 'pdf':
-        // PDF generation requires Puppeteer which doesn't work on Vercel serverless
-        // Fallback to DOCX for now
-        return NextResponse.json({ 
-          error: 'PDF export temporarily unavailable. Please use DOCX format instead.',
-          fallback_format: 'docx'
-        }, { status: 503 })
+        return await handlePdfExport(sections, template, jobTitle)
       case 'docx':
         return await handleDocxExport(sections, template, jobTitle)
       case 'txt':
@@ -133,9 +129,11 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
   try {
     const html = generateTemplateHtml(sections, template)
     
+    // Use chromium for serverless environments (Vercel)
     const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     
     const page = await browser.newPage()
