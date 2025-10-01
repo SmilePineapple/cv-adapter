@@ -42,11 +42,21 @@ export default function AdminUpgradeUserPage() {
     setIsLoading(true)
 
     try {
+      // Get the current session token
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        toast.error('Not authenticated')
+        router.push('/auth/login')
+        return
+      }
+
       // Call API route to upgrade user
       const response = await fetch('/api/admin/upgrade-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({ 
           email: email || undefined,
