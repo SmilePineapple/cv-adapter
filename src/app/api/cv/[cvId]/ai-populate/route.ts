@@ -54,6 +54,22 @@ export async function POST(
       return NextResponse.json({ error: 'CV not found' }, { status: 404 })
     }
 
+    // Check if user has Pro subscription
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('status')
+      .eq('user_id', user.id)
+      .single()
+
+    const isPro = subscription?.status === 'active'
+
+    if (!isPro) {
+      return NextResponse.json({ 
+        error: 'Pro subscription required',
+        message: 'AI section population is a Pro feature. Please upgrade to continue.'
+      }, { status: 403 })
+    }
+
     // Get all existing sections for context
     const { data: allSections } = await supabase
       .from('cv_sections')
