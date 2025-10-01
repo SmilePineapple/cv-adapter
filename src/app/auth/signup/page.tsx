@@ -46,10 +46,15 @@ export default function SignupPage() {
 
   const handleOAuthSignup = async (provider: 'google') => {
     try {
+      // Get the proper origin URL
+      const origin = typeof window !== 'undefined' 
+        ? window.location.origin 
+        : process.env.NEXT_PUBLIC_APP_URL || 'https://mycvbuddy.com'
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`
+          redirectTo: `${origin}/auth/callback`
         }
       })
 
