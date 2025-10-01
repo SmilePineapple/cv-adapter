@@ -23,8 +23,34 @@ import {
   Sparkles,
   Trash2,
   X,
-  Check
+  Check,
+  AlertCircle
 } from 'lucide-react'
+
+// Helper function to safely get string content from section
+const getSectionContent = (section: any): string => {
+  if (!section) return ''
+  
+  const content = section.content?.raw_content || section.content || ''
+  
+  // If content is an array (like experience), format it
+  if (Array.isArray(content)) {
+    return content.map((item) => {
+      if (item.company && item.job_title) {
+        return `${item.job_title} | ${item.company}\n${item.responsibilities || item.description || ''}`
+      }
+      return JSON.stringify(item)
+    }).join('\n\n')
+  }
+  
+  // If content is an object, stringify it
+  if (typeof content === 'object') {
+    return JSON.stringify(content, null, 2)
+  }
+  
+  // Return as string
+  return String(content)
+}
 
 interface CVSection {
   id: string
@@ -1026,7 +1052,7 @@ export default function CVEditorPage() {
                               className="text-gray-700 whitespace-pre-line leading-relaxed text-sm"
                               style={{ color: textColor }}
                               dangerouslySetInnerHTML={{
-                                __html: (section.content?.raw_content || section.content || '')
+                                __html: getSectionContent(section)
                                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                   .replace(/\*(.*?)\*/g, '<em>$1</em>')
                                   .replace(/__(.*?)__/g, '<u>$1</u>')
@@ -1084,7 +1110,7 @@ export default function CVEditorPage() {
                             className={`whitespace-pre-line leading-relaxed ${fontSizeClasses[fontSize as keyof typeof fontSizeClasses]}`}
                             style={{ color: textColor }}
                             dangerouslySetInnerHTML={{
-                              __html: (section.content?.raw_content || section.content || '')
+                              __html: getSectionContent(section)
                                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                                 .replace(/__(.*?)__/g, '<u>$1</u>')
