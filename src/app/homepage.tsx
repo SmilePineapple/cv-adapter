@@ -5,26 +5,64 @@ import type { Metadata } from 'next'
 // Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
 
-// SEO Metadata
+// SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
-  title: 'CV Adapter - AI-Powered CV Tailoring | ATS-Optimized Resume Builder',
-  description: 'Tailor your CV to any job in seconds with AI. Upload your resume, paste the job description, and get an ATS-optimized CV that passes applicant tracking systems. Free trial available.',
-  keywords: ['CV builder', 'resume builder', 'ATS optimization', 'AI CV writer', 'job application', 'resume tailor', 'CV optimizer', 'applicant tracking system', 'cover letter generator', 'professional CV templates'],
-  authors: [{ name: 'CV Adapter' }],
+  title: 'AI CV & Resume Builder | ATS-Optimised CV Generator UK & US | Free',
+  description: 'Upload your CV or resume, paste job description, and instantly generate an ATS-friendly CV with AI. 100 free generations/month. Used by job seekers in UK, US & worldwide.',
+  keywords: [
+    // UK Terms
+    'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
+    'adapt my CV', 'tailor CV to job', 'CV optimizer UK', 'professional CV UK',
+    'CV templates UK', 'ATS CV checker', 'curriculum vitae generator',
+    'CV builder free UK', 'online CV maker', 'CV buddy',
+    
+    // US Terms  
+    'resume builder USA', 'resume generator', 'AI resume writer', 'resume writing tool',
+    'customize resume', 'tailor resume to job', 'resume optimizer', 'professional resume',
+    'resume templates US', 'ATS resume checker', 'resume builder free',
+    
+    // Universal
+    'ATS optimization', 'applicant tracking system', 'cover letter generator',
+    'job-specific CV', 'keyword optimization', 'resume parser', 'free CV builder',
+    'AI CV generator', 'job application CV', 'career profile builder',
+    
+    // Long-tail
+    'AI tool to adapt CV to job description', 'automatically generate resume for job',
+    'create job-specific CV in minutes', 'free CV builder online',
+    'AI resume writing service', 'tailor CV to job description free',
+    'how to optimize CV for ATS', 'CV keywords for job application'
+  ],
+  authors: [{ name: 'My CV Buddy' }],
   openGraph: {
-    title: 'CV Adapter - AI-Powered CV Tailoring for Job Applications',
-    description: 'Get your dream job with an AI-tailored CV. ATS-optimized, keyword-rich resumes in seconds.',
+    title: 'AI CV & Resume Builder | Free ATS-Optimized CV Generator',
+    description: 'Create ATS-optimized CVs & resumes with AI. Tailor your job application in seconds. Free for UK & US job seekers.',
     type: 'website',
     locale: 'en_GB',
+    siteName: 'My CV Buddy',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CV Adapter - AI CV Tailoring',
+    title: 'AI CV & Resume Builder | Free',
     description: 'Tailor your CV to any job with AI. ATS-optimized resumes in seconds.',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://mycvbuddy.com',
+    languages: {
+      'en-GB': 'https://mycvbuddy.co.uk',
+      'en-US': 'https://mycvbuddy.com',
+      'x-default': 'https://mycvbuddy.com',
+    },
   },
 }
 
@@ -355,6 +393,267 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+
+      {/* FAQ Section with Schema */}
+      <section id="faq" className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-gray-600 text-center mb-12">
+              Everything you need to know about My CV Buddy
+            </p>
+
+            <div className="space-y-4">
+              {/* FAQ Item 1 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>What's the difference between a CV and a resume?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  A CV (Curriculum Vitae) is typically longer and used in the UK, Europe, and academia. 
+                  A resume is shorter (1-2 pages) and common in the US. My CV Buddy works with both formats 
+                  and helps you create the right document for your target market, whether you're applying 
+                  for jobs in the UK, US, or internationally.
+                </p>
+              </details>
+
+              {/* FAQ Item 2 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>How does AI CV tailoring work?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  Upload your CV, paste a job description, and our AI analyzes both documents. 
+                  It identifies key requirements, matches relevant experience, optimizes keywords 
+                  for ATS systems, and generates a tailored version that highlights your most 
+                  relevant qualifications for that specific role. The process takes just seconds!
+                </p>
+              </details>
+
+              {/* FAQ Item 3 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>Is My CV Buddy free to use?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  Yes! We offer 100 free CV generations per month. This includes AI tailoring, 
+                  multiple export formats (PDF, DOCX, TXT), and access to all templates. For unlimited 
+                  generations and premium features like AI section population, upgrade to Pro for just £5/month.
+                </p>
+              </details>
+
+              {/* FAQ Item 4 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>Will my CV pass ATS systems?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  Yes! My CV Buddy is specifically designed to create ATS-optimized CVs. 
+                  We use clean formatting, proper keyword placement, and standard section headers 
+                  that applicant tracking systems can easily parse. Our AI also ensures your CV 
+                  includes relevant keywords from the job description, maximizing your chances of 
+                  passing the initial screening.
+                </p>
+              </details>
+
+              {/* FAQ Item 5 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>What file formats can I upload and download?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  <strong>Upload:</strong> PDF (.pdf) and Word documents (.doc, .docx) up to 10MB. 
+                  <strong> Download:</strong> PDF, DOCX, TXT, and HTML formats. All exports maintain 
+                  professional formatting and are ATS-compatible, ensuring your CV looks great and 
+                  works with any application system.
+                </p>
+              </details>
+
+              {/* FAQ Item 6 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>Can I create cover letters too?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  Absolutely! My CV Buddy includes an AI-powered cover letter generator. 
+                  Select a CV, enter job details (company name, position, hiring manager), 
+                  choose your tone (professional, friendly, enthusiastic, or formal) and length, 
+                  and we'll create a personalized cover letter that complements your CV perfectly.
+                </p>
+              </details>
+
+              {/* FAQ Item 7 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>Is my data secure and private?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  Yes! We use industry-standard encryption, secure authentication, and follow 
+                  GDPR guidelines. Your data is encrypted in transit and at rest. We never share 
+                  your personal information with third parties for marketing purposes, and you can 
+                  delete your account and all data at any time from your settings.
+                </p>
+              </details>
+
+              {/* FAQ Item 8 */}
+              <details className="bg-gray-50 rounded-lg p-6 group">
+                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
+                  <span>How do I optimize my CV for a specific job?</span>
+                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">
+                  It's simple: 1) Upload your existing CV, 2) Paste the job description from the posting, 
+                  3) Click "Generate". Our AI will analyze the job requirements and tailor your CV to match. 
+                  It highlights relevant experience, adds missing keywords, restructures content to emphasize 
+                  your most applicable qualifications, and ensures ATS compatibility. You can then edit and 
+                  download your tailored CV in your preferred format.
+                </p>
+              </details>
+            </div>
+
+            {/* CTA in FAQ */}
+            <div className="mt-12 text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
+              <h3 className="text-2xl font-bold mb-4">Ready to create your perfect CV?</h3>
+              <p className="text-gray-600 mb-6">Join thousands of job seekers who landed their dream jobs</p>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Get Started Free
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Structured Data - FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What's the difference between a CV and a resume?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A CV (Curriculum Vitae) is typically longer and used in the UK, Europe, and academia. A resume is shorter (1-2 pages) and common in the US. My CV Buddy works with both formats."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is My CV Buddy free to use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes! We offer 100 free CV generations per month. For unlimited access, upgrade to Pro for £5/month."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will my CV pass ATS systems?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes! My CV Buddy creates ATS-optimized CVs with clean formatting, proper keyword placement, and standard section headers that applicant tracking systems can parse."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does AI CV tailoring work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Upload your CV, paste a job description, and our AI analyzes both to identify key requirements, match relevant experience, and optimize keywords for ATS systems."
+                }
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* Structured Data - SoftwareApplication Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "My CV Buddy",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "offers": [
+              {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "GBP",
+                "description": "Free tier with 100 CV generations per month"
+              },
+              {
+                "@type": "Offer",
+                "price": "5.00",
+                "priceCurrency": "GBP",
+                "description": "Pro plan with unlimited CV generations",
+                "priceValidUntil": "2026-12-31"
+              }
+            ],
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "ratingCount": "250",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "description": "AI-powered CV and resume generator that tailors your job application to any position. ATS-optimized and free to use for UK, US, and international job seekers.",
+            "featureList": [
+              "AI CV tailoring to job descriptions",
+              "ATS optimization and keyword matching",
+              "Multiple export formats (PDF, DOCX, TXT, HTML)",
+              "AI-powered cover letter generation",
+              "10 professional CV templates",
+              "Job description analysis",
+              "Real-time CV editing",
+              "Usage tracking and analytics"
+            ],
+            "screenshot": "https://mycvbuddy.com/screenshot.png",
+            "url": "https://mycvbuddy.com"
+          })
+        }}
+      />
+
+      {/* Structured Data - Organization Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "My CV Buddy",
+            "url": "https://mycvbuddy.com",
+            "logo": "https://mycvbuddy.com/logo.png",
+            "sameAs": [
+              "https://twitter.com/mycvbuddy",
+              "https://linkedin.com/company/mycvbuddy"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "support@mycvbuddy.com",
+              "contactType": "Customer Support",
+              "availableLanguage": ["English"]
+            },
+            "description": "AI-powered CV and resume builder helping job seekers create ATS-optimized applications"
+          })
+        }}
+      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">

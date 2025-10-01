@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cvadapter.com' // Update with your actual domain
+  const baseUrl = 'https://mycvbuddy.com' // Primary domain (US/International)
+  const baseUrlUK = 'https://mycvbuddy.co.uk' // UK domain
 
   return [
     {
