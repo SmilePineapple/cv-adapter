@@ -238,7 +238,7 @@ export default function CVWritingTipsPage() {
               <li>• Using unprofessional email addresses</li>
             </ul>
             <ul className="space-y-2 text-red-800">
-              <li>• Making it too long (>2 pages)</li>
+              <li>• Making it too long (&gt;2 pages)</li>
               <li>• Including irrelevant information</li>
               <li>• Using fancy fonts or colors</li>
               <li>• Lying or exaggerating</li>
