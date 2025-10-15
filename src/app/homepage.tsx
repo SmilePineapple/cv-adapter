@@ -9,8 +9,8 @@ export const dynamic = 'force-dynamic'
 
 // SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
-  title: 'Free AI CV & Resume Builder | ATS Resume Generator UK & USA | My CV Buddy',
-  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free CV builder and resume maker for UK, USA & worldwide job seekers. 1 free AI generation, £5 for 100 lifetime generations.',
+  title: 'Free AI CV & Resume Builder | ATS-Optimized Resume Generator | My CV Buddy',
+  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free AI-powered CV builder and resume maker for job seekers worldwide. 1 free AI generation, £5 for 100 lifetime generations.',
   keywords: [
     // UK Terms
     'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
@@ -116,10 +116,10 @@ export default function LandingPage() {
           
           <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
             Free AI CV & Resume Builder{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">for UK & USA</span>
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">for Job Seekers Worldwide</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Create professional CVs and resumes in seconds. Upload your CV or resume, paste any job description, and get an <strong>ATS-optimized</strong> document that passes applicant tracking systems. Perfect for UK and USA job seekers. <strong>1 free generation, £5 for 100 lifetime.</strong>
+            Create professional CVs and resumes in seconds. Upload your CV or resume, paste any job description, and get an <strong>ATS-optimized</strong> document that passes applicant tracking systems. Perfect for job seekers worldwide. <strong>1 free generation, £5 for 100 lifetime.</strong>
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

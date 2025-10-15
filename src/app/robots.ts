@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://cvadapter.com' // Update with your actual domain
+  const baseUrl = 'https://www.mycvbuddy.com'
 
   return {
     rules: [
