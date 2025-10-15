@@ -17,11 +17,16 @@ import {
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
-interface SubscriptionInfo {
+interface PurchaseInfo {
   status: string | null
-  current_period_end: string | null
-  price_id: string | null
-  cancel_at_period_end?: boolean
+  purchased_at: string | null
+  amount_paid: number | null
+}
+
+interface UsageInfo {
+  plan_type: string
+  lifetime_generation_count: number
+  max_lifetime_generations: number
 }
 
 export default function SubscriptionPage() {
@@ -29,7 +34,8 @@ export default function SubscriptionPage() {
   const supabase = createSupabaseClient()
   
   const [user, setUser] = useState<any>(null)
-  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
+  const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
+  const [usage, setUsage] = useState<UsageInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isUpgrading, setIsUpgrading] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
@@ -47,7 +53,7 @@ export default function SubscriptionPage() {
       }
 
       setUser(user)
-      await fetchSubscription(user.id)
+      await fetchPurchaseAndUsage(user.id)
     } catch (error) {
       console.error('Auth error:', error)
       router.push('/auth/login')
@@ -56,100 +62,44 @@ export default function SubscriptionPage() {
     }
   }
 
-  const fetchSubscription = async (userId: string) => {
+  const fetchPurchaseAndUsage = async (userId: string) => {
     try {
-      // Try to fetch existing subscription from database
-      const { data, error } = await supabase
-        .from('subscriptions')
-        .select('status, current_period_end, price_id, cancel_at_period_end')
+      // Fetch purchase record
+      const { data: purchaseData, error: purchaseError } = await supabase
+        .from('purchases')
+        .select('status, purchased_at, amount_paid')
         .eq('user_id', userId)
+        .eq('status', 'completed')
         .maybeSingle()
 
-      if (error) {
-        console.warn('Subscription fetch error:', error.code || 'unknown')
-        // No subscription found - user is on free plan
-        setSubscription(null)
-        return
+      if (purchaseError && purchaseError.code !== 'PGRST116') {
+        console.warn('Purchase fetch error:', purchaseError.code || 'unknown')
       }
 
-      if (!data) {
-        // No subscription found - user is on free plan
-        setSubscription(null)
-        return
-      }
+      setPurchase(purchaseData || null)
 
-      console.log('Subscription data:', data)
-      setSubscription(data)
+      // Fetch usage info
+      const { data: usageData, error: usageError } = await supabase
+        .from('usage_tracking')
+        .select('plan_type, lifetime_generation_count, max_lifetime_generations')
+        .eq('user_id', userId)
+        .single()
+
+      if (usageError) {
+        console.warn('Usage fetch error:', usageError.code || 'unknown')
+      } else {
+        setUsage(usageData)
+      }
     } catch (error) {
-      console.error('Error fetching subscription:', error)
-      // On error, assume free plan
-      setSubscription(null)
+      console.error('Error fetching purchase/usage:', error)
+      setPurchase(null)
+      setUsage(null)
     }
   }
 
-  const handleCancelSubscription = async () => {
-    if (!user || !subscription) return
+  // No cancellation needed for one-time purchases
 
-    const periodEnd = subscription.current_period_end 
-      ? new Date(subscription.current_period_end).toLocaleDateString()
-      : 'the end of your billing period'
-
-    const confirmed = confirm(
-      `Are you sure you want to cancel your subscription? You will keep Pro access until ${periodEnd}.`
-    )
-
-    if (!confirmed) return
-
-    setIsCancelling(true)
-    try {
-      // Try manual cancellation first (for testing without Stripe)
-      const manualResponse = await fetch('/api/cancel-subscription-manual', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (manualResponse.ok) {
-        const result = await manualResponse.json()
-        toast.success(`Subscription cancelled. You will have access until ${periodEnd}.`, { duration: 5000 })
-        await fetchSubscription(user.id)
-        return
-      }
-
-      // Fallback to Stripe cancellation
-      const response = await fetch('/api/stripe/cancel-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: user.id,
-        }),
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        // Show the helpful message from the API
-        const message = result.message || result.error || 'Failed to cancel subscription'
-        toast.error(message, { duration: 6000 })
-        return
-      }
-
-      toast.success('Subscription cancelled successfully. You will have access until the end of your billing period.')
-      
-      // Refresh subscription data
-      await fetchSubscription(user.id)
-    } catch (error: any) {
-      console.error('Cancel subscription error:', error)
-      toast.error('Failed to cancel subscription. Please contact support at jakedalerourke@gmail.com')
-    } finally {
-      setIsCancelling(false)
-    }
-  }
-
-  const handleUpgrade = async (priceId: string) => {
+  const handleUpgrade = async () => {
     if (!user) return
 
     setIsUpgrading(true)
@@ -160,7 +110,6 @@ export default function SubscriptionPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          priceId,
           userId: user.id,
         }),
       })
@@ -193,11 +142,12 @@ export default function SubscriptionPage() {
     }
   }
 
-  const isActive = subscription?.status === 'active'
+  const isPro = usage?.plan_type === 'pro'
   
   // Debug logging
-  console.log('Subscription state:', subscription)
-  console.log('Is active:', isActive)
+  console.log('Purchase state:', purchase)
+  console.log('Usage state:', usage)
+  console.log('Is Pro:', isPro)
 
   if (isLoading) {
     return (
@@ -231,35 +181,18 @@ export default function SubscriptionPage() {
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Pro Subscription Management */}
-        {isActive && (
+        {/* Pro Purchase Management */}
+        {isPro && (
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-            {subscription?.cancel_at_period_end ? (
-              <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
-                <div className="flex items-center">
-                  <Crown className="w-8 h-8 text-white mr-3" />
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">Pro Subscription - Cancelling</h2>
-                    <p className="text-orange-100">
-                      Active until {subscription?.current_period_end 
-                        ? new Date(subscription.current_period_end).toLocaleDateString()
-                        : 'end of period'
-                      }
-                    </p>
-                  </div>
+            <div className="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+              <div className="flex items-center">
+                <Crown className="w-8 h-8 text-white mr-3" />
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Pro Plan Active</h2>
+                  <p className="text-green-100">Lifetime access - no recurring charges</p>
                 </div>
               </div>
-            ) : (
-              <div className="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
-                <div className="flex items-center">
-                  <Crown className="w-8 h-8 text-white mr-3" />
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">Pro Subscription</h2>
-                    <p className="text-green-100">Active and ready to use</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
             
             <div className="p-6">
               <div className="grid md:grid-cols-2 gap-6">
@@ -271,30 +204,26 @@ export default function SubscriptionPage() {
                       <span className="font-medium">CV Adapter Pro</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Price:</span>
-                      <span className="font-medium">£5/month</span>
+                      <span className="text-gray-600">Price Paid:</span>
+                      <span className="font-medium">£5 (one-time)</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Generations:</span>
-                      <span className="font-medium">100/month</span>
+                      <span className="font-medium">{usage?.lifetime_generation_count || 0} / {usage?.max_lifetime_generations || 100} used</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        {subscription?.cancel_at_period_end ? 'Access until:' : 'Next billing:'}
-                      </span>
-                      <span className={`font-medium ${subscription?.cancel_at_period_end ? 'text-orange-600' : ''}`}>
-                        {subscription?.current_period_end 
-                          ? new Date(subscription.current_period_end).toLocaleDateString()
+                      <span className="text-gray-600">Purchased:</span>
+                      <span className="font-medium">
+                        {purchase?.purchased_at 
+                          ? new Date(purchase.purchased_at).toLocaleDateString()
                           : 'N/A'
                         }
                       </span>
                     </div>
-                    {subscription?.cancel_at_period_end && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Status:</span>
-                        <span className="font-medium text-orange-600">Cancelling at period end</span>
-                      </div>
-                    )}
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Status:</span>
+                      <span className="font-medium text-green-600">Lifetime Access</span>
+                    </div>
                   </div>
                 </div>
                 
@@ -303,7 +232,7 @@ export default function SubscriptionPage() {
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      100 CV generations per month
+                      100 lifetime CV generations
                     </li>
                     <li className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
@@ -321,37 +250,6 @@ export default function SubscriptionPage() {
                 </div>
               </div>
 
-              {/* Cancellation Notice */}
-              {subscription?.cancel_at_period_end && (
-                <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-orange-600" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-orange-800">Subscription Cancelled</h3>
-                      <div className="mt-2 text-sm text-orange-700">
-                        <p>
-                          Your subscription has been cancelled and will not renew. You will keep full Pro access until{' '}
-                          <strong>
-                            {subscription?.current_period_end 
-                              ? new Date(subscription.current_period_end).toLocaleDateString('en-GB', { 
-                                  day: 'numeric', 
-                                  month: 'long', 
-                                  year: 'numeric' 
-                                })
-                              : 'the end of your billing period'
-                            }
-                          </strong>.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="flex justify-between items-center">
                   <div>
@@ -362,15 +260,6 @@ export default function SubscriptionPage() {
                       </a>
                     </p>
                   </div>
-                  {!subscription?.cancel_at_period_end && (
-                    <button 
-                      onClick={handleCancelSubscription}
-                      disabled={isCancelling}
-                      className="px-4 py-2 text-sm text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isCancelling ? 'Cancelling...' : 'Cancel Subscription'}
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
@@ -378,7 +267,7 @@ export default function SubscriptionPage() {
         )}
 
         {/* Pricing Plans */}
-        {!isActive && (
+        {!isPro && (
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="px-8 py-12 text-center">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -393,14 +282,14 @@ export default function SubscriptionPage() {
               <div className="border border-gray-200 rounded-xl p-8">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Free</h3>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">$0</div>
-                  <div className="text-gray-600">per month</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">£0</div>
+                  <div className="text-gray-600">forever</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">3 CV generations per month</span>
+                    <span className="text-gray-700">1 CV generation (lifetime)</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -438,13 +327,13 @@ export default function SubscriptionPage() {
                     Pro
                   </h3>
                   <div className="text-3xl font-bold text-gray-900 mb-1">£5</div>
-                  <div className="text-gray-600">per month</div>
+                  <div className="text-gray-600">one-time payment</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">100 CV generations per month</span>
+                    <span className="text-gray-700">100 CV generations (lifetime)</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -469,8 +358,8 @@ export default function SubscriptionPage() {
                 </ul>
 
                 <button
-                  onClick={() => handleUpgrade('price_1SBByxEFkh28oI4Tf8LVjPoe')} // Your real Stripe price ID
-                  disabled={isUpgrading || isActive}
+                  onClick={handleUpgrade}
+                  disabled={isUpgrading || isPro}
                   className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isUpgrading ? (
@@ -478,15 +367,15 @@ export default function SubscriptionPage() {
                       <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       Processing...
                     </>
-                  ) : isActive ? (
+                  ) : isPro ? (
                     <>
                       <Crown className="w-4 h-4 mr-2" />
-                      Current Plan
+                      Already Purchased
                     </>
                   ) : (
                     <>
                       <CreditCard className="w-4 h-4 mr-2" />
-                      Upgrade to Pro
+                      Buy Pro Access
                     </>
                   )}
                 </button>

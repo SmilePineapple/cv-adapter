@@ -53,6 +53,8 @@ export default function DownloadPage() {
   const [selectedFormat, setSelectedFormat] = useState('pdf')
   const [isLoading, setIsLoading] = useState(true)
   const [isExporting, setIsExporting] = useState(false)
+  const [exportProgress, setExportProgress] = useState(0)
+  const [exportStep, setExportStep] = useState('')
   const [previewHtml, setPreviewHtml] = useState('')
 
   useEffect(() => {
@@ -279,7 +281,13 @@ export default function DownloadPage() {
     if (!generationData) return
 
     setIsExporting(true)
+    setExportProgress(0)
+    setExportStep('Preparing export...')
+    
     try {
+      setExportProgress(20)
+      setExportStep(`Generating ${selectedFormat.toUpperCase()} file...`)
+      
       const response = await fetch('/api/export', {
         method: 'POST',
         headers: {
@@ -292,10 +300,16 @@ export default function DownloadPage() {
         }),
       })
 
+      setExportProgress(60)
+      setExportStep('Processing document...')
+
       if (!response.ok) {
         throw new Error('Export failed')
       }
 
+      setExportProgress(80)
+      setExportStep('Downloading file...')
+      
       // Handle file download
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
@@ -311,13 +325,19 @@ export default function DownloadPage() {
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
 
+      setExportProgress(100)
+      setExportStep('Complete!')
       toast.success('CV downloaded successfully!')
       
     } catch (error) {
       console.error('Export error:', error)
-      toast.error('Failed to export CV')
+      toast.error('Failed to export CV. Please try again.')
     } finally {
-      setIsExporting(false)
+      setTimeout(() => {
+        setIsExporting(false)
+        setExportProgress(0)
+        setExportStep('')
+      }, 1000)
     }
   }
 
@@ -441,6 +461,22 @@ export default function DownloadPage() {
                   </>
                 )}
               </button>
+              
+              {/* Progress Bar for Export */}
+              {isExporting && (
+                <div className="mt-4 space-y-2">
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>{exportStep}</span>
+                    <span>{exportProgress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${exportProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
             
             {/* Back to Dashboard Button */}

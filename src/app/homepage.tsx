@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 // SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
   title: 'Free AI CV & Resume Builder | ATS Resume Generator UK & USA | My CV Buddy',
-  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free CV builder and resume maker for UK, USA & worldwide job seekers. 100 free AI generations per month.',
+  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free CV builder and resume maker for UK, USA & worldwide job seekers. 1 free AI generation, £5 for 100 lifetime generations.',
   keywords: [
     // UK Terms
     'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
@@ -119,7 +119,7 @@ export default function LandingPage() {
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">for UK & USA</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Create professional CVs and resumes in seconds. Upload your CV or resume, paste any job description, and get an <strong>ATS-optimized</strong> document that passes applicant tracking systems. Perfect for UK and USA job seekers. <strong>100 free generations per month.</strong>
+            Create professional CVs and resumes in seconds. Upload your CV or resume, paste any job description, and get an <strong>ATS-optimized</strong> document that passes applicant tracking systems. Perfect for UK and USA job seekers. <strong>1 free generation, £5 for 100 lifetime.</strong>
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -335,12 +335,12 @@ export default function LandingPage() {
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-200">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Pro Plan</h3>
               <div className="text-4xl font-bold text-blue-600 mb-4">
-                £5<span className="text-lg text-gray-600">/month</span>
+                £5<span className="text-lg text-gray-600"> one-time</span>
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>100 CV generations per month</span>
+                  <span>100 CV generations (lifetime)</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -439,9 +439,9 @@ export default function LandingPage() {
                   <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
                 </summary>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! We offer 100 free CV generations per month. This includes AI tailoring, 
-                  multiple export formats (PDF, DOCX, TXT), and access to all templates. For unlimited 
-                  generations and premium features like AI section population, upgrade to Pro for just £5/month.
+                  Yes! We offer 1 free CV generation to try the service. This includes AI tailoring, 
+                  multiple export formats (PDF, DOCX, TXT), and access to all templates. For 100 lifetime 
+                  generations and premium features, upgrade to Pro for just £5 (one-time payment).
                 </p>
               </details>
 

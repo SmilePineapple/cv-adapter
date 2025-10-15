@@ -16,10 +16,10 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceId, userId } = await request.json()
+    const { userId } = await request.json()
 
-    if (!priceId || !userId) {
-      return NextResponse.json({ error: 'Missing priceId or userId' }, { status: 400 })
+    if (!userId) {
+      return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
     }
 
     // Get user data
@@ -50,19 +50,26 @@ export async function POST(request: NextRequest) {
       // Note: We're not storing the customer ID for now since the column doesn't exist
     }
 
-    // Create checkout session
+    // Create checkout session for one-time payment
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
       line_items: [
         {
-          price: priceId,
+          price_data: {
+            currency: 'gbp',
+            product_data: {
+              name: 'CV Adapter Pro - 100 Lifetime Generations',
+              description: '100 AI-powered CV generations that never expire',
+            },
+            unit_amount: 500, // £5.00 in pence
+          },
           quantity: 1,
         },
       ],
-      mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?canceled=true`,
+      mode: 'payment', // Changed from 'subscription' to 'payment'
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment_success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription?canceled=true`,
       metadata: {
         user_id: userId,
       },

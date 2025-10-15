@@ -110,10 +110,10 @@ export async function POST(request: NextRequest) {
     
     console.log('✅ Authenticated user:', user.id, user.email)
 
-    // Check usage limits
+    // Check usage limits (lifetime generations)
     const { data: usage, error: usageError } = await supabase
       .from('usage_tracking')
-      .select('generation_count, current_month')
+      .select('lifetime_generation_count, plan_type, max_lifetime_generations')
       .eq('user_id', user.id)
       .single()
 
@@ -122,22 +122,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to check usage limits' }, { status: 500 })
     }
 
-    // Check if user has active subscription
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('status')
-      .eq('user_id', user.id)
-      .single()
-
-    const isPro = subscription?.status === 'active'
-    const maxGenerations = isPro ? 100 : 3
+    const isPro = usage?.plan_type === 'pro'
+    const currentUsage = usage?.lifetime_generation_count || 0
+    const maxGenerations = usage?.max_lifetime_generations || 1
   
-    if (usage?.generation_count >= maxGenerations) {
+    if (currentUsage >= maxGenerations) {
       return NextResponse.json({
-        error: 'Monthly generation limit reached',
+        error: isPro ? 'Generation limit reached' : 'Free generation used. Upgrade to Pro for 100 more!',
         limit_reached: true,
         is_pro: isPro,
-        current_usage: usage?.generation_count || 0,
+        current_usage: currentUsage,
         max_usage: maxGenerations
       }, { status: 429 })
     }
@@ -227,18 +221,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to save generation' }, { status: 500 })
     }
 
-    // Update usage tracking - increment the count
-    const newCount = (usage?.generation_count || 0) + 1
+    // Update usage tracking - increment lifetime count
+    const newCount = currentUsage + 1
     console.log('Updating usage tracking:', {
       userId: user.id,
-      oldCount: usage?.generation_count,
+      oldCount: currentUsage,
       newCount
     })
 
     const { data: updatedUsage, error: usageUpdateError } = await supabase
       .from('usage_tracking')
       .update({
-        generation_count: newCount,
+        lifetime_generation_count: newCount,
+        generation_count: newCount, // Keep for backwards compatibility
         updated_at: new Date().toISOString()
       })
       .eq('user_id', user.id)
@@ -262,7 +257,7 @@ export async function POST(request: NextRequest) {
       output_sections: rewrittenSections,
       diff_meta: diffMeta,
       usage: {
-        current_count: (usage?.generation_count || 0) + 1,
+        current_count: newCount,
         max_count: maxGenerations,
         is_pro: isPro
       }
