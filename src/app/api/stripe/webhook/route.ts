@@ -36,17 +36,15 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
         const customerId = session.customer as string
-        const subscriptionId = session.subscription as string
+        const paymentIntentId = session.payment_intent as string
 
-        console.log('[Webhook] Checkout completed:', { customerId, subscriptionId })
+        console.log('[Webhook] Checkout completed:', { customerId, paymentIntentId, mode: session.mode })
 
-        if (!subscriptionId) {
-          console.log('[Webhook] No subscription ID, skipping')
+        // Only process payment mode (one-time payments), not subscription mode
+        if (session.mode !== 'payment') {
+          console.log('[Webhook] Not a one-time payment, skipping')
           break
         }
-
-        // Get the subscription details
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
         
         // Extract user_id from metadata (set during checkout creation)
         const userId = session.metadata?.user_id || session.client_reference_id
@@ -56,67 +54,80 @@ export async function POST(request: NextRequest) {
           break
         }
 
-        console.log('[Webhook] Creating subscription for user:', userId)
+        console.log('[Webhook] Processing one-time payment for user:', userId)
 
-        // Create or update subscription record
-        const { error: upsertError } = await supabase
-          .from('subscriptions')
+        // Create purchase record
+        const { error: purchaseError } = await supabase
+          .from('purchases')
           .upsert({
             user_id: userId,
-            stripe_subscription_id: subscriptionId,
             stripe_customer_id: customerId,
-            status: subscription.status,
-            price_id: subscription.items.data[0].price.id,
-            current_period_start: new Date((subscription.current_period_start as any) * 1000).toISOString(),
-            current_period_end: new Date((subscription.current_period_end as any) * 1000).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end || false,
+            payment_intent_id: paymentIntentId,
+            status: 'completed',
+            amount_paid: session.amount_total, // in cents/pence
+            currency: session.currency || 'gbp',
+            purchased_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           })
 
-        if (upsertError) {
-          console.error('[Webhook] Subscription upsert error:', upsertError)
-          throw upsertError
+        if (purchaseError) {
+          console.error('[Webhook] Purchase record error:', purchaseError)
+          throw purchaseError
         }
 
-        console.log('[Webhook] Subscription created successfully')
+        // Upgrade user to pro (100 lifetime generations)
+        const { error: upgradeError } = await supabase
+          .from('usage_tracking')
+          .update({
+            plan_type: 'pro',
+            max_lifetime_generations: 100,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        if (upgradeError) {
+          console.error('[Webhook] User upgrade error:', upgradeError)
+          throw upgradeError
+        }
+
+        console.log('[Webhook] User upgraded to Pro successfully')
         break
       }
 
-      case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
         
-        console.log('[Webhook] Subscription updated:', subscription.id)
+        console.log('[Webhook] Payment succeeded:', paymentIntent.id)
 
+        // Update purchase status if needed
         const { error: updateError } = await supabase
-          .from('subscriptions')
+          .from('purchases')
           .update({
-            status: subscription.status,
-            current_period_start: new Date((subscription.current_period_start as number) * 1000).toISOString(),
-            current_period_end: new Date((subscription.current_period_end as number) * 1000).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end || false,
+            status: 'completed',
             updated_at: new Date().toISOString()
           })
-          .eq('stripe_subscription_id', subscription.id)
+          .eq('payment_intent_id', paymentIntent.id)
 
         if (updateError) {
-          console.error('[Webhook] Subscription update error:', updateError)
-          throw updateError
+          console.error('[Webhook] Purchase update error:', updateError)
         }
 
-        console.log('[Webhook] Subscription updated successfully')
+        console.log('[Webhook] Payment recorded successfully')
         break
       }
 
-      case 'customer.subscription.deleted': {
-        const subscription = event.data.object as Stripe.Subscription
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
         
+        console.log('[Webhook] Payment failed:', paymentIntent.id)
+
         await supabase
-          .from('subscriptions')
+          .from('purchases')
           .update({
-            status: 'canceled',
+            status: 'failed',
             updated_at: new Date().toISOString()
           })
-          .eq('stripe_subscription_id', subscription.id)
+          .eq('payment_intent_id', paymentIntent.id)
         break
       }
 

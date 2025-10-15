@@ -12,7 +12,7 @@ export default function HelpCenterPage() {
         },
         {
           q: 'Is CV Adapter free to use?',
-          a: 'Yes! We offer a free tier with 100 CV generations per month. For unlimited access, upgrade to Pro for just £5/month.'
+          a: 'Yes! We offer 1 free CV generation to try the service. For 100 lifetime generations, upgrade to Pro for just £5 (one-time payment).'
         },
         {
           q: 'What file formats can I upload?',

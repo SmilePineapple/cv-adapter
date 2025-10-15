@@ -77,11 +77,15 @@ interface RecentActivity {
 
 interface UsageInfo {
   generation_count: number
+  lifetime_generation_count: number
+  plan_type: string
+  max_lifetime_generations: number
   current_month: string
 }
 
-interface SubscriptionInfo {
+interface PurchaseInfo {
   status: string | null
+  purchased_at: string | null
 }
 
 export default function DashboardPage() {
@@ -91,7 +95,7 @@ export default function DashboardPage() {
   const [coverLetters, setCoverLetters] = useState<CoverLetter[]>([])
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [usage, setUsage] = useState<UsageInfo | null>(null)
-  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
+  const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters'>('overview')
   const [searchQuery, setSearchQuery] = useState('')
@@ -121,16 +125,16 @@ export default function DashboardPage() {
   const handleGenerateClick = (e: React.MouseEvent, cvId: string) => {
     e.preventDefault()
     
-    // Check usage limit
-    const isPro = subscription?.status === 'active'
-    const maxGenerations = isPro ? 100 : 3
-    const currentUsage = usage?.generation_count || 0
+    // Check usage limit (lifetime generations)
+    const isPro = usage?.plan_type === 'pro'
+    const currentUsage = usage?.lifetime_generation_count || 0
+    const maxGenerations = usage?.max_lifetime_generations || 1
 
     if (currentUsage >= maxGenerations) {
       if (isPro) {
-        toast.error('You have reached your monthly generation limit. Please contact support.')
+        toast.error('You have used all 100 lifetime generations. Contact support for more.')
       } else {
-        toast.error('You have used all 3 free generations this month. Upgrade to Pro for unlimited generations!', {
+        toast.error('You have used your 1 free generation. Upgrade to Pro for 100 more!', {
           duration: 5000,
           action: {
             label: 'Upgrade',
@@ -275,10 +279,10 @@ export default function DashboardPage() {
       activities.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       setRecentActivity(activities.slice(0, 10))
 
-      // Fetch usage
+      // Fetch usage data (lifetime generations)
       const { data: usageData, error: usageError } = await supabase
         .from('usage_tracking')
-        .select('generation_count, current_month')
+        .select('generation_count, lifetime_generation_count, plan_type, max_lifetime_generations, current_month')
         .eq('user_id', user.id)
         .single()
 
@@ -288,22 +292,23 @@ export default function DashboardPage() {
         setUsage(usageData)
       }
 
-      // Fetch subscription status - handle if table doesn't exist
+      // Fetch purchase status - handle if table doesn't exist
       try {
-        const { data: subscriptionData, error: subscriptionError } = await supabase
-          .from('subscriptions')
-          .select('status')
+        const { data: purchaseData, error: purchaseError } = await supabase
+          .from('purchases')
+          .select('status, purchased_at')
           .eq('user_id', user.id)
+          .eq('status', 'completed')
           .maybeSingle()
 
-        if (subscriptionError && subscriptionError.code !== 'PGRST116' && subscriptionError.code !== '42P01') {
-          console.error('Error fetching subscription:', subscriptionError)
+        if (purchaseError && purchaseError.code !== 'PGRST116' && purchaseError.code !== '42P01') {
+          console.error('Error fetching purchase:', purchaseError)
         } else {
-          setSubscription(subscriptionData || { status: null })
+          setPurchase(purchaseData || { status: null, purchased_at: null })
         }
       } catch (e) {
-        console.log('Subscriptions table not available, defaulting to free plan')
-        setSubscription({ status: null })
+        console.log('Purchases table not available, defaulting to free plan')
+        setPurchase({ status: null, purchased_at: null })
       }
 
     } catch (error) {
@@ -449,10 +454,10 @@ export default function DashboardPage() {
     )
   }
 
-  // Calculate usage limits based on subscription
-  const isPro = subscription?.status === 'active'
-  const maxGenerations = isPro ? 100 : 3
-  const currentUsage = usage?.generation_count || 0
+  // Calculate usage limits based on plan type (lifetime)
+  const isPro = usage?.plan_type === 'pro'
+  const currentUsage = usage?.lifetime_generation_count || 0
+  const maxGenerations = usage?.max_lifetime_generations || 1
   const usagePercentage = (currentUsage / maxGenerations) * 100
 
   return (
@@ -574,7 +579,7 @@ export default function DashboardPage() {
             className="flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             <Star className="w-5 h-5 mr-2" />
-            {subscription?.status === 'active' ? 'Manage Plan' : 'Upgrade to Pro'}
+            {isPro ? 'View Purchase' : 'Upgrade to Pro'}
           </Link>
 
           <Link
@@ -740,7 +745,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  {subscription?.status !== 'active' && (
+                  {!isPro && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex items-center">
                         <Star className="w-5 h-5 text-blue-600 mr-2" />

@@ -9,19 +9,53 @@ import { CVSection } from '@/types/database'
 const getSectionContent = (content: any): string => {
   if (!content) return ''
   
+  // If content is already a string, return it
+  if (typeof content === 'string') {
+    return content
+  }
+  
   // If content is an array (like experience), format it
   if (Array.isArray(content)) {
     return content.map((item) => {
-      if (item.company && item.job_title) {
-        return `${item.job_title} | ${item.company}\n${item.responsibilities || item.description || ''}`
+      // Handle different object structures
+      if (typeof item === 'string') {
+        return item
       }
-      return JSON.stringify(item)
-    }).join('\n\n')
+      if (typeof item === 'object' && item !== null) {
+        // Try common field names for work experience
+        const title = item.job_title || item.jobTitle || item.title || item.position || ''
+        const company = item.company || item.employer || item.organization || ''
+        const description = item.responsibilities || item.description || item.details || item.content || ''
+        const duration = item.duration || item.dates || item.period || ''
+        
+        if (title || company) {
+          let result = ''
+          if (title && company) {
+            result += `${title} | ${company}`
+          } else {
+            result += title || company
+          }
+          if (duration) {
+            result += ` (${duration})`
+          }
+          if (description) {
+            result += `\n${description}`
+          }
+          return result
+        }
+        
+        // Fallback: try to extract any meaningful text
+        const values = Object.values(item).filter(v => typeof v === 'string' && v.trim())
+        return values.join('\n')
+      }
+      return ''
+    }).filter(Boolean).join('\n\n')
   }
   
-  // If content is an object, stringify it
-  if (typeof content === 'object') {
-    return JSON.stringify(content, null, 2)
+  // If content is an object, try to extract meaningful text
+  if (typeof content === 'object' && content !== null) {
+    const values = Object.values(content).filter(v => typeof v === 'string' && v.trim())
+    return values.join('\n')
   }
   
   // Return as string
