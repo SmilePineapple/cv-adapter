@@ -1,276 +1,175 @@
 import Link from 'next/link'
-import { ArrowLeft, BookOpen, CheckCircle, TrendingUp, Target, Zap, Star, Award } from 'lucide-react'
+import { ArrowLeft, BookOpen, Calendar, Clock, ArrowRight, TrendingUp, Target, Lightbulb } from 'lucide-react'
+import type { Metadata } from 'next'
 
-export default function CVWritingTipsPage() {
+export const metadata: Metadata = {
+  title: 'Blog - CV Writing Tips & Career Advice | My CV Buddy',
+  description: 'Expert advice on CV writing, ATS optimization, job search strategies, and career development. Learn how to create a winning CV that gets you interviews.',
+}
+
+const blogPosts = [
+  {
+    slug: 'how-to-beat-ats-systems',
+    title: 'How to Beat ATS Systems: Complete Guide for 2025',
+    excerpt: 'Learn exactly how Applicant Tracking Systems work and discover proven strategies to get your CV past the bots and into human hands.',
+    date: 'October 15, 2025',
+    readTime: '8 min read',
+    category: 'ATS Optimization',
+    featured: true,
+  },
+  {
+    slug: 'cv-writing-tips',
+    title: 'CV Writing Tips & Best Practices',
+    excerpt: 'Expert advice to create a winning CV that gets you interviews. Learn the 6-second rule and proven strategies.',
+    date: 'October 10, 2025',
+    readTime: '6 min read',
+    category: 'CV Writing',
+    featured: false,
+  },
+  {
+    slug: 'tailor-cv-to-job-description',
+    title: 'How to Tailor Your CV to a Job Description',
+    excerpt: 'Step-by-step guide to customizing your CV for each application. Increase your interview chances by 3x.',
+    date: 'Coming Soon',
+    readTime: '7 min read',
+    category: 'Job Search',
+    featured: false,
+  },
+]
+
+export default function BlogIndexPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
-          <div className="flex items-center space-x-3">
-            <BookOpen className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">CV Writing Tips & Best Practices</h1>
+          <div className="flex items-center space-x-3 mb-4">
+            <BookOpen className="w-10 h-10 text-blue-600" />
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">CV Writing Blog</h1>
           </div>
-          <p className="mt-2 text-gray-600">Expert advice to create a winning CV that gets you interviews</p>
+          <p className="text-xl text-gray-600">Expert advice on CV writing, ATS optimization, and job search strategies</p>
         </div>
       </header>
 
-      {/* Content */}
+      {/* Blog Posts */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Featured Post */}
+        {blogPosts.filter(post => post.featured).map((post) => (
+          <Link 
+            key={post.slug}
+            href={`/blog/${post.slug}`}
+            className="block mb-12 group"
+          >
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-8 md:p-12 hover:shadow-2xl transition-shadow">
+              <div className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                ⭐ Featured Post
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 group-hover:underline">{post.title}</h2>
+              <p className="text-xl text-blue-100 mb-6">
+                {post.excerpt}
+              </p>
+              <div className="flex items-center space-x-6 text-blue-100">
+                <div className="flex items-center">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  <span className="text-sm">{post.date}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="w-4 h-4 mr-2" />
+                  <span className="text-sm">{post.readTime}</span>
+                </div>
+              </div>
+              <div className="mt-6 inline-flex items-center text-white font-semibold group-hover:gap-3 transition-all">
+                Read Full Article
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </Link>
+        ))}
+
+        {/* All Blog Posts */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Articles</h2>
+        </div>
         
-        {/* Quick Tips Banner */}
-        <div className="bg-blue-600 text-white rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold mb-4">🎯 Quick Win: The 6-Second Rule</h2>
-          <p className="text-lg mb-4">
-            Recruiters spend an average of <strong>6 seconds</strong> reviewing each CV. 
-            Make every second count with these proven strategies.
-          </p>
-          <div className="grid md:grid-cols-3 gap-4 mt-6">
-            <div className="bg-blue-700 rounded-lg p-4">
-              <CheckCircle className="w-6 h-6 mb-2" />
-              <p className="font-semibold">Clear Structure</p>
-              <p className="text-sm text-blue-100">Easy to scan sections</p>
-            </div>
-            <div className="bg-blue-700 rounded-lg p-4">
-              <Target className="w-6 h-6 mb-2" />
-              <p className="font-semibold">Tailored Content</p>
-              <p className="text-sm text-blue-100">Match job requirements</p>
-            </div>
-            <div className="bg-blue-700 rounded-lg p-4">
-              <TrendingUp className="w-6 h-6 mb-2" />
-              <p className="font-semibold">Quantified Results</p>
-              <p className="text-sm text-blue-100">Numbers tell stories</p>
-            </div>
-          </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {blogPosts.filter(post => !post.featured).map((post) => (
+            <Link 
+              key={post.slug}
+              href={post.date === 'Coming Soon' ? '#' : `/blog/${post.slug}`}
+              className={`block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden ${
+                post.date === 'Coming Soon' ? 'opacity-60 cursor-not-allowed' : 'group'
+              }`}
+            >
+              <div className="p-6">
+                <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
+                  {post.category}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  {post.title}
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  {post.excerpt}
+                </p>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>{post.date}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="w-4 h-4 mr-1" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+                {post.date !== 'Coming Soon' && (
+                  <div className="mt-4 inline-flex items-center text-blue-600 font-semibold group-hover:gap-2 transition-all">
+                    Read More
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
+                {post.date === 'Coming Soon' && (
+                  <div className="mt-4 text-gray-400 font-semibold">
+                    Coming Soon
+                  </div>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
-
-        {/* Main Tips Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          
-          {/* Tip 1 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 rounded-lg p-3">
-                <Target className="w-6 h-6 text-blue-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Tailor Your CV to Each Job</h3>
-                <p className="text-gray-600 mb-4">
-                  Generic CVs get rejected. Customize your CV for each application by:
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Using keywords from the job description</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Highlighting relevant experience first</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Matching your skills to their requirements</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Adjusting your professional summary</span>
-                  </li>
-                </ul>
-                <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-                  <p className="text-sm text-blue-900">
-                    <strong>💡 Pro Tip:</strong> Use CV Adapter to automatically tailor your CV to any job description in seconds!
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tip 2 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <div className="flex items-start space-x-4">
-              <div className="bg-green-100 rounded-lg p-3">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Quantify Your Achievements</h3>
-                <p className="text-gray-600 mb-4">
-                  Numbers make your accomplishments tangible and memorable:
-                </p>
-                <div className="space-y-3">
-                  <div className="border-l-4 border-red-500 pl-4">
-                    <p className="text-sm text-gray-500 mb-1">❌ Weak:</p>
-                    <p className="text-gray-700">"Managed a team"</p>
-                  </div>
-                  <div className="border-l-4 border-green-500 pl-4">
-                    <p className="text-sm text-gray-500 mb-1">✅ Strong:</p>
-                    <p className="text-gray-700">"Led team of 12 developers, delivering 15+ projects on time with 98% client satisfaction"</p>
-                  </div>
-                </div>
-                <div className="mt-4 space-y-2 text-sm text-gray-600">
-                  <p><strong>Include:</strong></p>
-                  <ul className="list-disc list-inside space-y-1 ml-2">
-                    <li>Revenue increases (%)</li>
-                    <li>Cost savings (£)</li>
-                    <li>Team sizes (#)</li>
-                    <li>Project timelines (months)</li>
-                    <li>Performance metrics (%)</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tip 3 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <div className="flex items-start space-x-4">
-              <div className="bg-purple-100 rounded-lg p-3">
-                <Zap className="w-6 h-6 text-purple-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">3. Use Action Verbs</h3>
-                <p className="text-gray-600 mb-4">
-                  Start bullet points with powerful action verbs to show impact:
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-semibold text-gray-900 mb-2">Leadership:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Led, Directed, Managed</li>
-                      <li>• Coordinated, Supervised</li>
-                      <li>• Spearheaded, Championed</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 mb-2">Achievement:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Achieved, Delivered</li>
-                      <li>• Exceeded, Surpassed</li>
-                      <li>• Accomplished, Attained</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 mb-2">Innovation:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Developed, Created</li>
-                      <li>• Designed, Innovated</li>
-                      <li>• Pioneered, Launched</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 mb-2">Improvement:</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>• Improved, Enhanced</li>
-                      <li>• Optimized, Streamlined</li>
-                      <li>• Transformed, Revitalized</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tip 4 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <div className="flex items-start space-x-4">
-              <div className="bg-yellow-100 rounded-lg p-3">
-                <Star className="w-6 h-6 text-yellow-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">4. Optimize for ATS (Applicant Tracking Systems)</h3>
-                <p className="text-gray-600 mb-4">
-                  75% of CVs are rejected by ATS before a human sees them. Beat the bots:
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Use standard headings:</strong> "Work Experience" not "My Journey"</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Include keywords:</strong> Match exact terms from job posting</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Avoid graphics:</strong> Stick to text-based content</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Use common fonts:</strong> Arial, Calibri, Times New Roman</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Save as .docx or PDF:</strong> Most ATS-friendly formats</span>
-                  </li>
-                </ul>
-                <div className="mt-4 bg-yellow-50 p-4 rounded-lg">
-                  <p className="text-sm text-yellow-900">
-                    <strong>🎯 CV Adapter calculates your ATS score</strong> and shows you exactly how to improve it!
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CV Structure Guide */}
+        {/* Quick Tips Section */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-            <Award className="w-6 h-6 text-blue-600 mr-3" />
-            Perfect CV Structure
+            <Lightbulb className="w-6 h-6 text-yellow-500 mr-3" />
+            Quick CV Tips
           </h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">1. Contact Information</h3>
-              <p className="text-sm text-gray-600">Name, phone, email, LinkedIn, location (city/country)</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Tailor Every CV</h3>
+              <p className="text-sm text-gray-600">Customize for each job application</p>
             </div>
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">2. Professional Summary (3-4 lines)</h3>
-              <p className="text-sm text-gray-600">Your value proposition tailored to the role</p>
+            <div className="text-center">
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Use Numbers</h3>
+              <p className="text-sm text-gray-600">Quantify your achievements</p>
             </div>
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">3. Key Skills (6-12 skills)</h3>
-              <p className="text-sm text-gray-600">Match job requirements, include technical & soft skills</p>
+            <div className="text-center">
+              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Beat ATS</h3>
+              <p className="text-sm text-gray-600">Optimize for tracking systems</p>
             </div>
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">4. Work Experience (reverse chronological)</h3>
-              <p className="text-sm text-gray-600">3-5 bullet points per role, focus on achievements</p>
-            </div>
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">5. Education</h3>
-              <p className="text-sm text-gray-600">Degree, institution, graduation year, relevant coursework</p>
-            </div>
-            <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">6. Certifications & Additional Sections (optional)</h3>
-              <p className="text-sm text-gray-600">Licenses, languages, volunteer work, publications</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Common Mistakes */}
-        <div className="bg-red-50 border-l-4 border-red-600 p-8 mb-12">
-          <h2 className="text-2xl font-bold text-red-900 mb-4">❌ Common CV Mistakes to Avoid</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <ul className="space-y-2 text-red-800">
-              <li>• Spelling and grammar errors</li>
-              <li>• Using personal pronouns (I, me, my)</li>
-              <li>• Including a photo (unless required)</li>
-              <li>• Listing references on CV</li>
-              <li>• Using unprofessional email addresses</li>
-            </ul>
-            <ul className="space-y-2 text-red-800">
-              <li>• Making it too long (&gt;2 pages)</li>
-              <li>• Including irrelevant information</li>
-              <li>• Using fancy fonts or colors</li>
-              <li>• Lying or exaggerating</li>
-              <li>• Forgetting to update dates</li>
-            </ul>
           </div>
         </div>
 
