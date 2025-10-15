@@ -776,12 +776,12 @@ export default function LandingPage() {
             
             {/* Legal */}
             <div>
-              <h4 className="font-bold mb-4">Legal</h4>
+              <h4 className="font-bold mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
                 <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
                 <li><Link href="/gdpr" className="hover:text-white">GDPR</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
               </ul>
             </div>
           </div>

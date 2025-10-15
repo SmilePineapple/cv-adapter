@@ -485,6 +485,13 @@ export default function DashboardPage() {
                 <Settings className="w-4 h-4" />
                 <span>Subscription</span>
               </Link>
+              <Link
+                href="/contact"
+                className="flex items-center space-x-2 text-green-600 hover:text-green-700"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Contact Support</span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
