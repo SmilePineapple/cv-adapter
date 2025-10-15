@@ -134,7 +134,7 @@ export default function LandingPage() {
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-              100 free generations/month
+              1 free generation to try
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -142,7 +142,7 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-              Cancel anytime
+              £5 for 100 lifetime generations
             </div>
           </div>
         </div>
@@ -213,8 +213,114 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Why Choose Us Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Why Choose My CV Buddy?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              We're not just another CV builder. We're your personal AI career assistant, helping you create job-winning CVs and resumes that get past ATS systems and impress recruiters.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Designed for Job Seekers</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Whether you're a recent graduate, career changer, or experienced professional, My CV Buddy adapts to your needs. Our AI understands different industries, job levels, and career paths, ensuring your CV speaks the language recruiters want to hear.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                <strong>Perfect for:</strong> UK job seekers, US resume writers, international applicants, career changers, graduates, professionals seeking promotions, and anyone applying to multiple positions.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">⚡ Save Hours of Work</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Stop spending hours tailoring your CV for each application. Our AI does the heavy lifting in seconds, analyzing job descriptions, matching your experience, and optimizing keywords automatically. What used to take 2-3 hours now takes 2 minutes.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                <strong>Time saved:</strong> Average users save 15+ hours per job search, allowing you to apply to more positions and focus on interview preparation instead of CV formatting.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🔒 Your Data is Safe</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                We take privacy seriously. Your CV data is encrypted, never shared with third parties, and you maintain full control. Delete your data anytime with one click. GDPR compliant, SOC 2 certified, and trusted by thousands of professionals worldwide.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                <strong>Security features:</strong> Bank-level encryption, secure authentication, automatic data retention policies, and compliance with UK and EU data protection laws.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">💰 Affordable Pricing</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Unlike expensive CV writing services that charge £100-500 per CV, My CV Buddy costs just £5 for 100 lifetime generations. That's unlimited tailoring for dozens of job applications, all for less than the price of a coffee.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                <strong>Value comparison:</strong> Professional CV writers: £150-300 per CV. CV writing services: £50-100 per revision. My CV Buddy: £5 for 100 CVs. The choice is clear.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Industries Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Trusted Across All Industries
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our AI understands industry-specific terminology, requirements, and best practices. Whether you're in tech, healthcare, finance, or creative fields, we've got you covered.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              { name: "Technology & IT", icon: "💻", desc: "Software engineers, developers, data scientists, IT managers" },
+              { name: "Healthcare", icon: "🏥", desc: "Nurses, doctors, medical professionals, healthcare administrators" },
+              { name: "Finance & Banking", icon: "💼", desc: "Accountants, financial analysts, investment bankers, auditors" },
+              { name: "Marketing & Sales", icon: "📊", desc: "Digital marketers, sales managers, brand strategists, SEO specialists" },
+              { name: "Education", icon: "📚", desc: "Teachers, professors, administrators, education consultants" },
+              { name: "Engineering", icon: "⚙️", desc: "Mechanical, electrical, civil, chemical engineers" },
+              { name: "Creative & Design", icon: "🎨", desc: "Graphic designers, UX/UI designers, content creators, copywriters" },
+              { name: "Legal", icon: "⚖️", desc: "Lawyers, paralegals, legal assistants, compliance officers" },
+              { name: "Human Resources", icon: "👥", desc: "HR managers, recruiters, talent acquisition, people ops" },
+              { name: "Hospitality", icon: "🏨", desc: "Hotel managers, chefs, event planners, tourism professionals" },
+              { name: "Construction", icon: "🏗️", desc: "Project managers, architects, site supervisors, contractors" },
+              { name: "Retail & E-commerce", icon: "🛍️", desc: "Store managers, buyers, merchandisers, e-commerce specialists" }
+            ].map((industry, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+                <div className="text-4xl mb-3">{industry.icon}</div>
+                <h3 className="font-bold text-gray-900 mb-2">{industry.name}</h3>
+                <p className="text-sm text-gray-600">{industry.desc}</p>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-6">
+              Don't see your industry? <strong>My CV Buddy works for all professions.</strong> Our AI adapts to any field, role, or career level.
+            </p>
+            <Link 
+              href="/auth/signup"
+              className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
+              Try It Free Now
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section id="features" className="py-20 bg-gray-50">
+      <section id="features" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -387,8 +493,103 @@ export default function LandingPage() {
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
           <p className="mt-4 text-sm text-blue-100">
-            No credit card required • 100 free generations • Cancel anytime
+            No credit card required • 1 free generation • £5 for 100 lifetime
           </p>
+        </div>
+      </section>
+
+      {/* Common CV Mistakes Section */}
+      <section className="py-20 bg-gradient-to-br from-red-50 to-orange-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Avoid These Common CV Mistakes
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Don't let these errors cost you your dream job. My CV Buddy automatically fixes these issues and ensures your CV is error-free and ATS-optimized.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                title: "❌ Generic, One-Size-Fits-All CVs",
+                problem: "Sending the same CV to every job application is the #1 reason for rejection.",
+                solution: "My CV Buddy tailors your CV to each specific job description, matching keywords and highlighting relevant experience automatically."
+              },
+              {
+                title: "❌ Poor ATS Optimization",
+                problem: "75% of CVs are rejected by Applicant Tracking Systems before a human ever sees them.",
+                solution: "Our AI ensures proper formatting, keyword placement, and ATS-friendly structure so your CV passes automated screening."
+              },
+              {
+                title: "❌ Missing Keywords",
+                problem: "Not including exact keywords from the job description means your CV won't match the requirements.",
+                solution: "We analyze job postings and automatically integrate relevant keywords naturally throughout your CV."
+              },
+              {
+                title: "❌ Weak Achievement Statements",
+                problem: "Vague descriptions like 'responsible for managing team' don't demonstrate impact or value.",
+                solution: "Our AI helps you quantify achievements with metrics, percentages, and concrete results that impress recruiters."
+              },
+              {
+                title: "❌ Poor Formatting & Design",
+                problem: "Complex layouts, tables, graphics, and unusual fonts break ATS parsers and look unprofessional.",
+                solution: "Choose from 10 professionally designed, ATS-friendly templates that look great and work with all systems."
+              },
+              {
+                title: "❌ Spelling & Grammar Errors",
+                problem: "Even small typos can disqualify you. Recruiters see errors as lack of attention to detail.",
+                solution: "Our AI checks for errors and ensures professional, polished language throughout your CV."
+              },
+              {
+                title: "❌ Too Long or Too Short",
+                problem: "CVs that are too lengthy (3+ pages) or too brief (less than 1 page) get rejected.",
+                solution: "We optimize content length, keeping only relevant information that matches the job requirements."
+              },
+              {
+                title: "❌ Outdated Information",
+                problem: "Including irrelevant old jobs, outdated skills, or ancient education details wastes valuable space.",
+                solution: "Our AI prioritizes recent, relevant experience and removes outdated information automatically."
+              },
+              {
+                title: "❌ No Customization for Industry",
+                problem: "Using generic language instead of industry-specific terminology makes you seem unqualified.",
+                solution: "My CV Buddy understands industry jargon and adapts your CV to match the language recruiters expect."
+              }
+            ].map((mistake, index) => (
+              <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{mistake.title}</h3>
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-red-700 mb-2">The Problem:</p>
+                  <p className="text-sm text-gray-600">{mistake.problem}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-green-700 mb-2">Our Solution:</p>
+                  <p className="text-sm text-gray-600">{mistake.solution}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <div className="bg-white rounded-xl p-8 max-w-3xl mx-auto shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Let AI Fix Your CV Mistakes Automatically
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Stop worrying about CV errors. My CV Buddy identifies and fixes these common mistakes automatically, ensuring your CV is professional, ATS-optimized, and tailored to each job you apply for.
+              </p>
+              <Link 
+                href="/auth/signup"
+                className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Fix My CV Now - Free
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+              <p className="mt-4 text-sm text-gray-500">1 free generation • No credit card required</p>
+            </div>
+          </div>
         </div>
       </section>
 
