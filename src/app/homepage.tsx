@@ -3,6 +3,7 @@ import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileT
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
+import PromoBanner from '@/components/PromoBanner'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
@@ -74,6 +75,9 @@ export default function LandingPage() {
       <OAuthHandler />
       <StructuredData />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Promo Banner - 50% Off */}
+      <PromoBanner variant="homepage" />
+      
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
