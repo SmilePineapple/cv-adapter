@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
+import UsageTracker from '@/components/UsageTracker'
+import UpgradeModal from '@/components/UpgradeModal'
 import { 
   Upload, 
   FileText, 
@@ -104,6 +106,7 @@ export default function DashboardPage() {
   const [selectedCvForRating, setSelectedCvForRating] = useState<string | null>(null)
   const [cvRating, setCvRating] = useState<any>(null)
   const [isRating, setIsRating] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
   // Filter functions
   const filteredCvs = cvs.filter(cv => 
@@ -607,6 +610,29 @@ export default function DashboardPage() {
             Create Cover Letter
           </Link>
         </div>
+
+        {/* Usage Tracker - Prominent Display */}
+        {usage && (
+          <div className="mb-8">
+            <UsageTracker
+              currentUsage={currentUsage}
+              maxGenerations={maxGenerations}
+              isPro={isPro}
+              onUpgradeClick={() => setShowUpgradeModal(true)}
+            />
+          </div>
+        )}
+
+        {/* Upgrade Modal */}
+        {usage && (
+          <UpgradeModal
+            isOpen={showUpgradeModal}
+            onClose={() => setShowUpgradeModal(false)}
+            trigger="dashboard"
+            currentUsage={currentUsage}
+            maxGenerations={maxGenerations}
+          />
+        )}
 
         {/* Search and Filter */}
         <div className="mb-6">
