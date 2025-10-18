@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { CVSection, DiffMetadata } from '@/types/database'
+import UpgradeModal from '@/components/UpgradeModal'
 import { 
   ArrowLeft, 
   Download, 
@@ -66,6 +67,8 @@ export default function ReviewPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [editingSection, setEditingSection] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [usageInfo, setUsageInfo] = useState<{ lifetime_generation_count: number, max_lifetime_generations: number, plan_type: string } | null>(null)
 
   useEffect(() => {
     fetchGenerationData()
@@ -126,11 +129,30 @@ export default function ReviewPage() {
       
       setOriginalSections(originalSecs)
       setEditedSections(mergedSections)
+      
+      // Fetch usage info to show upgrade prompt if needed
+      const { data: usage } = await supabase
+        .from('usage_tracking')
+        .select('lifetime_generation_count, max_lifetime_generations, plan_type')
+        .eq('user_id', user.id)
+        .single()
+      
+      if (usage) {
+        setUsageInfo(usage)
+        
+        // Show upgrade modal after first generation for free users
+        if (usage.plan_type === 'free' && usage.lifetime_generation_count === 1) {
+          // Delay modal to let user see their result first
+          setTimeout(() => {
+            setShowUpgradeModal(true)
+          }, 3000)
+        }
+      }
+      
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching generation data:', error)
       toast.error('Failed to load generation data')
-      router.push('/dashboard')
-    } finally {
       setIsLoading(false)
     }
   }
@@ -240,6 +262,17 @@ export default function ReviewPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Upgrade Modal */}
+      {usageInfo && (
+        <UpgradeModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          trigger="first_generation"
+          currentUsage={usageInfo.lifetime_generation_count}
+          maxGenerations={usageInfo.max_lifetime_generations}
+        />
+      )}
+      
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
