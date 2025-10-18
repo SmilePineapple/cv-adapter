@@ -28,7 +28,8 @@ import {
   Star,
   Archive,
   X,
-  CheckCircle
+  CheckCircle,
+  Shield
 } from 'lucide-react'
 
 interface CV {
@@ -478,6 +479,15 @@ export default function DashboardPage() {
               <span className="text-sm text-gray-600">
                 Welcome, {user?.user_metadata?.full_name || user?.email}
               </span>
+              {user?.email === 'jakedalerourke@gmail.com' && (
+                <Link
+                  href="/admin"
+                  className="flex items-center space-x-2 text-red-600 hover:text-red-700"
+                >
+                  <Shield className="w-4 h-4" />
+                  <span>Admin</span>
+                </Link>
+              )}
               <Link
                 href="/subscription"
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
