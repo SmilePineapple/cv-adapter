@@ -13,12 +13,11 @@ export default function PromoBanner({ variant = 'homepage', onClose }: PromoBann
   const [isVisible, setIsVisible] = useState(true)
   const [timeLeft, setTimeLeft] = useState({ days: 7, hours: 0, minutes: 0 })
 
-  // Calculate time remaining (7 days from now - you can adjust this)
+  // Calculate time remaining until October 31st, 11:59pm
   useEffect(() => {
     const calculateTimeLeft = () => {
-      // Set your promo end date here
-      const endDate = new Date()
-      endDate.setDate(endDate.getDate() + 7) // 7 days from now
+      // Set promo end date: October 31st, 2025 at 11:59pm
+      const endDate = new Date('2025-10-31T23:59:59')
       
       const now = new Date()
       const difference = endDate.getTime() - now.getTime()
@@ -135,15 +134,15 @@ export default function PromoBanner({ variant = 'homepage', onClose }: PromoBann
               </div>
             </div>
 
-            {/* Bottom - Social proof */}
+            {/* Bottom - Offer details */}
             <div className="mt-3 pt-3 border-t border-white/20 flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-yellow-300" />
-                <span className="opacity-90">47 spots claimed</span>
+                <Sparkles className="w-4 h-4 text-yellow-300" />
+                <span className="opacity-90">One-time payment • Lifetime access</span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-yellow-300" />
-                <span className="opacity-90">Only 53 left at this price!</span>
+                <TrendingUp className="w-4 h-4 text-yellow-300" />
+                <span className="opacity-90">Offer ends October 31st</span>
               </div>
             </div>
           </div>
@@ -185,7 +184,7 @@ export default function PromoBanner({ variant = 'homepage', onClose }: PromoBann
                     <span className="line-through ml-2 text-base opacity-75">£5.00</span>
                   </p>
                   <p className="text-xs opacity-90 mt-1">
-                    Get 100 lifetime generations • Only {100 - 47} spots left!
+                    Get 100 lifetime generations • Offer ends Oct 31st
                   </p>
                 </div>
               </div>
