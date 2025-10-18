@@ -35,6 +35,9 @@ interface AnalyticsData {
     totalRevenue: number
     conversionRate: string
     avgGenerationsPerUser: string
+    revenueFromPurchases?: number
+    revenueFromLegacySubscriptions?: number
+    averageRevenuePerProUser?: string
   }
   charts: {
     generationsByDay: { [key: string]: number }
@@ -211,8 +214,8 @@ export default function AdminDashboard() {
           <StatCard
             icon={<DollarSign className="w-6 h-6" />}
             label="Total Revenue"
-            value={`£${analytics.overview.totalRevenue}`}
-            subtext={`${analytics.overview.proUsers} × £5`}
+            value={`£${analytics.overview.totalRevenue.toFixed(2)}`}
+            subtext={`£${analytics.overview.averageRevenuePerProUser || '0'} avg per Pro user`}
             color="emerald"
           />
         </div>

@@ -90,8 +90,18 @@ export async function GET(request: NextRequest) {
     )
     const activeUsers = activeUserIds.size
 
-    // Revenue calculation (£5 per pro user)
-    const totalRevenue = proUsers * 5
+    // Revenue calculation - sum actual amounts paid from purchases table
+    // Note: amount_paid is in pence (500 = £5.00, 250 = £2.50)
+    const totalRevenue = purchases
+      .filter(p => p.status === 'completed')
+      .reduce((sum, p) => sum + (p.amount_paid || 0), 0) / 100 // Convert pence to pounds
+    
+    // Legacy subscriptions revenue (if any exist)
+    const legacyRevenue = subscriptions
+      .filter(s => s.status === 'active' && s.plan === 'pro')
+      .length * 5 // Assume £5 for legacy subscriptions
+    
+    const combinedRevenue = totalRevenue + legacyRevenue
 
     // User details with their stats
     const userDetails = users.map(user => {
@@ -188,17 +198,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       overview: {
         totalUsers,
-        freeUsers,
         proUsers,
+        freeUsers,
         totalGenerations,
         totalCVs,
         totalCoverLetters,
+        totalRevenue: combinedRevenue,
         newUsersLast7Days,
         newUsersLast30Days,
         activeUsers,
-        totalRevenue,
-        conversionRate: totalUsers > 0 ? ((proUsers / totalUsers) * 100).toFixed(2) : '0.00',
-        avgGenerationsPerUser: totalUsers > 0 ? (totalGenerations / totalUsers).toFixed(2) : '0.00'
+        conversionRate: totalUsers > 0 ? ((proUsers / totalUsers) * 100).toFixed(1) : '0',
+        avgGenerationsPerUser: totalUsers > 0 ? (totalGenerations / totalUsers).toFixed(1) : '0',
+        revenueFromPurchases: totalRevenue,
+        revenueFromLegacySubscriptions: legacyRevenue,
+        averageRevenuePerProUser: proUsers > 0 ? (combinedRevenue / proUsers).toFixed(2) : '0'
       },
       charts: {
         generationsByDay,
