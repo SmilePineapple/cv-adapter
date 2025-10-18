@@ -60,7 +60,6 @@ export async function POST(request: NextRequest) {
       metadata: {
         user_id: userId,
       },
-      allow_promotion_codes: true, // Allow users to enter coupon codes at checkout
     }
 
     // Option 1: Use Price ID (if you've created a Product in Stripe)
@@ -90,6 +89,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Apply default coupon if set (for automatic promotions like LAUNCH50)
+    // NOTE: If using discounts, we cannot also use allow_promotion_codes
     if (process.env.STRIPE_DEFAULT_COUPON) {
       try {
         const defaultCoupon = await stripe.coupons.retrieve(process.env.STRIPE_DEFAULT_COUPON)
@@ -99,11 +99,16 @@ export async function POST(request: NextRequest) {
               coupon: process.env.STRIPE_DEFAULT_COUPON,
             },
           ]
+          // When using discounts, don't set allow_promotion_codes
         }
       } catch (error) {
         console.error('Default coupon not valid:', error)
-        // Continue without coupon
+        // If coupon fails, allow manual entry instead
+        sessionParams.allow_promotion_codes = true
       }
+    } else {
+      // If no default coupon, allow users to enter their own
+      sessionParams.allow_promotion_codes = true
     }
 
     // Create checkout session
