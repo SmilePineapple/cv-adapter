@@ -16,7 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await request.json()
+    const { userId, couponCode } = await request.json()
 
     if (!userId) {
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
@@ -34,25 +34,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User profile not found. Please contact support.' }, { status: 404 })
     }
 
-    let customerId = null // We'll create a new customer each time for now
-
-    // Create Stripe customer if doesn't exist
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        metadata: {
-          supabase_user_id: userId,
-        },
-      })
-      
-      customerId = customer.id
-
-      // Note: We're not storing the customer ID for now since the column doesn't exist
-    }
+    // Create or get Stripe customer
+    const customer = await stripe.customers.create({
+      email: user.email,
+      metadata: {
+        supabase_user_id: userId,
+      },
+    })
 
     // Prepare checkout session parameters
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      customer: customerId,
+      customer: customer.id,
       payment_method_types: ['card'],
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment_success=true`,
@@ -89,8 +81,26 @@ export async function POST(request: NextRequest) {
       ]
     }
 
-    // Apply default coupon if set (for automatic promotions like LAUNCH50)
-    if (process.env.STRIPE_DEFAULT_COUPON) {
+    // Apply coupon code if provided
+    if (couponCode) {
+      try {
+        // Verify coupon exists and is valid
+        const coupon = await stripe.coupons.retrieve(couponCode)
+        if (coupon.valid) {
+          sessionParams.discounts = [
+            {
+              coupon: couponCode,
+            },
+          ]
+        }
+      } catch (error) {
+        console.error('Invalid coupon code:', couponCode)
+        // Don't fail checkout, just don't apply coupon
+      }
+    }
+
+    // Apply default coupon if set (for automatic promotions)
+    if (!couponCode && process.env.STRIPE_DEFAULT_COUPON) {
       try {
         const defaultCoupon = await stripe.coupons.retrieve(process.env.STRIPE_DEFAULT_COUPON)
         if (defaultCoupon.valid) {
@@ -101,15 +111,17 @@ export async function POST(request: NextRequest) {
           ]
         }
       } catch (error) {
-        console.error('Default coupon not valid:', error)
-        // Continue without coupon
+        console.error('Default coupon not valid')
       }
     }
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create(sessionParams)
 
-    return NextResponse.json({ sessionId: session.id })
+    return NextResponse.json({ 
+      sessionId: session.id,
+      url: session.url 
+    })
   } catch (error) {
     console.error('Stripe checkout error:', error)
     return NextResponse.json(

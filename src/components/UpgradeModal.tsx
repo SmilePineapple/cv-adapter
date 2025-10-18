@@ -114,8 +114,11 @@ export default function UpgradeModal({
                 <p className="text-gray-600">One-time payment. Lifetime access.</p>
               </div>
               <div className="text-right">
-                <div className="text-4xl font-bold text-purple-600">£5</div>
-                <div className="text-sm text-gray-500">Only £0.05 per generation</div>
+                <div className="flex items-center gap-2 justify-end">
+                  <div className="text-2xl font-bold text-gray-400 line-through">£5</div>
+                  <div className="text-4xl font-bold text-orange-600">£2.50</div>
+                </div>
+                <div className="text-sm text-orange-600 font-semibold">50% OFF - Only £0.025 per generation!</div>
               </div>
             </div>
 
@@ -191,14 +194,29 @@ export default function UpgradeModal({
             </div>
           </div>
 
+          {/* Launch Special - 50% Off Banner */}
+          <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg p-4 mb-6 text-center">
+            <p className="text-2xl font-bold mb-1">🎉 LAUNCH SPECIAL: 50% OFF!</p>
+            <p className="text-lg mb-2">
+              Get Pro for just <span className="font-bold text-3xl">£2.50</span>
+              <span className="line-through ml-2 opacity-75">£5.00</span>
+            </p>
+            <p className="text-sm opacity-90">
+              ⏰ Limited to first 100 customers • Offer ends in 7 days
+            </p>
+            <p className="text-xs mt-2 opacity-75">
+              Discount automatically applied at checkout
+            </p>
+          </div>
+
           {/* Urgency Message */}
           {trigger === 'limit_reached' && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <p className="text-center text-red-900 font-semibold">
-                ⏰ Limited Time: First 1,000 users get lifetime access at £5
+                ⚡ Don't miss out! Only a few spots left at 50% off
               </p>
               <p className="text-center text-sm text-red-700 mt-1">
-                Price increases to £10 after we reach 1,000 Pro users
+                Price returns to £5.00 after first 100 customers
               </p>
             </div>
           )}
