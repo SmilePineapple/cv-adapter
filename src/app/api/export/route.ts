@@ -237,8 +237,9 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
           })
         )
         
-        // Section content
-        const contentLines = section.content.split('\n')
+        // Section content - use helper to handle arrays/objects
+        const contentStr = getSectionContent(section.content)
+        const contentLines = contentStr.split('\n')
         contentLines.forEach(line => {
           if (line.trim()) {
             children.push(
