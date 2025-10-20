@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
+import { detectLanguage } from '@/lib/language-detection'
 
 // Force dynamic rendering - don't try to build this at build time
 export const dynamic = 'force-dynamic'
@@ -118,6 +119,11 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Detect language from extracted text
+    console.log('Detecting language...')
+    const languageResult = detectLanguage(extractedText)
+    console.log('Language detected:', languageResult.code, `(${languageResult.name})`, `confidence: ${languageResult.confidence}`)
+
     // Parse CV sections using simple text analysis
     console.log('Parsing CV sections...')
     const parsedSections = parseCV(extractedText)
@@ -139,7 +145,8 @@ export async function POST(request: NextRequest) {
         user_id: userId,
         original_text: extractedText,
         parsed_sections: parsedSections,
-        file_meta: fileMetadata
+        file_meta: fileMetadata,
+        detected_language: languageResult.code
       })
       .select()
       .single()
@@ -184,7 +191,12 @@ export async function POST(request: NextRequest) {
       cv_id: cvData.id,
       sections: parsedSections.sections,
       parse_success: parseSuccess,
-      file_meta: fileMetadata
+      file_meta: fileMetadata,
+      detected_language: {
+        code: languageResult.code,
+        name: languageResult.name,
+        confidence: languageResult.confidence
+      }
     })
 
   } catch (error) {

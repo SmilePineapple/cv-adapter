@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
+import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -146,10 +147,10 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Get CV data
+    // Get CV data with detected language
     const { data: cvData, error: cvError } = await supabase
       .from('cvs')
-      .select('original_text, parsed_sections')
+      .select('original_text, parsed_sections, detected_language')
       .eq('id', cv_id)
       .eq('user_id', user.id)
       .single()
@@ -159,24 +160,33 @@ export async function POST(request: NextRequest) {
     }
 
     const originalSections = cvData.parsed_sections as { sections: CVSection[] }
+    const detectedLanguage = cvData.detected_language || 'en'
+    
+    console.log('CV language:', detectedLanguage, `(${LANGUAGE_NAMES[detectedLanguage] || 'English'})`)
 
-    // Create OpenAI prompt
+    // Create OpenAI prompt with language awareness
     const prompt = createRewritePrompt(
       originalSections.sections,
       job_title,
       job_description,
       rewrite_style,
       tone,
-      custom_sections
+      custom_sections,
+      detectedLanguage
     )
 
-    // Call OpenAI API
+    // Call OpenAI API with language-aware system prompt
+    const languageName = LANGUAGE_NAMES[detectedLanguage] || 'English'
+    const systemPrompt = detectedLanguage === 'en' 
+      ? 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
+      : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
+          content: systemPrompt
         },
         {
           role: 'user',
@@ -211,7 +221,8 @@ export async function POST(request: NextRequest) {
         tone,
         output_sections: { sections: rewrittenSections },
         diff_meta: diffMeta,
-        ats_score: atsScore
+        ats_score: atsScore,
+        output_language: detectedLanguage
       })
       .select()
       .single()
@@ -277,7 +288,8 @@ function createRewritePrompt(
   jobDescription: string,
   rewriteStyle: string,
   tone: string,
-  customSections?: string[]
+  customSections?: string[],
+  languageCode: string = 'en'
 ): string {
   const sectionsText = sections.map(s => `${s.type.toUpperCase()}:\n${s.content}`).join('\n\n')
   
@@ -294,6 +306,10 @@ function createRewritePrompt(
     technical: 'Use precise, technical language appropriate for technical roles.'
   }
 
+  // Get language instruction
+  const languageInstruction = getLanguageInstruction(languageCode)
+  const languageName = LANGUAGE_NAMES[languageCode] || 'English'
+
   return `
 Job Title: ${jobTitle}
 
@@ -302,6 +318,10 @@ ${jobDescription}
 
 Current CV Sections:
 ${sectionsText}
+
+LANGUAGE REQUIREMENT:
+${languageInstruction}
+${languageCode !== 'en' ? `The CV is in ${languageName}. ALL rewritten content MUST be in ${languageName}. Do NOT translate to English or any other language.` : ''}
 
 CRITICAL INSTRUCTIONS:
 - PRESERVE ALL PERSONAL DETAILS: Keep name, contact info, interests, certifications, training, education exactly as provided
