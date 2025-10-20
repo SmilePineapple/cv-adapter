@@ -12,8 +12,10 @@ import {
   Crown,
   Zap,
   Star,
-  CreditCard
+  CreditCard,
+  Globe
 } from 'lucide-react'
+import { getCurrencyFromLocale, type CurrencyConfig, CURRENCIES } from '@/lib/currency'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -39,9 +41,13 @@ export default function SubscriptionPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isUpgrading, setIsUpgrading] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
+  const [userCurrency, setUserCurrency] = useState<CurrencyConfig>(CURRENCIES.GBP)
 
   useEffect(() => {
     checkAuth()
+    // Detect user's currency
+    const currency = getCurrencyFromLocale()
+    setUserCurrency(currency)
   }, [])
 
   const checkAuth = async () => {
@@ -111,6 +117,7 @@ export default function SubscriptionPage() {
         },
         body: JSON.stringify({
           userId: user.id,
+          currency: userCurrency.code,
         }),
       })
 
@@ -326,8 +333,13 @@ export default function SubscriptionPage() {
                     <Crown className="w-5 h-5 text-blue-600 mr-2" />
                     Pro
                   </h3>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">£5</div>
-                  <div className="text-gray-600">one-time payment</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">{userCurrency.displayAmount}</div>
+                  <div className="text-gray-600 flex items-center justify-center space-x-2">
+                    <span>one-time payment</span>
+                    <span title={`Price in ${userCurrency.name}`} className="cursor-help">
+                      <Globe className="w-4 h-4 text-gray-400" />
+                    </span>
+                  </div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
