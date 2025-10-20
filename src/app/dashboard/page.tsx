@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
 import PromoBanner from '@/components/PromoBanner'
+import { WelcomeModal } from '@/components/WelcomeModal'
 import { 
   Upload, 
   FileText, 
@@ -112,6 +113,7 @@ export default function DashboardPage() {
   const [cvRating, setCvRating] = useState<any>(null)
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   // Filter functions
   const filteredCvs = cvs.filter(cv => 
@@ -185,6 +187,10 @@ export default function DashboardPage() {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
+
+      // Check if user is admin
+      const adminUserId = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
+      setIsAdmin(user.id === adminUserId)
 
       // Fetch CVs
       const { data: cvsData, error: cvsError } = await supabase
@@ -471,6 +477,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <WelcomeModal />
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -482,19 +489,24 @@ export default function DashboardPage() {
                 <span className="text-xl font-bold text-gray-900">CV Adapter</span>
               </Link>
             </div>
-            
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                Welcome, {user?.user_metadata?.full_name || user?.email}
-              </span>
-              {user?.email === 'jakedalerourke@gmail.com' && (
-                <Link
-                  href="/admin"
-                  className="flex items-center space-x-2 text-red-600 hover:text-red-700"
-                >
-                  <Shield className="w-4 h-4" />
-                  <span>Admin</span>
-                </Link>
+            <div className="flex items-center space-x-6">
+              {isAdmin && (
+                <>
+                  <Link
+                    href="/admin"
+                    className="flex items-center space-x-2 text-purple-600 hover:text-purple-700"
+                  >
+                    <Shield className="w-4 h-4" />
+                    <span>Admin</span>
+                  </Link>
+                  <Link
+                    href="/admin/analytics"
+                    className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700"
+                  >
+                    <BarChart3 className="w-4 h-4" />
+                    <span>Analytics</span>
+                  </Link>
+                </>
               )}
               <Link
                 href="/subscription"
