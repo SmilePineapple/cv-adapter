@@ -42,6 +42,63 @@ const EXPORT_FORMATS = [
   { id: 'txt', name: 'Text', description: 'Plain text format' }
 ]
 
+// Helper function to safely get string content from section
+const getSectionContent = (content: any): string => {
+  if (!content) return ''
+  
+  // If content is already a string, return it
+  if (typeof content === 'string') {
+    return content
+  }
+  
+  // If content is an array (like experience), format it
+  if (Array.isArray(content)) {
+    return content.map((item) => {
+      // Handle different object structures
+      if (typeof item === 'string') {
+        return item
+      }
+      if (typeof item === 'object' && item !== null) {
+        // Try common field names for work experience
+        const title = item.job_title || item.jobTitle || item.title || item.position || ''
+        const company = item.company || item.employer || item.organization || ''
+        const description = item.responsibilities || item.description || item.details || item.content || ''
+        const duration = item.duration || item.dates || item.period || ''
+        
+        if (title || company) {
+          let result = ''
+          if (title && company) {
+            result += `${title} | ${company}`
+          } else {
+            result += title || company
+          }
+          if (duration) {
+            result += ` (${duration})`
+          }
+          if (description) {
+            result += `\n${description}`
+          }
+          return result
+        }
+        
+        // Fallback: try to extract any meaningful text
+        const values = Object.values(item).filter(v => typeof v === 'string' && v.trim())
+        return values.join('\n')
+      }
+      return ''
+    }).filter(Boolean).join('\n\n')
+  }
+  
+  // If content is an object, try to extract meaningful text
+  if (typeof content === 'object' && content !== null) {
+    const values = Object.values(content).filter(v => typeof v === 'string' && v.trim())
+    return values.join('\n')
+  }
+  
+  // Return as string
+  return String(content)
+}
+
 export default function DownloadPage() {
   const params = useParams()
   const generationId = params.id as string
@@ -249,21 +306,22 @@ export default function DownloadPage() {
     `
 
     sortedSections.forEach(section => {
+      const contentStr = getSectionContent(section.content)
       if (section.type === 'contact') {
         html += `
-          <div class="contact">${section.content}</div>
+          <div class="contact">${contentStr}</div>
         `
       } else if (section.type === 'name') {
         html += `
           <div class="header">
-            <div class="name">${section.content}</div>
+            <div class="name">${contentStr}</div>
           </div>
         `
       } else {
         html += `
           <div class="section">
             <div class="section-title">${section.type.replace('_', ' ').toUpperCase()}</div>
-            <div class="content">${section.content}</div>
+            <div class="content">${contentStr.replace(/\n/g, '<br>')}</div>
           </div>
         `
       }
