@@ -34,6 +34,7 @@ import {
   CheckCircle,
   Shield
 } from 'lucide-react'
+import { LanguageBadge } from '@/components/LanguageBadge'
 
 interface CV {
   id: string
@@ -44,6 +45,7 @@ interface CV {
   }
   created_at: string
   last_accessed_at: string
+  detected_language?: string
 }
 
 interface Generation {
@@ -55,6 +57,7 @@ interface Generation {
   created_at: string
   cv_id: string
   ats_score?: number
+  output_language?: string
   cv?: {
     file_meta: {
       name: string
@@ -68,6 +71,7 @@ interface CoverLetter {
   company_name: string
   created_at: string
   content?: string // Optional since we don't always fetch it
+  output_language?: string
 }
 
 interface RecentActivity {
@@ -849,9 +853,14 @@ export default function DashboardPage() {
                           <FileText className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-900">
-                            {cv.file_meta.name}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-medium text-gray-900">
+                              {cv.file_meta.name}
+                            </h3>
+                            {cv.detected_language && cv.detected_language !== 'en' && (
+                              <LanguageBadge languageCode={cv.detected_language} showIcon={false} />
+                            )}
+                          </div>
                           <p className="text-sm text-gray-500">
                             {formatFileSize(cv.file_meta.size)} • Uploaded {formatDate(cv.created_at)}
                           </p>
@@ -934,9 +943,14 @@ export default function DashboardPage() {
                           <Sparkles className="w-5 h-5 text-purple-600" />
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-900">
-                            {generation.job_title}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-medium text-gray-900">
+                              {generation.job_title}
+                            </h3>
+                            {generation.output_language && generation.output_language !== 'en' && (
+                              <LanguageBadge languageCode={generation.output_language} showIcon={false} />
+                            )}
+                          </div>
                           <p className="text-sm text-gray-500">
                             {generation.rewrite_style} • {generation.tone} • {formatDate(generation.created_at)}
                           </p>
@@ -1029,9 +1043,14 @@ export default function DashboardPage() {
                           <Mail className="w-5 h-5 text-green-600" />
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-900">
-                            {coverLetter.job_title} at {coverLetter.company_name}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-medium text-gray-900">
+                              {coverLetter.job_title} at {coverLetter.company_name}
+                            </h3>
+                            {coverLetter.output_language && coverLetter.output_language !== 'en' && (
+                              <LanguageBadge languageCode={coverLetter.output_language} showIcon={false} />
+                            )}
+                          </div>
                           <p className="text-sm text-gray-500">
                             Created {formatDate(coverLetter.created_at)}
                           </p>

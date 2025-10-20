@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
+import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Fetch the CV data
+    // Fetch the CV data with detected language
     const { data: cvData, error: cvError } = await supabase
       .from('cvs')
       .select('*')
@@ -58,6 +59,10 @@ export async function POST(request: NextRequest) {
     if (cvError || !cvData) {
       return NextResponse.json({ error: 'CV not found' }, { status: 404 })
     }
+
+    const detectedLanguage = cvData.detected_language || 'en'
+    const languageName = LANGUAGE_NAMES[detectedLanguage] || 'English'
+    console.log('Cover letter language:', detectedLanguage, `(${languageName})`)
 
     // Fetch CV sections for more detailed content
     const { data: sectionsData } = await supabase
@@ -112,7 +117,14 @@ export async function POST(request: NextRequest) {
       ? `Dear ${hiringManagerName},`
       : 'Dear Hiring Manager,'
 
+    // Get language instruction
+    const languageInstruction = getLanguageInstruction(detectedLanguage)
+
     const prompt = `You are an expert cover letter writer. Based STRICTLY on the CV content provided, write a personalized cover letter for the following job application.
+
+LANGUAGE REQUIREMENT:
+${languageInstruction}
+${detectedLanguage !== 'en' ? `The CV is in ${languageName}. You MUST write the ENTIRE cover letter in ${languageName}. Do NOT use English or any other language.` : ''}
 
 Job Details:
 - Position: ${jobTitle}
@@ -142,13 +154,17 @@ ${jobDescription ? 'Tailor the content specifically to the job requirements ment
 
 Write only the cover letter content, no additional commentary.`
 
-    // Generate cover letter with OpenAI
+    // Generate cover letter with OpenAI (language-aware)
+    const systemPrompt = detectedLanguage === 'en'
+      ? 'You are an expert cover letter writer who creates personalized, compelling cover letters based STRICTLY on the candidate\'s actual CV content. You NEVER invent or fabricate experiences, achievements, or statistics. You only use information explicitly stated in the CV provided. If the CV lacks specific experience, you focus on transferable skills and genuine enthusiasm for the role.'
+      : `You are an expert cover letter writer who creates personalized, compelling cover letters based STRICTLY on the candidate's actual CV content. You NEVER invent or fabricate experiences, achievements, or statistics. You only use information explicitly stated in the CV provided. If the CV lacks specific experience, you focus on transferable skills and genuine enthusiasm for the role. CRITICAL: You MUST write the entire cover letter in ${languageName}. Do NOT use English or translate to English.`
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are an expert cover letter writer who creates personalized, compelling cover letters based STRICTLY on the candidate\'s actual CV content. You NEVER invent or fabricate experiences, achievements, or statistics. You only use information explicitly stated in the CV provided. If the CV lacks specific experience, you focus on transferable skills and genuine enthusiasm for the role.'
+          content: systemPrompt
         },
         {
           role: 'user',
@@ -175,7 +191,8 @@ Write only the cover letter content, no additional commentary.`
         job_title: jobTitle,
         length,
         tone,
-        hiring_manager_name: hiringManagerName || null
+        hiring_manager_name: hiringManagerName || null,
+        output_language: detectedLanguage
       })
       .select()
       .single()
