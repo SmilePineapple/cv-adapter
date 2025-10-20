@@ -1,5 +1,18 @@
 import Link from 'next/link'
 import { ArrowLeft, Shield, Lock, Eye, FileText } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | CV Buddy',
+  description: 'Learn how CV Buddy protects your data and privacy. We are committed to keeping your personal information secure.',
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com/privacy'
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function PrivacyPolicyPage() {
   return (
