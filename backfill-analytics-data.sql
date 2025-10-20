@@ -70,8 +70,9 @@ SELECT
   'payment_completed' as event_type,
   jsonb_build_object(
     'amount_paid', amount_paid,
+    'currency', currency,
     'status', status,
-    'stripe_session_id', stripe_session_id
+    'payment_intent_id', payment_intent_id
   ) as event_data,
   purchased_at as created_at
 FROM purchases
