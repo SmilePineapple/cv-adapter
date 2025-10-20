@@ -1,0 +1,25 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow private/dynamic pages
+Disallow: /dashboard
+Disallow: /edit/
+Disallow: /review/
+Disallow: /download/
+Disallow: /generate/
+Disallow: /admin/
+Disallow: /api/
+
+# Allow public pages
+Allow: /auth/login
+Allow: /auth/signup
+Allow: /upload
+Allow: /subscription
+Allow: /cover-letter
+Allow: /privacy
+Allow: /terms
+Allow: /contact
+
+# Sitemap
+Sitemap: https://www.mycvbuddy.com/sitemap.xml

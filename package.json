@@ -23,6 +23,7 @@
     "@types/diff-match-patch": "^1.0.36",
     "@types/multer": "^2.0.0",
     "@types/pdf-parse": "^1.1.5",
+    "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "diff-match-patch": "^1.0.5",
     "docx": "^9.5.1",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
