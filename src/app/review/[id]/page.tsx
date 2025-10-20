@@ -131,13 +131,13 @@ export default function ReviewPage() {
       setEditedSections(mergedSections)
       
       // Fetch usage info to show upgrade prompt if needed
-      const { data: usage } = await supabase
+      const { data: usage, error: usageError } = await supabase
         .from('usage_tracking')
         .select('lifetime_generation_count, max_lifetime_generations, plan_type')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
       
-      if (usage) {
+      if (usage && !usageError) {
         setUsageInfo(usage)
         
         // Show upgrade modal after first generation for free users
@@ -436,11 +436,14 @@ export default function ReviewPage() {
                     </div>
                   )}
 
-                  {hasChanges && !isEditing && (
+                  {hasChanges && originalSection && (
                     <div className="mt-4 p-4 bg-yellow-50 rounded-lg">
                       <h4 className="text-sm font-medium text-yellow-800 mb-2">Changes Made</h4>
                       <div className="text-sm text-yellow-700">
-                        {createDiff(originalSection?.content || '', section.content)}
+                        {createDiff(
+                          formatSectionContent(originalSection?.content || ''), 
+                          formatSectionContent(section.content)
+                        )}
                       </div>
                     </div>
                   )}
