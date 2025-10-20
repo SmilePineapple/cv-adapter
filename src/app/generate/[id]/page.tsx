@@ -15,8 +15,12 @@ import {
   Loader2,
   Plus,
   X,
-  Sparkles
+  Sparkles,
+  Globe
 } from 'lucide-react'
+import { LanguageSelector } from '@/components/LanguageSelector'
+import { LanguageBadge } from '@/components/LanguageBadge'
+import { LANGUAGE_NAMES } from '@/lib/language-detection'
 
 export default function GeneratePage() {
   const params = useParams()
@@ -39,6 +43,8 @@ export default function GeneratePage() {
   const [newSectionName, setNewSectionName] = useState('')
   const [showAddSection, setShowAddSection] = useState(false)
   const [usageData, setUsageData] = useState<{generation_count: number, max_generations: number, is_pro: boolean} | null>(null)
+  const [outputLanguage, setOutputLanguage] = useState<string>('en')
+  const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
 
   useEffect(() => {
     fetchCVData()
@@ -103,8 +109,7 @@ export default function GeneratePage() {
     }
   }
 
-  const fetchCVData = async (targetCvId?: string) => {
-    const idToFetch = targetCvId || cvId
+  const fetchCVData = async (id?: string) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -114,8 +119,8 @@ export default function GeneratePage() {
 
       const { data, error } = await supabase
         .from('cvs')
-        .select('id, file_meta, parsed_sections, created_at')
-        .eq('id', idToFetch)
+        .select('*')
+        .eq('id', id || cvId)
         .eq('user_id', user.id)
         .single()
 
@@ -126,10 +131,15 @@ export default function GeneratePage() {
       }
 
       setCvData(data)
+      
+      // Set detected language if available
+      if (data.detected_language) {
+        setDetectedLanguage(data.detected_language)
+        setOutputLanguage(data.detected_language) // Default to detected language
+      }
     } catch (error) {
       console.error('Error fetching CV:', error)
       toast.error('Failed to load CV')
-      router.push('/dashboard')
     } finally {
       setIsLoading(false)
     }
@@ -201,6 +211,7 @@ export default function GeneratePage() {
           rewrite_style: rewriteStyle,
           tone: tone,
           custom_sections: customSections,
+          output_language: outputLanguage, // Include language preference
         }),
       })
 
@@ -301,8 +312,13 @@ export default function GeneratePage() {
                   <p className="font-medium text-gray-900">
                     Selected CV: {cvData?.file_meta?.name}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
                     {cvData?.parsed_sections?.sections?.length || 0} sections • Uploaded {cvData?.created_at ? new Date(cvData.created_at).toLocaleDateString() : ''}
+                    {detectedLanguage && detectedLanguage !== 'en' && (
+                      <span className="inline-flex items-center gap-1">
+                        • <LanguageBadge languageCode={detectedLanguage} />
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -325,6 +341,30 @@ export default function GeneratePage() {
               )}
             </div>
           </div>
+
+          {/* Language Selector */}
+          {detectedLanguage && (
+            <div className="bg-purple-50 rounded-lg p-4 mb-8">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3">
+                  <Globe className="w-6 h-6 text-purple-600 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900 mb-1">
+                      Output Language
+                    </p>
+                    <p className="text-sm text-gray-600 mb-3">
+                      We detected your CV is in <strong>{LANGUAGE_NAMES[detectedLanguage as keyof typeof LANGUAGE_NAMES] || detectedLanguage}</strong>. 
+                      The AI will generate content in the same language, or you can override it below.
+                    </p>
+                    <LanguageSelector 
+                      currentLanguage={outputLanguage}
+                      onLanguageChange={setOutputLanguage}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
 
           <form onSubmit={handleGenerate} className="space-y-6">
