@@ -16,7 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await request.json()
+    const { userId, currency = 'gbp' } = await request.json()
 
     if (!userId) {
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
@@ -73,15 +73,27 @@ export async function POST(request: NextRequest) {
     } 
     // Option 2: Fallback to inline pricing (current method)
     else {
+      // Currency-specific pricing
+      const currencyPricing: Record<string, number> = {
+        gbp: 500,    // £5.00
+        usd: 699,    // $6.99
+        eur: 599,    // €5.99
+        cad: 899,    // C$8.99
+        aud: 999,    // A$9.99
+        inr: 49900,  // ₹499
+      }
+
+      const amount = currencyPricing[currency.toLowerCase()] || 500
+
       sessionParams.line_items = [
         {
           price_data: {
-            currency: 'gbp',
+            currency: currency.toLowerCase(),
             product_data: {
               name: 'CV Adapter Pro - 100 Lifetime Generations',
               description: '100 AI-powered CV generations that never expire',
             },
-            unit_amount: 500, // £5.00 in pence
+            unit_amount: amount,
           },
           quantity: 1,
         },
