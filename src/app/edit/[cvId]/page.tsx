@@ -844,21 +844,21 @@ export default function CVEditorPage() {
                 {showExportOptions && (
                   <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[120px]">
                     <button
-                      onClick={() => handleExport('docx')}
+                      onClick={() => handleDownload('docx')}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       DOCX
                     </button>
                     <button
-                      onClick={() => handleExport('pdf')}
+                      onClick={() => handleDownload('pdf')}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       PDF
                     </button>
                     <button
-                      onClick={() => handleExport('txt')}
+                      onClick={() => handleDownload('txt')}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center"
                     >
                       <FileText className="w-4 h-4 mr-2" />
