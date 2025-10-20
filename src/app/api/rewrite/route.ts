@@ -3,6 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
+import { trackCVGeneration } from '@/lib/analytics'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -230,6 +231,19 @@ export async function POST(request: NextRequest) {
     if (genError) {
       console.error('Generation save error:', genError)
       return NextResponse.json({ error: 'Failed to save generation' }, { status: 500 })
+    }
+
+    // Track analytics event
+    try {
+      await trackCVGeneration({
+        jobTitle: job_title,
+        outputLanguage: detectedLanguage,
+        rewriteStyle: rewrite_style,
+        tone
+      })
+    } catch (analyticsError) {
+      console.error('Analytics tracking failed:', analyticsError)
+      // Don't fail the generation if analytics fails
     }
 
     // Update usage tracking - increment lifetime count

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
+import { trackPaymentCompleted } from '@/lib/analytics'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -73,6 +74,14 @@ export async function POST(request: NextRequest) {
         if (purchaseError) {
           console.error('[Webhook] Purchase record error:', purchaseError)
           throw purchaseError
+        }
+
+        // Track analytics event
+        try {
+          await trackPaymentCompleted(session.amount_total || 0, 'pro')
+        } catch (analyticsError) {
+          console.error('[Webhook] Analytics tracking failed:', analyticsError)
+          // Don't fail the webhook if analytics fails
         }
 
         // Upgrade user to pro (100 lifetime generations)

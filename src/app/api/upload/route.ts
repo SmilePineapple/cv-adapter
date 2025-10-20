@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
 import { detectLanguage } from '@/lib/language-detection'
+import { trackCVUpload } from '@/lib/analytics'
 
 // Force dynamic rendering - don't try to build this at build time
 export const dynamic = 'force-dynamic'
@@ -158,6 +159,14 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
     console.log('CV saved successfully:', cvData.id)
+
+    // Track analytics event
+    try {
+      await trackCVUpload(languageResult.code, file.name)
+    } catch (analyticsError) {
+      console.error('Analytics tracking failed:', analyticsError)
+      // Don't fail the upload if analytics fails
+    }
 
     // Create CV sections for the editor
     console.log('Creating CV sections for editor...')
