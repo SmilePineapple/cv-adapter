@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: GenerationRequest = await request.json()
-    const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections } = body
+    const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language } = body
 
     // Validate request
     if (!cv_id || !job_title || !job_description) {

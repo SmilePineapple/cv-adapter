@@ -225,6 +225,7 @@ export interface GenerationRequest {
   rewrite_style: RewriteStyle
   tone: ToneType
   custom_sections?: string[]
+  output_language?: string
 }
 
 export interface GenerationResponse {
