@@ -9,6 +9,7 @@ import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
 import PromoBanner from '@/components/PromoBanner'
 import { WelcomeModal } from '@/components/WelcomeModal'
+import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import { 
   Upload, 
   FileText, 
@@ -463,8 +464,35 @@ export default function DashboardPage() {
   }
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-white border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center space-x-4">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">CV</span>
+                </div>
+                <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-64 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <DashboardStatsSkeleton />
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-6">
+              <CardSkeleton />
+              <CardSkeleton />
+            </div>
+            <div className="space-y-6">
+              <CardSkeleton />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
