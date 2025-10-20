@@ -21,6 +21,7 @@ import {
 import { LanguageSelector } from '@/components/LanguageSelector'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import { LANGUAGE_NAMES } from '@/lib/language-detection'
+import { LoadingProgress } from '@/components/LoadingProgress'
 
 export default function GeneratePage() {
   const params = useParams()
@@ -574,16 +575,28 @@ export default function GeneratePage() {
               
               {/* Progress Bar for Generation */}
               {isGenerating && (
-                <div className="mt-4 space-y-2">
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>{generateStep}</span>
-                    <span>{generateProgress}%</span>
+                <div className="mt-6 p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                    <p className="text-sm font-medium text-gray-900">{generateStep}</p>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
-                      style={{ width: `${generateProgress}%` }}
-                    ></div>
+                  <div className="space-y-2">
+                    <div className="w-full bg-white rounded-full h-3 overflow-hidden shadow-inner">
+                      <div 
+                        className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 h-3 rounded-full transition-all duration-500 ease-out relative"
+                        style={{ width: `${generateProgress}%` }}
+                      >
+                        <div className="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-600">
+                      <span>Generating your tailored CV...</span>
+                      <span className="font-semibold">{generateProgress}%</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center space-x-2 text-xs text-gray-500">
+                    <Sparkles className="w-4 h-4" />
+                    <span>AI is analyzing and optimizing your content</span>
                   </div>
                 </div>
               )}
