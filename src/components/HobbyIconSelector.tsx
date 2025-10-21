@@ -45,14 +45,14 @@ export default function HobbyIconSelector({ onSelect, initialHobbies = [] }: Hob
     const isSelected = selectedHobbies.some(h => h.name === hobby.name)
     
     if (isSelected) {
-      setSelectedHobbies(selectedHobbies.filter(h => h.name !== hobby.name))
+      const newHobbies = selectedHobbies.filter(h => h.name !== hobby.name)
+      setSelectedHobbies(newHobbies)
+      onSelect(newHobbies)
     } else {
-      setSelectedHobbies([...selectedHobbies, { name: hobby.name, icon: hobby.icon }])
+      const newHobbies = [...selectedHobbies, { name: hobby.name, icon: hobby.icon }]
+      setSelectedHobbies(newHobbies)
+      onSelect(newHobbies)
     }
-  }
-
-  const handleSave = () => {
-    onSelect(selectedHobbies)
   }
 
   return (
@@ -124,26 +124,23 @@ export default function HobbyIconSelector({ onSelect, initialHobbies = [] }: Hob
         })}
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-3">
-        <button
-          onClick={handleSave}
-          className="flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all"
-        >
-          Save Hobbies ({selectedHobbies.length})
-        </button>
-        <button
-          onClick={() => setSelectedHobbies([])}
-          className="px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
-        >
-          Clear All
-        </button>
-      </div>
-
       {/* Helper Text */}
       <p className="text-xs text-gray-500 mt-3 text-center">
         💡 Tip: Select hobbies that showcase your personality and interests to recruiters
       </p>
+      
+      {/* Clear All Button */}
+      {selectedHobbies.length > 0 && (
+        <button
+          onClick={() => {
+            setSelectedHobbies([])
+            onSelect([])
+          }}
+          className="w-full mt-3 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50"
+        >
+          Clear All
+        </button>
+      )}
     </div>
   )
 }
