@@ -16,7 +16,12 @@ import {
   CheckCircle,
   AlertCircle,
   Save,
-  RotateCcw
+  RotateCcw,
+  Sparkles,
+  TrendingUp,
+  Lightbulb,
+  Target,
+  Loader2
 } from 'lucide-react'
 // Simple diff implementation without external library
 
@@ -53,6 +58,16 @@ interface GenerationData {
   diff_meta: DiffMetadata
   cv_id: string
   created_at: string
+  ats_score?: number
+}
+
+interface AIReview {
+  overall_assessment: string
+  strengths: string[]
+  improvements: string[]
+  missing_sections: string[]
+  keywords_to_add: string[]
+  formatting_tips: string[]
 }
 
 export default function ReviewPage() {
@@ -69,6 +84,9 @@ export default function ReviewPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [usageInfo, setUsageInfo] = useState<{ lifetime_generation_count: number, max_lifetime_generations: number, plan_type: string } | null>(null)
+  const [aiReview, setAiReview] = useState<AIReview | null>(null)
+  const [isReviewing, setIsReviewing] = useState(false)
+  const [showReview, setShowReview] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
@@ -85,7 +103,7 @@ export default function ReviewPage() {
       // Fetch generation data
       const { data: generation, error: genError } = await supabase
         .from('generations')
-        .select('*')
+        .select('*, ats_score')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
@@ -238,6 +256,37 @@ export default function ReviewPage() {
     }
   }
 
+  const handleAIReview = async () => {
+    setIsReviewing(true)
+    try {
+      const response = await fetch('/api/review-cv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          generation_id: generationId
+        }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to review CV')
+        return
+      }
+
+      setAiReview(result.review)
+      setShowReview(true)
+      toast.success('AI review complete!')
+    } catch (error) {
+      console.error('Review error:', error)
+      toast.error('Failed to review CV')
+    } finally {
+      setIsReviewing(false)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -293,28 +342,48 @@ export default function ReviewPage() {
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              {generationData.ats_score && (
+                <div className={`flex items-center px-3 py-2 rounded-lg font-semibold text-sm ${
+                  generationData.ats_score >= 80 ? 'bg-green-100 text-green-800' :
+                  generationData.ats_score >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  <TrendingUp className="w-4 h-4 mr-1.5" />
+                  ATS: {generationData.ats_score}%
+                </div>
+              )}
+              <button
+                onClick={handleAIReview}
+                disabled={isReviewing}
+                className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50"
+              >
+                {isReviewing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Reviewing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    AI Review
+                  </>
+                )}
+              </button>
               <button
                 onClick={handleSaveChanges}
                 disabled={isSaving}
                 className="flex items-center px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
               >
                 <Save className="w-4 h-4 mr-2" />
-                {isSaving ? 'Saving...' : 'Save Changes'}
+                {isSaving ? 'Saving...' : 'Save'}
               </button>
-              <Link
-                href={`/cover-letter/${generationId}`}
-                className="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Generate Cover Letter
-              </Link>
               <button
                 onClick={handleDownload}
                 className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Download CV
+                Download
               </button>
             </div>
           </div>
@@ -349,6 +418,116 @@ export default function ReviewPage() {
             </div>
           )}
         </div>
+
+        {/* AI Review Panel */}
+        {showReview && aiReview && (
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-lg p-6 mb-8 border-2 border-purple-200">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">AI Expert Review</h2>
+                  <p className="text-sm text-gray-600">Personalized feedback for your CV</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowReview(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Overall Assessment */}
+            <div className="bg-white rounded-lg p-5 mb-4 shadow-sm">
+              <div className="flex items-start space-x-3">
+                <Target className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Overall Assessment</h3>
+                  <p className="text-gray-700">{aiReview.overall_assessment}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              {/* Strengths */}
+              <div className="bg-white rounded-lg p-5 shadow-sm">
+                <div className="flex items-center space-x-2 mb-3">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <h3 className="font-semibold text-gray-900">Strengths</h3>
+                </div>
+                <ul className="space-y-2">
+                  {aiReview.strengths.map((strength, index) => (
+                    <li key={index} className="flex items-start space-x-2 text-sm">
+                      <span className="text-green-600 flex-shrink-0">✓</span>
+                      <span className="text-gray-700">{strength}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Areas for Improvement */}
+              <div className="bg-white rounded-lg p-5 shadow-sm">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Lightbulb className="w-5 h-5 text-orange-600" />
+                  <h3 className="font-semibold text-gray-900">Areas for Improvement</h3>
+                </div>
+                <ul className="space-y-2">
+                  {aiReview.improvements.map((improvement, index) => (
+                    <li key={index} className="flex items-start space-x-2 text-sm">
+                      <span className="text-orange-600 flex-shrink-0">→</span>
+                      <span className="text-gray-700">{improvement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Missing Sections */}
+              {aiReview.missing_sections.length > 0 && (
+                <div className="bg-white rounded-lg p-4 shadow-sm">
+                  <h4 className="font-semibold text-gray-900 text-sm mb-2">Missing Sections</h4>
+                  <ul className="space-y-1">
+                    {aiReview.missing_sections.map((section, index) => (
+                      <li key={index} className="text-xs text-gray-600">• {section}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Keywords to Add */}
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <h4 className="font-semibold text-gray-900 text-sm mb-2">Keywords to Emphasize</h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {aiReview.keywords_to_add.map((keyword, index) => (
+                    <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Formatting Tips */}
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <h4 className="font-semibold text-gray-900 text-sm mb-2">Formatting Tips</h4>
+                <ul className="space-y-1">
+                  {aiReview.formatting_tips.map((tip, index) => (
+                    <li key={index} className="text-xs text-gray-600">• {tip}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 bg-purple-100 rounded-lg">
+              <p className="text-xs text-purple-800 text-center">
+                💡 This review doesn't count towards your generation limit - it's completely free!
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Section-by-Section Review */}
         <div className="space-y-6">
