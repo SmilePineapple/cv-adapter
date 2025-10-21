@@ -660,9 +660,10 @@ export default function DownloadPage() {
               <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
             </div>
             <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-              <TemplatePreview
-                html={previewHtml}
-                template={selectedTemplate}
+              <iframe
+                srcDoc={previewHtml}
+                className="w-full h-[800px] border-0"
+                title="CV Preview"
               />
             </div>
           </div>
@@ -885,42 +886,10 @@ export default function DownloadPage() {
                 </div>
               )}
             </div>
-            
-            {/* Back to Dashboard Button */}
-            <div className="mt-4">
-              <Link
-                href="/dashboard"
-                className="w-full border-2 border-gray-300 text-gray-700 py-4 px-6 rounded-lg font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors flex items-center justify-center"
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Back to Dashboard
-              </Link>
-            </div>
-          </div>
-          
-          {/* Preview - Right Side (Centered) */}
-          <div className="lg:col-span-8">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center space-x-2 mb-4">
-                <Eye className="w-5 h-5 text-gray-400" />
-                <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
-                <span className="text-sm text-gray-600">
-                  ({TEMPLATES.find(t => t.id === selectedTemplate)?.name} Template)
-                </span>
-              </div>
-              
-              <div className="border rounded-lg overflow-hidden bg-white shadow-sm">
-                <iframe
-                  srcDoc={previewHtml}
-                  className="w-full h-[800px] border-0"
-                  title="CV Preview"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      
+
       {/* Template Preview Modal */}
       {previewTemplate && (
         <TemplatePreview
