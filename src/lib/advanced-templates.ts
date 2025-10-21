@@ -99,6 +99,11 @@ export const advancedTemplateStyles = {
       page-break-inside: avoid;
     }
     
+    .left-column .section:first-child,
+    .right-column .section:first-child {
+      margin-top: 10px;
+    }
+    
     .section-header {
       display: flex;
       align-items: center;
@@ -287,6 +292,10 @@ export const advancedTemplateStyles = {
     .section {
       margin-bottom: 20px;
       page-break-inside: avoid;
+    }
+    
+    .main-content .section:first-child {
+      margin-top: 15px;
     }
     
     .section-header {
@@ -505,7 +514,19 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
   const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
   const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
   
-  const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
+  // Check if hobbies section has custom icons (array of {name, icon} objects)
+  let hobbies = []
+  if (hobbiesSection) {
+    const content = hobbiesSection.content
+    // If content is already an array of {name, icon} objects, use it
+    if (Array.isArray(content) && content.length > 0 && content[0].icon) {
+      hobbies = content
+    } else {
+      // Otherwise, auto-detect from text
+      hobbies = detectHobbies(getSectionContent(content))
+    }
+  }
+  
   const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
   
   // Extract contact details properly
@@ -642,7 +663,19 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
   const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
   const certificationsSection = sections.find(s => s.type === 'certifications' || s.type === 'licenses')
   
-  const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
+  // Check if hobbies section has custom icons (array of {name, icon} objects)
+  let hobbies = []
+  if (hobbiesSection) {
+    const content = hobbiesSection.content
+    // If content is already an array of {name, icon} objects, use it
+    if (Array.isArray(content) && content.length > 0 && content[0].icon) {
+      hobbies = content
+    } else {
+      // Otherwise, auto-detect from text
+      hobbies = detectHobbies(getSectionContent(content))
+    }
+  }
+  
   const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
   
   // Extract contact details properly
