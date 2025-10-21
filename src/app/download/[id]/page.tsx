@@ -562,7 +562,7 @@ export default function DownloadPage() {
           </p>
         </div>
 
-        {/* Export Format Selection - Moved to Top */}
+        {/* Export Format Selection */}
         <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -591,12 +591,88 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* Template Selection - Left Side */}
-          <div className="lg:col-span-4">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
-              <div className="space-y-3">
+        {/* Action Buttons */}
+        <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <button
+              onClick={handleExport}
+              disabled={isExporting}
+              className="bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {isExporting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Download
+                </>
+              )}
+            </button>
+            
+            <Link
+              href="/dashboard"
+              className="border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Dashboard
+            </Link>
+            
+            {!showReview && (
+              <button
+                onClick={handleAIReview}
+                disabled={isReviewing}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 flex items-center justify-center"
+              >
+                {isReviewing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Reviewing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    AI Review
+                  </>
+                )}
+              </button>
+            )}
+            
+            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && (
+              <Link
+                href={`/hobby-selector/${generationId}`}
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all flex items-center justify-center"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Hobby Icons
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* PDF Preview - Full Width */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center space-x-2 mb-4">
+              <Eye className="w-5 h-5 text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
+            </div>
+            <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+              <TemplatePreview
+                html={previewHtml}
+                template={selectedTemplate}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Template Selection - Horizontal Scroll */}
+        <div className="max-w-4xl mx-auto mb-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
+            <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {TEMPLATES.map((template) => (
                   <label key={template.id} className="flex items-center cursor-pointer">
                     <input
@@ -673,24 +749,30 @@ export default function DownloadPage() {
             )}
 
             {/* AI Review Section */}
-            <div className="mt-6">
+            <div className="mt-6 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-purple-200 shadow-lg">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">AI Expert Review</h3>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <Sparkles className="w-6 h-6 text-purple-600" />
+                    AI Expert Review
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">Get professional feedback on your CV before downloading</p>
+                </div>
                 {!showReview && (
                   <button
                     onClick={handleAIReview}
                     disabled={isReviewing}
-                    className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50 text-sm"
+                    className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-md disabled:opacity-50 font-semibold"
                   >
                     {isReviewing ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Reviewing...
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Analyzing...
                       </>
                     ) : (
                       <>
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Get AI Review
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        Get Expert Review
                       </>
                     )}
                   </button>

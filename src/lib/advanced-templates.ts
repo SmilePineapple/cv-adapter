@@ -494,15 +494,55 @@ function escapeHtml(text: string): string {
 function getSectionContent(content: any): string {
   if (!content) return ''
   if (typeof content === 'string') return content
+  
   if (Array.isArray(content)) {
     return content.map(item => {
       if (typeof item === 'string') return item
-      if (typeof item === 'object') {
-        return Object.values(item).filter(v => typeof v === 'string').join('\n')
+      
+      if (typeof item === 'object' && item !== null) {
+        // Handle work experience objects with proper formatting
+        const parts = []
+        
+        // Title line with company and dates
+        const title = item.title || item.job_title || item.position || ''
+        const company = item.company || item.employer || ''
+        const dates = item.dates || item.duration || item.period || ''
+        
+        if (title || company) {
+          let titleLine = ''
+          if (title && company && dates) {
+            titleLine = `${title} | ${company} | ${dates}`
+          } else if (title && company) {
+            titleLine = `${title} | ${company}`
+          } else {
+            titleLine = title || company
+          }
+          parts.push(titleLine)
+        }
+        
+        // Bullets/responsibilities
+        if (item.bullets && Array.isArray(item.bullets)) {
+          item.bullets.forEach((bullet: string) => {
+            parts.push(`• ${bullet}`)
+          })
+        } else if (item.responsibilities) {
+          if (typeof item.responsibilities === 'string') {
+            parts.push(item.responsibilities)
+          } else if (Array.isArray(item.responsibilities)) {
+            item.responsibilities.forEach((resp: string) => {
+              parts.push(`• ${resp}`)
+            })
+          }
+        } else if (item.description) {
+          parts.push(item.description)
+        }
+        
+        return parts.join('\n')
       }
       return ''
     }).join('\n\n')
   }
+  
   if (typeof content === 'object') {
     return Object.values(content).filter(v => typeof v === 'string').join('\n')
   }
