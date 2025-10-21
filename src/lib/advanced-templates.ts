@@ -458,3 +458,271 @@ export function parseSkills(text: string): string[] {
   
   return skills.slice(0, 15) // Max 15 skills
 }
+
+/**
+ * Helper to escape HTML
+ */
+function escapeHtml(text: string): string {
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }
+  return text.replace(/[&<>"']/g, (m) => map[m])
+}
+
+/**
+ * Helper to get section content as string
+ */
+function getSectionContent(content: any): string {
+  if (!content) return ''
+  if (typeof content === 'string') return content
+  if (Array.isArray(content)) {
+    return content.map(item => {
+      if (typeof item === 'string') return item
+      if (typeof item === 'object') {
+        return Object.values(item).filter(v => typeof v === 'string').join('\n')
+      }
+      return ''
+    }).join('\n\n')
+  }
+  if (typeof content === 'object') {
+    return Object.values(content).filter(v => typeof v === 'string').join('\n')
+  }
+  return String(content)
+}
+
+/**
+ * Generate HTML for Creative Modern template
+ */
+export function generateCreativeModernHTML(sections: any[], contactInfo: any): string {
+  const nameSection = sections.find(s => s.type === 'name')
+  const profileSection = sections.find(s => s.type === 'profile' || s.type === 'summary')
+  const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+  const educationSection = sections.find(s => s.type === 'education')
+  const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
+  const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
+  
+  const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
+  const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>CV</title>
+        <style>${advancedTemplateStyles.creative_modern}</style>
+      </head>
+      <body>
+        <!-- Decorative Background -->
+        <div class="decorative-bg">
+          <div class="circle circle-1"></div>
+          <div class="circle circle-2"></div>
+          <div class="circle circle-3"></div>
+          <div class="circle circle-4"></div>
+        </div>
+        
+        <!-- Header -->
+        <div class="header">
+          <div class="name">${nameSection ? escapeHtml(getSectionContent(nameSection.content)) : 'Name'}</div>
+          <div class="contact-info">
+            ${contactInfo ? Object.entries(contactInfo).map(([key, value]) => `
+              <div class="contact-item">
+                <strong>${escapeHtml(key)}:</strong> ${escapeHtml(String(value))}
+              </div>
+            `).join('') : ''}
+          </div>
+        </div>
+        
+        <!-- Two Column Content -->
+        <div class="content-wrapper">
+          <!-- Left Column -->
+          <div class="left-column">
+            ${profileSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.profile}
+                  Profile
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${educationSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.education}
+                  Education
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${skills.length > 0 ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.skills}
+                  Skills
+                </div>
+                <div class="skills-list">
+                  ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${hobbies.length > 0 ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.hobbies}
+                  Hobbies
+                </div>
+                <div class="hobbies-grid">
+                  ${hobbies.map(hobby => `
+                    <div class="hobby-item">
+                      ${hobby.icon}
+                      <span class="hobby-label">${escapeHtml(hobby.name)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          
+          <!-- Right Column -->
+          <div class="right-column">
+            ${experienceSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.experience}
+                  Work Experience
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${sections.filter(s => 
+              !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+            ).map(section => `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons[section.type] || sectionIcons.additional_information}
+                  ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+}
+
+/**
+ * Generate HTML for Professional Columns template
+ */
+export function generateProfessionalColumnsHTML(sections: any[], contactInfo: any): string {
+  const nameSection = sections.find(s => s.type === 'name')
+  const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+  const educationSection = sections.find(s => s.type === 'education')
+  const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
+  const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
+  
+  const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
+  const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>CV</title>
+        <style>${advancedTemplateStyles.professional_columns}</style>
+      </head>
+      <body>
+        <!-- Header -->
+        <div class="header">
+          <div class="name">${nameSection ? escapeHtml(getSectionContent(nameSection.content)) : 'Name'}</div>
+          <div class="contact-info">
+            ${contactInfo ? Object.entries(contactInfo).map(([key, value]) => `
+              <span>${escapeHtml(String(value))}</span>
+            `).join(' • ') : ''}
+          </div>
+        </div>
+        
+        <!-- Sidebar + Main Content -->
+        <div class="content-wrapper">
+          <!-- Sidebar -->
+          <div class="sidebar">
+            ${skills.length > 0 ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.skills}
+                  Skills
+                </div>
+                <div class="skills-list">
+                  ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${hobbies.length > 0 ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.hobbies}
+                  Hobbies
+                </div>
+                <div class="hobbies-list">
+                  ${hobbies.map(hobby => `
+                    <div class="hobby-badge">
+                      ${hobby.icon}
+                      <span>${escapeHtml(hobby.name)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          
+          <!-- Main Content -->
+          <div class="main-content">
+            ${experienceSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.experience}
+                  Work Experience
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${educationSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.education}
+                  Education
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${sections.filter(s => 
+              !['name', 'contact', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+            ).map(section => `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons[section.type] || sectionIcons.additional_information}
+                  ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </body>
+    </html>
+  `
+}

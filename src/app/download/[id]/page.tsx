@@ -23,6 +23,11 @@ interface GenerationData {
 }
 
 const TEMPLATES = [
+  // ✨ NEW ADVANCED TEMPLATES
+  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', badge: 'NEW', advanced: true },
+  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', badge: 'NEW', advanced: true },
+  
+  // BASIC TEMPLATES
   { id: 'modern', name: 'Modern', description: 'Clean and contemporary design' },
   { id: 'classic', name: 'Classic', description: 'Traditional professional layout' },
   { id: 'minimal', name: 'Minimal', description: 'Simple and elegant' },
@@ -486,14 +491,26 @@ export default function DownloadPage() {
                       className="sr-only"
                     />
                     <div className={`
-                      flex-1 p-3 rounded-lg border-2 transition-colors
+                      flex-1 p-3 rounded-lg border-2 transition-all
                       ${selectedTemplate === template.id 
-                        ? 'border-blue-500 bg-blue-50' 
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? (template.advanced ? 'border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50' : 'border-blue-500 bg-blue-50')
+                        : (template.advanced ? 'border-purple-200 hover:border-purple-300 bg-gradient-to-r from-purple-50/30 to-blue-50/30' : 'border-gray-200 hover:border-gray-300')
                       }
                     `}>
-                      <div className="font-medium text-gray-900">{template.name}</div>
-                      <div className="text-sm text-gray-600">{template.description}</div>
+                      <div className="flex items-center justify-between">
+                        <div className="font-medium text-gray-900">{template.name}</div>
+                        {template.badge && (
+                          <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                            {template.badge}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1">{template.description}</div>
+                      {template.advanced && (
+                        <div className="mt-2 text-xs text-purple-600 font-medium">
+                          ✨ Icons • Two-Column Layout • Visual Elements
+                        </div>
+                      )}
                     </div>
                   </label>
                 ))}

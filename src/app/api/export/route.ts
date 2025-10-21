@@ -4,7 +4,8 @@ import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
-import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS } from '@/lib/pdf-layout-optimizer'
+import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
+import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 
 // Helper function to safely get string content from section
 const getSectionContent = (content: any): string => {
@@ -162,17 +163,45 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
 
 async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string) {
   try {
-    // AI-powered layout optimization
-    const metrics = analyzeContentDensity(sections)
-    const optimizedSpacing = getOptimizedSpacing(metrics)
+    // Check if using advanced template
+    let html: string
+    let useOptimizedMargins = false
+    let compressionLevel: 'none' | 'light' | 'medium' | 'heavy' = 'none'
     
-    console.log('PDF Layout Optimization:', {
-      estimatedPages: metrics.estimatedPages,
-      compressionLevel: metrics.compressionLevel,
-      sectionCount: metrics.sectionCount
-    })
-    
-    const html = generateTemplateHtml(sections, template, optimizedSpacing)
+    if (isAdvancedTemplate(template)) {
+      // Use advanced template with icons and two-column layout
+      const contactSection = sections.find(s => s.type === 'contact')
+      const contactInfo = contactSection?.content || null
+      
+      if (template === 'creative_modern') {
+        html = generateCreativeModernHTML(sections, contactInfo)
+      } else if (template === 'professional_columns') {
+        html = generateProfessionalColumnsHTML(sections, contactInfo)
+      } else {
+        // Fallback
+        const metrics = analyzeContentDensity(sections)
+        const optimizedSpacing = getOptimizedSpacing(metrics)
+        html = generateTemplateHtml(sections, template, optimizedSpacing)
+        useOptimizedMargins = true
+        compressionLevel = metrics.compressionLevel
+      }
+      
+      console.log('Using Advanced Template:', template)
+    } else {
+      // AI-powered layout optimization for basic templates
+      const metrics = analyzeContentDensity(sections)
+      const optimizedSpacing = getOptimizedSpacing(metrics)
+      
+      console.log('PDF Layout Optimization:', {
+        estimatedPages: metrics.estimatedPages,
+        compressionLevel: metrics.compressionLevel,
+        sectionCount: metrics.sectionCount
+      })
+      
+      html = generateTemplateHtml(sections, template, optimizedSpacing)
+      useOptimizedMargins = true
+      compressionLevel = metrics.compressionLevel
+    }
     
     // Use chromium for serverless environments (Vercel)
     const browser = await puppeteer.launch({
@@ -184,12 +213,14 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
     const page = await browser.newPage()
     await page.setContent(html, { waitUntil: 'networkidle0' })
     
-    // Optimized margins based on content density
-    const margins = metrics.compressionLevel === 'heavy' 
-      ? { top: '6mm', right: '10mm', bottom: '6mm', left: '10mm' }
-      : metrics.compressionLevel === 'medium'
-      ? { top: '7mm', right: '11mm', bottom: '7mm', left: '11mm' }
-      : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' }
+    // Optimized margins based on content density (for basic templates only)
+    const margins = useOptimizedMargins 
+      ? (compressionLevel === 'heavy' 
+        ? { top: '6mm', right: '10mm', bottom: '6mm', left: '10mm' }
+        : compressionLevel === 'medium'
+        ? { top: '7mm', right: '11mm', bottom: '7mm', left: '11mm' }
+        : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' })
+      : { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } // Advanced templates handle their own margins
     
     const pdf = await page.pdf({
       format: 'A4',
