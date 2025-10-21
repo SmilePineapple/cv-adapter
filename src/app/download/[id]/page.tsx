@@ -155,12 +155,30 @@ export default function DownloadPage() {
         return
       }
 
+      // Fetch latest hobbies from cv_sections (user may have customized icons)
+      const { data: latestHobbies } = await supabase
+        .from('cv_sections')
+        .select('*')
+        .eq('cv_id', generation.cv_id)
+        .eq('section_type', 'hobbies')
+        .single()
+
       // Merge original and modified sections for full CV preview
       const originalSections = (generation as any).cvs?.parsed_sections?.sections || []
       const modifiedSections = generation.output_sections?.sections || []
       
       const mergedSections = originalSections.map((originalSection: CVSection) => {
         const modifiedSection = modifiedSections.find((mod: CVSection) => mod.type === originalSection.type)
+        
+        // If this is hobbies and we have latest data, use it
+        if (originalSection.type === 'hobbies' && latestHobbies) {
+          return {
+            type: 'hobbies',
+            content: latestHobbies.content,
+            order: latestHobbies.order_index || originalSection.order || 999
+          }
+        }
+        
         return modifiedSection || originalSection
       })
       
@@ -170,6 +188,15 @@ export default function DownloadPage() {
           mergedSections.push(modSection)
         }
       })
+      
+      // If hobbies exist in cv_sections but not in original/modified, add them
+      if (latestHobbies && !mergedSections.find((s: CVSection) => s.type === 'hobbies')) {
+        mergedSections.push({
+          type: 'hobbies',
+          content: latestHobbies.content,
+          order: latestHobbies.order_index || 999
+        })
+      }
       
       // Update generation data with merged sections
       const completeGeneration = {
