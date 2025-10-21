@@ -18,6 +18,15 @@ const blogPosts = [
     featured: true,
   },
   {
+    slug: 'resume-vs-cv-difference',
+    title: 'Resume vs CV: What\'s the Difference?',
+    excerpt: 'Applying for jobs in the US vs UK? Understand the key differences between a resume and CV and when to use each.',
+    date: 'October 21, 2025',
+    readTime: '7 min read',
+    category: 'Career Advice',
+    featured: false,
+  },
+  {
     slug: 'how-to-beat-ats-systems',
     title: 'How to Beat ATS Systems: Complete Guide for 2025',
     excerpt: 'Learn exactly how Applicant Tracking Systems work and discover proven strategies to get your CV past the bots and into human hands.',
