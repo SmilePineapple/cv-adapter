@@ -171,7 +171,27 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
     if (isAdvancedTemplate(template)) {
       // Use advanced template with icons and two-column layout
       const contactSection = sections.find(s => s.type === 'contact')
-      const contactInfo = contactSection?.content || null
+      
+      // Extract contact info properly - handle both object and string formats
+      let contactInfo = null
+      if (contactSection?.content) {
+        if (typeof contactSection.content === 'string') {
+          // Parse string content to extract email, phone, address
+          const content = contactSection.content
+          const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
+          const phoneMatch = content.match(/[\d\s()+-]{10,}/)
+          const lines = content.split('\n').filter(l => l.trim())
+          
+          contactInfo = {
+            email: emailMatch ? emailMatch[0] : '',
+            phone: phoneMatch ? phoneMatch[0] : '',
+            location: lines.find(l => !l.includes('@') && !l.match(/[\d\s()+-]{10,}/)) || ''
+          }
+        } else {
+          // Already an object
+          contactInfo = contactSection.content
+        }
+      }
       
       if (template === 'creative_modern') {
         html = generateCreativeModernHTML(sections, contactInfo)

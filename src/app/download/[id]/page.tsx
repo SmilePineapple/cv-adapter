@@ -16,6 +16,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
+import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 
 interface GenerationData {
   id: string
@@ -197,6 +198,37 @@ export default function DownloadPage() {
   }
 
   const generateTemplateHtml = (sections: CVSection[], templateId: string): string => {
+    // Check if it's an advanced template
+    if (templateId === 'creative_modern' || templateId === 'professional_columns') {
+      const contactSection = sections.find(s => s.type === 'contact')
+      
+      // Extract contact info
+      let contactInfo = null
+      if (contactSection?.content) {
+        if (typeof contactSection.content === 'string') {
+          const content = contactSection.content
+          const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
+          const phoneMatch = content.match(/[\d\s()+-]{10,}/)
+          const lines = content.split('\n').filter(l => l.trim())
+          
+          contactInfo = {
+            email: emailMatch ? emailMatch[0] : '',
+            phone: phoneMatch ? phoneMatch[0] : '',
+            location: lines.find(l => !l.includes('@') && !l.match(/[\d\s()+-]{10,}/)) || ''
+          }
+        } else {
+          contactInfo = contactSection.content
+        }
+      }
+      
+      // Generate advanced template HTML
+      if (templateId === 'creative_modern') {
+        return generateCreativeModernHTML(sections, contactInfo)
+      } else {
+        return generateProfessionalColumnsHTML(sections, contactInfo)
+      }
+    }
+    
     // Reorder sections: contact always first, then name, then others
     const contactSection = sections.find(s => s.type === 'contact')
     const nameSection = sections.find(s => s.type === 'name')
