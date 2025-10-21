@@ -34,18 +34,74 @@ const formatSectionContent = (content: any): string => {
   // Handle array of experience objects
   if (Array.isArray(content)) {
     return content.map((item) => {
-      if (item.company && item.job_title) {
-        // Format as experience entry
-        const title = `${item.job_title} | ${item.company}`
-        const responsibilities = item.responsibilities || item.description || ''
-        return `${title}\n${responsibilities}`
+      if (typeof item === 'string') {
+        return item
       }
-      return JSON.stringify(item, null, 2)
+      
+      // Handle structured experience objects
+      if (typeof item === 'object' && item !== null) {
+        const parts = []
+        
+        // Title line
+        if (item.title || item.job_title) {
+          const title = item.title || item.job_title
+          const company = item.company || ''
+          const dates = item.dates || item.duration || ''
+          
+          if (company && dates) {
+            parts.push(`${title} | ${company} | ${dates}`)
+          } else if (company) {
+            parts.push(`${title} | ${company}`)
+          } else {
+            parts.push(title)
+          }
+        }
+        
+        // Bullets/responsibilities
+        if (item.bullets && Array.isArray(item.bullets)) {
+          item.bullets.forEach((bullet: string) => {
+            parts.push(`• ${bullet}`)
+          })
+        } else if (item.responsibilities) {
+          if (typeof item.responsibilities === 'string') {
+            parts.push(item.responsibilities)
+          } else if (Array.isArray(item.responsibilities)) {
+            item.responsibilities.forEach((resp: string) => {
+              parts.push(`• ${resp}`)
+            })
+          }
+        } else if (item.description) {
+          parts.push(item.description)
+        }
+        
+        return parts.join('\n')
+      }
+      
+      return String(item)
     }).join('\n\n')
   }
   
-  // Fallback to JSON for other objects
-  return JSON.stringify(content, null, 2)
+  // Handle single object
+  if (typeof content === 'object' && content !== null) {
+    const parts = []
+    
+    // Try to extract meaningful text
+    if (content.title) parts.push(content.title)
+    if (content.content) parts.push(content.content)
+    if (content.text) parts.push(content.text)
+    if (content.description) parts.push(content.description)
+    
+    if (parts.length > 0) {
+      return parts.join('\n\n')
+    }
+    
+    // Last resort: convert to readable text
+    return Object.entries(content)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n')
+  }
+  
+  return String(content)
 }
 
 interface GenerationData {
@@ -89,6 +145,7 @@ export default function ReviewPage() {
   const [showReview, setShowReview] = useState(false)
   const [isApplyingImprovements, setIsApplyingImprovements] = useState(false)
   const [hasUsedFreeImprovement, setHasUsedFreeImprovement] = useState(false)
+  const [generateStep, setGenerateStep] = useState('')
 
   useEffect(() => {
     fetchGenerationData()
@@ -269,7 +326,15 @@ export default function ReviewPage() {
 
   const handleAIReview = async () => {
     setIsReviewing(true)
+    setGenerateStep('🔍 Analyzing your CV...')
+    
     try {
+      // Simulate progress updates
+      setTimeout(() => setGenerateStep('📊 Evaluating ATS compatibility...'), 2000)
+      setTimeout(() => setGenerateStep('💡 Identifying improvements...'), 4000)
+      setTimeout(() => setGenerateStep('🎯 Checking keyword optimization...'), 6000)
+      setTimeout(() => setGenerateStep('✨ Finalizing review...'), 8000)
+      
       const response = await fetch('/api/review-cv', {
         method: 'POST',
         headers: {
@@ -295,6 +360,7 @@ export default function ReviewPage() {
       toast.error('Failed to review CV')
     } finally {
       setIsReviewing(false)
+      setGenerateStep('')
     }
   }
 
@@ -307,7 +373,16 @@ export default function ReviewPage() {
     }
 
     setIsApplyingImprovements(true)
+    setGenerateStep('🔧 Preparing improvements...')
+    
     try {
+      // Simulate progress updates
+      setTimeout(() => setGenerateStep('📝 Rewriting sections...'), 2000)
+      setTimeout(() => setGenerateStep('🎯 Adding missing sections...'), 4000)
+      setTimeout(() => setGenerateStep('💡 Emphasizing keywords...'), 6000)
+      setTimeout(() => setGenerateStep('🎨 Applying formatting tips...'), 8000)
+      setTimeout(() => setGenerateStep('✨ Finalizing improvements...'), 10000)
+      
       const response = await fetch('/api/apply-improvements', {
         method: 'POST',
         headers: {
@@ -343,6 +418,7 @@ export default function ReviewPage() {
       toast.error('Failed to apply improvements')
     } finally {
       setIsApplyingImprovements(false)
+      setGenerateStep('')
     }
   }
 
@@ -412,23 +488,30 @@ export default function ReviewPage() {
                   ATS: {generationData.ats_score}%
                 </div>
               )}
-              <button
-                onClick={handleAIReview}
-                disabled={isReviewing}
-                className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50"
-              >
-                {isReviewing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Reviewing...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    AI Review
-                  </>
+              <div className="flex flex-col items-end space-y-2">
+                <button
+                  onClick={handleAIReview}
+                  disabled={isReviewing}
+                  className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50"
+                >
+                  {isReviewing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Reviewing...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      AI Review
+                    </>
+                  )}
+                </button>
+                {isReviewing && generateStep && (
+                  <div className="text-xs text-gray-600 animate-pulse">
+                    {generateStep}
+                  </div>
                 )}
-              </button>
+              </div>
               <button
                 onClick={handleSaveChanges}
                 disabled={isSaving}
@@ -584,23 +667,30 @@ export default function ReviewPage() {
               <button
                 onClick={handleApplyImprovements}
                 disabled={isApplyingImprovements || hasUsedFreeImprovement}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex flex-col items-center justify-center"
               >
-                {isApplyingImprovements ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Applying Improvements...
-                  </>
-                ) : hasUsedFreeImprovement ? (
-                  <>
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    Free Improvement Used
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Apply All Improvements (1 Free!)
-                  </>
+                <div className="flex items-center">
+                  {isApplyingImprovements ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Applying Improvements...
+                    </>
+                  ) : hasUsedFreeImprovement ? (
+                    <>
+                      <CheckCircle className="w-5 h-5 mr-2" />
+                      Free Improvement Used
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Apply All Improvements (1 Free!)
+                    </>
+                  )}
+                </div>
+                {isApplyingImprovements && generateStep && (
+                  <div className="text-xs mt-2 text-green-100 animate-pulse">
+                    {generateStep}
+                  </div>
                 )}
               </button>
               
