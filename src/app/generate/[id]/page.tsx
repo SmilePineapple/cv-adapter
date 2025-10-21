@@ -240,14 +240,26 @@ export default function GeneratePage() {
       setGenerateProgress(65)
       setGenerateStep('🎓 Optimizing skills section...')
       
-      await new Promise(resolve => setTimeout(resolve, 700))
-      setGenerateProgress(75)
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setGenerateProgress(70)
       setGenerateStep('🎯 Running ATS optimization...')
       
+      await new Promise(resolve => setTimeout(resolve, 700))
+      setGenerateProgress(75)
+      setGenerateStep('🔍 Analyzing keyword density...')
+      
       await new Promise(resolve => setTimeout(resolve, 600))
-      setGenerateProgress(85)
+      setGenerateProgress(80)
       setGenerateStep('📊 Calculating ATS score...')
-
+      
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setGenerateProgress(85)
+      setGenerateStep('✨ Polishing final content...')
+      
+      await new Promise(resolve => setTimeout(resolve, 400))
+      setGenerateProgress(90)
+      setGenerateStep('🎨 Formatting sections...')
+      
       // Wait for API response
       const response = await responsePromise
       const result = await response.json()
