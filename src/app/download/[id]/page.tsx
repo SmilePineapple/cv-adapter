@@ -611,8 +611,9 @@ export default function DownloadPage() {
         <TemplatePreview
           templateId={previewTemplate}
           onClose={() => {
+            const templateToSelect = previewTemplate
             setPreviewTemplate(null)
-            setSelectedTemplate(previewTemplate)
+            setSelectedTemplate(templateToSelect)
           }}
         />
       )}
