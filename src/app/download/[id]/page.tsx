@@ -13,6 +13,7 @@ import {
   Eye,
   CheckCircle,
   Loader2,
+  Edit3,
   Sparkles
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
@@ -593,7 +594,7 @@ export default function DownloadPage() {
 
         {/* Action Buttons */}
         <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <button
               onClick={handleExport}
               disabled={isExporting}
@@ -611,6 +612,16 @@ export default function DownloadPage() {
                 </>
               )}
             </button>
+            
+            {generationData && (
+              <Link
+                href={`/edit/${generationData.cv_id}`}
+                className="bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+              >
+                <Edit3 className="w-4 h-4 mr-2" />
+                Edit CV
+              </Link>
+            )}
             
             <Link
               href="/dashboard"
