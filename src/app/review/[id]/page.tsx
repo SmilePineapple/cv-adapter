@@ -845,7 +845,6 @@ export default function ReviewPage() {
               Generate Another Version
             </Link>
           </div>
-        </div>
       </div>
     </div>
   )
