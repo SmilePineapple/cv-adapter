@@ -23,6 +23,7 @@ interface GenerationData {
   job_title: string
   output_sections: { sections: CVSection[] }
   created_at: string
+  cv_id: string
 }
 
 const TEMPLATES = [
@@ -567,6 +568,28 @@ export default function DownloadPage() {
                 ))}
               </div>
             </div>
+
+            {/* Hobby Icons Info for Advanced Templates */}
+            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && generationData && (
+              <div className="mt-6 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border border-purple-200">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-bold text-purple-900 text-sm mb-1">✨ Advanced Template Feature</h3>
+                    <p className="text-purple-800 text-xs mb-3">
+                      This template supports custom hobby icons! Add visual icons to your hobbies section for a more engaging CV.
+                    </p>
+                    <Link
+                      href={`/hobbies/${generationData.cv_id}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all shadow-sm"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      Select Hobby Icons
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Download Button */}
             <div className="mt-6">

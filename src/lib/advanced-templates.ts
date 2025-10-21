@@ -229,7 +229,7 @@ export const advancedTemplateStyles = {
     /* Print Optimization */
     @media print {
       body { padding: 0; }
-      .decorative-bg { display: none; }
+      /* Keep decorative background visible in print */
       .content-wrapper { gap: 15px; padding: 0 25px 25px; }
       .section { margin-bottom: 15px; }
     }
