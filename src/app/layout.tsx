@@ -14,8 +14,11 @@ export const metadata: Metadata = {
   description: "Tailor your CV to any job description with AI. Upload your CV, paste the job description, and get an optimized version in minutes.",
   keywords: ["CV", "resume", "job application", "AI", "tailoring", "ATS optimization"],
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
     apple: '/favicon.svg',
+    shortcut: '/favicon.svg',
   },
 };
 

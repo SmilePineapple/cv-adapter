@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle } from 'docx'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
@@ -143,9 +143,20 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // If hobbies exist in cv_sections but not in original/modified, add them
-    if (latestHobbies && !completeSections.find(s => s.type === 'hobbies')) {
-      completeSections.push({
+    // Deduplicate sections by type (keep only the first occurrence)
+    const seenTypes = new Set<string>()
+    const deduplicatedSections = completeSections.filter(section => {
+      if (seenTypes.has(section.type)) {
+        console.log(`Removing duplicate section: ${section.type}`)
+        return false
+      }
+      seenTypes.add(section.type)
+      return true
+    })
+
+    // If hobbies exist in cv_sections but not in deduplicatedSections, add them
+    if (latestHobbies && !deduplicatedSections.find(s => s.type === 'hobbies')) {
+      deduplicatedSections.push({
         type: 'hobbies',
         content: latestHobbies.content,
         order: latestHobbies.order_index || 999
@@ -153,7 +164,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Sort sections by order
-    const sections: CVSection[] = completeSections.sort((a, b) => (a.order || 0) - (b.order || 0))
+    const sections: CVSection[] = deduplicatedSections.sort((a, b) => (a.order || 0) - (b.order || 0))
 
     // Generate content based on format
     switch (format) {
@@ -297,61 +308,151 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
 
     sortedSections.forEach(section => {
       if (section.type === 'name') {
+        // Name - Large, bold, centered
         children.push(
           new Paragraph({
             children: [
               new TextRun({
                 text: section.content,
                 bold: true,
-                size: 32,
-                color: '2563eb'
+                size: 36,
+                color: '1e3a8a', // Dark blue
+                font: 'Calibri'
               })
             ],
-            heading: HeadingLevel.TITLE,
-            spacing: { after: 400 }
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 200 }
+          })
+        )
+      } else if (section.type === 'contact') {
+        // Contact info - smaller, centered
+        const contentStr = getSectionContent(section.content)
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: contentStr.replace(/\n/g, ' | '),
+                size: 20,
+                color: '475569',
+                font: 'Calibri'
+              })
+            ],
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 300 }
+          })
+        )
+      } else if (section.type === 'summary') {
+        // Summary - with border
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: 'PROFESSIONAL SUMMARY',
+                bold: true,
+                size: 26,
+                color: '1e3a8a',
+                font: 'Calibri'
+              })
+            ],
+            spacing: { before: 200, after: 150 },
+            border: {
+              bottom: {
+                color: '3b82f6',
+                space: 1,
+                style: BorderStyle.SINGLE,
+                size: 6
+              }
+            }
+          })
+        )
+        
+        const contentStr = getSectionContent(section.content)
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: contentStr,
+                size: 22,
+                color: '334155',
+                font: 'Calibri'
+              })
+            ],
+            spacing: { after: 250 }
           })
         )
       } else {
-        // Section title
+        // Other sections - styled headers with underline
         children.push(
           new Paragraph({
             children: [
               new TextRun({
                 text: section.type.replace('_', ' ').toUpperCase(),
                 bold: true,
-                size: 24,
-                color: '2563eb'
+                size: 26,
+                color: '1e3a8a',
+                font: 'Calibri'
               })
             ],
-            heading: HeadingLevel.HEADING_2,
-            spacing: { before: 300, after: 200 }
+            spacing: { before: 200, after: 150 },
+            border: {
+              bottom: {
+                color: '3b82f6',
+                space: 1,
+                style: BorderStyle.SINGLE,
+                size: 6
+              }
+            }
           })
         )
         
-        // Section content - use helper to handle arrays/objects
+        // Section content with better formatting
         const contentStr = getSectionContent(section.content)
         const contentLines = contentStr.split('\n')
         contentLines.forEach(line => {
           if (line.trim()) {
+            const isBullet = line.trim().startsWith('•')
+            const isHeader = line.includes('|') && !isBullet
+            
             children.push(
               new Paragraph({
                 children: [
                   new TextRun({
                     text: line,
-                    size: 22
+                    size: 22,
+                    bold: isHeader,
+                    color: isHeader ? '1e40af' : '334155',
+                    font: 'Calibri'
                   })
                 ],
-                spacing: { after: 100 }
+                spacing: { after: isBullet ? 80 : 120 },
+                indent: isBullet ? { left: 360 } : undefined
               })
             )
           }
         })
+        
+        // Add spacing after section
+        children.push(
+          new Paragraph({
+            children: [new TextRun({ text: '', size: 1 })],
+            spacing: { after: 150 }
+          })
+        )
       }
     })
 
     const doc = new Document({
       sections: [{
-        properties: {},
+        properties: {
+          page: {
+            margin: {
+              top: 1440,    // 1 inch
+              right: 1440,
+              bottom: 1440,
+              left: 1440
+            }
+          }
+        },
         children: children
       }]
     })
