@@ -73,6 +73,24 @@ export async function POST(request: NextRequest) {
 
     console.log(`✅ Optimization complete! Score: ${currentScore}% → ${newScore}%`)
 
+    // Track optimization in history
+    await supabase.from('ats_optimization_history').insert({
+      user_id: user.id,
+      generation_id,
+      before_score: currentScore,
+      after_score: newScore,
+      improvements: result.improvements,
+      changes_summary: result.changesSummary
+    })
+
+    // Track AI usage for analytics
+    await supabase.from('ai_usage_tracking').insert({
+      user_id: user.id,
+      feature_type: 'ats_optimization',
+      usage_count: 1,
+      usage_date: new Date().toISOString().split('T')[0]
+    })
+
     return NextResponse.json({
       success: true,
       beforeScore: currentScore,
