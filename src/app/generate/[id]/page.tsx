@@ -197,7 +197,7 @@ export default function GeneratePage() {
     setGenerateStep('Analyzing job requirements...')
 
     try {
-      setGenerateProgress(20)
+      setGenerateProgress(15)
       setGenerateStep('Preparing CV content...')
       
       const response = await fetch('/api/rewrite', {
@@ -216,12 +216,18 @@ export default function GeneratePage() {
         }),
       })
 
-      setGenerateProgress(60)
+      setGenerateProgress(40)
       setGenerateStep('AI is rewriting your CV...')
+
+      // Simulate ATS optimization step
+      setTimeout(() => {
+        setGenerateProgress(70)
+        setGenerateStep('🎯 Optimizing for ATS compatibility...')
+      }, 1500)
 
       const result = await response.json()
       
-      setGenerateProgress(90)
+      setGenerateProgress(95)
       setGenerateStep('Finalizing changes...')
 
       if (!response.ok) {
