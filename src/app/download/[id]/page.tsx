@@ -512,10 +512,12 @@ export default function DownloadPage() {
                             <button
                               onClick={(e) => {
                                 e.preventDefault()
+                                e.stopPropagation()
                                 setPreviewTemplate(template.id)
                               }}
-                              className="p-1.5 hover:bg-purple-100 rounded-md transition-colors"
+                              className="p-1.5 hover:bg-purple-100 rounded-md transition-colors z-10"
                               title="Preview template"
+                              type="button"
                             >
                               <Eye className="w-4 h-4 text-purple-600" />
                             </button>
