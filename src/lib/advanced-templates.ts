@@ -499,7 +499,7 @@ function getSectionContent(content: any): string {
  */
 export function generateCreativeModernHTML(sections: any[], contactInfo: any): string {
   const nameSection = sections.find(s => s.type === 'name')
-  const profileSection = sections.find(s => s.type === 'profile' || s.type === 'summary')
+  const profileSection = sections.find(s => s.type === 'profile' || s.type === 'summary' || s.type === 'professional_summary')
   const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
   const educationSection = sections.find(s => s.type === 'education')
   const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
@@ -507,6 +507,15 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
   
   const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
   const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
+  
+  // Extract contact details properly
+  const contactItems = []
+  if (contactInfo) {
+    if (contactInfo.email) contactItems.push({ label: 'Email', value: contactInfo.email })
+    if (contactInfo.phone) contactItems.push({ label: 'Phone', value: contactInfo.phone })
+    if (contactInfo.location || contactInfo.address) contactItems.push({ label: 'Location', value: contactInfo.location || contactInfo.address })
+    if (contactInfo.linkedin) contactItems.push({ label: 'LinkedIn', value: contactInfo.linkedin })
+  }
   
   return `
     <!DOCTYPE html>
@@ -529,11 +538,11 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
         <div class="header">
           <div class="name">${nameSection ? escapeHtml(getSectionContent(nameSection.content)) : 'Name'}</div>
           <div class="contact-info">
-            ${contactInfo ? Object.entries(contactInfo).map(([key, value]) => `
+            ${contactItems.map(item => `
               <div class="contact-item">
-                <strong>${escapeHtml(key)}:</strong> ${escapeHtml(String(value))}
+                <strong>${escapeHtml(item.label)}:</strong> ${escapeHtml(item.value)}
               </div>
-            `).join('') : ''}
+            `).join('')}
           </div>
         </div>
         
@@ -626,13 +635,26 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
  */
 export function generateProfessionalColumnsHTML(sections: any[], contactInfo: any): string {
   const nameSection = sections.find(s => s.type === 'name')
+  const profileSection = sections.find(s => s.type === 'profile' || s.type === 'summary' || s.type === 'professional_summary')
   const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
   const educationSection = sections.find(s => s.type === 'education')
   const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
   const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
+  const certificationsSection = sections.find(s => s.type === 'certifications' || s.type === 'licenses')
   
   const hobbies = hobbiesSection ? detectHobbies(getSectionContent(hobbiesSection.content)) : []
   const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
+  
+  // Extract contact details properly
+  let contactDetails = ''
+  if (contactInfo) {
+    const details = []
+    if (contactInfo.email) details.push(contactInfo.email)
+    if (contactInfo.phone) details.push(contactInfo.phone)
+    if (contactInfo.location || contactInfo.address) details.push(contactInfo.location || contactInfo.address)
+    if (contactInfo.linkedin) details.push(contactInfo.linkedin)
+    contactDetails = details.join(' • ')
+  }
   
   return `
     <!DOCTYPE html>
@@ -646,11 +668,7 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
         <!-- Header -->
         <div class="header">
           <div class="name">${nameSection ? escapeHtml(getSectionContent(nameSection.content)) : 'Name'}</div>
-          <div class="contact-info">
-            ${contactInfo ? Object.entries(contactInfo).map(([key, value]) => `
-              <span>${escapeHtml(String(value))}</span>
-            `).join(' • ') : ''}
-          </div>
+          <div class="contact-info">${escapeHtml(contactDetails)}</div>
         </div>
         
         <!-- Sidebar + Main Content -->
@@ -666,6 +684,26 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
                 <div class="skills-list">
                   ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
                 </div>
+              </div>
+            ` : ''}
+            
+            ${educationSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.education}
+                  Education
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
+              </div>
+            ` : ''}
+            
+            ${certificationsSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.certifications}
+                  Certifications
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(certificationsSection.content))}</div>
               </div>
             ` : ''}
             
@@ -689,6 +727,16 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
           
           <!-- Main Content -->
           <div class="main-content">
+            ${profileSection ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.profile}
+                  Professional Summary
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
+              </div>
+            ` : ''}
+            
             ${experienceSection ? `
               <div class="section">
                 <div class="section-header">
@@ -699,18 +747,8 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
               </div>
             ` : ''}
             
-            ${educationSection ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.education}
-                  Education
-                </div>
-                <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
-              </div>
-            ` : ''}
-            
             ${sections.filter(s => 
-              !['name', 'contact', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+              !['name', 'contact', 'profile', 'summary', 'professional_summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests', 'certifications', 'licenses'].includes(s.type)
             ).map(section => `
               <div class="section">
                 <div class="section-header">
