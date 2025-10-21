@@ -5,6 +5,7 @@ import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 import { trackCVGeneration } from '@/lib/analytics'
 import { calculateATSScore } from '@/lib/ats-calculator'
+import { runATSOptimization } from '@/lib/ats-optimizer'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -135,11 +136,27 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse AI response
-    const { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
+    let { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
 
-    // Calculate ATS score
-    const atsScore = calculateATSScore(rewrittenSections, job_description)
-    console.log('✅ ATS Score calculated:', atsScore)
+    // Calculate initial ATS score
+    let atsScore = calculateATSScore(rewrittenSections, job_description)
+    console.log('✅ Initial ATS Score calculated:', atsScore)
+
+    // 🚀 AUTO-OPTIMIZE FOR ATS if score is below 70%
+    if (atsScore < 70) {
+      console.log(`⚠️ Low ATS score detected (${atsScore}%), running automatic optimization...`)
+      try {
+        const optimizationResult = await runATSOptimization(rewrittenSections, job_description, atsScore)
+        rewrittenSections = optimizationResult.optimizedSections
+        atsScore = calculateATSScore(rewrittenSections, job_description)
+        console.log(`✅ ATS Optimization complete! Score improved: ${optimizationResult.beforeScore}% → ${atsScore}%`)
+      } catch (optimizationError) {
+        console.error('ATS optimization failed, using original content:', optimizationError)
+        // Continue with original content if optimization fails
+      }
+    } else {
+      console.log(`✅ Good ATS score (${atsScore}%), no optimization needed`)
+    }
 
     // Save generation to database
     const { data: generationData, error: genError } = await supabase
