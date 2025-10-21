@@ -4,6 +4,7 @@ import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
+import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS } from '@/lib/pdf-layout-optimizer'
 
 // Helper function to safely get string content from section
 const getSectionContent = (content: any): string => {
@@ -161,7 +162,17 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
 
 async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string) {
   try {
-    const html = generateTemplateHtml(sections, template)
+    // AI-powered layout optimization
+    const metrics = analyzeContentDensity(sections)
+    const optimizedSpacing = getOptimizedSpacing(metrics)
+    
+    console.log('PDF Layout Optimization:', {
+      estimatedPages: metrics.estimatedPages,
+      compressionLevel: metrics.compressionLevel,
+      sectionCount: metrics.sectionCount
+    })
+    
+    const html = generateTemplateHtml(sections, template, optimizedSpacing)
     
     // Use chromium for serverless environments (Vercel)
     const browser = await puppeteer.launch({
@@ -173,15 +184,17 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
     const page = await browser.newPage()
     await page.setContent(html, { waitUntil: 'networkidle0' })
     
+    // Optimized margins based on content density
+    const margins = metrics.compressionLevel === 'heavy' 
+      ? { top: '6mm', right: '10mm', bottom: '6mm', left: '10mm' }
+      : metrics.compressionLevel === 'medium'
+      ? { top: '7mm', right: '11mm', bottom: '7mm', left: '11mm' }
+      : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' }
+    
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
-      margin: {
-        top: '8mm',
-        right: '12mm',
-        bottom: '8mm',
-        left: '12mm'
-      }
+      margin: margins
     })
     
     await browser.close()
@@ -304,12 +317,22 @@ function handleTxtExport(sections: CVSection[], jobTitle: string) {
   })
 }
 
-function generateTemplateHtml(sections: CVSection[], templateId: string): string {
+function generateTemplateHtml(
+  sections: CVSection[], 
+  templateId: string, 
+  optimizedSpacing?: ReturnType<typeof getOptimizedSpacing>
+): string {
   // Reorder: contact first, then name, then others
   const contactSection = sections.find(s => s.type === 'contact')
   const nameSection = sections.find(s => s.type === 'name')
   const otherSections = sections.filter(s => s.type !== 'contact' && s.type !== 'name')
   const sortedSections = [contactSection, nameSection, ...otherSections.sort((a, b) => a.order - b.order)].filter(Boolean) as CVSection[]
+  
+  // Use optimized CSS if provided, otherwise use default templates
+  if (optimizedSpacing) {
+    const style = generateOptimizedTemplateCSS(templateId, optimizedSpacing)
+    return generateHtmlWithStyle(sortedSections, style)
+  }
   
   const templateStyles = {
     modern: `
@@ -470,4 +493,45 @@ function escapeHtml(text: string): string {
     "'": '&#039;'
   }
   return text.replace(/[&<>"']/g, (m) => map[m])
+}
+
+function generateHtmlWithStyle(sections: CVSection[], style: string): string {
+  let html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CV</title>
+        <style>${style}</style>
+      </head>
+      <body>
+  `
+
+  sections.forEach(section => {
+    const contentStr = getSectionContent(section.content)
+    if (section.type === 'contact') {
+      html += `<div class="contact">${escapeHtml(contentStr)}</div>`
+    } else if (section.type === 'name') {
+      html += `
+        <div class="header">
+          <div class="name">${escapeHtml(contentStr)}</div>
+        </div>
+      `
+    } else {
+      html += `
+        <div class="section">
+          <div class="section-title">${escapeHtml(section.type.replace('_', ' '))}</div>
+          <div class="content">${escapeHtml(contentStr)}</div>
+        </div>
+      `
+    }
+  })
+
+  html += `
+      </body>
+    </html>
+  `
+
+  return html
 }
