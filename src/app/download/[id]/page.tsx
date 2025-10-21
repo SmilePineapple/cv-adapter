@@ -12,8 +12,10 @@ import {
   FileText, 
   Eye,
   CheckCircle,
-  Loader2
+  Loader2,
+  Sparkles
 } from 'lucide-react'
+import TemplatePreview from '@/components/TemplatePreview'
 
 interface GenerationData {
   id: string
@@ -115,6 +117,7 @@ export default function DownloadPage() {
   const [selectedFormat, setSelectedFormat] = useState('pdf')
   const [isLoading, setIsLoading] = useState(true)
   const [isExporting, setIsExporting] = useState(false)
+  const [previewTemplate, setPreviewTemplate] = useState<string | null>(null)
   const [exportProgress, setExportProgress] = useState(0)
   const [exportStep, setExportStep] = useState('')
   const [previewHtml, setPreviewHtml] = useState('')
@@ -499,11 +502,25 @@ export default function DownloadPage() {
                     `}>
                       <div className="flex items-center justify-between">
                         <div className="font-medium text-gray-900">{template.name}</div>
-                        {template.badge && (
-                          <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
-                            {template.badge}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {template.badge && (
+                            <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                              {template.badge}
+                            </span>
+                          )}
+                          {template.advanced && (
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault()
+                                setPreviewTemplate(template.id)
+                              }}
+                              className="p-1.5 hover:bg-purple-100 rounded-md transition-colors"
+                              title="Preview template"
+                            >
+                              <Eye className="w-4 h-4 text-purple-600" />
+                            </button>
+                          )}
+                        </div>
                       </div>
                       <div className="text-sm text-gray-600 mt-1">{template.description}</div>
                       {template.advanced && (
@@ -588,6 +605,17 @@ export default function DownloadPage() {
           </div>
         </div>
       </div>
+      
+      {/* Template Preview Modal */}
+      {previewTemplate && (
+        <TemplatePreview
+          templateId={previewTemplate}
+          onClose={() => {
+            setPreviewTemplate(null)
+            setSelectedTemplate(previewTemplate)
+          }}
+        />
+      )}
     </div>
   )
 }
