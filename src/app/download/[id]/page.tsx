@@ -725,7 +725,6 @@ export default function DownloadPage() {
                   </label>
                 ))}
               </div>
-            </div>
 
             {/* Hobby Icons Info for Advanced Templates */}
             {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && generationData && (

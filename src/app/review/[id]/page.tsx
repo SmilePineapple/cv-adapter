@@ -803,8 +803,8 @@ export default function ReviewPage() {
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-8">
+        {/* Action Buttons */}
+        <div className="flex gap-4 mt-8">
             {!showReview && (
               <button
                 onClick={handleAIReview}
