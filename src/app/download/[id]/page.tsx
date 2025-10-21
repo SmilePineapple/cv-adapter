@@ -117,7 +117,7 @@ export default function DownloadPage() {
   const supabase = createSupabaseClient()
 
   const [generationData, setGenerationData] = useState<GenerationData | null>(null)
-  const [selectedTemplate, setSelectedTemplate] = useState('modern')
+  const [selectedTemplate, setSelectedTemplate] = useState('creative_modern')
   const [selectedFormat, setSelectedFormat] = useState('pdf')
   const [isLoading, setIsLoading] = useState(true)
   const [isExporting, setIsExporting] = useState(false)
