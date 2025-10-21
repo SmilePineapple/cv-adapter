@@ -713,7 +713,7 @@ export default function ReviewPage() {
             const originalSection = originalSections.find(s => s.type === section.type)
             const isEditing = editingSection === section.type
             const hasChanges = originalSection && originalSection.content !== section.content
-
+            
             return (
               <div key={`${section.type}-${index}`} className="bg-white rounded-lg shadow">
                 <div className="px-6 py-4 border-b flex items-center justify-between">

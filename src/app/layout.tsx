@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "CV Adapter - AI-Powered CV Tailoring",
   description: "Tailor your CV to any job description with AI. Upload your CV, paste the job description, and get an optimized version in minutes.",
   keywords: ["CV", "resume", "job application", "AI", "tailoring", "ATS optimization"],
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
