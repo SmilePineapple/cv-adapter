@@ -61,8 +61,7 @@ export async function POST(request: NextRequest) {
       .from('generations')
       .update({
         output_sections: { sections: result.optimizedSections },
-        ats_score: newScore,
-        updated_at: new Date().toISOString()
+        ats_score: newScore
       })
       .eq('id', generation_id)
 
