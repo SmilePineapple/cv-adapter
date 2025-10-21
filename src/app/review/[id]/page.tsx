@@ -87,6 +87,8 @@ export default function ReviewPage() {
   const [aiReview, setAiReview] = useState<AIReview | null>(null)
   const [isReviewing, setIsReviewing] = useState(false)
   const [showReview, setShowReview] = useState(false)
+  const [isApplyingImprovements, setIsApplyingImprovements] = useState(false)
+  const [hasUsedFreeImprovement, setHasUsedFreeImprovement] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
@@ -166,6 +168,15 @@ export default function ReviewPage() {
           }, 3000)
         }
       }
+      
+      // Check if user has used their free improvement
+      const { data: improvementData } = await supabase
+        .from('ai_improvements')
+        .select('id')
+        .eq('user_id', user.id)
+        .single()
+
+      setHasUsedFreeImprovement(!!improvementData)
       
       setIsLoading(false)
     } catch (error) {
@@ -284,6 +295,54 @@ export default function ReviewPage() {
       toast.error('Failed to review CV')
     } finally {
       setIsReviewing(false)
+    }
+  }
+
+  const handleApplyImprovements = async () => {
+    if (!aiReview) return
+
+    if (hasUsedFreeImprovement) {
+      toast.error('You have already used your free AI improvement. Upgrade to Pro for unlimited improvements!')
+      return
+    }
+
+    setIsApplyingImprovements(true)
+    try {
+      const response = await fetch('/api/apply-improvements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          generation_id: generationId,
+          improvements: aiReview.improvements,
+          missing_sections: aiReview.missing_sections,
+          keywords: aiReview.keywords_to_add,
+          formatting_tips: aiReview.formatting_tips
+        }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to apply improvements')
+        return
+      }
+
+      // Update sections with improved content
+      setEditedSections(result.sections)
+      setHasUsedFreeImprovement(true)
+      toast.success('Improvements applied successfully! Your CV has been updated.')
+      
+      // Refresh the page to show updated content
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
+    } catch (error) {
+      console.error('Apply improvements error:', error)
+      toast.error('Failed to apply improvements')
+    } finally {
+      setIsApplyingImprovements(false)
     }
   }
 
@@ -521,10 +580,39 @@ export default function ReviewPage() {
               </div>
             </div>
 
-            <div className="mt-4 p-3 bg-purple-100 rounded-lg">
-              <p className="text-xs text-purple-800 text-center">
-                💡 This review doesn't count towards your generation limit - it's completely free!
-              </p>
+            <div className="mt-6 space-y-3">
+              <button
+                onClick={handleApplyImprovements}
+                disabled={isApplyingImprovements || hasUsedFreeImprovement}
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                {isApplyingImprovements ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Applying Improvements...
+                  </>
+                ) : hasUsedFreeImprovement ? (
+                  <>
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Free Improvement Used
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Apply All Improvements (1 Free!)
+                  </>
+                )}
+              </button>
+              
+              <div className="p-3 bg-purple-100 rounded-lg">
+                <p className="text-xs text-purple-800 text-center">
+                  {hasUsedFreeImprovement ? (
+                    <>🎉 You've used your free AI improvement! Upgrade to Pro for unlimited improvements.</>
+                  ) : (
+                    <>💡 Get 1 FREE AI improvement! This will apply all suggestions above and update your CV automatically.</>
+                  )}
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -590,40 +678,34 @@ export default function ReviewPage() {
                       <textarea
                         value={formatSectionContent(section.content)}
                         onChange={(e) => handleSectionEdit(section.type, e.target.value)}
-                        rows={6}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        rows={8}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
                       />
                     </div>
                   ) : hasChanges ? (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-6">
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Original</h4>
-                        <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                          <h4 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Original</h4>
+                        </div>
+                        <div className="p-5 bg-gray-50 rounded-lg text-sm text-gray-800 whitespace-pre-wrap border border-gray-200 leading-relaxed">
                           {formatSectionContent(originalSection?.content || '')}
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Generated</h4>
-                        <div className="p-4 bg-blue-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-wide">AI Generated</h4>
+                        </div>
+                        <div className="p-5 bg-blue-50 rounded-lg text-sm text-gray-800 whitespace-pre-wrap border border-blue-200 leading-relaxed">
                           {formatSectionContent(section.content)}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap">
+                    <div className="p-5 bg-gray-50 rounded-lg text-sm text-gray-800 whitespace-pre-wrap border border-gray-200 leading-relaxed">
                       {formatSectionContent(section.content)}
-                    </div>
-                  )}
-
-                  {hasChanges && originalSection && (
-                    <div className="mt-4 p-4 bg-yellow-50 rounded-lg">
-                      <h4 className="text-sm font-medium text-yellow-800 mb-2">Changes Made</h4>
-                      <div className="text-sm text-yellow-700">
-                        {createDiff(
-                          formatSectionContent(originalSection?.content || ''), 
-                          formatSectionContent(section.content)
-                        )}
-                      </div>
                     </div>
                   )}
                 </div>
