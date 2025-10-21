@@ -710,10 +710,9 @@ export default function ReviewPage() {
         {/* Section-by-Section Review */}
         <div className="space-y-6">
           {editedSections.map((section, index) => {
-            const originalSection = originalSections.find(s => s.type === section.type)
-            const isEditing = editingSection === section.type
-            const hasChanges = originalSection && originalSection.content !== section.content
-            
+            const originalSection = originalSections.find(s => s.type === section.type);
+            const isEditing = editingSection === section.type;
+            const hasChanges = originalSection && originalSection.content !== section.content;
             return (
               <div key={`${section.type}-${index}`} className="bg-white rounded-lg shadow">
                 <div className="px-6 py-4 border-b flex items-center justify-between">
@@ -800,7 +799,8 @@ export default function ReviewPage() {
                   )}
                 </div>
               </div>
-            ))}
+            );
+          })}
           </div>
 
         {/* Action Buttons */}
