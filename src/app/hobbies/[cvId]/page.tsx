@@ -18,8 +18,14 @@ export default function HobbySelectionPage() {
   const [selectedHobbies, setSelectedHobbies] = useState<{ name: string; icon: string }[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [returnUrl, setReturnUrl] = useState<string | null>(null)
 
   useEffect(() => {
+    // Get return URL from query params
+    const urlParams = new URLSearchParams(window.location.search)
+    const returnTo = urlParams.get('returnTo')
+    setReturnUrl(returnTo)
+    
     fetchHobbiesSection()
   }, [cvId])
 
@@ -104,7 +110,13 @@ export default function HobbySelectionPage() {
       }
 
       toast.success('Hobbies saved successfully!')
-      router.push(`/edit/${cvId}`)
+      
+      // Redirect back to where the user came from, or default to edit page
+      if (returnUrl) {
+        router.push(returnUrl)
+      } else {
+        router.push(`/edit/${cvId}`)
+      }
     } catch (error) {
       console.error('Error saving hobbies:', error)
       toast.error('Failed to save hobbies')
@@ -130,11 +142,11 @@ export default function HobbySelectionPage() {
         {/* Header */}
         <div className="mb-8">
           <Link
-            href={`/edit/${cvId}`}
+            href={returnUrl || `/edit/${cvId}`}
             className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Editor
+            {returnUrl ? 'Back to Download' : 'Back to Editor'}
           </Link>
           
           <div className="flex items-center gap-3 mb-2">
@@ -182,7 +194,7 @@ export default function HobbySelectionPage() {
           </button>
 
           <Link
-            href={`/edit/${cvId}`}
+            href={returnUrl || `/edit/${cvId}`}
             className="px-6 py-4 border-2 border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center"
           >
             Cancel

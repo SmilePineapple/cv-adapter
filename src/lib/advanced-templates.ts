@@ -377,7 +377,13 @@ export const advancedTemplateStyles = {
     
     @media print {
       body { background: #fff; }
-      .sidebar { background: #f7fafc; }
+      /* Keep sidebar background consistent with preview */
+      .sidebar { background: #edf2f7; }
+      /* Ensure crisp text rendering */
+      * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
     }
   `
 }

@@ -580,7 +580,7 @@ export default function DownloadPage() {
                       This template supports custom hobby icons! Add visual icons to your hobbies section for a more engaging CV.
                     </p>
                     <Link
-                      href={`/hobbies/${generationData.cv_id}`}
+                      href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all shadow-sm"
                     >
                       <Sparkles className="w-4 h-4" />
