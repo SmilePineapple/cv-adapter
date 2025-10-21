@@ -4,6 +4,7 @@
  */
 
 import { CVSection } from '@/types/database'
+import { advancedTemplateStyles, sectionIcons, hobbyIcons } from './advanced-templates'
 
 interface LayoutMetrics {
   totalContentLength: number
@@ -269,6 +270,22 @@ export function generateOptimizedTemplateCSS(
   }
 
   return optimizedTemplates[templateId as keyof typeof optimizedTemplates] || optimizedTemplates.modern
+}
+
+/**
+ * Check if template uses advanced layout (two-column, icons, etc.)
+ */
+export function isAdvancedTemplate(templateId: string): boolean {
+  return ['creative_modern', 'professional_columns'].includes(templateId)
+}
+
+/**
+ * Get advanced template style
+ */
+export function getAdvancedTemplateStyle(templateId: string): string | null {
+  if (templateId === 'creative_modern') return advancedTemplateStyles.creative_modern
+  if (templateId === 'professional_columns') return advancedTemplateStyles.professional_columns
+  return null
 }
 
 /**
