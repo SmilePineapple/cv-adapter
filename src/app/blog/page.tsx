@@ -9,13 +9,22 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: 'ai-cv-generator-guide',
+    title: 'AI CV Generator: Complete Guide for 2025',
+    excerpt: 'Discover how AI CV generators work and why they\'re revolutionizing job applications. Create professional, ATS-optimized CVs in minutes.',
+    date: 'October 21, 2025',
+    readTime: '10 min read',
+    category: 'AI & Technology',
+    featured: true,
+  },
+  {
     slug: 'how-to-beat-ats-systems',
     title: 'How to Beat ATS Systems: Complete Guide for 2025',
     excerpt: 'Learn exactly how Applicant Tracking Systems work and discover proven strategies to get your CV past the bots and into human hands.',
     date: 'October 15, 2025',
     readTime: '8 min read',
     category: 'ATS Optimization',
-    featured: true,
+    featured: false,
   },
   {
     slug: 'cv-writing-tips',
