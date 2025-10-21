@@ -291,19 +291,58 @@ CRITICAL INSTRUCTIONS:
 - MAINTAIN TRUTHFULNESS: Do not invent fake companies, roles, or achievements that don't exist in the original CV
 
 SECTIONS TO MODIFY:
-1. **Professional Summary/Profile**: Rewrite to emphasize skills and experience most relevant to the ${jobTitle} role
-2. **Skills**: Reorder and highlight skills that match the job requirements, add relevant keywords from job description if they reflect actual abilities
-3. **Work Experience**: Rewrite job descriptions/responsibilities to better match the target job, but keep job titles and company names identical
-4. **Custom Sections**: Generate content for any requested custom sections based on existing CV information
+1. **Professional Summary/Profile**: 
+   - Include years of experience
+   - Mention 3-4 key skills from job description
+   - Add 1-2 career highlights with quantifiable achievements if available
+   - Keep to 3-4 sentences maximum
+
+2. **Skills**: 
+   - Categorize into: Technical Skills, Soft Skills, Tools/Platforms, Certifications
+   - Prioritize skills mentioned in job description
+   - Add missing critical skills if plausible based on experience
+   - Remove skills not relevant to this role
+   - For technical roles: group by category (Languages, Frameworks, Cloud, etc.)
+
+3. **Work Experience**: 
+   - If section has <3 bullet points, expand to 4-5 detailed bullets
+   - Add quantifiable achievements (numbers, percentages, timeframes)
+   - Include technologies/tools used
+   - Show impact on business/users
+   - Use strong action verbs (Led, Developed, Optimized, Implemented, etc.)
+   - Keep job titles and company names identical
+
+4. **Hobbies/Interests** (if present):
+   - Filter to show only job-relevant hobbies (max 4-5)
+   - For technical roles: keep gaming, coding, tech hobbies
+   - For creative roles: keep art, photography, design
+   - For leadership roles: keep team sports, volunteering, mentoring
+   - Remove hobbies that don't add value to this application
+
+5. **Custom Sections**: Generate content for any requested custom sections based on existing CV information
 
 SECTIONS TO PRESERVE UNCHANGED:
-- Interests, personal details, certifications, training, education, contact information
+- Personal details, certifications, training, education, contact information
+
+CONTENT EXPANSION (CRITICAL):
+- If work experience bullets are sparse (<3 per role), expand with:
+  * Specific responsibilities based on job title
+  * Technologies/tools used
+  * Team collaboration details
+  * Measurable outcomes where logical
+- Ensure each role has 4-5 substantive bullet points
+- Add context: team size, project scale, user impact
+
+ACHIEVEMENT QUANTIFICATION:
+- Add specific numbers/percentages where logical
+- Include timeframes (e.g., "within 6 months", "over 2 years")
+- Mention scale (e.g., "team of 5", "10,000 users", "$50K revenue")
+- Show measurable impact (e.g., "increased by 40%", "reduced from 3s to 800ms")
 
 STYLE & TONE:
 - Rewrite Style: ${rewriteStyle} - ${styleInstructions[rewriteStyle as keyof typeof styleInstructions]}
 - Tone: ${tone} - ${toneInstructions[tone as keyof typeof toneInstructions]}
 - Focus on ATS optimization by including relevant keywords from the job description
-- Quantify existing achievements where possible, but don't add fake numbers
 - The candidate's actual job titles and companies are facts that cannot be changed - only adapt how their responsibilities are described
 ${customSections && customSections.length > 0 ? `
 - CUSTOM SECTIONS TO ADD: Create the following new sections based on the candidate's background and the job requirements:
