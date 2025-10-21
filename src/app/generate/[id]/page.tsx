@@ -260,8 +260,27 @@ export default function GeneratePage() {
       setGenerateProgress(90)
       setGenerateStep('🎨 Formatting sections...')
       
+      // Add rotating messages while waiting for API
+      const formattingMessages = [
+        '✨ Adding final touches...',
+        '🎯 Perfecting the layout...',
+        '💫 Making it shine...',
+        '🔥 Almost there...',
+        '⚡ Finalizing your masterpiece...',
+        '🌟 Polishing to perfection...',
+        '🎨 Applying professional styling...',
+        '✅ Just a few more seconds...'
+      ]
+      
+      let messageIndex = 0
+      const messageInterval = setInterval(() => {
+        setGenerateStep(formattingMessages[messageIndex % formattingMessages.length])
+        messageIndex++
+      }, 2000)
+      
       // Wait for API response
       const response = await responsePromise
+      clearInterval(messageInterval)
       const result = await response.json()
       
       setGenerateProgress(95)

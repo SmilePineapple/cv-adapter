@@ -800,32 +800,51 @@ export default function ReviewPage() {
                   )}
                 </div>
               </div>
-            )
-          })}
-        </div>
+            ))}
+          </div>
 
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-          <Link
-            href={`/edit/${generationData.cv_id}`}
-            className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
-          >
-            <Edit3 className="w-5 h-5 mr-2" />
-            Edit CV in Editor
-          </Link>
-          <button
-            onClick={handleDownload}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
-          >
-            <Download className="w-5 h-5 mr-2" />
-            Download Tailored CV
-          </button>
-          <Link
-            href={`/generate/${generationData.cv_id}`}
-            className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
-          >
-            Generate Another Version
-          </Link>
+          {/* Action Buttons */}
+          <div className="flex gap-4 mt-8">
+            {!showReview && (
+              <button
+                onClick={handleAIReview}
+                disabled={isReviewing}
+                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50 flex items-center justify-center"
+              >
+                {isReviewing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Reviewing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    AI Review
+                  </>
+                )}
+              </button>
+            )}
+            <Link
+              href={`/edit/${generationData.cv_id}`}
+              className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+            >
+              <Edit3 className="w-5 h-5 mr-2" />
+              Edit CV in Editor
+            </Link>
+            <button
+              onClick={handleDownload}
+              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
+            >
+              <Download className="w-5 h-5 mr-2" />
+              Download Tailored CV
+            </button>
+            <Link
+              href={`/generate/${generationData.cv_id}`}
+              className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
+            >
+              Generate Another Version
+            </Link>
+          </div>
         </div>
       </div>
     </div>
