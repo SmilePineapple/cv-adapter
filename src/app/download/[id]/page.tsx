@@ -17,7 +17,6 @@ import {
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
-import ATSOptimizer from '@/components/ATSOptimizer'
 
 interface GenerationData {
   id: string
@@ -26,6 +25,15 @@ interface GenerationData {
   created_at: string
   cv_id: string
   ats_score?: number
+}
+
+interface AIReview {
+  overall_assessment: string
+  strengths: string[]
+  improvements: string[]
+  missing_sections: string[]
+  keywords_to_add: string[]
+  formatting_tips: string[]
 }
 
 const TEMPLATES = [
@@ -125,6 +133,10 @@ export default function DownloadPage() {
   const [exportProgress, setExportProgress] = useState(0)
   const [exportStep, setExportStep] = useState('')
   const [previewHtml, setPreviewHtml] = useState('')
+  const [aiReview, setAiReview] = useState<AIReview | null>(null)
+  const [isReviewing, setIsReviewing] = useState(false)
+  const [showReview, setShowReview] = useState(false)
+  const [reviewStep, setReviewStep] = useState('')
 
   useEffect(() => {
     fetchGenerationData()
@@ -405,6 +417,46 @@ export default function DownloadPage() {
     return html
   }
 
+  const handleAIReview = async () => {
+    setIsReviewing(true)
+    setReviewStep('🔍 Analyzing your CV...')
+    
+    try {
+      // Simulate progress updates
+      setTimeout(() => setReviewStep('📊 Evaluating ATS compatibility...'), 2000)
+      setTimeout(() => setReviewStep('💡 Identifying improvements...'), 4000)
+      setTimeout(() => setReviewStep('🎯 Checking keyword optimization...'), 6000)
+      setTimeout(() => setReviewStep('✨ Finalizing review...'), 8000)
+      
+      const response = await fetch('/api/review-cv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          generation_id: generationId
+        }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to review CV')
+        return
+      }
+
+      setAiReview(result.review)
+      setShowReview(true)
+      toast.success('AI review complete!')
+    } catch (error) {
+      console.error('Review error:', error)
+      toast.error('Failed to review CV')
+    } finally {
+      setIsReviewing(false)
+      setReviewStep('')
+    }
+  }
+
   const handleExport = async () => {
     if (!generationData) return
 
@@ -620,27 +672,100 @@ export default function DownloadPage() {
               </div>
             )}
 
-            {/* ATS Optimization */}
-            {generationData && generationData.ats_score && generationData.ats_score < 75 && (
-              <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4 border-2 border-orange-200">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">⚠️</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-sm mb-1">Low ATS Score Detected</h3>
-                    <p className="text-gray-700 text-xs mb-3">
-                      Your CV has an ATS score of {generationData.ats_score}%. This means it may not pass through Applicant Tracking Systems. Let AI optimize it to 75%+!
-                    </p>
-                    <ATSOptimizer
-                      generationId={generationId}
-                      currentScore={generationData.ats_score}
-                      onOptimizationComplete={() => fetchGenerationData()}
-                    />
+            {/* AI Review Section */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">AI Expert Review</h3>
+                {!showReview && (
+                  <button
+                    onClick={handleAIReview}
+                    disabled={isReviewing}
+                    className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50 text-sm"
+                  >
+                    {isReviewing ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Reviewing...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Get AI Review
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+              
+              {isReviewing && reviewStep && (
+                <div className="text-sm text-gray-600 animate-pulse mb-4">
+                  {reviewStep}
+                </div>
+              )}
+              
+              {showReview && aiReview && (
+                <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-6 border-2 border-purple-200">
+                  <div className="space-y-4">
+                    {/* Overall Assessment */}
+                    <div className="bg-white rounded-lg p-4 shadow-sm">
+                      <h4 className="font-semibold text-gray-900 text-sm mb-2">Overall Assessment</h4>
+                      <p className="text-sm text-gray-700">{aiReview.overall_assessment}</p>
+                    </div>
+                    
+                    {/* Strengths & Improvements Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-green-700 text-sm mb-2">✓ Strengths</h4>
+                        <ul className="space-y-1">
+                          {aiReview.strengths.map((strength, index) => (
+                            <li key={index} className="text-xs text-gray-600">• {strength}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-orange-700 text-sm mb-2">⚡ Areas for Improvement</h4>
+                        <ul className="space-y-1">
+                          {aiReview.improvements.map((improvement, index) => (
+                            <li key={index} className="text-xs text-gray-600">• {improvement}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    {/* Additional Insights */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Missing Sections</h4>
+                        <ul className="space-y-1">
+                          {aiReview.missing_sections.map((section, index) => (
+                            <li key={index} className="text-xs text-gray-600">• {section}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Keywords to Add</h4>
+                        <ul className="space-y-1">
+                          {aiReview.keywords_to_add.map((keyword, index) => (
+                            <li key={index} className="text-xs text-gray-600">• {keyword}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Formatting Tips</h4>
+                        <ul className="space-y-1">
+                          {aiReview.formatting_tips.map((tip, index) => (
+                            <li key={index} className="text-xs text-gray-600">• {tip}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Download Button */}
             <div className="mt-6">

@@ -618,13 +618,31 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
                 <div class="hobbies-grid">
                   ${hobbies.map(hobby => `
                     <div class="hobby-item">
-                      ${hobby.icon}
-                      <span class="hobby-label">${escapeHtml(hobby.name)}</span>
+                      ${hobby.icon ? hobby.icon : ''}
+                      <span class="hobby-label">${escapeHtml(hobby.name || hobby)}</span>
                     </div>
                   `).join('')}
                 </div>
               </div>
             ` : ''}
+            
+            ${(() => {
+              // Get additional sections (not in right column)
+              const additionalSections = sections.filter(s => 
+                !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+              )
+              // Put half of additional sections in left column for balance
+              const leftAdditionalSections = additionalSections.slice(0, Math.ceil(additionalSections.length / 2))
+              return leftAdditionalSections.map(section => `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons[section.type] || sectionIcons.additional_information}
+                    ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                </div>
+              `).join('')
+            })()}
           </div>
           
           <!-- Right Column -->
@@ -639,17 +657,23 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
               </div>
             ` : ''}
             
-            ${sections.filter(s => 
-              !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
-            ).map(section => `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons[section.type] || sectionIcons.additional_information}
-                  ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+            ${(() => {
+              // Get additional sections (not in left column)
+              const additionalSections = sections.filter(s => 
+                !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+              )
+              // Put remaining half in right column for balance
+              const rightAdditionalSections = additionalSections.slice(Math.ceil(additionalSections.length / 2))
+              return rightAdditionalSections.map(section => `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons[section.type] || sectionIcons.additional_information}
+                    ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
                 </div>
-                <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
-              </div>
-            `).join('')}
+              `).join('')
+            })()}
           </div>
         </div>
       </body>
