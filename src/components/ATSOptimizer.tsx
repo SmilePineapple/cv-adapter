@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Sparkles, TrendingUp, AlertTriangle, CheckCircle, Loader2, X, Zap } from 'lucide-react'
-import { toast } from 'react-hot-toast'
+import { toast } from 'sonner'
 
 interface ATSOptimizerProps {
   generationId: string
