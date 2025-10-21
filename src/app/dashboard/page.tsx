@@ -108,7 +108,7 @@ export default function DashboardPage() {
   const [usage, setUsage] = useState<UsageInfo | null>(null)
   const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters'>('generations')
   const [searchQuery, setSearchQuery] = useState('')
   const [ratingModalOpen, setRatingModalOpen] = useState(false)
   const [selectedCvForRating, setSelectedCvForRating] = useState<string | null>(null)
