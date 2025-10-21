@@ -194,13 +194,24 @@ export default function GeneratePage() {
 
     setIsGenerating(true)
     setGenerateProgress(0)
-    setGenerateStep('Analyzing job requirements...')
+    setGenerateStep('🔍 Analyzing job requirements...')
 
     try {
-      setGenerateProgress(15)
-      setGenerateStep('Preparing CV content...')
+      // Step 1: Preparing
+      await new Promise(resolve => setTimeout(resolve, 300))
+      setGenerateProgress(10)
+      setGenerateStep('📄 Extracting CV content...')
       
-      const response = await fetch('/api/rewrite', {
+      await new Promise(resolve => setTimeout(resolve, 400))
+      setGenerateProgress(20)
+      setGenerateStep('🎯 Matching skills to job description...')
+      
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setGenerateProgress(30)
+      setGenerateStep('🤖 AI is analyzing your experience...')
+      
+      // Start API call
+      const responsePromise = fetch('/api/rewrite', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -212,23 +223,37 @@ export default function GeneratePage() {
           rewrite_style: rewriteStyle,
           tone: tone,
           custom_sections: customSections,
-          output_language: outputLanguage, // Include language preference
+          output_language: outputLanguage,
         }),
       })
 
-      setGenerateProgress(40)
-      setGenerateStep('AI is rewriting your CV...')
+      // Step 2: AI Processing
+      await new Promise(resolve => setTimeout(resolve, 600))
+      setGenerateProgress(45)
+      setGenerateStep('✍️ Rewriting work experience...')
+      
+      await new Promise(resolve => setTimeout(resolve, 700))
+      setGenerateProgress(55)
+      setGenerateStep('💼 Tailoring professional summary...')
+      
+      await new Promise(resolve => setTimeout(resolve, 800))
+      setGenerateProgress(65)
+      setGenerateStep('🎓 Optimizing skills section...')
+      
+      await new Promise(resolve => setTimeout(resolve, 700))
+      setGenerateProgress(75)
+      setGenerateStep('🎯 Running ATS optimization...')
+      
+      await new Promise(resolve => setTimeout(resolve, 600))
+      setGenerateProgress(85)
+      setGenerateStep('📊 Calculating ATS score...')
 
-      // Simulate ATS optimization step
-      setTimeout(() => {
-        setGenerateProgress(70)
-        setGenerateStep('🎯 Optimizing for ATS compatibility...')
-      }, 1500)
-
+      // Wait for API response
+      const response = await responsePromise
       const result = await response.json()
       
       setGenerateProgress(95)
-      setGenerateStep('Finalizing changes...')
+      setGenerateStep('✨ Finalizing your perfect CV...')
 
       if (!response.ok) {
         if (result.limit_reached) {
