@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
+import ATSOptimizer from '@/components/ATSOptimizer'
 
 interface GenerationData {
   id: string
@@ -24,6 +25,7 @@ interface GenerationData {
   output_sections: { sections: CVSection[] }
   created_at: string
   cv_id: string
+  ats_score?: number
 }
 
 const TEMPLATES = [
@@ -144,7 +146,7 @@ export default function DownloadPage() {
 
       const { data: generation, error } = await supabase
         .from('generations')
-        .select('id, job_title, output_sections, created_at, cv_id, cvs!inner(parsed_sections)')
+        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs!inner(parsed_sections)')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
@@ -613,6 +615,28 @@ export default function DownloadPage() {
                       <Sparkles className="w-4 h-4" />
                       Select Hobby Icons
                     </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ATS Optimization */}
+            {generationData && generationData.ats_score && generationData.ats_score < 75 && (
+              <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4 border-2 border-orange-200">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <span className="text-2xl">⚠️</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-gray-900 text-sm mb-1">Low ATS Score Detected</h3>
+                    <p className="text-gray-700 text-xs mb-3">
+                      Your CV has an ATS score of {generationData.ats_score}%. This means it may not pass through Applicant Tracking Systems. Let AI optimize it to 75%+!
+                    </p>
+                    <ATSOptimizer
+                      generationId={generationId}
+                      currentScore={generationData.ats_score}
+                      onOptimizationComplete={() => fetchGenerationData()}
+                    />
                   </div>
                 </div>
               </div>

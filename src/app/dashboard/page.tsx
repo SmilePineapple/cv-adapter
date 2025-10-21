@@ -10,6 +10,7 @@ import UpgradeModal from '@/components/UpgradeModal'
 import PromoBanner from '@/components/PromoBanner'
 import { WelcomeModal } from '@/components/WelcomeModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
+import ATSOptimizer from '@/components/ATSOptimizer'
 import { 
   Upload, 
   FileText, 
@@ -994,16 +995,25 @@ export default function DashboardPage() {
                           <p className="text-sm text-gray-500">
                             {generation.rewrite_style} • {generation.tone} • {formatDate(generation.created_at)}
                           </p>
-                          {generation.ats_score && (
-                            <div className={`mt-2 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                              generation.ats_score >= 80 ? 'bg-green-100 text-green-800' :
-                              generation.ats_score >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              <TrendingUp className="w-3 h-3 mr-1" />
-                              ATS Score: {generation.ats_score}%
-                            </div>
-                          )}
+                          <div className="flex items-center gap-2 mt-2">
+                            {generation.ats_score && (
+                              <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                                generation.ats_score >= 80 ? 'bg-green-100 text-green-800' :
+                                generation.ats_score >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-red-100 text-red-800'
+                              }`}>
+                                <TrendingUp className="w-3 h-3 mr-1" />
+                                ATS Score: {generation.ats_score}%
+                              </div>
+                            )}
+                            {generation.ats_score && generation.ats_score < 75 && (
+                              <ATSOptimizer
+                                generationId={generation.id}
+                                currentScore={generation.ats_score}
+                                onOptimizationComplete={() => fetchDashboardData()}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                       
