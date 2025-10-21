@@ -103,11 +103,29 @@ export async function POST(request: NextRequest) {
     const originalSections: CVSection[] = (generation as any).cvs.parsed_sections.sections
     const modifiedSections: CVSection[] = generation.output_sections.sections
     const jobTitle = generation.job_title
+    const cvId = generation.cv_id
+
+    // Fetch latest hobbies from cv_sections table (user may have customized icons)
+    const { data: latestHobbies } = await supabase
+      .from('cv_sections')
+      .select('*')
+      .eq('cv_id', cvId)
+      .eq('section_type', 'hobbies')
+      .single()
 
     // Merge sections: use modified sections for experience, keep original for everything else
     const completeSections: CVSection[] = originalSections.map(originalSection => {
       // Check if this section was modified (typically experience sections)
       const modifiedSection = modifiedSections.find(mod => mod.type === originalSection.type)
+      
+      // If this is the hobbies section and we have latest data, use it
+      if (originalSection.type === 'hobbies' && latestHobbies) {
+        return {
+          type: 'hobbies',
+          content: latestHobbies.content,
+          order: latestHobbies.order_index || originalSection.order || 999
+        }
+      }
       
       if (modifiedSection) {
         // Use the AI-modified version
@@ -124,6 +142,15 @@ export async function POST(request: NextRequest) {
         completeSections.push(modSection)
       }
     })
+
+    // If hobbies exist in cv_sections but not in original/modified, add them
+    if (latestHobbies && !completeSections.find(s => s.type === 'hobbies')) {
+      completeSections.push({
+        type: 'hobbies',
+        content: latestHobbies.content,
+        order: latestHobbies.order_index || 999
+      })
+    }
 
     // Sort sections by order
     const sections: CVSection[] = completeSections.sort((a, b) => (a.order || 0) - (b.order || 0))
