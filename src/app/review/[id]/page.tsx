@@ -211,29 +211,36 @@ export default function ReviewPage() {
         return
       }
 
-      // Fetch original CV data
-      const { data: cvData, error: cvError } = await supabase
-        .from('cvs')
-        .select('parsed_sections')
-        .eq('id', generation.cv_id)
-        .eq('user_id', user.id)
-        .single()
+      // Fetch original CV data (if it exists - might be NULL for orphaned generations)
+      let originalSecs: CVSection[] = []
+      
+      if (generation.cv_id) {
+        const { data: cvData, error: cvError } = await supabase
+          .from('cvs')
+          .select('parsed_sections')
+          .eq('id', generation.cv_id)
+          .eq('user_id', user.id)
+          .single()
 
-      if (cvError || !cvData) {
-        toast.error('Original CV not found')
-        router.push('/dashboard')
-        return
+        if (cvData && !cvError) {
+          originalSecs = cvData.parsed_sections.sections || []
+        } else {
+          console.warn('Original CV not found - this is an orphaned generation')
+        }
+      } else {
+        console.warn('No cv_id - this is an orphaned generation (original CV was deleted)')
       }
 
       setGenerationData(generation)
-      const originalSecs: CVSection[] = cvData.parsed_sections.sections || []
       const generatedSecs: CVSection[] = generation.output_sections.sections || []
       
       // Merge: use generated sections where they exist, otherwise use original
-      const mergedSections = originalSecs.map((originalSection: CVSection) => {
-        const generatedSection = generatedSecs.find((s: CVSection) => s.type === originalSection.type)
-        return generatedSection || originalSection
-      })
+      const mergedSections = originalSecs.length > 0 
+        ? originalSecs.map((originalSection: CVSection) => {
+            const generatedSection = generatedSecs.find((s: CVSection) => s.type === originalSection.type)
+            return generatedSection || originalSection
+          })
+        : generatedSecs // If no original, just use generated sections
       
       // Add any generated sections that don't exist in original
       generatedSecs.forEach((genSection: CVSection) => {
@@ -920,13 +927,20 @@ export default function ReviewPage() {
                 )}
               </button>
             )}
-            <Link
-              href={`/edit/${generationData.cv_id}`}
-              className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
-            >
-              <Edit3 className="w-5 h-5 mr-2" />
-              Edit CV in Editor
-            </Link>
+            {generationData.cv_id ? (
+              <Link
+                href={`/edit/${generationData.cv_id}`}
+                className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
+              >
+                <Edit3 className="w-5 h-5 mr-2" />
+                Edit CV in Editor
+              </Link>
+            ) : (
+              <div className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold flex items-center justify-center cursor-not-allowed" title="Original CV was deleted">
+                <Edit3 className="w-5 h-5 mr-2" />
+                Edit CV (Original Deleted)
+              </div>
+            )}
             <button
               onClick={handleDownload}
               className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
@@ -934,12 +948,18 @@ export default function ReviewPage() {
               <Download className="w-5 h-5 mr-2" />
               Download Tailored CV
             </button>
-            <Link
-              href={`/generate/${generationData.cv_id}`}
-              className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
-            >
-              Generate Another Version
-            </Link>
+            {generationData.cv_id ? (
+              <Link
+                href={`/generate/${generationData.cv_id}`}
+                className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
+              >
+                Generate Another Version
+              </Link>
+            ) : (
+              <div className="flex-1 border border-gray-300 text-gray-400 py-3 px-6 rounded-lg font-semibold flex items-center justify-center cursor-not-allowed" title="Original CV was deleted">
+                Generate Another (Original Deleted)
+              </div>
+            )}
           </div>
 
           {/* Three-Column Comparison View */}
