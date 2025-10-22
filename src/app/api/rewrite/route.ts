@@ -283,15 +283,17 @@ CRITICAL RULES:
 1. PRESERVE ALL: Names, contacts, dates, companies, job titles, ALL work experiences
 2. INCLUDE EVERY SINGLE WORK EXPERIENCE: The CV has MULTIPLE jobs - you MUST include ALL of them, not just one
 3. DO NOT MERGE OR COMBINE JOBS: Each job should be a separate entry with its own title, company, dates, and responsibilities
-4. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
-5. TONE: ${tone}
-6. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+4. DO NOT SUMMARIZE OR SHORTEN: Keep ALL bullet points and details from each job - expand them, don't reduce them
+5. EDUCATION MUST STAY IDENTICAL: Copy education section EXACTLY as shown - same degrees, universities, dates
+6. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
+7. TONE: ${tone}
+8. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
 
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
-- Experience: COUNT the jobs in the original CV and include THE SAME NUMBER in your output. Each job needs 4-5 bullets, add metrics, use action verbs
+- Experience: COUNT the jobs in the original CV and include THE SAME NUMBER in your output. For EACH job, include ALL original bullet points PLUS add 1-2 more with metrics and action verbs. NEVER reduce the number of bullet points.
 - Skills: Include ALL skills from original CV, prioritize job-relevant ones
-- Education: MUST include ALL qualifications exactly as shown - DO NOT leave empty
+- Education: COPY EXACTLY from original - same degrees, universities, dates, coursework. DO NOT modify, replace, or leave empty.
 - Certifications: MUST include ALL certifications and licenses exactly as shown - DO NOT leave empty
 - Hobbies: MUST include ALL hobbies/interests exactly as shown - DO NOT leave empty
 - Groups: MUST include if present in original CV
