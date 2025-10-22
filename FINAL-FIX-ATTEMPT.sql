@@ -12,7 +12,7 @@
 SELECT '=== CURRENT STATE ===' as step;
 
 SELECT 
-  constraint_name,
+  conname as constraint_name,
   CASE confdeltype
     WHEN 'c' THEN '❌ CASCADE (WRONG!)'
     WHEN 'n' THEN '✅ SET NULL (CORRECT!)'
@@ -50,7 +50,7 @@ ON UPDATE CASCADE;
 SELECT '=== VERIFICATION ===' as step;
 
 SELECT 
-  constraint_name,
+  conname as constraint_name,
   CASE confdeltype
     WHEN 'c' THEN '❌ CASCADE (STILL WRONG!)'
     WHEN 'n' THEN '✅ SET NULL (FIXED!)'
