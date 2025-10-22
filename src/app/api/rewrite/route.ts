@@ -281,14 +281,15 @@ ${sectionsText}
 
 CRITICAL RULES:
 1. PRESERVE ALL: Names, contacts, dates, companies, job titles, ALL work experiences
-2. INCLUDE EVERY WORK EXPERIENCE: Do NOT skip or merge any jobs - include ALL of them
-3. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
-4. TONE: ${tone}
-5. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+2. INCLUDE EVERY SINGLE WORK EXPERIENCE: The CV has MULTIPLE jobs - you MUST include ALL of them, not just one
+3. DO NOT MERGE OR COMBINE JOBS: Each job should be a separate entry with its own title, company, dates, and responsibilities
+4. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
+5. TONE: ${tone}
+6. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
 
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
-- Experience: Include EVERY job listed, 4-5 bullets per role, add metrics, use action verbs
+- Experience: COUNT the jobs in the original CV and include THE SAME NUMBER in your output. Each job needs 4-5 bullets, add metrics, use action verbs
 - Skills: Include ALL skills from original CV, prioritize job-relevant ones
 - Education: MUST include ALL qualifications exactly as shown - DO NOT leave empty
 - Certifications: MUST include ALL certifications and licenses exactly as shown - DO NOT leave empty
