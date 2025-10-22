@@ -18,18 +18,28 @@ export async function POST(request: NextRequest) {
 
     const { generation_id, improvements, missing_sections, keywords, formatting_tips } = await request.json()
 
-    // Check if user has already used their free AI improvement
-    const { data: existingImprovement, error: checkError } = await supabase
-      .from('ai_improvements')
-      .select('id')
+    // Check user's plan type
+    const { data: usage } = await supabase
+      .from('usage_tracking')
+      .select('plan_type')
       .eq('user_id', user.id)
       .single()
 
-    if (existingImprovement) {
-      return NextResponse.json({ 
-        error: 'You have already used your free AI improvement. Upgrade to Pro for unlimited improvements!' 
-      }, { status: 403 })
+    // Only check free improvement usage for free users
+    if (usage?.plan_type === 'free') {
+      const { data: existingImprovement } = await supabase
+        .from('ai_improvements')
+        .select('id')
+        .eq('user_id', user.id)
+        .single()
+
+      if (existingImprovement) {
+        return NextResponse.json({ 
+          error: 'You have already used your free AI improvement. Upgrade to Pro for unlimited improvements!' 
+        }, { status: 403 })
+      }
     }
+    // Pro users have unlimited improvements - no check needed
 
     // Fetch generation data
     const { data: generation, error: genError } = await supabase
@@ -127,16 +137,18 @@ Return the improved CV sections in this JSON format:
       return NextResponse.json({ error: 'Failed to save improvements' }, { status: 500 })
     }
 
-    // Track that user has used their free improvement
-    await supabase
-      .from('ai_improvements')
-      .insert({
-        user_id: user.id,
-        generation_id,
-        improvements_applied: improvements,
-        missing_sections_added: missing_sections,
-        keywords_added: keywords
-      })
+    // Track that free user has used their free improvement (Pro users don't need tracking)
+    if (usage?.plan_type === 'free') {
+      await supabase
+        .from('ai_improvements')
+        .insert({
+          user_id: user.id,
+          generation_id,
+          improvements_applied: improvements,
+          missing_sections_added: missing_sections,
+          keywords_added: keywords
+        })
+    }
 
     return NextResponse.json({
       success: true,

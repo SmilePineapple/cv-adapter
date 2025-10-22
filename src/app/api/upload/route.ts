@@ -181,8 +181,8 @@ export async function POST(request: NextRequest) {
       section_type: mapSectionType(section.type),
       raw_content: section.content,
       content: section.content,
-      order_index: index,
-      layout: 'left' as const
+      order_index: index
+      // Removed layout field - doesn't exist in database
     }))
 
     if (sectionsToInsert.length > 0) {
