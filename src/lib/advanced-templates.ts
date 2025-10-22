@@ -435,16 +435,16 @@ export function detectHobbies(text: string): Array<{ name: string; icon: string 
   const detected: Array<{ name: string; icon: string }> = []
   
   const hobbyKeywords: Record<string, string[]> = {
-    travel: ['travel', 'exploring', 'distant lands', 'countries', 'world'],
-    reading: ['reading', 'books', 'literature', 'novel'],
-    photography: ['photography', 'photos', 'camera', 'capturing'],
-    music: ['music', 'musical', 'singing', 'instrument'],
+    travel: ['travel', 'exploring', 'distant lands', 'countries', 'world', 'exploring distant'],
+    reading: ['reading', 'books', 'literature', 'novel', 'lost in a good book', 'book'],
+    photography: ['photography', 'photos', 'camera', 'capturing', 'capturing moments'],
+    music: ['music', 'musical', 'singing', 'instrument', 'feeling the music'],
     swimming: ['swimming', 'swim'],
     fitness: ['fitness', 'gym', 'exercise', 'workout'],
     cooking: ['cooking', 'culinary', 'food', 'recipes'],
     gaming: ['gaming', 'games', 'video games'],
     writing: ['writing', 'journaling', 'journal', 'blog'],
-    meditation: ['meditation', 'mindfulness', 'yoga', 'zen'],
+    meditation: ['meditation', 'mindfulness', 'yoga', 'zen', 'massage', 'balance'],
     art: ['art', 'painting', 'drawing', 'creative'],
     gardening: ['gardening', 'plants', 'garden']
   }

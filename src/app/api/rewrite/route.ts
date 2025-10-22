@@ -289,10 +289,15 @@ CRITICAL RULES:
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
 - Experience: Include EVERY job listed, 4-5 bullets per role, add metrics, use action verbs
-- Skills: Include ALL skills, prioritize job-relevant ones
-- Education: Include ALL qualifications
-- Certifications: Include ALL certifications and licenses
-- Keep hobbies, groups, strengths, additional info unchanged
+- Skills: Include ALL skills from original CV, prioritize job-relevant ones
+- Education: MUST include ALL qualifications exactly as shown - DO NOT leave empty
+- Certifications: MUST include ALL certifications and licenses exactly as shown - DO NOT leave empty
+- Hobbies: MUST include ALL hobbies/interests exactly as shown - DO NOT leave empty
+- Groups: MUST include if present in original CV
+- Strengths: MUST include if present in original CV
+- Additional Info: MUST include if present in original CV
+
+CRITICAL: Do NOT leave any sections empty if they have content in the original CV!
 
 ${customSections && customSections.length > 0 ? `ADD SECTIONS: ${customSections.join(', ')}` : ''}
 
