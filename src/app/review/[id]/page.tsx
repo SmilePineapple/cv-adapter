@@ -318,8 +318,8 @@ export default function ReviewPage() {
       const { error } = await supabase
         .from('generations')
         .update({
-          output_sections: { sections: editedSections },
-          updated_at: new Date().toISOString()
+          output_sections: { sections: editedSections }
+          // Removed updated_at - column doesn't exist, database handles timestamps automatically
         })
         .eq('id', generationId)
 

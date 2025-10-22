@@ -296,15 +296,21 @@ CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include 
 }
 
 // Map parsed section types to valid database enum values
-function mapSectionType(type: string): string {
+const mapSectionType = (type: string): string => {
+  // Valid section types based on database constraint:
+  // header, contact, summary, experience, education, skills, certifications, projects, publications, interests, custom
   const typeMap: Record<string, string> = {
-    'name': 'header',
+    'name': 'summary', // Changed from 'header' to 'summary' - header might not be valid
     'contact': 'contact',
     'summary': 'summary',
+    'profile': 'summary',
     'experience': 'experience',
+    'work_experience': 'experience',
     'education': 'education',
     'skills': 'skills',
     'certifications': 'certifications',
+    'certificates': 'certifications',
+    'licenses': 'certifications',
     'projects': 'projects',
     'publications': 'publications',
     'hobbies': 'interests',
@@ -312,10 +318,11 @@ function mapSectionType(type: string): string {
     'groups': 'custom',
     'strengths': 'custom',
     'additional': 'custom',
-    'licenses': 'certifications'
+    'additional_information': 'custom'
   }
   
-  return typeMap[type.toLowerCase()] || 'custom'
+  const normalized = type.toLowerCase().replace(/\s+/g, '_')
+  return typeMap[normalized] || 'custom'
 }
 
 // Simple CV section parser
