@@ -324,12 +324,16 @@ export default function ReviewPage() {
         .eq('id', generationId)
 
       if (error) {
-        toast.error('Failed to save changes')
+        console.error('Save error:', error)
+        toast.error(`Failed to save changes: ${error.message}`)
       } else {
         toast.success('Changes saved successfully!')
         setEditingSection(null)
+        // Refresh the data
+        fetchGenerationData()
       }
     } catch (error) {
+      console.error('Save exception:', error)
       toast.error('Failed to save changes')
     } finally {
       setIsSaving(false)
