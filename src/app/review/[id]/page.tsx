@@ -450,12 +450,29 @@ export default function ReviewPage() {
       // Update sections with improved content
       setEditedSections(result.sections)
       setHasUsedFreeImprovement(true)
-      toast.success('Improvements applied successfully! Your CV has been updated.')
+      
+      // Show ATS score improvement if available
+      if (result.ats_score) {
+        const { before, after, improvement } = result.ats_score
+        const improvementText = improvement > 0 
+          ? `📈 ATS Score improved from ${before}% to ${after}% (+${improvement}%!)` 
+          : `ATS Score: ${after}%`
+        
+        toast.success(
+          <div>
+            <div className="font-bold">✅ Improvements Applied!</div>
+            <div className="text-sm mt-1">{improvementText}</div>
+          </div>,
+          { duration: 5000 }
+        )
+      } else {
+        toast.success('Improvements applied successfully! Your CV has been updated.')
+      }
       
       // Refresh the page to show updated content
       setTimeout(() => {
         window.location.reload()
-      }, 2000)
+      }, 3000)
     } catch (error) {
       console.error('Apply improvements error:', error)
       toast.error('Failed to apply improvements')
