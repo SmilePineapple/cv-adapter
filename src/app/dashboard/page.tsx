@@ -215,7 +215,7 @@ export default function DashboardPage() {
         .from('generations')
         .select(`
           id, job_title, job_description, rewrite_style, tone, created_at, cv_id, ats_score,
-          cvs!inner(file_meta)
+          cvs(file_meta)
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
