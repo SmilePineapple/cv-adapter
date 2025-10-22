@@ -182,9 +182,7 @@ export async function POST(request: NextRequest) {
       raw_content: section.content,
       content: section.content,
       order_index: index,
-      layout: 'left' as const,
-      font_size: 14,
-      text_color: '#000000'
+      layout: 'left' as const
     }))
 
     if (sectionsToInsert.length > 0) {
@@ -236,29 +234,44 @@ async function parseCVWithAI(text: string, languageCode: string): Promise<Parsed
         content: 'You are a CV parsing expert. Extract structured information from CVs in any language. Return valid JSON only.'
       }, {
         role: 'user',
-        content: `Extract CV sections from this text. Language: ${languageCode}
+        content: `Extract ALL sections from this CV. Language: ${languageCode}
 
 CV Text:
-${text.substring(0, 4000)} ${text.length > 4000 ? '...' : ''}
+${text.substring(0, 5000)} ${text.length > 5000 ? '...' : ''}
 
-Return JSON with this structure:
+IMPORTANT: Extract EVERY section you find, including:
+- Name, Contact, Profile/Summary
+- Work Experience (all jobs with full details)
+- Education (all qualifications)
+- Skills (ALL skills listed)
+- Certifications/Licenses (ALL certifications)
+- Hobbies/Interests (ALL hobbies)
+- Groups/Memberships
+- Strengths/Core Competencies
+- Additional Information
+- Any other sections present
+
+Return JSON:
 {
   "sections": [
     {"type": "name", "content": "Full Name", "order": 0},
-    {"type": "contact", "content": "Email, phone, location", "order": 1},
-    {"type": "summary", "content": "Professional summary", "order": 2},
-    {"type": "experience", "content": "Work history with dates and companies", "order": 3},
-    {"type": "education", "content": "Education details", "order": 4},
-    {"type": "skills", "content": "Skills list", "order": 5},
-    {"type": "certifications", "content": "Certifications", "order": 6},
-    {"type": "hobbies", "content": "Interests/hobbies", "order": 7}
+    {"type": "contact", "content": "Email, phone, address, etc", "order": 1},
+    {"type": "summary", "content": "Profile/Summary text", "order": 2},
+    {"type": "experience", "content": "ALL work experience with dates, companies, responsibilities", "order": 3},
+    {"type": "education", "content": "ALL education with institutions and dates", "order": 4},
+    {"type": "skills", "content": "COMPLETE skills list", "order": 5},
+    {"type": "certifications", "content": "ALL certifications and licenses", "order": 6},
+    {"type": "hobbies", "content": "ALL hobbies and interests", "order": 7},
+    {"type": "groups", "content": "Groups/memberships if present", "order": 8},
+    {"type": "strengths", "content": "Strengths/competencies if present", "order": 9},
+    {"type": "additional", "content": "Any additional information", "order": 10}
   ]
 }
 
-Extract ALL sections found. Use exact content from CV. Preserve formatting.`
+CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include ALL details.`
       }],
       temperature: 0.1, // Low temperature for consistency
-      max_tokens: 2000
+      max_tokens: 3000 // Increased for comprehensive CVs
     })
 
     const response = completion.choices[0]?.message?.content
@@ -296,7 +309,11 @@ function mapSectionType(type: string): string {
     'projects': 'projects',
     'publications': 'publications',
     'hobbies': 'interests',
-    'interests': 'interests'
+    'interests': 'interests',
+    'groups': 'custom',
+    'strengths': 'custom',
+    'additional': 'custom',
+    'licenses': 'certifications'
   }
   
   return typeMap[type.toLowerCase()] || 'custom'
