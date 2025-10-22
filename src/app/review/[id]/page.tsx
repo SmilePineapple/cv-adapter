@@ -38,23 +38,57 @@ const formatSectionContent = (content: any): string => {
         return item
       }
       
-      // Handle structured experience objects
+      // Handle structured objects (experience, education, certifications)
       if (typeof item === 'object' && item !== null) {
         const parts = []
         
-        // Title line
+        // Experience: Title line
         if (item.title || item.job_title) {
           const title = item.title || item.job_title
-          const company = item.company || ''
+          const company = item.company || item.employer || ''
           const dates = item.dates || item.duration || ''
+          const location = item.location || ''
           
-          if (company && dates) {
+          if (company && dates && location) {
+            parts.push(`${title} | ${company} | ${dates} | ${location}`)
+          } else if (company && dates) {
             parts.push(`${title} | ${company} | ${dates}`)
           } else if (company) {
             parts.push(`${title} | ${company}`)
           } else {
             parts.push(title)
           }
+        }
+        
+        // Education: Qualification line
+        if (item.qualification || item.degree) {
+          const qual = item.qualification || item.degree
+          const institution = item.institution || item.school || ''
+          const date = item.date || item.year || ''
+          
+          if (institution && date) {
+            parts.push(`${qual} | ${institution} | ${date}`)
+          } else if (institution) {
+            parts.push(`${qual} | ${institution}`)
+          } else {
+            parts.push(qual)
+          }
+        }
+        
+        // Certifications: Certification line
+        if (item.certification || item.license) {
+          const cert = item.certification || item.license
+          const org = item.organization || item.issuer || ''
+          const dates = item.dates || item.date || ''
+          const licenseNum = item.license_number || ''
+          const url = item.url || ''
+          
+          let certLine = cert
+          if (org) certLine += ` | ${org}`
+          if (dates) certLine += ` | ${dates}`
+          if (licenseNum) certLine += ` | License: ${licenseNum}`
+          if (url) certLine += `\n  URL: ${url}`
+          parts.push(certLine)
         }
         
         // Bullets/responsibilities
@@ -566,28 +600,34 @@ export default function ReviewPage() {
           )}
         </div>
 
-        {/* AI Review Panel */}
+        {/* AI Review Modal */}
         {showReview && aiReview && (
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-lg p-6 mb-8 border-2 border-purple-200">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">AI Expert Review</h2>
-                  <p className="text-sm text-gray-600">Personalized feedback for your CV</p>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-t-2xl z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                      <Sparkles className="w-7 h-7 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold">AI Expert Review</h2>
+                      <p className="text-sm text-purple-100">Personalized feedback for your CV</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowReview(false)}
+                    className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-all"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => setShowReview(false)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Overall Assessment */}
+              
+              <div className="p-6 bg-gradient-to-br from-purple-50 to-blue-50">
+                {/* Overall Assessment */}
             <div className="bg-white rounded-lg p-5 mb-4 shadow-sm">
               <div className="flex items-start space-x-3">
                 <Target className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
@@ -709,6 +749,8 @@ export default function ReviewPage() {
                     <>💡 Get 1 FREE AI improvement! This will apply all suggestions above and update your CV automatically.</>
                   )}
                 </p>
+              </div>
+            </div>
               </div>
             </div>
           </div>
