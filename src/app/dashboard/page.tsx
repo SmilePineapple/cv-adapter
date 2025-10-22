@@ -400,7 +400,7 @@ export default function DashboardPage() {
   }
 
   const handleDeleteCV = async (cvId: string) => {
-    if (!confirm('Are you sure you want to delete this CV? This action cannot be undone.')) {
+    if (!confirm('Are you sure you want to delete this CV? Your generated versions will be preserved, but the original uploaded CV will be permanently deleted.')) {
       return
     }
 
