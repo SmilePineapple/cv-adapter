@@ -178,6 +178,7 @@ export async function POST(request: NextRequest) {
     const sectionsToInsert = parsedSections.sections.map((section, index) => ({
       cv_id: cvData.id,
       section_type: mapSectionType(section.type),
+      title: section.type.charAt(0).toUpperCase() + section.type.slice(1).replace('_', ' '),
       content: section.content,
       order_index: index
       // Removed user_id, raw_content, and layout fields - don't exist in database

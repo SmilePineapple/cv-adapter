@@ -336,6 +336,26 @@ function truncateContent(content: any, maxLength: number): string {
   return str.length > maxLength ? str.substring(0, maxLength) + '...' : str
 }
 
+// Normalize section types to prevent duplicates
+function normalizeSectionType(type: string): string {
+  const typeMap: Record<string, string> = {
+    'work_experience': 'experience',
+    'work experience': 'experience',
+    'professional experience': 'experience',
+    'employment': 'experience',
+    'professional summary': 'summary',
+    'profile': 'summary',
+    'hobbies': 'interests',
+    'interests': 'interests',
+    'certifications': 'certifications',
+    'certificates': 'certifications',
+    'licenses': 'certifications'
+  }
+  
+  const normalized = typeMap[type.toLowerCase()] || type.toLowerCase()
+  return normalized.replace(/\s+/g, '_')
+}
+
 function parseAIResponse(aiResponse: string, originalSections: CVSection[]): {
   rewrittenSections: CVSection[],
   diffMeta: DiffMetadata
@@ -349,7 +369,21 @@ function parseAIResponse(aiResponse: string, originalSections: CVSection[]): {
       throw new Error('Invalid response structure: missing sections array')
     }
 
+    // Normalize section types and remove duplicates
+    const seenTypes = new Set<string>()
     const rewrittenSections: CVSection[] = parsed.sections
+      .map((section: any) => ({
+        ...section,
+        type: normalizeSectionType(section.type)
+      }))
+      .filter((section: CVSection) => {
+        if (seenTypes.has(section.type)) {
+          console.log(`⚠️ Duplicate section type detected and removed: ${section.type}`)
+          return false
+        }
+        seenTypes.add(section.type)
+        return true
+      })
     
     // Create diff metadata
     const changes = []
