@@ -627,7 +627,24 @@ function generateTemplateHtml(
     `
   }
 
-  const style = templateStyles[templateId as keyof typeof templateStyles] || templateStyles.modern
+  // Map new template IDs to existing styles until we implement custom styles
+  const templateMapping: Record<string, string> = {
+    'professional-circle': 'executive',
+    'modern-coral': 'designer',
+    'minimal-yellow': 'minimal',
+    'classic-beige': 'classic',
+    'executive-tan': 'executive',
+    'modern-sidebar': 'startup',
+    'minimal-gray': 'minimal',
+    'artistic-pattern': 'designer',
+    'modern-blue': 'modern',
+    'creative-accent': 'creative',
+    'professional-split': 'corporate',
+    'minimal-clean': 'minimal'
+  }
+  
+  const mappedTemplate = templateMapping[templateId] || templateId
+  const style = templateStyles[mappedTemplate as keyof typeof templateStyles] || templateStyles.modern
 
   let html = `
     <!DOCTYPE html>
