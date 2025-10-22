@@ -38,21 +38,25 @@ interface AIReview {
 }
 
 const TEMPLATES = [
-  // ✨ NEW ADVANCED TEMPLATES
-  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', badge: 'NEW', advanced: true },
-  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', badge: 'NEW', advanced: true },
+  // Professional Templates
+  { id: 'professional-circle', name: 'Professional Circle', description: 'Clean two-column with circular profile', category: 'Professional', badge: 'NEW' },
+  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm traditional layout', category: 'Professional', badge: 'NEW' },
+  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated executive styling', category: 'Professional', badge: 'NEW' },
+  { id: 'soft-green', name: 'Soft Green', description: 'Calming professional design', category: 'Professional', badge: 'NEW' },
   
-  // BASIC TEMPLATES
-  { id: 'modern', name: 'Modern', description: 'Clean and contemporary design' },
-  { id: 'classic', name: 'Classic', description: 'Traditional professional layout' },
-  { id: 'minimal', name: 'Minimal', description: 'Simple and elegant' },
-  { id: 'creative', name: 'Creative', description: 'Bold and eye-catching' },
-  { id: 'technical', name: 'Technical', description: 'Perfect for tech roles' },
-  { id: 'executive', name: 'Executive', description: 'Senior-level professional' },
-  { id: 'academic', name: 'Academic', description: 'Research and education focused' },
-  { id: 'startup', name: 'Startup', description: 'Dynamic and innovative' },
-  { id: 'corporate', name: 'Corporate', description: 'Traditional business style' },
-  { id: 'designer', name: 'Designer', description: 'Visually striking layout' }
+  // Modern Templates
+  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral with elegant typography', category: 'Modern', badge: 'NEW' },
+  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'NEW' },
+  { id: 'warm-gradient', name: 'Warm Gradient', description: 'Peach-to-orange gradient', category: 'Modern', badge: 'NEW' },
+  
+  // Minimal Templates
+  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'NEW' },
+  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale', category: 'Minimal', badge: 'NEW' },
+  
+  // Creative Templates
+  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Decorative pattern header', category: 'Creative', badge: 'NEW' },
+  { id: 'bold-cyan', name: 'Bold Cyan', description: 'Striking cyan sidebar', category: 'Creative', badge: 'NEW' },
+  { id: 'elegant-yellow', name: 'Elegant Yellow', description: 'Sophisticated with yellow accents', category: 'Creative', badge: 'NEW' },
 ]
 
 const EXPORT_FORMATS = [
@@ -699,8 +703,8 @@ export default function DownloadPage() {
                     <div className={`
                       flex-1 p-3 rounded-lg border-2 transition-all
                       ${selectedTemplate === template.id 
-                        ? (template.advanced ? 'border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50' : 'border-blue-500 bg-blue-50')
-                        : (template.advanced ? 'border-purple-200 hover:border-purple-300 bg-gradient-to-r from-purple-50/30 to-blue-50/30' : 'border-gray-200 hover:border-gray-300')
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
                       }
                     `}>
                       <div className="flex items-center justify-between">
@@ -711,28 +715,14 @@ export default function DownloadPage() {
                               {template.badge}
                             </span>
                           )}
-                          {template.advanced && (
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                setPreviewTemplate(template.id)
-                              }}
-                              className="p-1.5 hover:bg-purple-100 rounded-md transition-colors z-10"
-                              title="Preview template"
-                              type="button"
-                            >
-                              <Eye className="w-4 h-4 text-purple-600" />
-                            </button>
+                          {template.category && (
+                            <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+                              {template.category}
+                            </span>
                           )}
                         </div>
                       </div>
                       <div className="text-sm text-gray-600 mt-1">{template.description}</div>
-                      {template.advanced && (
-                        <div className="mt-2 text-xs text-purple-600 font-medium">
-                          ✨ Icons • Two-Column Layout • Visual Elements
-                        </div>
-                      )}
                     </div>
                   </label>
                 ))}
