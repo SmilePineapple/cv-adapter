@@ -386,7 +386,24 @@ export default function DownloadPage() {
       `
     }
 
-    const style = templateStyles[templateId as keyof typeof templateStyles] || templateStyles.modern
+    // Map new template IDs to existing styles
+    const templateMapping: Record<string, string> = {
+      'professional-circle': 'executive',
+      'modern-coral': 'designer',
+      'minimal-yellow': 'minimal',
+      'classic-beige': 'classic',
+      'executive-tan': 'executive',
+      'modern-sidebar': 'startup',
+      'minimal-gray': 'minimal',
+      'artistic-pattern': 'designer',
+      'modern-blue': 'modern',
+      'creative-accent': 'creative',
+      'professional-split': 'corporate',
+      'minimal-clean': 'minimal'
+    }
+    
+    const mappedTemplate = templateMapping[templateId] || templateId
+    const style = templateStyles[mappedTemplate as keyof typeof templateStyles] || templateStyles.modern
 
     let html = `
       <html>
@@ -659,9 +676,9 @@ export default function DownloadPage() {
               </button>
             )}
             
-            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && (
+            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && generationData && generationData.cv_id && (
               <Link
-                href={`/hobby-selector/${generationId}`}
+                href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
                 className="bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all flex items-center justify-center"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
