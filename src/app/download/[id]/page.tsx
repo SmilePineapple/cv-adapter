@@ -161,7 +161,7 @@ export default function DownloadPage() {
 
       const { data: generation, error } = await supabase
         .from('generations')
-        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs!inner(parsed_sections)')
+        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(parsed_sections)')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
@@ -174,12 +174,17 @@ export default function DownloadPage() {
 
       // Fetch latest hobbies from cv_sections (user may have customized icons)
       // Note: hobbies are stored as 'interests' in the database
-      const { data: latestHobbies } = await supabase
-        .from('cv_sections')
-        .select('*')
-        .eq('cv_id', generation.cv_id)
-        .eq('section_type', 'interests')
-        .single()
+      // Only fetch hobbies if cv_id exists (not orphaned)
+      let latestHobbies = null
+      if (generation.cv_id) {
+        const { data: hobbiesData } = await supabase
+          .from('cv_sections')
+          .select('*')
+          .eq('cv_id', generation.cv_id)
+          .eq('section_type', 'interests')
+          .single()
+        latestHobbies = hobbiesData
+      }
 
       // Merge original and modified sections for full CV preview
       const originalSections = (generation as any).cvs?.parsed_sections?.sections || []
@@ -616,7 +621,7 @@ export default function DownloadPage() {
               )}
             </button>
             
-            {generationData && (
+            {generationData && generationData.cv_id && (
               <Link
                 href={`/edit/${generationData.cv_id}`}
                 className="bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
@@ -736,13 +741,20 @@ export default function DownloadPage() {
                     <p className="text-purple-800 text-xs mb-3">
                       This template supports custom hobby icons! Add visual icons to your hobbies section for a more engaging CV.
                     </p>
-                    <Link
-                      href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all shadow-sm"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      Select Hobby Icons
-                    </Link>
+                    {generationData.cv_id ? (
+                      <Link
+                        href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all shadow-sm"
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        Add Hobby Icons
+                      </Link>
+                    ) : (
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-500 text-sm font-semibold rounded-lg cursor-not-allowed" title="Original CV was deleted">
+                        <Sparkles className="w-4 h-4" />
+                        Add Hobby Icons (Original Deleted)
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
