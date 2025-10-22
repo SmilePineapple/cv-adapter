@@ -7,6 +7,7 @@ import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { CVSection, DiffMetadata } from '@/types/database'
 import UpgradeModal from '@/components/UpgradeModal'
+import ComparisonView from '@/components/ComparisonView'
 import { 
   ArrowLeft, 
   Download, 
@@ -180,6 +181,9 @@ export default function ReviewPage() {
   const [isApplyingImprovements, setIsApplyingImprovements] = useState(false)
   const [hasUsedFreeImprovement, setHasUsedFreeImprovement] = useState(false)
   const [generateStep, setGenerateStep] = useState('')
+  const [improvedSections, setImprovedSections] = useState<CVSection[] | null>(null)
+  const [improvedAtsScore, setImprovedAtsScore] = useState<number | null>(null)
+  const [showComparison, setShowComparison] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
@@ -447,12 +451,14 @@ export default function ReviewPage() {
         return
       }
 
-      // Update sections with improved content
+      // Store improved sections for comparison view
+      setImprovedSections(result.sections)
       setEditedSections(result.sections)
       setHasUsedFreeImprovement(true)
       
-      // Show ATS score improvement if available
+      // Store improved ATS score
       if (result.ats_score) {
+        setImprovedAtsScore(result.ats_score.after)
         const { before, after, improvement } = result.ats_score
         const improvementText = improvement > 0 
           ? `📈 ATS Score improved from ${before}% to ${after}% (+${improvement}%!)` 
@@ -462,17 +468,21 @@ export default function ReviewPage() {
           <div>
             <div className="font-bold">✅ Improvements Applied!</div>
             <div className="text-sm mt-1">{improvementText}</div>
+            <div className="text-xs mt-2 text-blue-600">View comparison below to see all changes</div>
           </div>,
-          { duration: 5000 }
+          { duration: 6000 }
         )
       } else {
         toast.success('Improvements applied successfully! Your CV has been updated.')
       }
       
-      // Refresh the page to show updated content
+      // Show comparison view
+      setShowComparison(true)
+      
+      // Scroll to comparison view
       setTimeout(() => {
-        window.location.reload()
-      }, 3000)
+        document.getElementById('comparison-view')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 500)
     } catch (error) {
       console.error('Apply improvements error:', error)
       toast.error('Failed to apply improvements')
@@ -915,6 +925,25 @@ export default function ReviewPage() {
               Generate Another Version
             </Link>
           </div>
+
+          {/* Three-Column Comparison View */}
+          {showComparison && improvedSections && (
+            <div id="comparison-view" className="mt-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">📊 CV Comparison</h2>
+                <p className="text-gray-600">Compare your original CV, generated version, and AI-improved version side-by-side</p>
+              </div>
+              
+              <ComparisonView
+                originalSections={originalSections}
+                generatedSections={generationData.output_sections.sections}
+                improvedSections={improvedSections}
+                originalAtsScore={undefined} // Original CV ATS score not tracked
+                generatedAtsScore={generationData.ats_score}
+                improvedAtsScore={improvedAtsScore || undefined}
+              />
+            </div>
+          )}
       </div>
     </div>
   )
