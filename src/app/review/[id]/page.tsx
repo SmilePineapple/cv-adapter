@@ -226,14 +226,19 @@ export default function ReviewPage() {
         }
       }
       
-      // Check if user has used their free improvement
-      const { data: improvementData } = await supabase
-        .from('ai_improvements')
-        .select('id')
-        .eq('user_id', user.id)
-        .single()
+      // Check if user has used their free improvement (only for free users)
+      if (usage?.plan_type === 'free') {
+        const { data: improvementData } = await supabase
+          .from('ai_improvements')
+          .select('id')
+          .eq('user_id', user.id)
+          .single()
 
-      setHasUsedFreeImprovement(!!improvementData)
+        setHasUsedFreeImprovement(!!improvementData)
+      } else {
+        // Pro users have unlimited improvements
+        setHasUsedFreeImprovement(false)
+      }
       
       setIsLoading(false)
     } catch (error) {
@@ -696,7 +701,9 @@ export default function ReviewPage() {
               
               <div className="p-3 bg-purple-100 rounded-lg">
                 <p className="text-xs text-purple-800 text-center">
-                  {hasUsedFreeImprovement ? (
+                  {usageInfo?.plan_type === 'pro' ? (
+                    <>👑 Pro User: Unlimited AI improvements! Apply suggestions as many times as you like.</>
+                  ) : hasUsedFreeImprovement ? (
                     <>🎉 You've used your free AI improvement! Upgrade to Pro for unlimited improvements.</>
                   ) : (
                     <>💡 Get 1 FREE AI improvement! This will apply all suggestions above and update your CV automatically.</>
