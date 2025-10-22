@@ -177,11 +177,10 @@ export async function POST(request: NextRequest) {
     console.log('Creating CV sections for editor...')
     const sectionsToInsert = parsedSections.sections.map((section, index) => ({
       cv_id: cvData.id,
-      user_id: userId,
       section_type: mapSectionType(section.type),
       content: section.content,
       order_index: index
-      // Removed raw_content and layout fields - don't exist in database
+      // Removed user_id, raw_content, and layout fields - don't exist in database
     }))
 
     if (sectionsToInsert.length > 0) {
