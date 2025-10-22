@@ -479,9 +479,22 @@ export default function ReviewPage() {
       // Show comparison view
       setShowComparison(true)
       
+      // Debug logging
+      console.log('🔍 Comparison View Debug:', {
+        showComparison: true,
+        hasImprovedSections: !!result.sections,
+        originalSectionsCount: originalSections.length,
+        generatedSectionsCount: generationData?.output_sections.sections.length,
+        improvedSectionsCount: result.sections?.length
+      })
+      
       // Scroll to comparison view
       setTimeout(() => {
-        document.getElementById('comparison-view')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        const element = document.getElementById('comparison-view')
+        console.log('📍 Scrolling to comparison view, element found:', !!element)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
       }, 500)
     } catch (error) {
       console.error('Apply improvements error:', error)
@@ -927,10 +940,17 @@ export default function ReviewPage() {
           </div>
 
           {/* Three-Column Comparison View */}
-          {showComparison && improvedSections && (
-            <div id="comparison-view" className="mt-8">
+          {(() => {
+            console.log('🎨 Rendering comparison view check:', { showComparison, hasImprovedSections: !!improvedSections })
+            return null
+          })()}
+          {showComparison && improvedSections ? (
+            <div id="comparison-view" className="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border-2 border-blue-200">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">📊 CV Comparison</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  📊 CV Comparison
+                  <span className="text-sm bg-green-500 text-white px-3 py-1 rounded-full font-normal">NEW</span>
+                </h2>
                 <p className="text-gray-600">Compare your original CV, generated version, and AI-improved version side-by-side</p>
               </div>
               
@@ -943,7 +963,11 @@ export default function ReviewPage() {
                 improvedAtsScore={improvedAtsScore || undefined}
               />
             </div>
-          )}
+          ) : showComparison ? (
+            <div className="mt-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-xl">
+              <p className="text-yellow-800">⚠️ Comparison view loading... (showComparison: {String(showComparison)}, hasImprovedSections: {String(!!improvedSections)})</p>
+            </div>
+          ) : null}
       </div>
     </div>
   )
