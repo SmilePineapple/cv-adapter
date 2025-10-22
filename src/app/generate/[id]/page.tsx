@@ -64,25 +64,19 @@ export default function GeneratePage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      // Get usage tracking
+      // Get usage tracking with plan type
       const { data: usage } = await supabase
         .from('usage_tracking')
-        .select('generation_count')
+        .select('lifetime_generation_count, max_lifetime_generations, plan_type')
         .eq('user_id', user.id)
         .single()
 
-      // Get subscription status
-      const { data: subscription } = await supabase
-        .from('subscriptions')
-        .select('status')
-        .eq('user_id', user.id)
-        .single()
-
-      const isPro = subscription?.status === 'active'
-      const maxGenerations = isPro ? 100 : 3
+      const isPro = usage?.plan_type === 'pro'
+      const maxGenerations = usage?.max_lifetime_generations || (isPro ? 100 : 1)
+      const currentCount = usage?.lifetime_generation_count || 0
 
       setUsageData({
-        generation_count: usage?.generation_count || 0,
+        generation_count: currentCount,
         max_generations: maxGenerations,
         is_pro: isPro
       })
@@ -179,13 +173,13 @@ export default function GeneratePage() {
     // Check usage limit BEFORE making API call
     if (usageData && usageData.generation_count >= usageData.max_generations) {
       if (usageData.is_pro) {
-        toast.error('You have reached your monthly generation limit. Please contact support.')
+        toast.error('You have reached your 100 generation limit. Please contact support to purchase more.')
       } else {
-        toast.error('You have used all 3 free generations this month. Upgrade to Pro for unlimited generations!', {
+        toast.error('You have used your 1 free generation. Upgrade to Pro for 100 generations!', {
           duration: 5000,
           action: {
             label: 'Upgrade',
-            onClick: () => router.push('/pricing')
+            onClick: () => router.push('/subscription')
           }
         })
       }

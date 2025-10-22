@@ -179,10 +179,9 @@ export async function POST(request: NextRequest) {
       cv_id: cvData.id,
       user_id: userId,
       section_type: mapSectionType(section.type),
-      raw_content: section.content,
       content: section.content,
       order_index: index
-      // Removed layout field - doesn't exist in database
+      // Removed raw_content and layout fields - don't exist in database
     }))
 
     if (sectionsToInsert.length > 0) {
