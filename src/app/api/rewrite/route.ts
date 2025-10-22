@@ -295,21 +295,45 @@ KEY REQUIREMENTS: ${keywords.join(', ')}
 CURRENT CV:
 ${sectionsText}
 
-🚨 CRITICAL RULES - READ CAREFULLY:
-1. DO NOT INVENT FAKE JOBS: You MUST use the ACTUAL job titles, companies, and dates from the original CV
-2. DO NOT CREATE NEW ROLES: If the CV says "Play Therapist at Child in Mind", you CANNOT change it to "Research Coordinator at Springer Nature"
-3. ADAPT, DON'T REPLACE: Take the REAL job experience and reword the bullet points to highlight relevant skills for the new role
-4. PRESERVE ALL JOBS: The CV has MULTIPLE jobs - include EVERY SINGLE ONE with their ACTUAL titles and companies
-5. KEEP EXACT DETAILS: Job titles, company names, dates, locations MUST match the original CV exactly
-6. EDUCATION IDENTICAL: Copy education section EXACTLY - same degrees, universities, dates, coursework
-7. ONLY ENHANCE DESCRIPTIONS: Reword the responsibilities and achievements to emphasize skills relevant to ${jobTitle}
-8. TONE: ${tone}
-9. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+🚨🚨🚨 ABSOLUTELY CRITICAL - DO NOT SKIP THESE RULES 🚨🚨🚨
 
-EXAMPLE OF CORRECT ADAPTATION:
-Original: "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England"
-Correct: "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England" (SAME!)
-Wrong: "Research Coordinator | Springer Nature | [Month, Year] - Present" (FAKE JOB!)
+YOU ARE ADAPTING A CV, NOT CREATING A NEW ONE!
+
+RULE #1: NEVER CHANGE JOB TITLES OR COMPANIES
+- If original says "Play Therapist", output MUST say "Play Therapist"
+- If original says "Child in Mind", output MUST say "Child in Mind"
+- If original says "10/2016 – 08/2022", output MUST say "10/2016 – 08/2022"
+- DO NOT create fake jobs like "Research Coordinator at Springer Nature"
+
+RULE #2: KEEP ALL SECTIONS FROM ORIGINAL
+- If original has: name, contact, summary, experience, education, skills, certifications, hobbies, groups, strengths, additional
+- Output MUST have: name, contact, summary, experience, education, skills, certifications, hobbies, groups, strengths, additional
+- DO NOT remove sections!
+
+RULE #3: ONLY CHANGE THE DESCRIPTIONS
+- Keep job title: "Play Therapist" → "Play Therapist" ✅
+- Keep company: "Child in Mind" → "Child in Mind" ✅
+- Keep dates: "10/2016 – 08/2022" → "10/2016 – 08/2022" ✅
+- Change bullets: "Managed caseload" → "Led comprehensive therapy programs for 50+ families" ✅
+
+RULE #4: EDUCATION STAYS IDENTICAL
+- Copy EXACTLY: "Filial Therapy in Family Therapy | Manchester | 08/2019"
+- DO NOT replace with: "Bachelor of Arts in [Relevant Field]" ❌
+
+RULE #5: INCLUDE ALL JOBS
+- Original has 6 jobs → Output MUST have 6 jobs
+- Each with ACTUAL title, company, dates
+
+TONE: ${tone}
+LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+
+WRONG EXAMPLE (DO NOT DO THIS):
+❌ "Research Integrity Content Coordinator | Springer Nature | [Month, Year] - Present"
+
+CORRECT EXAMPLE (DO THIS):
+✅ "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England"
+   - Led comprehensive family therapy programs for 50+ families, improving child-parent relationships
+   - Delivered specialized 1:1 therapy sessions, achieving 85% improvement in behavioral outcomes
 
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
