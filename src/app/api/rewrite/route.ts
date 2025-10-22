@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
         }
       ],
       temperature: 0.7,
-      max_tokens: 2000
+      max_tokens: 4000 // Increased to handle comprehensive CVs with multiple work experiences
     })
 
     const aiResponse = completion.choices[0]?.message?.content
@@ -257,10 +257,13 @@ function createRewritePrompt(
   // Extract top keywords from job description (more efficient)
   const keywords = extractTopKeywords(jobDescription, 10)
   
-  // Format sections compactly
+  // Format sections - DO NOT truncate to preserve ALL work experiences
   const sectionsText = sections
-    .map(s => `${s.type}: ${truncateContent(s.content, 200)}`)
-    .join('\n')
+    .map(s => {
+      const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
+      return `${s.type}:\n${content}`
+    })
+    .join('\n\n')
   
   const languageName = LANGUAGE_NAMES[languageCode] || 'English'
   const styleMap = {
@@ -276,17 +279,20 @@ KEY REQUIREMENTS: ${keywords.join(', ')}
 CURRENT CV:
 ${sectionsText}
 
-RULES:
-1. PRESERVE: Names, contacts, dates, companies, job titles
-2. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
-3. TONE: ${tone}
-4. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+CRITICAL RULES:
+1. PRESERVE ALL: Names, contacts, dates, companies, job titles, ALL work experiences
+2. INCLUDE EVERY WORK EXPERIENCE: Do NOT skip or merge any jobs - include ALL of them
+3. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
+4. TONE: ${tone}
+5. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
 
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
-- Experience: 4-5 bullets per role, add metrics, use action verbs
-- Skills: Prioritize job-relevant skills, categorize if technical
-- Keep education, certifications, personal details unchanged
+- Experience: Include EVERY job listed, 4-5 bullets per role, add metrics, use action verbs
+- Skills: Include ALL skills, prioritize job-relevant ones
+- Education: Include ALL qualifications
+- Certifications: Include ALL certifications and licenses
+- Keep hobbies, groups, strengths, additional info unchanged
 
 ${customSections && customSections.length > 0 ? `ADD SECTIONS: ${customSections.join(', ')}` : ''}
 
