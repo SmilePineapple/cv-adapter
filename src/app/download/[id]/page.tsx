@@ -171,11 +171,12 @@ export default function DownloadPage() {
       }
 
       // Fetch latest hobbies from cv_sections (user may have customized icons)
+      // Note: hobbies are stored as 'interests' in the database
       const { data: latestHobbies } = await supabase
         .from('cv_sections')
         .select('*')
         .eq('cv_id', generation.cv_id)
-        .eq('section_type', 'hobbies')
+        .eq('section_type', 'interests')
         .single()
 
       // Merge original and modified sections for full CV preview
@@ -854,6 +855,17 @@ export default function DownloadPage() {
                           ))}
                         </ul>
                       </div>
+                    </div>
+                    
+                    {/* Apply Improvements Button */}
+                    <div className="mt-4 flex justify-center">
+                      <Link
+                        href={`/review/${generationId}`}
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg"
+                      >
+                        <Sparkles className="w-5 h-5" />
+                        Apply These Improvements
+                      </Link>
                     </div>
                   </div>
                 </div>

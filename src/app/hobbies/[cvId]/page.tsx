@@ -37,12 +37,12 @@ export default function HobbySelectionPage() {
         return
       }
 
-      // Fetch hobbies section
+      // Fetch hobbies section (stored as 'interests' in database)
       const { data: section, error } = await supabase
         .from('cv_sections')
         .select('*')
         .eq('cv_id', cvId)
-        .eq('section_type', 'hobbies')
+        .eq('section_type', 'interests')
         .single()
 
       if (error && error.code !== 'PGRST116') {
@@ -100,7 +100,7 @@ export default function HobbySelectionPage() {
           .from('cv_sections')
           .insert({
             cv_id: cvId,
-            section_type: 'hobbies',
+            section_type: 'interests',
             title: 'Hobbies & Interests',
             content: selectedHobbies,
             order_index: 999
