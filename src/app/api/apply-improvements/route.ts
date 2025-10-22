@@ -84,10 +84,13 @@ INSTRUCTIONS:
 2. Add the missing sections with relevant content based on existing CV
 3. Emphasize the keywords naturally throughout the CV - CRITICAL: Include ALL keywords from job description
 4. Apply the formatting tips
-5. Keep all personal details, job titles, and company names unchanged
-6. Maintain truthfulness - don't invent fake information
-7. CRITICAL: Maintain or IMPROVE ATS score - ensure ALL job-relevant keywords are present
-8. DO NOT remove any important keywords or skills from the original CV
+5. Keep all personal details, job titles, company names, dates, and education UNCHANGED
+6. EDUCATION MUST STAY IDENTICAL: Do NOT modify education section - copy it exactly as is
+7. EXPERIENCE: Keep ALL bullet points from original, just enhance wording and add metrics
+8. Maintain truthfulness - don't invent fake information
+9. CRITICAL: Maintain or IMPROVE ATS score - ensure ALL job-relevant keywords are present
+10. DO NOT remove any important keywords or skills from the original CV
+11. DO NOT summarize or shorten content - only enhance and expand
 
 Return the improved CV sections in this JSON format:
 {
