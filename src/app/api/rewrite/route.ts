@@ -139,19 +139,67 @@ export async function POST(request: NextRequest) {
     // Parse AI response
     let { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
 
-    // 🚨 VALIDATION: Check if AI invented fake jobs
+    // 🚨 CRITICAL VALIDATION: Check if AI invented fake jobs or changed companies
     const originalExperience = originalSections.sections.find(s => s.type === 'experience')
     const rewrittenExperience = rewrittenSections.find(s => s.type === 'experience')
     
     if (originalExperience && rewrittenExperience) {
-      const originalJobs = Array.isArray(originalExperience.content) ? originalExperience.content : []
-      const rewrittenJobs = Array.isArray(rewrittenExperience.content) ? rewrittenExperience.content : []
+      const originalContent = typeof originalExperience.content === 'string' 
+        ? originalExperience.content 
+        : JSON.stringify(originalExperience.content)
+      const rewrittenContent = typeof rewrittenExperience.content === 'string'
+        ? rewrittenExperience.content
+        : JSON.stringify(rewrittenExperience.content)
       
-      console.log(`📊 Job count check: Original=${originalJobs.length}, Rewritten=${rewrittenJobs.length}`)
+      // Extract company names from original using regex
+      // Matches patterns like "Company Name | Location" or "Position | Company"
+      const companyPattern = /\|\s*([^|]+?)\s*\|/g
+      const originalCompanies = new Set<string>()
+      let match
+      while ((match = companyPattern.exec(originalContent)) !== null) {
+        const company = match[1].trim()
+        if (company && company.length > 2 && !company.match(/^\d{2}\/\d{4}/)) {
+          originalCompanies.add(company)
+        }
+      }
       
-      // Check if job count matches
-      if (rewrittenJobs.length < originalJobs.length) {
-        console.warn(`⚠️ WARNING: AI removed ${originalJobs.length - rewrittenJobs.length} jobs!`)
+      console.log(`📋 Original companies detected: ${Array.from(originalCompanies).join(', ')}`)
+      
+      // Check if AI invented fake companies (common ones that appear in fake CVs)
+      const suspiciousFakeCompanies = [
+        'Springer Nature',
+        'Research Integrity Content Coordinator',
+        'Content Coordinator',
+        'Research Coordinator'
+      ]
+      
+      const detectedFakeCompanies = suspiciousFakeCompanies.filter(fake =>
+        rewrittenContent.toLowerCase().includes(fake.toLowerCase()) &&
+        !originalContent.toLowerCase().includes(fake.toLowerCase())
+      )
+      
+      if (detectedFakeCompanies.length > 0) {
+        console.error(`🚨 CRITICAL: AI invented fake companies: ${detectedFakeCompanies.join(', ')}`)
+        return NextResponse.json({ 
+          error: `AI generated invalid content - invented fake companies (${detectedFakeCompanies.join(', ')}). The system detected that job titles or companies were changed from the original CV. Please try again.` 
+        }, { status: 500 })
+      }
+      
+      // Check if original companies are preserved (at least 70% should be present)
+      if (originalCompanies.size > 0) {
+        const preservedCount = Array.from(originalCompanies).filter(company =>
+          rewrittenContent.includes(company)
+        ).length
+        const preservationRate = preservedCount / originalCompanies.size
+        
+        if (preservationRate < 0.7) {
+          console.error(`🚨 CRITICAL: Only ${Math.round(preservationRate * 100)}% of companies preserved`)
+          return NextResponse.json({ 
+            error: 'AI removed too many original companies. Please try again.' 
+          }, { status: 500 })
+        }
+        
+        console.log(`✅ Validation passed: ${Math.round(preservationRate * 100)}% of companies preserved`)
       }
     }
 
