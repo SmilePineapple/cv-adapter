@@ -139,6 +139,22 @@ export async function POST(request: NextRequest) {
     // Parse AI response
     let { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
 
+    // 🚨 VALIDATION: Check if AI invented fake jobs
+    const originalExperience = originalSections.sections.find(s => s.type === 'experience')
+    const rewrittenExperience = rewrittenSections.find(s => s.type === 'experience')
+    
+    if (originalExperience && rewrittenExperience) {
+      const originalJobs = Array.isArray(originalExperience.content) ? originalExperience.content : []
+      const rewrittenJobs = Array.isArray(rewrittenExperience.content) ? rewrittenExperience.content : []
+      
+      console.log(`📊 Job count check: Original=${originalJobs.length}, Rewritten=${rewrittenJobs.length}`)
+      
+      // Check if job count matches
+      if (rewrittenJobs.length < originalJobs.length) {
+        console.warn(`⚠️ WARNING: AI removed ${originalJobs.length - rewrittenJobs.length} jobs!`)
+      }
+    }
+
     // Calculate initial ATS score
     let atsScore = calculateATSScore(rewrittenSections, job_description)
     console.log('✅ Initial ATS Score calculated:', atsScore)
@@ -279,15 +295,21 @@ KEY REQUIREMENTS: ${keywords.join(', ')}
 CURRENT CV:
 ${sectionsText}
 
-CRITICAL RULES:
-1. PRESERVE ALL: Names, contacts, dates, companies, job titles, ALL work experiences
-2. INCLUDE EVERY SINGLE WORK EXPERIENCE: The CV has MULTIPLE jobs - you MUST include ALL of them, not just one
-3. DO NOT MERGE OR COMBINE JOBS: Each job should be a separate entry with its own title, company, dates, and responsibilities
-4. DO NOT SUMMARIZE OR SHORTEN: Keep ALL bullet points and details from each job - expand them, don't reduce them
-5. EDUCATION MUST STAY IDENTICAL: Copy education section EXACTLY as shown - same degrees, universities, dates
-6. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
-7. TONE: ${tone}
-8. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+🚨 CRITICAL RULES - READ CAREFULLY:
+1. DO NOT INVENT FAKE JOBS: You MUST use the ACTUAL job titles, companies, and dates from the original CV
+2. DO NOT CREATE NEW ROLES: If the CV says "Play Therapist at Child in Mind", you CANNOT change it to "Research Coordinator at Springer Nature"
+3. ADAPT, DON'T REPLACE: Take the REAL job experience and reword the bullet points to highlight relevant skills for the new role
+4. PRESERVE ALL JOBS: The CV has MULTIPLE jobs - include EVERY SINGLE ONE with their ACTUAL titles and companies
+5. KEEP EXACT DETAILS: Job titles, company names, dates, locations MUST match the original CV exactly
+6. EDUCATION IDENTICAL: Copy education section EXACTLY - same degrees, universities, dates, coursework
+7. ONLY ENHANCE DESCRIPTIONS: Reword the responsibilities and achievements to emphasize skills relevant to ${jobTitle}
+8. TONE: ${tone}
+9. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
+
+EXAMPLE OF CORRECT ADAPTATION:
+Original: "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England"
+Correct: "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England" (SAME!)
+Wrong: "Research Coordinator | Springer Nature | [Month, Year] - Present" (FAKE JOB!)
 
 FOCUS AREAS:
 - Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
