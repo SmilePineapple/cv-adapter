@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
+import OpenAI from 'openai'
 import { detectLanguage } from '@/lib/language-detection'
 import { trackCVUpload } from '@/lib/analytics'
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
+})
 
 // Force dynamic rendering - don't try to build this at build time
 export const dynamic = 'force-dynamic'
@@ -125,9 +130,9 @@ export async function POST(request: NextRequest) {
     const languageResult = detectLanguage(extractedText)
     console.log('Language detected:', languageResult.code, `(${languageResult.name})`, `confidence: ${languageResult.confidence}`)
 
-    // Parse CV sections using simple text analysis
-    console.log('Parsing CV sections...')
-    const parsedSections = parseCV(extractedText)
+    // Parse CV sections using AI for better accuracy
+    console.log('Parsing CV sections with AI...')
+    const parsedSections = await parseCVWithAI(extractedText, languageResult.code)
     console.log('Parsed sections:', parsedSections.sections.length)
 
     // Create file metadata
@@ -217,6 +222,64 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       error: 'Internal server error: ' + (error instanceof Error ? error.message : 'Unknown error')
     }, { status: 500 })
+  }
+}
+
+// AI-powered CV parsing for better accuracy
+async function parseCVWithAI(text: string, languageCode: string): Promise<ParsedCV> {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      response_format: { type: "json_object" },
+      messages: [{
+        role: 'system',
+        content: 'You are a CV parsing expert. Extract structured information from CVs in any language. Return valid JSON only.'
+      }, {
+        role: 'user',
+        content: `Extract CV sections from this text. Language: ${languageCode}
+
+CV Text:
+${text.substring(0, 4000)} ${text.length > 4000 ? '...' : ''}
+
+Return JSON with this structure:
+{
+  "sections": [
+    {"type": "name", "content": "Full Name", "order": 0},
+    {"type": "contact", "content": "Email, phone, location", "order": 1},
+    {"type": "summary", "content": "Professional summary", "order": 2},
+    {"type": "experience", "content": "Work history with dates and companies", "order": 3},
+    {"type": "education", "content": "Education details", "order": 4},
+    {"type": "skills", "content": "Skills list", "order": 5},
+    {"type": "certifications", "content": "Certifications", "order": 6},
+    {"type": "hobbies", "content": "Interests/hobbies", "order": 7}
+  ]
+}
+
+Extract ALL sections found. Use exact content from CV. Preserve formatting.`
+      }],
+      temperature: 0.1, // Low temperature for consistency
+      max_tokens: 2000
+    })
+
+    const response = completion.choices[0]?.message?.content
+    if (!response) {
+      throw new Error('No response from AI')
+    }
+
+    const parsed = JSON.parse(response)
+    
+    if (!parsed.sections || !Array.isArray(parsed.sections)) {
+      throw new Error('Invalid AI response structure')
+    }
+
+    return {
+      sections: parsed.sections,
+      raw_text: text
+    }
+  } catch (error) {
+    console.error('AI parsing failed, falling back to simple parsing:', error)
+    // Fallback to simple parsing if AI fails
+    return parseCV(text)
   }
 }
 

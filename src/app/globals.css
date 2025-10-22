@@ -80,3 +80,48 @@ body {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
+
+/* Mobile Optimization */
+@media (max-width: 640px) {
+  /* Prevent zoom on iOS when focusing inputs */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  /* Touch-friendly buttons and inputs */
+  button, input, textarea, select, a {
+    min-height: 44px;
+  }
+  
+  /* Better tap targets */
+  .btn, button {
+    padding: 12px 24px;
+    min-height: 44px;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Stack cards on mobile */
+  .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  
+  /* Responsive text */
+  h1 {
+    font-size: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Better modal sizing */
+  .modal-content {
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto;
+  }
+}

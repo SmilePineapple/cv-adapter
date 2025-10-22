@@ -727,7 +727,22 @@ export default function DashboardPage() {
 
         {/* Tabs - Modern Pill Design */}
         <div className="mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-2">
+          {/* Mobile Dropdown */}
+          <div className="block sm:hidden">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value as any)}
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium"
+            >
+              <option value="overview">📊 Overview</option>
+              <option value="cvs">📄 CVs ({searchQuery ? filteredCvs.length : cvs.length})</option>
+              <option value="generations">✨ Generations ({searchQuery ? filteredGenerations.length : generations.length})</option>
+              <option value="cover-letters">✉️ Cover Letters ({searchQuery ? filteredCoverLetters.length : coverLetters.length})</option>
+            </select>
+          </div>
+
+          {/* Desktop Tabs */}
+          <div className="hidden sm:block bg-white rounded-xl shadow-sm p-2">
             <nav className="flex space-x-2">
               <button
                 onClick={() => setActiveTab('overview')}
