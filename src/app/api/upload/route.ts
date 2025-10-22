@@ -297,10 +297,11 @@ CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include 
 
 // Map parsed section types to valid database enum values
 const mapSectionType = (type: string): string => {
-  // Valid section types based on database constraint:
-  // header, contact, summary, experience, education, skills, certifications, projects, publications, interests, custom
+  // Valid section types based on cv-editor-schema.sql constraint:
+  // 'name', 'contact', 'summary', 'experience', 'education', 'skills', 'certifications', 
+  // 'projects', 'publications', 'hobbies', 'volunteer', 'awards', 'languages', 'custom'
   const typeMap: Record<string, string> = {
-    'name': 'summary', // Changed from 'header' to 'summary' - header might not be valid
+    'name': 'name',
     'contact': 'contact',
     'summary': 'summary',
     'profile': 'summary',
@@ -313,14 +314,19 @@ const mapSectionType = (type: string): string => {
     'licenses': 'certifications',
     'projects': 'projects',
     'publications': 'publications',
-    'hobbies': 'interests',
-    'interests': 'interests',
+    'hobbies': 'hobbies',
+    'interests': 'hobbies', // Map interests to hobbies (valid type)
+    'volunteer': 'volunteer',
+    'volunteering': 'volunteer',
+    'awards': 'awards',
+    'achievements': 'awards',
+    'languages': 'languages',
     'groups': 'custom',
     'strengths': 'custom',
     'additional': 'custom',
     'additional_information': 'custom'
   }
-  
+
   const normalized = type.toLowerCase().replace(/\s+/g, '_')
   return typeMap[normalized] || 'custom'
 }
