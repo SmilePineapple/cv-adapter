@@ -82,10 +82,12 @@ ${formatting_tips.map((tip: string, i: number) => `${i + 1}. ${tip}`).join('\n')
 INSTRUCTIONS:
 1. Apply ALL the improvements listed above
 2. Add the missing sections with relevant content based on existing CV
-3. Emphasize the keywords naturally throughout the CV
+3. Emphasize the keywords naturally throughout the CV - CRITICAL: Include ALL keywords from job description
 4. Apply the formatting tips
 5. Keep all personal details, job titles, and company names unchanged
 6. Maintain truthfulness - don't invent fake information
+7. CRITICAL: Maintain or IMPROVE ATS score - ensure ALL job-relevant keywords are present
+8. DO NOT remove any important keywords or skills from the original CV
 
 Return the improved CV sections in this JSON format:
 {
@@ -131,6 +133,20 @@ Return the improved CV sections in this JSON format:
     const scoreImprovement = newAtsScore - oldAtsScore
     
     console.log(`📊 ATS Score updated: ${oldAtsScore}% → ${newAtsScore}% (${scoreImprovement > 0 ? '+' : ''}${scoreImprovement}%)`)
+
+    // ⚠️ SAFEGUARD: If score decreased, keep original sections and score
+    if (scoreImprovement < 0) {
+      console.warn(`⚠️ ATS Score decreased by ${Math.abs(scoreImprovement)}% - reverting to original sections`)
+      return NextResponse.json({
+        success: false,
+        error: `AI improvements would decrease your ATS score by ${Math.abs(scoreImprovement)}%. Keeping original version.`,
+        ats_score: {
+          before: oldAtsScore,
+          after: newAtsScore,
+          improvement: scoreImprovement
+        }
+      }, { status: 400 })
+    }
 
     // Update generation with improved sections AND new ATS score
     const { error: updateError } = await supabase
