@@ -9,6 +9,7 @@ import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
 import PromoBanner from '@/components/PromoBanner'
 import { WelcomeModal } from '@/components/WelcomeModal'
+import { OnboardingWizard } from '@/components/OnboardingWizard'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
 import { 
@@ -116,6 +117,7 @@ export default function DashboardPage() {
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
   // Filter functions
   const filteredCvs = cvs.filter(cv => 
@@ -336,6 +338,21 @@ export default function DashboardPage() {
     }
   }
 
+  // Check if first visit for onboarding
+  useEffect(() => {
+    if (!isLoading && cvs.length === 0 && generations.length === 0) {
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding')
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true)
+      }
+    }
+  }, [isLoading, cvs.length, generations.length])
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem('hasSeenOnboarding', 'true')
+    setShowOnboarding(false)
+  }
+
   const handleRateCV = async (cvId: string) => {
     setSelectedCvForRating(cvId)
     setRatingModalOpen(true)
@@ -506,6 +523,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {showOnboarding && <OnboardingWizard onComplete={handleOnboardingComplete} />}
       <WelcomeModal />
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

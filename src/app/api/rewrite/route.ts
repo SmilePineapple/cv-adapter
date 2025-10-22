@@ -116,6 +116,7 @@ export async function POST(request: NextRequest) {
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
+      response_format: { type: "json_object" }, // ✅ Guaranteed valid JSON
       messages: [
         {
           role: 'system',
@@ -253,116 +254,75 @@ function createRewritePrompt(
   customSections?: string[],
   languageCode: string = 'en'
 ): string {
-  const sectionsText = sections.map(s => `${s.type.toUpperCase()}:\n${s.content}`).join('\n\n')
+  // Extract top keywords from job description (more efficient)
+  const keywords = extractTopKeywords(jobDescription, 10)
   
-  const styleInstructions = {
-    conservative: 'Make minimal changes, only adjusting keywords and phrases to better match the job requirements.',
-    balanced: 'Make moderate changes to improve alignment with the job while maintaining the original structure and key information.',
-    bold: 'Make significant changes to strongly align with the job requirements, adding relevant keywords and restructuring content as needed.'
-  }
-
-  const toneInstructions = {
-    professional: 'Use formal, business-appropriate language.',
-    friendly: 'Use warm, approachable language while maintaining professionalism.',
-    creative: 'Use dynamic, engaging language that showcases creativity and innovation.',
-    technical: 'Use precise, technical language appropriate for technical roles.'
-  }
-
-  // Get language instruction
-  const languageInstruction = getLanguageInstruction(languageCode)
+  // Format sections compactly
+  const sectionsText = sections
+    .map(s => `${s.type}: ${truncateContent(s.content, 200)}`)
+    .join('\n')
+  
   const languageName = LANGUAGE_NAMES[languageCode] || 'English'
+  const styleMap = {
+    conservative: 'minimal changes',
+    balanced: 'moderate improvements',
+    bold: 'significant optimization'
+  }
 
-  return `
-Job Title: ${jobTitle}
+  return `Rewrite CV for: ${jobTitle}
 
-Job Description:
-${jobDescription}
+KEY REQUIREMENTS: ${keywords.join(', ')}
 
-Current CV Sections:
+CURRENT CV:
 ${sectionsText}
 
-LANGUAGE REQUIREMENT:
-${languageInstruction}
-${languageCode !== 'en' ? `The CV is in ${languageName}. ALL rewritten content MUST be in ${languageName}. Do NOT translate to English or any other language.` : ''}
+RULES:
+1. PRESERVE: Names, contacts, dates, companies, job titles
+2. ENHANCE: ${styleMap[rewriteStyle as keyof typeof styleMap]} to experience descriptions
+3. TONE: ${tone}
+4. LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
 
-CRITICAL INSTRUCTIONS:
-- PRESERVE ALL PERSONAL DETAILS: Keep name, contact info, interests, certifications, training, education exactly as provided
-- PRESERVE JOB TITLES AND COMPANY NAMES: **NEVER change the actual job titles or company names from the original CV**
-- MAINTAIN TRUTHFULNESS: Do not invent fake companies, roles, or achievements that don't exist in the original CV
+FOCUS AREAS:
+- Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
+- Experience: 4-5 bullets per role, add metrics, use action verbs
+- Skills: Prioritize job-relevant skills, categorize if technical
+- Keep education, certifications, personal details unchanged
 
-SECTIONS TO MODIFY:
-1. **Professional Summary/Profile**: 
-   - Include years of experience
-   - Mention 3-4 key skills from job description
-   - Add 1-2 career highlights with quantifiable achievements if available
-   - Keep to 3-4 sentences maximum
+${customSections && customSections.length > 0 ? `ADD SECTIONS: ${customSections.join(', ')}` : ''}
 
-2. **Skills**: 
-   - Categorize into: Technical Skills, Soft Skills, Tools/Platforms, Certifications
-   - Prioritize skills mentioned in job description
-   - Add missing critical skills if plausible based on experience
-   - Remove skills not relevant to this role
-   - For technical roles: group by category (Languages, Frameworks, Cloud, etc.)
-
-3. **Work Experience**: 
-   - If section has <3 bullet points, expand to 4-5 detailed bullets
-   - Add quantifiable achievements (numbers, percentages, timeframes)
-   - Include technologies/tools used
-   - Show impact on business/users
-   - Use strong action verbs (Led, Developed, Optimized, Implemented, etc.)
-   - Keep job titles and company names identical
-
-4. **Hobbies/Interests** (if present):
-   - Filter to show only job-relevant hobbies (max 4-5)
-   - For technical roles: keep gaming, coding, tech hobbies
-   - For creative roles: keep art, photography, design
-   - For leadership roles: keep team sports, volunteering, mentoring
-   - Remove hobbies that don't add value to this application
-
-5. **Custom Sections**: Generate content for any requested custom sections based on existing CV information
-
-SECTIONS TO PRESERVE UNCHANGED:
-- Personal details, certifications, training, education, contact information
-
-CONTENT EXPANSION (CRITICAL):
-- If work experience bullets are sparse (<3 per role), expand with:
-  * Specific responsibilities based on job title
-  * Technologies/tools used
-  * Team collaboration details
-  * Measurable outcomes where logical
-- Ensure each role has 4-5 substantive bullet points
-- Add context: team size, project scale, user impact
-
-ACHIEVEMENT QUANTIFICATION:
-- Add specific numbers/percentages where logical
-- Include timeframes (e.g., "within 6 months", "over 2 years")
-- Mention scale (e.g., "team of 5", "10,000 users", "$50K revenue")
-- Show measurable impact (e.g., "increased by 40%", "reduced from 3s to 800ms")
-
-STYLE & TONE:
-- Rewrite Style: ${rewriteStyle} - ${styleInstructions[rewriteStyle as keyof typeof styleInstructions]}
-- Tone: ${tone} - ${toneInstructions[tone as keyof typeof toneInstructions]}
-- Focus on ATS optimization by including relevant keywords from the job description
-- The candidate's actual job titles and companies are facts that cannot be changed - only adapt how their responsibilities are described
-${customSections && customSections.length > 0 ? `
-- CUSTOM SECTIONS TO ADD: Create the following new sections based on the candidate's background and the job requirements:
-  ${customSections.map(section => `  * ${section}: Generate relevant content based on the existing CV content and job requirements`).join('\n  ')}
-- For custom sections, infer content from the existing CV that would be relevant to that section type
-- Keep custom section content truthful and based on information already present in the CV` : ''}
-
-Please rewrite the CV sections and provide your response in this exact JSON format:
+Return JSON:
 {
-  "sections": [
-    {
-      "type": "section_type",
-      "content": "rewritten content",
-      "order": 0,
-      "changes": ["list of key changes made"]
-    }
-  ],
-  "summary_of_changes": "Brief summary of overall changes made"
+  "sections": [{"type": "string", "content": "string", "order": number, "changes": ["string"]}],
+  "summary_of_changes": "string"
 }
 `
+}
+
+// Helper: Extract top N keywords from job description
+function extractTopKeywords(text: string, limit: number = 10): string[] {
+  const commonWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been', 'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they'])
+  
+  const words = text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 3 && !commonWords.has(w))
+  
+  // Count frequency
+  const freq = new Map<string, number>()
+  words.forEach(w => freq.set(w, (freq.get(w) || 0) + 1))
+  
+  // Sort by frequency and return top N
+  return Array.from(freq.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([word]) => word)
+}
+
+// Helper: Truncate content for compact prompt
+function truncateContent(content: any, maxLength: number): string {
+  const str = typeof content === 'string' ? content : JSON.stringify(content)
+  return str.length > maxLength ? str.substring(0, maxLength) + '...' : str
 }
 
 function parseAIResponse(aiResponse: string, originalSections: CVSection[]): {
@@ -370,14 +330,15 @@ function parseAIResponse(aiResponse: string, originalSections: CVSection[]): {
   diffMeta: DiffMetadata
 } {
   try {
-    // Extract JSON from AI response
-    const jsonMatch = aiResponse.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      throw new Error('No JSON found in AI response')
+    // With JSON mode, response is guaranteed to be valid JSON
+    const parsed = JSON.parse(aiResponse)
+    
+    // Validate structure
+    if (!parsed.sections || !Array.isArray(parsed.sections)) {
+      throw new Error('Invalid response structure: missing sections array')
     }
 
-    const parsed = JSON.parse(jsonMatch[0])
-    const rewrittenSections: CVSection[] = parsed.sections || []
+    const rewrittenSections: CVSection[] = parsed.sections
     
     // Create diff metadata
     const changes = []
@@ -402,6 +363,7 @@ function parseAIResponse(aiResponse: string, originalSections: CVSection[]): {
     return { rewrittenSections, diffMeta }
   } catch (error) {
     console.error('Error parsing AI response:', error)
+    console.error('Response was:', aiResponse)
     // Fallback: return original sections with minimal changes
     return {
       rewrittenSections: originalSections,
