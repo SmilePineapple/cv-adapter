@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 import { CVSection } from '@/types/database'
+import { calculateATSScore } from '@/lib/ats-calculator'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -124,11 +125,19 @@ Return the improved CV sections in this JSON format:
     const result = JSON.parse(aiResponse)
     console.log('✅ Improvements applied')
 
-    // Update generation with improved sections
+    // Recalculate ATS score with improved sections
+    const newAtsScore = calculateATSScore(result.sections, jobDescription)
+    const oldAtsScore = generation.ats_score || 0
+    const scoreImprovement = newAtsScore - oldAtsScore
+    
+    console.log(`📊 ATS Score updated: ${oldAtsScore}% → ${newAtsScore}% (${scoreImprovement > 0 ? '+' : ''}${scoreImprovement}%)`)
+
+    // Update generation with improved sections AND new ATS score
     const { error: updateError } = await supabase
       .from('generations')
       .update({
-        output_sections: { sections: result.sections }
+        output_sections: { sections: result.sections },
+        ats_score: newAtsScore
       })
       .eq('id', generation_id)
 
@@ -153,7 +162,12 @@ Return the improved CV sections in this JSON format:
     return NextResponse.json({
       success: true,
       sections: result.sections,
-      changes_summary: result.changes_summary
+      changes_summary: result.changes_summary,
+      ats_score: {
+        before: oldAtsScore,
+        after: newAtsScore,
+        improvement: scoreImprovement
+      }
     })
 
   } catch (error) {

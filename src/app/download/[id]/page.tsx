@@ -38,25 +38,17 @@ interface AIReview {
 }
 
 const TEMPLATES = [
-  // Professional Templates
-  { id: 'professional-circle', name: 'Professional Circle', description: 'Clean two-column with circular profile', category: 'Professional', badge: 'NEW' },
-  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm traditional layout', category: 'Professional', badge: 'NEW' },
-  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated executive styling', category: 'Professional', badge: 'NEW' },
-  { id: 'soft-green', name: 'Soft Green', description: 'Calming professional design', category: 'Professional', badge: 'NEW' },
+  // ✨ ADVANCED TEMPLATES (Working with icons & layouts)
+  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'PREMIUM', advanced: true },
+  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'PREMIUM', advanced: true },
   
-  // Modern Templates
-  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral with elegant typography', category: 'Modern', badge: 'NEW' },
-  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'NEW' },
-  { id: 'warm-gradient', name: 'Warm Gradient', description: 'Peach-to-orange gradient', category: 'Modern', badge: 'NEW' },
-  
-  // Minimal Templates
-  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'NEW' },
-  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale', category: 'Minimal', badge: 'NEW' },
-  
-  // Creative Templates
-  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Decorative pattern header', category: 'Creative', badge: 'NEW' },
-  { id: 'bold-cyan', name: 'Bold Cyan', description: 'Striking cyan sidebar', category: 'Creative', badge: 'NEW' },
-  { id: 'elegant-yellow', name: 'Elegant Yellow', description: 'Sophisticated with yellow accents', category: 'Creative', badge: 'NEW' },
+  // Basic Templates (Simple layouts)
+  { id: 'modern', name: 'Modern', description: 'Clean and contemporary design', category: 'Basic' },
+  { id: 'classic', name: 'Classic', description: 'Traditional professional layout', category: 'Basic' },
+  { id: 'minimal', name: 'Minimal', description: 'Simple and elegant', category: 'Basic' },
+  { id: 'creative', name: 'Creative', description: 'Bold and eye-catching', category: 'Basic' },
+  { id: 'technical', name: 'Technical', description: 'Perfect for tech roles', category: 'Basic' },
+  { id: 'executive', name: 'Executive', description: 'Senior-level professional', category: 'Basic' },
 ]
 
 const EXPORT_FORMATS = [
