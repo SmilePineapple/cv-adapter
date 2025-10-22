@@ -42,13 +42,19 @@ const TEMPLATES = [
   { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'PREMIUM', advanced: true },
   { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'PREMIUM', advanced: true },
   
-  // Basic Templates (Simple layouts)
-  { id: 'modern', name: 'Modern', description: 'Clean and contemporary design', category: 'Basic' },
-  { id: 'classic', name: 'Classic', description: 'Traditional professional layout', category: 'Basic' },
-  { id: 'minimal', name: 'Minimal', description: 'Simple and elegant', category: 'Basic' },
-  { id: 'creative', name: 'Creative', description: 'Bold and eye-catching', category: 'Basic' },
-  { id: 'technical', name: 'Technical', description: 'Perfect for tech roles', category: 'Basic' },
-  { id: 'executive', name: 'Executive', description: 'Senior-level professional', category: 'Basic' },
+  // Modern Templates (12 new designs with color customization)
+  { id: 'professional-circle', name: 'Professional Circle', description: 'Circular profile with icon sections', category: 'Professional', badge: 'NEW' },
+  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral design with elegant typography', category: 'Modern', badge: 'NEW' },
+  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'NEW' },
+  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm beige with traditional layout', category: 'Professional', badge: 'NEW' },
+  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated tan for executives', category: 'Professional', badge: 'NEW' },
+  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'NEW' },
+  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale design', category: 'Minimal', badge: 'NEW' },
+  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Creative with decorative patterns', category: 'Creative', badge: 'NEW' },
+  { id: 'modern-blue', name: 'Modern Blue', description: 'Clean blue professional design', category: 'Modern', badge: 'NEW' },
+  { id: 'creative-accent', name: 'Creative Accent', description: 'Bold accent colors', category: 'Creative', badge: 'NEW' },
+  { id: 'professional-split', name: 'Professional Split', description: 'Split layout with sidebar', category: 'Professional', badge: 'NEW' },
+  { id: 'minimal-clean', name: 'Minimal Clean', description: 'Clean minimal design', category: 'Minimal', badge: 'NEW' },
 ]
 
 const EXPORT_FORMATS = [

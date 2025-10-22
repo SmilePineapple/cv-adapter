@@ -79,18 +79,47 @@ ${keywords.join(', ')}
 FORMATTING TIPS:
 ${formatting_tips.map((tip: string, i: number) => `${i + 1}. ${tip}`).join('\n')}
 
-INSTRUCTIONS:
-1. Apply ALL the improvements listed above
-2. Add the missing sections with relevant content based on existing CV
-3. Emphasize the keywords naturally throughout the CV - CRITICAL: Include ALL keywords from job description
+🚨 CRITICAL INSTRUCTIONS - ATS SCORE MUST IMPROVE 🚨
+
+RULE #1: PRESERVE ALL EXISTING KEYWORDS
+- The current CV already has keywords that match the job
+- DO NOT remove or replace these keywords
+- ADD more keywords, don't subtract
+
+RULE #2: ADD KEYWORDS, DON'T REMOVE
+- Current keywords: ${keywords.join(', ')}
+- These MUST appear in the improved CV
+- Add them to more sections if missing
+- Use synonyms AND original keywords
+
+RULE #3: KEEP ALL CONTENT, JUST ENHANCE
+- Keep ALL bullet points from experience
+- Keep ALL skills from skills section
+- Keep ALL education exactly as is
+- Keep ALL job titles and companies
+- ONLY enhance wording and add metrics
+
+RULE #4: APPLY IMPROVEMENTS WITHOUT REMOVING CONTENT
+- Apply the improvements listed above
+- But NEVER remove existing content to do so
+- Add to sections, don't replace them
+
+RULE #5: ATS SCORE MUST INCREASE
+- Current score will be calculated
+- If improvements decrease score, they will be rejected
+- Focus on adding relevant keywords
+- Don't remove any existing keywords
+
+SPECIFIC INSTRUCTIONS:
+1. Apply ALL the improvements listed above BY ADDING to existing content
+2. Add the missing sections with relevant content
+3. Emphasize keywords naturally - CRITICAL: Keep ALL existing keywords PLUS add new ones
 4. Apply the formatting tips
-5. Keep all personal details, job titles, company names, dates, and education UNCHANGED
-6. EDUCATION MUST STAY IDENTICAL: Do NOT modify education section - copy it exactly as is
-7. EXPERIENCE: Keep ALL bullet points from original, just enhance wording and add metrics
-8. Maintain truthfulness - don't invent fake information
-9. CRITICAL: Maintain or IMPROVE ATS score - ensure ALL job-relevant keywords are present
-10. DO NOT remove any important keywords or skills from the original CV
-11. DO NOT summarize or shorten content - only enhance and expand
+5. Keep all personal details, job titles, company names, dates UNCHANGED
+6. EDUCATION MUST STAY IDENTICAL - copy it exactly
+7. EXPERIENCE: Keep ALL bullet points, just enhance wording
+8. Maintain truthfulness - don't invent information
+9. ADD keywords to improve ATS score, don't remove them
 
 Return the improved CV sections in this JSON format:
 {

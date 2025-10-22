@@ -476,6 +476,9 @@ export default function ReviewPage() {
         toast.success('Improvements applied successfully! Your CV has been updated.')
       }
       
+      // Close AI review modal
+      setShowReview(false)
+      
       // Show comparison view
       setShowComparison(true)
       
