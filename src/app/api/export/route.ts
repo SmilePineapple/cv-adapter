@@ -6,6 +6,7 @@ import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
 import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
+import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 
 // Helper function to safely get string content from section
 const getSectionContent = (content: any): string => {
@@ -165,6 +166,15 @@ export async function POST(request: NextRequest) {
 
     // Sort sections by order
     const sections: CVSection[] = deduplicatedSections.sort((a, b) => (a.order || 0) - (b.order || 0))
+
+    // Track analytics
+    try {
+      await trackTemplateSelection(template)
+      await trackExport('cv', format, template)
+    } catch (analyticsError) {
+      console.error('Analytics tracking failed:', analyticsError)
+      // Don't fail export if analytics fails
+    }
 
     // Generate content based on format
     switch (format) {
