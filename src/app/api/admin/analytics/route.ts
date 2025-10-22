@@ -28,9 +28,26 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No authorization' }, { status: 401 })
     }
 
+    // Fetch all users with pagination (listUsers has a default limit of 50)
+    let allUsers: any[] = []
+    let page = 1
+    let hasMore = true
+    
+    while (hasMore) {
+      const { data, error } = await supabase.auth.admin.listUsers({
+        page,
+        perPage: 1000 // Max allowed by Supabase
+      })
+      
+      if (error) throw error
+      
+      allUsers = allUsers.concat(data.users)
+      hasMore = data.users.length === 1000 // If we got 1000, there might be more
+      page++
+    }
+
     // Fetch all analytics data
     const [
-      usersResult,
       profilesResult,
       purchasesResult,
       subscriptionsResult,
@@ -39,7 +56,6 @@ export async function GET(request: NextRequest) {
       cvsResult,
       coverLettersResult
     ] = await Promise.all([
-      supabase.auth.admin.listUsers(),
       supabase.from('profiles').select('*'),
       supabase.from('purchases').select('*'),
       supabase.from('subscriptions').select('*'),
@@ -49,9 +65,7 @@ export async function GET(request: NextRequest) {
       supabase.from('cover_letters').select('id, user_id, created_at')
     ])
 
-    if (usersResult.error) throw usersResult.error
-
-    const users = usersResult.data.users
+    const users = allUsers
     const profiles = profilesResult.data || []
     const purchases = purchasesResult.data || []
     const subscriptions = subscriptionsResult.data || []
