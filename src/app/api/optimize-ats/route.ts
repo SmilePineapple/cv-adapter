@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { runATSOptimization, estimateScoreImprovement, analyzeATSIssues } from '@/lib/ats-optimizer'
-import { calculateATSScore } from '@/lib/ats-calculator'
+import { calculateATSScore } from '@/lib/ats-calculator-improved'
 
 export async function POST(request: NextRequest) {
   try {
