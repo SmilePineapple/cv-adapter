@@ -8,6 +8,10 @@ import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCS
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 
+// Configure runtime for Vercel
+export const runtime = 'nodejs'
+export const maxDuration = 60
+
 // Helper function to safely get string content from section
 const getSectionContent = (content: any): string => {
   if (!content) return ''
@@ -83,14 +87,14 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Fetch generation data AND original CV data
+    // Fetch generation data (allow orphaned generations with NULL cv_id)
     const { data: generation, error: genError } = await supabase
       .from('generations')
       .select(`
         output_sections, 
         job_title,
         cv_id,
-        cvs!inner(parsed_sections)
+        cvs(parsed_sections)
       `)
       .eq('id', generation_id)
       .eq('user_id', user.id)
