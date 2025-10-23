@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 import { CVSection } from '@/types/database'
-import { calculateATSScore } from '@/lib/ats-calculator'
+import { calculateATSScore } from '@/lib/ats-calculator-improved'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,

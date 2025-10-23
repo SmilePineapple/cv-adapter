@@ -4,7 +4,7 @@ import OpenAI from 'openai'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 import { trackCVGeneration } from '@/lib/analytics'
-import { calculateATSScore } from '@/lib/ats-calculator'
+import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
 
 const openai = new OpenAI({
