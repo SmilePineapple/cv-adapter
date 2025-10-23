@@ -588,32 +588,20 @@ export default function DownloadPage() {
           </p>
         </div>
 
-        {/* Export Format Selection */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {EXPORT_FORMATS.map((format) => (
-              <label key={format.id} className="cursor-pointer">
-                <input
-                  type="radio"
-                  name="format"
-                  value={format.id}
-                  checked={selectedFormat === format.id}
-                  onChange={(e) => setSelectedFormat(e.target.value)}
-                  className="sr-only"
-                />
-                <div className={`
-                  p-4 rounded-lg border-2 transition-colors text-center
-                  ${selectedFormat === format.id 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-gray-300'
-                  }
-                `}>
-                  <div className="font-medium text-gray-900">{format.name}</div>
-                  <div className="text-xs text-gray-600 mt-1">{format.description}</div>
-                </div>
-              </label>
-            ))}
+        {/* PDF Preview - Full Width */}
+        <div className="max-w-7xl mx-auto mb-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Eye className="w-5 h-5 text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
+            </div>
+            <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+              <iframe
+                srcDoc={previewHtml}
+                className="w-full h-[800px] border-0"
+                title="CV Preview"
+              />
+            </div>
           </div>
         </div>
 
@@ -688,30 +676,43 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* PDF Preview - Full Width */}
-        <div className="max-w-4xl mx-auto mb-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center space-x-2 mb-4">
-              <Eye className="w-5 h-5 text-gray-400" />
-              <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
-            </div>
-            <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-              <iframe
-                srcDoc={previewHtml}
-                className="w-full h-[800px] border-0"
-                title="CV Preview"
-              />
-            </div>
+        {/* Export Format Selection */}
+        <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {EXPORT_FORMATS.map((format) => (
+              <label key={format.id} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="format"
+                  value={format.id}
+                  checked={selectedFormat === format.id}
+                  onChange={(e) => setSelectedFormat(e.target.value)}
+                  className="sr-only"
+                />
+                <div className={`
+                  p-4 rounded-lg border-2 transition-colors text-center
+                  ${selectedFormat === format.id 
+                    ? 'border-blue-500 bg-blue-50' 
+                    : 'border-gray-200 hover:border-gray-300'
+                  }
+                `}>
+                  <div className="text-2xl mb-2">{format.icon}</div>
+                  <div className="font-semibold text-gray-900">{format.name}</div>
+                  <div className="text-xs text-gray-500 mt-1">{format.description}</div>
+                </div>
+              </label>
+            ))}
           </div>
         </div>
 
-        {/* Template Selection - Horizontal Scroll */}
-        <div className="max-w-4xl mx-auto mb-6">
+        {/* Template Selection - Grid Layout */}
+        <div className="max-w-7xl mx-auto mb-6">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
-            <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {TEMPLATES.map((template) => (
-                  <label key={template.id} className="flex items-center cursor-pointer">
+                  <label key={template.id} className="cursor-pointer">
                     <input
                       type="radio"
                       name="template"
@@ -721,15 +722,16 @@ export default function DownloadPage() {
                       className="sr-only"
                     />
                     <div className={`
-                      flex-1 p-3 rounded-lg border-2 transition-all
+                      h-full p-4 rounded-lg border-2 transition-all hover:shadow-md
                       ${selectedTemplate === template.id 
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'border-blue-500 bg-blue-50 shadow-md'
                         : 'border-gray-200 hover:border-gray-300'
                       }
                     `}>
-                      <div className="flex items-center justify-between">
-                        <div className="font-medium text-gray-900">{template.name}</div>
-                        <div className="flex items-center gap-2">
+                      <div className="flex flex-col h-full">
+                        <div className="font-medium text-gray-900 mb-2">{template.name}</div>
+                        <div className="text-sm text-gray-600 mb-3 flex-grow">{template.description}</div>
+                        <div className="flex items-center gap-2 flex-wrap">
                           {template.badge && (
                             <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
                               {template.badge}
@@ -742,7 +744,6 @@ export default function DownloadPage() {
                           )}
                         </div>
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">{template.description}</div>
                     </div>
                   </label>
                 ))}
