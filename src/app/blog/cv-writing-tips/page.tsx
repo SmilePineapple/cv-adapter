@@ -3,8 +3,8 @@ import { ArrowLeft, CheckCircle, TrendingUp, Target, Zap, Star, Award } from 'lu
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Writing Tips & Best Practices | My CV Buddy',
-  description: 'Expert advice to create a winning CV that gets you interviews. Learn the 6-second rule, action verbs, and proven strategies that work.',
+  title: 'CV Writing Tips & Best Practices',
+  description: 'Expert advice to create a winning CV that gets you interviews. Learn the 6-second rule, action verbs, and proven strategies that work in 2025.',
   keywords: [
     'CV writing tips',
     'resume writing guide',
@@ -15,6 +15,22 @@ export const metadata: Metadata = {
     'CV structure',
     'CV mistakes to avoid'
   ],
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com/blog/cv-writing-tips'
+  },
+  openGraph: {
+    title: 'CV Writing Tips & Best Practices | CV Adapter',
+    description: 'Expert advice to create a winning CV that gets you interviews.',
+    url: 'https://www.mycvbuddy.com/blog/cv-writing-tips',
+    siteName: 'CV Adapter',
+    type: 'article',
+    publishedTime: '2025-10-10T00:00:00Z',
+    authors: ['CV Adapter'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function CVWritingTipsPage() {

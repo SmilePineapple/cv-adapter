@@ -1,0 +1,4 @@
+fix: Remove debug console logs from subscription page
+
+- Remove excessive console.log statements that were causing crashes
+- Fix client-side exception when clicking View Invoices button
