@@ -1,0 +1,16 @@
+fix: Add comprehensive SEO improvements for Google Search Console
+
+- Add canonical URLs to all pages (subscription, cover-letter, blog)
+- Add metadataBase to root layout for proper URL resolution
+- Add Open Graph and Twitter Card metadata
+- Add proper redirects from non-www to www domain in vercel.json
+- Add security headers (X-Content-Type-Options, X-Frame-Options, etc)
+- Improve blog post metadata with article type and publish date
+- Add SEO utility library for consistent metadata generation
+- Fix duplicate content issues flagged by Google Search Console
+- Improve robots directives for better crawling
+
+This fixes:
+- Page with redirect issues (6 pages)
+- Duplicate without user-selected canonical (3 pages)
+- Crawled - currently not indexed (2 pages)
