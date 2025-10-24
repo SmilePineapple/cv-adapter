@@ -18,7 +18,7 @@ export function StructuredData() {
         "name": "Is My CV Buddy free to use?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! We offer 100 free CV generations per month. For unlimited access, upgrade to Pro for £5/month."
+          "text": "Yes! We offer 1 free CV generation. For unlimited access, upgrade to Pro for £9.99/month."
         }
       },
       {
@@ -51,13 +51,13 @@ export function StructuredData() {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "GBP",
-        "description": "Free tier with 100 CV generations per month"
+        "description": "Free tier with 1 CV generation"
       },
       {
         "@type": "Offer",
-        "price": "5.00",
+        "price": "9.99",
         "priceCurrency": "GBP",
-        "description": "Pro plan with unlimited CV generations",
+        "description": "Pro plan with unlimited CV generations (monthly subscription)",
         "priceValidUntil": "2026-12-31"
       }
     ],

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+import CVProgressStepper from '@/components/CVProgressStepper'
 import { toast } from 'sonner'
 import { RewriteStyle, ToneType } from '@/types/database'
 import { 
@@ -22,6 +23,9 @@ import { LanguageSelector } from '@/components/LanguageSelector'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import { LANGUAGE_NAMES } from '@/lib/language-detection'
 import { LoadingProgress } from '@/components/LoadingProgress'
+import UpgradeModal from '@/components/UpgradeModal'
+import JobScraper from '@/components/JobScraper'
+import { analyzeJobPaste } from '@/lib/smart-paste'
 
 export default function GeneratePage() {
   const params = useParams()
@@ -34,6 +38,7 @@ export default function GeneratePage() {
   const [selectedCvId, setSelectedCvId] = useState<string>(cvId)
   const [jobTitle, setJobTitle] = useState('')
   const [jobDescription, setJobDescription] = useState('')
+  const [smartPasteSuggestion, setSmartPasteSuggestion] = useState<{title: string, confidence: string} | null>(null)
   const [rewriteStyle, setRewriteStyle] = useState<RewriteStyle>('balanced')
   const [tone, setTone] = useState<ToneType>('professional')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -46,6 +51,7 @@ export default function GeneratePage() {
   const [usageData, setUsageData] = useState<{generation_count: number, max_generations: number, is_pro: boolean} | null>(null)
   const [outputLanguage, setOutputLanguage] = useState<string>('en')
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
   useEffect(() => {
     fetchCVData()
@@ -72,7 +78,7 @@ export default function GeneratePage() {
         .single()
 
       const isPro = usage?.plan_type === 'pro'
-      const maxGenerations = usage?.max_lifetime_generations || (isPro ? 100 : 1)
+      const maxGenerations = usage?.max_lifetime_generations || (isPro ? 999999 : 1)
       const currentCount = usage?.lifetime_generation_count || 0
 
       setUsageData({
@@ -173,9 +179,9 @@ export default function GeneratePage() {
     // Check usage limit BEFORE making API call
     if (usageData && usageData.generation_count >= usageData.max_generations) {
       if (usageData.is_pro) {
-        toast.error('You have reached your 100 generation limit. Please contact support to purchase more.')
+        toast.error('Unexpected error. Please contact support.')
       } else {
-        toast.error('You have used your 1 free generation. Upgrade to Pro for 100 generations!', {
+        toast.error('You have used your 1 free generation. Upgrade to Pro for unlimited!', {
           duration: 5000,
           action: {
             label: 'Upgrade',
@@ -282,7 +288,8 @@ export default function GeneratePage() {
 
       if (!response.ok) {
         if (result.limit_reached) {
-          toast.error('Monthly generation limit reached. Please upgrade to continue.')
+          setShowUpgradeModal(true)
+          toast.error('Free generation used. Upgrade to Pro for unlimited generations!')
           return
         }
         
@@ -328,6 +335,9 @@ export default function GeneratePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Progress Stepper */}
+      <CVProgressStepper currentStep="generate" />
+      
       {/* Header */}
       <header className="bg-white border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -423,6 +433,13 @@ export default function GeneratePage() {
             </div>
           )}
 
+          {/* Job Scraper */}
+          <JobScraper
+            onJobScraped={(jobData) => {
+              setJobTitle(jobData.job_title || '')
+              setJobDescription(jobData.job_description || '')
+            }}
+          />
 
           <form onSubmit={handleGenerate} className="space-y-6">
             {/* Job Title */}
@@ -453,6 +470,31 @@ export default function GeneratePage() {
                 id="jobDescription"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
+                onPaste={(e) => {
+                  // Smart paste detection
+                  const pastedText = e.clipboardData.getData('text')
+                  if (pastedText.length > 100) {
+                    setTimeout(() => {
+                      const analysis = analyzeJobPaste(pastedText)
+                      if (analysis.detectedTitle && !jobTitle) {
+                        setSmartPasteSuggestion({
+                          title: analysis.detectedTitle,
+                          confidence: analysis.confidence
+                        })
+                        toast.info(`Detected job title: "${analysis.detectedTitle}"`, {
+                          duration: 5000,
+                          action: {
+                            label: 'Use Title',
+                            onClick: () => {
+                              setJobTitle(analysis.detectedTitle!)
+                              setSmartPasteSuggestion(null)
+                            }
+                          }
+                        })
+                      }
+                    }, 100)
+                  }
+                }}
                 rows={8}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Paste the full job description here. Include requirements, responsibilities, and qualifications for best results."
@@ -687,6 +729,15 @@ export default function GeneratePage() {
           </div>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        trigger="limit_reached"
+        currentUsage={usageData?.generation_count || 1}
+        maxGenerations={usageData?.max_generations || 1}
+      />
     </div>
   )
 }

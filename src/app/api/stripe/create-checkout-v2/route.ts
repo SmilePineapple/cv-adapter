@@ -71,8 +71,8 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: 'gbp',
             product_data: {
-              name: 'CV Adapter Pro - 100 Lifetime Generations',
-              description: '100 AI-powered CV generations that never expire',
+              name: 'CV Adapter Pro - Lifetime Access',
+              description: 'Unlimited AI-powered CV generations',
             },
             unit_amount: 500, // £5.00 in pence
           },

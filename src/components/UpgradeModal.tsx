@@ -46,9 +46,9 @@ export default function UpgradeModal({
   const getSubheadline = () => {
     switch (trigger) {
       case 'limit_reached':
-        return "You've experienced the power of AI-tailored CVs. Get 100 more generations for just £5!"
+        return "You've experienced the power of AI-tailored CVs. Get unlimited generations for just £9.99/month!"
       case 'first_generation':
-        return "You just created an amazing CV! Upgrade now to generate 99 more for different jobs."
+        return "You just created an amazing CV! Upgrade now for unlimited generations."
       case 'dashboard':
         return "Join hundreds of professionals who upgraded to Pro and landed their dream jobs."
       default:
@@ -91,7 +91,7 @@ export default function UpgradeModal({
                     You've used {currentUsage} of {maxGenerations} free generation{maxGenerations > 1 ? 's' : ''}
                   </p>
                   <p className="text-sm text-orange-700">
-                    Upgrade now to get 100 more generations that never expire!
+                    Upgrade now for unlimited generations!
                   </p>
                 </div>
               </div>
@@ -111,22 +111,22 @@ export default function UpgradeModal({
                   <Crown className="w-6 h-6 text-purple-600" />
                   Pro Plan
                 </h3>
-                <p className="text-gray-600">One-time payment. Lifetime access.</p>
+                <p className="text-gray-600">Recurring subscription. Cancel anytime.</p>
               </div>
               <div className="text-right">
-                <div className="flex items-center gap-2 justify-end">
-                  <div className="text-2xl font-bold text-gray-400 line-through">£5</div>
-                  <div className="text-4xl font-bold text-orange-600">£2.50</div>
+                <div className="flex flex-col gap-1">
+                  <div className="text-4xl font-bold text-purple-600">£9.99</div>
+                  <div className="text-sm text-gray-600">per month</div>
                 </div>
-                <div className="text-sm text-orange-600 font-semibold">50% OFF - Only £0.025 per generation!</div>
+                <div className="text-xs text-green-600 font-semibold mt-1">or £49/year (save 59%!)</div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg p-4 mb-4">
               <div className="text-center">
-                <div className="text-5xl font-bold text-purple-600 mb-1">100</div>
-                <div className="text-gray-600">Lifetime Generations</div>
-                <div className="text-sm text-gray-500 mt-1">Never expires. Use anytime.</div>
+                <div className="text-5xl font-bold text-purple-600 mb-1">∞</div>
+                <div className="text-gray-600">Unlimited Generations</div>
+                <div className="text-sm text-gray-500 mt-1">Create as many CVs as you need</div>
               </div>
             </div>
 
@@ -143,8 +143,8 @@ export default function UpgradeModal({
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             <FeatureItem
               icon={<Check className="w-5 h-5" />}
-              title="100 Lifetime Generations"
-              description="Create CVs for 100 different jobs. Never expires."
+              title="Unlimited Generations"
+              description="Create as many CVs as you need for different jobs."
             />
             <FeatureItem
               icon={<Zap className="w-5 h-5" />}
@@ -163,8 +163,8 @@ export default function UpgradeModal({
             />
             <FeatureItem
               icon={<Star className="w-5 h-5" />}
-              title="10 Pro Templates"
-              description="Choose from professional, modern designs."
+              title="14 Pro Templates"
+              description="Access all templates including advanced designs."
             />
             <FeatureItem
               icon={<Crown className="w-5 h-5" />}
@@ -188,24 +188,23 @@ export default function UpgradeModal({
                   Join 500+ professionals who upgraded
                 </p>
                 <p className="text-sm text-green-700">
-                  "Best £5 I've spent on my job search. Got 3 interviews in the first week!" - Sarah M.
+                  "Best investment in my career. Generated 15 tailored CVs and landed my dream job!" - Sarah M.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Launch Special - 50% Off Banner */}
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg p-4 mb-6 text-center">
-            <p className="text-2xl font-bold mb-1">🎉 LAUNCH SPECIAL: 50% OFF!</p>
+          {/* Annual Plan Savings Banner */}
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg p-4 mb-6 text-center">
+            <p className="text-2xl font-bold mb-1">💰 SAVE 59% WITH ANNUAL PLAN!</p>
             <p className="text-lg mb-2">
-              Get Pro for just <span className="font-bold text-3xl">£2.50</span>
-              <span className="line-through ml-2 opacity-75">£5.00</span>
+              Pay <span className="font-bold text-3xl">£49/year</span> instead of £119.88
             </p>
             <p className="text-sm opacity-90">
-              ⏰ Limited to first 100 customers • Offer ends in 7 days
+              That's only £4.08/month - cheaper than a coffee!
             </p>
             <p className="text-xs mt-2 opacity-75">
-              Discount automatically applied at checkout
+              Choose annual plan at checkout
             </p>
           </div>
 
@@ -213,10 +212,10 @@ export default function UpgradeModal({
           {trigger === 'limit_reached' && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <p className="text-center text-red-900 font-semibold">
-                ⚡ Don't miss out! Only a few spots left at 50% off
+                ⚡ Continue your job search without interruption
               </p>
               <p className="text-center text-sm text-red-700 mt-1">
-                Price returns to £5.00 after first 100 customers
+                Upgrade now and apply to unlimited jobs
               </p>
             </div>
           )}
@@ -232,13 +231,13 @@ export default function UpgradeModal({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                <ComparisonRow feature="CV Generations" free="1" pro="100" />
-                <ComparisonRow feature="AI Tailoring" free="✓" pro="✓" />
-                <ComparisonRow feature="Professional Templates" free="3" pro="10" />
-                <ComparisonRow feature="Export Formats" free="PDF" pro="PDF, DOCX, HTML, TXT" />
-                <ComparisonRow feature="Cover Letters" free="✗" pro="✓" />
+                <ComparisonRow feature="CV Generations" free="1" pro="Unlimited" />
+                <ComparisonRow feature="AI Expert Review" free="✗" pro="✓" />
+                <ComparisonRow feature="Cover Letter Generator" free="✗" pro="✓" />
+                <ComparisonRow feature="Professional Templates" free="3 basic" pro="14 (incl. advanced)" />
+                <ComparisonRow feature="Export Formats" free="PDF only" pro="All formats" />
+                <ComparisonRow feature="Watermark" free="Yes" pro="No" />
                 <ComparisonRow feature="Priority Support" free="✗" pro="✓" />
-                <ComparisonRow feature="Lifetime Access" free="✗" pro="✓" />
               </tbody>
             </table>
           </div>

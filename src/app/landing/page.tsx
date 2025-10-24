@@ -57,7 +57,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-sm text-gray-500">
-            ✨ 3 free CV generations • Then £5/month for 100 generations
+            ✨ 1 free CV generation • Then £9.99/month for unlimited
           </div>
         </div>
       </section>
@@ -160,12 +160,12 @@ export default function LandingPage() {
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-200">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Pro Plan</h3>
               <div className="text-4xl font-bold text-blue-600 mb-4">
-                £5<span className="text-lg text-gray-600"> one-time</span>
+                £9.99<span className="text-lg text-gray-600">/month</span>
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>100 CV generations (lifetime)</span>
+                  <span>Unlimited CV generations</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2" />

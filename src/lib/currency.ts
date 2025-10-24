@@ -14,43 +14,43 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
   GBP: {
     code: 'gbp',
     symbol: '£',
-    amount: 500, // £5.00
-    displayAmount: '£5',
+    amount: 999, // £9.99/month
+    displayAmount: '£9.99',
     name: 'British Pound'
   },
   USD: {
     code: 'usd',
     symbol: '$',
-    amount: 699, // $6.99 (roughly £5 + international fees)
-    displayAmount: '$6.99',
+    amount: 1299, // $12.99/month
+    displayAmount: '$12.99',
     name: 'US Dollar'
   },
   EUR: {
     code: 'eur',
     symbol: '€',
-    amount: 599, // €5.99
-    displayAmount: '€5.99',
+    amount: 1099, // €10.99/month
+    displayAmount: '€10.99',
     name: 'Euro'
   },
   CAD: {
     code: 'cad',
     symbol: 'C$',
-    amount: 899, // C$8.99
-    displayAmount: 'C$8.99',
+    amount: 1499, // C$14.99/month
+    displayAmount: 'C$14.99',
     name: 'Canadian Dollar'
   },
   AUD: {
     code: 'aud',
     symbol: 'A$',
-    amount: 999, // A$9.99
-    displayAmount: 'A$9.99',
+    amount: 1599, // A$15.99/month
+    displayAmount: 'A$15.99',
     name: 'Australian Dollar'
   },
   INR: {
     code: 'inr',
     symbol: '₹',
-    amount: 49900, // ₹499 (roughly £5)
-    displayAmount: '₹499',
+    amount: 99900, // ₹999/month
+    displayAmount: '₹999',
     name: 'Indian Rupee'
   }
 }

@@ -84,11 +84,11 @@ export default function PromoBanner({ variant = 'homepage', onClose }: PromoBann
                     </span>
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black mb-1">
-                    50% OFF Pro Plan!
+                    50% OFF Launch Offer!
                   </h2>
                   <p className="text-sm md:text-base opacity-95">
-                    Get 100 Lifetime Generations for just <span className="font-bold text-yellow-300 text-xl">£2.50</span>
-                    <span className="line-through ml-2 opacity-75">£5.00</span>
+                    First month just <span className="font-bold text-yellow-300 text-xl">£4.99</span> or annual plan <span className="font-bold text-yellow-300 text-xl">£24.50</span>
+                    <span className="line-through ml-2 opacity-75">£9.99</span>
                   </p>
                 </div>
               </div>
@@ -175,16 +175,15 @@ export default function PromoBanner({ variant = 'homepage', onClose }: PromoBann
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="inline-block px-2 py-0.5 bg-yellow-400 text-red-900 text-xs font-bold rounded uppercase">
-                      🔥 50% OFF
+                      🔥 50% OFF LAUNCH
                     </span>
                     <span className="text-xs font-semibold">Limited Time Only!</span>
                   </div>
                   <p className="text-lg font-bold">
-                    Upgrade to Pro for just <span className="text-yellow-300 text-2xl">£2.50</span>
-                    <span className="line-through ml-2 text-base opacity-75">£5.00</span>
+                    First month <span className="text-yellow-300 text-2xl">£4.99</span> or annual <span className="text-yellow-300 text-2xl">£24.50</span>
                   </p>
                   <p className="text-xs opacity-90 mt-1">
-                    Get 100 lifetime generations • Offer ends Oct 31st
+                    Unlimited generations • 50% off launch offer • Cancel anytime
                   </p>
                 </div>
               </div>

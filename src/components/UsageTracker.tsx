@@ -78,21 +78,21 @@ export default function UsageTracker({
                 🚫 You've used all your free generations!
               </p>
               <p className="text-xs text-red-700 mb-3">
-                Upgrade to Pro for 100 more generations at just £0.05 each
+                Upgrade to Pro for unlimited generations at just £9.99/month
               </p>
               {onUpgradeClick ? (
                 <button
                   onClick={onUpgradeClick}
                   className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all"
                 >
-                  Upgrade to Pro - £5
+                  Upgrade to Pro - £9.99/month
                 </button>
               ) : (
                 <Link
                   href="/subscription"
                   className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all text-center"
                 >
-                  Upgrade to Pro - £5
+                  Upgrade to Pro - £9.99/month
                 </Link>
               )}
             </div>
@@ -102,28 +102,28 @@ export default function UsageTracker({
                 ⚠️ Almost out of generations!
               </p>
               <p className="text-xs text-orange-700 mb-3">
-                Upgrade now to get 100 generations for just £5 (£0.05 each)
+                Upgrade now for unlimited generations at £9.99/month
               </p>
               {onUpgradeClick ? (
                 <button
                   onClick={onUpgradeClick}
                   className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all"
                 >
-                  Upgrade to Pro - £5
+                  Upgrade to Pro - £9.99/month
                 </button>
               ) : (
                 <Link
                   href="/subscription"
                   className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all text-center"
                 >
-                  Upgrade to Pro - £5
+                  Upgrade to Pro - £9.99/month
                 </Link>
               )}
             </div>
           ) : (
             <div className="bg-white rounded-lg p-3 border border-blue-200">
               <p className="text-xs text-gray-600 mb-2">
-                💡 <span className="font-semibold">Pro Tip:</span> Upgrade to Pro for 100 generations at just £0.05 each
+                💡 <span className="font-semibold">Pro Tip:</span> Upgrade to Pro for unlimited generations at £9.99/month
               </p>
               {onUpgradeClick ? (
                 <button
@@ -156,8 +156,8 @@ export default function UsageTracker({
           </div>
           <p className="text-xs text-gray-600">
             {remaining > 0 
-              ? `You have ${remaining} generation${remaining !== 1 ? 's' : ''} remaining. Keep creating amazing CVs!`
-              : "You've used all 100 generations. Contact support for more."
+              ? `Unlimited generations available. Keep creating amazing CVs!`
+              : "Unlimited generations available. Keep creating amazing CVs!"
             }
           </p>
         </div>

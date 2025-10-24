@@ -159,7 +159,16 @@ Return optimized sections as JSON array:
   "changesSummary": "Brief summary of major changes"
 }
 
-CRITICAL: Maintain all factual information. Only enhance presentation, add metrics where logical, and optimize language. Do not fabricate experience.`
+CRITICAL RULES:
+1. Maintain all factual information. Only enhance presentation, add metrics where logical, and optimize language.
+2. Do not fabricate experience.
+3. **PRESERVE ALL SECTIONS**: You MUST include ALL sections from the current CV in your output, including:
+   - Custom sections (volunteer_work, publications, awards, projects, languages, memberships, speaking, patents, research, teaching, community)
+   - Standard sections (name, contact, summary, experience, education, skills, certifications, hobbies, groups, strengths, additional, interests)
+4. For custom sections: COPY EXACTLY - do not modify their content
+5. Only optimize: summary, experience, and skills sections
+
+🚨 YOUR OUTPUT MUST HAVE THE SAME NUMBER OF SECTIONS AS THE INPUT! 🚨`
 
   try {
     const response = await openai.chat.completions.create({

@@ -40,12 +40,15 @@ export default function CreateCoverLetterPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isPro, setIsPro] = useState(false)
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const router = useRouter()
   const supabase = createSupabaseClient()
 
   useEffect(() => {
     checkAuth()
     fetchCVs()
+    checkSubscription()
   }, [])
 
   const checkAuth = async () => {
@@ -55,6 +58,30 @@ export default function CreateCoverLetterPage() {
       return
     }
     setUser(user)
+  }
+
+  const checkSubscription = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: usage } = await supabase
+        .from('usage_tracking')
+        .select('subscription_tier')
+        .eq('user_id', user.id)
+        .single()
+
+      const subscriptionTier = usage?.subscription_tier || 'free'
+      const isProUser = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
+      setIsPro(isProUser)
+      
+      // Show upgrade prompt for free users
+      if (!isProUser) {
+        setShowUpgradePrompt(true)
+      }
+    } catch (error) {
+      console.error('Error checking subscription:', error)
+    }
   }
 
   const fetchCVs = async () => {
@@ -154,6 +181,27 @@ export default function CreateCoverLetterPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Upgrade Banner for Free Users */}
+      {showUpgradePrompt && !isPro && (
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Sparkles className="w-5 h-5 mr-2" />
+                <span className="font-semibold">Cover Letters are a Pro feature</span>
+                <span className="ml-2 text-purple-100">Upgrade to unlock unlimited cover letters</span>
+              </div>
+              <Link
+                href="/subscription"
+                className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+              >
+                Upgrade to Pro
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

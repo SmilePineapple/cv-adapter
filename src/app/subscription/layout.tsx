@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Upgrade to Pro | CV Buddy',
-  description: 'Upgrade to CV Buddy Pro for just £5. Get 100 lifetime CV generations, premium templates, and priority support. One-time payment, no subscription.',
+  description: 'Upgrade to CV Buddy Pro for £9.99/month. Get unlimited CV generations, premium templates, and priority support. Cancel anytime.',
   alternates: {
     canonical: 'https://www.mycvbuddy.com/subscription'
   },

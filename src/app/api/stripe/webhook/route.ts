@@ -37,59 +37,40 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
         const customerId = session.customer as string
-        const paymentIntentId = session.payment_intent as string
+        const subscriptionId = session.subscription as string
 
-        console.log('[Webhook] Checkout completed:', { customerId, paymentIntentId, mode: session.mode })
+        console.log('[Webhook] Checkout completed:', { customerId, subscriptionId, mode: session.mode })
 
-        // Only process payment mode (one-time payments), not subscription mode
-        if (session.mode !== 'payment') {
-          console.log('[Webhook] Not a one-time payment, skipping')
+        // Only process subscription mode
+        if (session.mode !== 'subscription') {
+          console.log('[Webhook] Not a subscription, skipping')
           break
         }
         
-        // Extract user_id from metadata (set during checkout creation)
+        // Extract user_id from metadata
         const userId = session.metadata?.user_id || session.client_reference_id
+        const planType = session.metadata?.plan_type || 'monthly'
 
         if (!userId) {
           console.error('[Webhook] No user_id found in session metadata')
           break
         }
 
-        console.log('[Webhook] Processing one-time payment for user:', userId)
+        console.log('[Webhook] Processing subscription for user:', userId, 'Plan:', planType)
 
-        // Create purchase record
-        const { error: purchaseError } = await supabase
-          .from('purchases')
-          .upsert({
-            user_id: userId,
-            stripe_customer_id: customerId,
-            payment_intent_id: paymentIntentId,
-            status: 'completed',
-            amount_paid: session.amount_total, // in cents/pence
-            currency: session.currency || 'gbp',
-            purchased_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
+        // Get subscription details
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+        const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000)
 
-        if (purchaseError) {
-          console.error('[Webhook] Purchase record error:', purchaseError)
-          throw purchaseError
-        }
-
-        // Track analytics event
-        try {
-          await trackPaymentCompleted(session.amount_total || 0, 'pro')
-        } catch (analyticsError) {
-          console.error('[Webhook] Analytics tracking failed:', analyticsError)
-          // Don't fail the webhook if analytics fails
-        }
-
-        // Upgrade user to pro (100 lifetime generations)
+        // Upgrade user to pro with subscription tier
+        const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
+        
         const { error: upgradeError } = await supabase
           .from('usage_tracking')
           .update({
-            plan_type: 'pro',
-            max_lifetime_generations: 100,
+            subscription_tier: subscriptionTier,
+            subscription_start_date: new Date().toISOString(),
+            subscription_end_date: currentPeriodEnd.toISOString(),
             updated_at: new Date().toISOString()
           })
           .eq('user_id', userId)
@@ -99,7 +80,82 @@ export async function POST(request: NextRequest) {
           throw upgradeError
         }
 
-        console.log('[Webhook] User upgraded to Pro successfully')
+        // Track analytics event
+        try {
+          await trackPaymentCompleted(session.amount_total || 0, subscriptionTier)
+        } catch (analyticsError) {
+          console.error('[Webhook] Analytics tracking failed:', analyticsError)
+        }
+
+        console.log('[Webhook] User upgraded to Pro successfully:', subscriptionTier)
+        break
+      }
+
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription
+        const customerId = subscription.customer as string
+
+        console.log('[Webhook] Subscription updated:', subscription.id)
+
+        // Find user by customer ID
+        const { data: purchases } = await supabase
+          .from('purchases')
+          .select('user_id')
+          .eq('stripe_customer_id', customerId)
+          .limit(1)
+
+        if (!purchases || purchases.length === 0) {
+          console.error('[Webhook] No user found for customer:', customerId)
+          break
+        }
+
+        const userId = purchases[0].user_id
+        const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000)
+
+        // Update subscription end date
+        await supabase
+          .from('usage_tracking')
+          .update({
+            subscription_end_date: currentPeriodEnd.toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        console.log('[Webhook] Subscription updated for user:', userId)
+        break
+      }
+
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription
+        const customerId = subscription.customer as string
+
+        console.log('[Webhook] Subscription cancelled:', subscription.id)
+
+        // Find user by customer ID
+        const { data: purchases } = await supabase
+          .from('purchases')
+          .select('user_id')
+          .eq('stripe_customer_id', customerId)
+          .limit(1)
+
+        if (!purchases || purchases.length === 0) {
+          console.error('[Webhook] No user found for customer:', customerId)
+          break
+        }
+
+        const userId = purchases[0].user_id
+
+        // Downgrade user to free tier
+        await supabase
+          .from('usage_tracking')
+          .update({
+            subscription_tier: 'free',
+            subscription_end_date: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        console.log('[Webhook] User downgraded to free:', userId)
         break
       }
 

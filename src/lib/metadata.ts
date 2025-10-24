@@ -101,7 +101,7 @@ export const uploadMetadata: Metadata = {
 export const subscriptionMetadata: Metadata = {
   ...generateMetadata('/subscription'),
   title: 'Upgrade to Pro | CV Buddy',
-  description: 'Upgrade to CV Buddy Pro for just £5. Get 100 lifetime CV generations, premium templates, and priority support.',
+  description: 'Upgrade to CV Buddy Pro for £9.99/month. Get unlimited CV generations, premium templates, and priority support.',
   robots: {
     index: true,
     follow: true,

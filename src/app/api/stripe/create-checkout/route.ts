@@ -16,7 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId, currency = 'gbp' } = await request.json()
+    const { userId, currency = 'gbp', plan = 'monthly' } = await request.json()
 
     if (!userId) {
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
@@ -54,46 +54,73 @@ export async function POST(request: NextRequest) {
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
       payment_method_types: ['card'],
-      mode: 'payment',
+      mode: 'subscription', // Changed from 'payment' to 'subscription'
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment_success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription?canceled=true`,
       metadata: {
         user_id: userId,
+        plan_type: plan, // 'monthly' or 'annual'
       },
     }
 
-    // Option 1: Use Price ID (if you've created a Product in Stripe)
-    if (process.env.STRIPE_PRICE_ID_PRO) {
+    // Option 1: Use Price IDs from Stripe Dashboard (RECOMMENDED)
+    const priceIdEnvVar = plan === 'annual' 
+      ? 'STRIPE_PRICE_ID_PRO_ANNUAL' 
+      : 'STRIPE_PRICE_ID_PRO_MONTHLY'
+    
+    const priceId = process.env[priceIdEnvVar]
+    
+    if (priceId) {
+      // Use pre-created Price IDs from Stripe Dashboard
       sessionParams.line_items = [
         {
-          price: process.env.STRIPE_PRICE_ID_PRO,
+          price: priceId,
           quantity: 1,
         },
       ]
     } 
-    // Option 2: Fallback to inline pricing (current method)
+    // Option 2: Fallback to inline pricing (for testing)
     else {
-      // Currency-specific pricing
-      const currencyPricing: Record<string, number> = {
-        gbp: 500,    // £5.00
-        usd: 699,    // $6.99
-        eur: 599,    // €5.99
-        cad: 899,    // C$8.99
-        aud: 999,    // A$9.99
-        inr: 49900,  // ₹499
+      console.log('⚠️ No Stripe Price ID found, using inline pricing')
+      
+      // Monthly pricing by currency
+      const monthlyPricing: Record<string, number> = {
+        gbp: 999,     // £9.99/month
+        usd: 1299,    // $12.99/month
+        eur: 1099,    // €10.99/month
+        cad: 1499,    // C$14.99/month
+        aud: 1599,    // A$15.99/month
+        inr: 99900,   // ₹999/month
       }
 
-      const amount = currencyPricing[currency.toLowerCase()] || 500
+      // Annual pricing by currency (save ~59%)
+      const annualPricing: Record<string, number> = {
+        gbp: 4900,    // £49/year (£4.08/month)
+        usd: 6900,    // $69/year ($5.75/month)
+        eur: 5900,    // €59/year (€4.92/month)
+        cad: 7900,    // C$79/year (C$6.58/month)
+        aud: 8900,    // A$89/year (A$7.42/month)
+        inr: 499900,  // ₹4,999/year (₹416/month)
+      }
+
+      const pricing = plan === 'annual' ? annualPricing : monthlyPricing
+      const amount = pricing[currency.toLowerCase()] || (plan === 'annual' ? 4900 : 999)
+      const interval = plan === 'annual' ? 'year' : 'month'
 
       sessionParams.line_items = [
         {
           price_data: {
             currency: currency.toLowerCase(),
             product_data: {
-              name: 'CV Adapter Pro - 100 Lifetime Generations',
-              description: '100 AI-powered CV generations that never expire',
+              name: `CV Adapter Pro - ${plan === 'annual' ? 'Annual' : 'Monthly'} Plan`,
+              description: plan === 'annual' 
+                ? 'Unlimited CV generations - Billed annually (Save 59%)'
+                : 'Unlimited CV generations - Billed monthly',
             },
             unit_amount: amount,
+            recurring: {
+              interval: interval,
+            },
           },
           quantity: 1,
         },

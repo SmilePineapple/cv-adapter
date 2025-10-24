@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+import CVProgressStepper from '@/components/CVProgressStepper'
 import { toast } from 'sonner'
 import { CVSection, DiffMetadata } from '@/types/database'
 import UpgradeModal from '@/components/UpgradeModal'
@@ -184,10 +185,31 @@ export default function ReviewPage() {
   const [improvedSections, setImprovedSections] = useState<CVSection[] | null>(null)
   const [improvedAtsScore, setImprovedAtsScore] = useState<number | null>(null)
   const [showComparison, setShowComparison] = useState(false)
+  const [isPro, setIsPro] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
+    checkSubscription()
   }, [generationId])
+
+  const checkSubscription = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: usage } = await supabase
+        .from('usage_tracking')
+        .select('subscription_tier')
+        .eq('user_id', user.id)
+        .single()
+
+      const subscriptionTier = usage?.subscription_tier || 'free'
+      const isProUser = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
+      setIsPro(isProUser)
+    } catch (error) {
+      console.error('Error checking subscription:', error)
+    }
+  }
 
   const fetchGenerationData = async () => {
     try {
@@ -243,11 +265,19 @@ export default function ReviewPage() {
         : generatedSecs // If no original, just use generated sections
       
       // Add any generated sections that don't exist in original
+      console.log('🔍 Original sections count:', originalSecs.length)
+      console.log('🔍 Generated sections count:', generatedSecs.length)
+      console.log('🔍 Generated section types:', generatedSecs.map(s => s.type).join(', '))
+      
       generatedSecs.forEach((genSection: CVSection) => {
         if (!originalSecs.find((s: CVSection) => s.type === genSection.type)) {
+          console.log('➕ Adding custom section:', genSection.type)
           mergedSections.push(genSection)
         }
       })
+      
+      console.log('✅ Final merged sections count:', mergedSections.length)
+      console.log('✅ Final section types:', mergedSections.map(s => s.type).join(', '))
       
       setOriginalSections(originalSecs)
       setEditedSections(mergedSections)
@@ -539,6 +569,9 @@ export default function ReviewPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Progress Stepper */}
+      <CVProgressStepper currentStep="review" />
+      
       {/* Upgrade Modal */}
       {usageInfo && (
         <UpgradeModal
@@ -583,9 +616,19 @@ export default function ReviewPage() {
               )}
               <div className="flex flex-col items-end space-y-2">
                 <button
-                  onClick={handleAIReview}
+                  onClick={() => {
+                    if (!isPro) {
+                      setShowUpgradeModal(true)
+                      return
+                    }
+                    handleAIReview()
+                  }}
                   disabled={isReviewing}
-                  className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm disabled:opacity-50"
+                  className={`flex items-center px-4 py-2 rounded-lg transition-all shadow-sm disabled:opacity-50 ${
+                    isPro 
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-purple-300'
+                  }`}
                 >
                   {isReviewing ? (
                     <>
@@ -596,6 +639,11 @@ export default function ReviewPage() {
                     <>
                       <Sparkles className="w-4 h-4 mr-2" />
                       AI Review
+                      {!isPro && (
+                        <span className="ml-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                          PRO
+                        </span>
+                      )}
                     </>
                   )}
                 </button>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+import CVProgressStepper from '@/components/CVProgressStepper'
 import { toast } from 'sonner'
 import { CVSection } from '@/types/database'
 import { 
@@ -17,6 +18,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
+import UpgradeModal from '@/components/UpgradeModal'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 
 interface GenerationData {
@@ -38,30 +40,30 @@ interface AIReview {
 }
 
 const TEMPLATES = [
-  // ✨ ADVANCED TEMPLATES (Working with icons & layouts)
-  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'PREMIUM', advanced: true },
-  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'PREMIUM', advanced: true },
+  // ✨ FREE TEMPLATES (Available to all users)
+  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'PREMIUM', advanced: true, pro: false },
+  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'PREMIUM', advanced: true, pro: false },
   
-  // Modern Templates (12 new designs with color customization)
-  { id: 'professional-circle', name: 'Professional Circle', description: 'Circular profile with icon sections', category: 'Professional', badge: 'NEW' },
-  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral design with elegant typography', category: 'Modern', badge: 'NEW' },
-  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'NEW' },
-  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm beige with traditional layout', category: 'Professional', badge: 'NEW' },
-  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated tan for executives', category: 'Professional', badge: 'NEW' },
-  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'NEW' },
-  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale design', category: 'Minimal', badge: 'NEW' },
-  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Creative with decorative patterns', category: 'Creative', badge: 'NEW' },
-  { id: 'modern-blue', name: 'Modern Blue', description: 'Clean blue professional design', category: 'Modern', badge: 'NEW' },
-  { id: 'creative-accent', name: 'Creative Accent', description: 'Bold accent colors', category: 'Creative', badge: 'NEW' },
-  { id: 'professional-split', name: 'Professional Split', description: 'Split layout with sidebar', category: 'Professional', badge: 'NEW' },
-  { id: 'minimal-clean', name: 'Minimal Clean', description: 'Clean minimal design', category: 'Minimal', badge: 'NEW' },
+  // PRO TEMPLATES (Require Pro subscription)
+  { id: 'professional-circle', name: 'Professional Circle', description: 'Circular profile with icon sections', category: 'Professional', badge: 'PRO', pro: true },
+  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral design with elegant typography', category: 'Modern', badge: 'PRO', pro: true },
+  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'PRO', pro: true },
+  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm beige with traditional layout', category: 'Professional', badge: 'PRO', pro: true },
+  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated tan for executives', category: 'Professional', badge: 'PRO', pro: true },
+  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'PRO', pro: true },
+  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale design', category: 'Minimal', badge: 'PRO', pro: true },
+  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Creative with decorative patterns', category: 'Creative', badge: 'PRO', pro: true },
+  { id: 'modern-blue', name: 'Modern Blue', description: 'Clean blue professional design', category: 'Modern', badge: 'PRO', pro: true },
+  { id: 'creative-accent', name: 'Creative Accent', description: 'Bold accent colors', category: 'Creative', badge: 'PRO', pro: true },
+  { id: 'professional-split', name: 'Professional Split', description: 'Split layout with sidebar', category: 'Professional', badge: 'PRO', pro: true },
+  { id: 'minimal-clean', name: 'Minimal Clean', description: 'Clean minimal design', category: 'Minimal', badge: 'PRO', pro: true },
 ]
 
 const EXPORT_FORMATS = [
-  { id: 'pdf', name: 'PDF', description: 'Best for applications' },
-  { id: 'docx', name: 'Word', description: 'Editable document' },
-  { id: 'html', name: 'HTML', description: 'Web preview' },
-  { id: 'txt', name: 'Text', description: 'Plain text format' }
+  { id: 'pdf', name: 'PDF', description: 'Best for applications', icon: '📄', pro: false },
+  { id: 'docx', name: 'Word', description: 'Editable document', icon: '📝', pro: true },
+  { id: 'html', name: 'HTML', description: 'Web preview', icon: '🌐', pro: true },
+  { id: 'txt', name: 'Text', description: 'Plain text format', icon: '📋', pro: true }
 ]
 
 // Helper function to safely get string content from section
@@ -73,13 +75,14 @@ const getSectionContent = (content: any): string => {
     return content
   }
   
-  // If content is an array (like experience), format it
+  // If content is an array (like experience, education, certifications), format it
   if (Array.isArray(content)) {
     return content.map((item) => {
-      // Handle different object structures
+      // Handle string items
       if (typeof item === 'string') {
         return item
       }
+      
       if (typeof item === 'object' && item !== null) {
         // Try common field names for work experience
         const title = item.job_title || item.jobTitle || item.title || item.position || ''
@@ -103,9 +106,48 @@ const getSectionContent = (content: any): string => {
           return result
         }
         
-        // Fallback: try to extract any meaningful text
-        const values = Object.values(item).filter(v => typeof v === 'string' && v.trim())
-        return values.join('\n')
+        // Try education field names
+        const degree = item.degree || item.qualification || item.course || ''
+        const institution = item.institution || item.school || item.university || ''
+        const eduDate = item.date || item.year || item.graduation_date || ''
+        const location = item.location || ''
+        
+        if (degree || institution) {
+          const parts = [degree, institution, location, eduDate].filter(Boolean)
+          return parts.join(' | ')
+        }
+        
+        // Try certification field names
+        const certName = item.name || item.certification || item.license_name || ''
+        const issuer = item.issuer || item.organization || item.issued_by || ''
+        const licenseNum = item.license || item.license_number || item.credential_id || ''
+        const url = item.url || item.link || ''
+        const certDate = item.date || item.issued_date || item.valid_from || ''
+        
+        if (certName || issuer || licenseNum) {
+          let result = certName
+          if (issuer) result += ` | ${issuer}`
+          if (licenseNum) result += ` | License: ${licenseNum}`
+          if (url) result += `\n  URL: ${url}`
+          if (certDate) result += ` | ${certDate}`
+          return result
+        }
+        
+        // Fallback: try to extract ALL values (including nested)
+        const extractAllStrings = (obj: any): string[] => {
+          const strings: string[] = []
+          for (const value of Object.values(obj)) {
+            if (typeof value === 'string' && value.trim()) {
+              strings.push(value.trim())
+            } else if (typeof value === 'object' && value !== null) {
+              strings.push(...extractAllStrings(value))
+            }
+          }
+          return strings
+        }
+        
+        const values = extractAllStrings(item)
+        return values.join(' | ')
       }
       return ''
     }).filter(Boolean).join('\n\n')
@@ -140,9 +182,12 @@ export default function DownloadPage() {
   const [isReviewing, setIsReviewing] = useState(false)
   const [showReview, setShowReview] = useState(false)
   const [reviewStep, setReviewStep] = useState('')
+  const [isPro, setIsPro] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
+    checkSubscription()
   }, [generationId])
 
   useEffect(() => {
@@ -150,6 +195,25 @@ export default function DownloadPage() {
       generatePreview()
     }
   }, [generationData, selectedTemplate])
+
+  const checkSubscription = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: usage } = await supabase
+        .from('usage_tracking')
+        .select('subscription_tier')
+        .eq('user_id', user.id)
+        .single()
+
+      const subscriptionTier = usage?.subscription_tier || 'free'
+      const isProUser = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
+      setIsPro(isProUser)
+    } catch (error) {
+      console.error('Error checking subscription:', error)
+    }
+  }
 
   const fetchGenerationData = async () => {
     try {
@@ -557,6 +621,9 @@ export default function DownloadPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Progress Stepper */}
+      <CVProgressStepper currentStep="download" />
+      
       {/* Header */}
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -646,9 +713,19 @@ export default function DownloadPage() {
             
             {!showReview && (
               <button
-                onClick={handleAIReview}
+                onClick={() => {
+                  if (!isPro) {
+                    setShowUpgradeModal(true)
+                    return
+                  }
+                  handleAIReview()
+                }}
                 disabled={isReviewing}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 flex items-center justify-center"
+                className={`py-3 px-4 rounded-lg font-semibold transition-all disabled:opacity-50 flex items-center justify-center ${
+                  isPro 
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-purple-300'
+                }`}
               >
                 {isReviewing ? (
                   <>
@@ -659,6 +736,11 @@ export default function DownloadPage() {
                   <>
                     <Sparkles className="w-4 h-4 mr-2" />
                     AI Review
+                    {!isPro && (
+                      <span className="ml-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                        PRO
+                      </span>
+                    )}
                   </>
                 )}
               </button>
@@ -680,29 +762,56 @@ export default function DownloadPage() {
         <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {EXPORT_FORMATS.map((format) => (
-              <label key={format.id} className="cursor-pointer">
-                <input
-                  type="radio"
-                  name="format"
-                  value={format.id}
-                  checked={selectedFormat === format.id}
-                  onChange={(e) => setSelectedFormat(e.target.value)}
-                  className="sr-only"
-                />
-                <div className={`
-                  p-4 rounded-lg border-2 transition-colors text-center
-                  ${selectedFormat === format.id 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-gray-300'
-                  }
-                `}>
-                  <div className="text-2xl mb-2">{format.icon}</div>
-                  <div className="font-semibold text-gray-900">{format.name}</div>
-                  <div className="text-xs text-gray-500 mt-1">{format.description}</div>
-                </div>
-              </label>
-            ))}
+            {EXPORT_FORMATS.map((format) => {
+              const isLocked = format.pro && !isPro
+              return (
+                <label 
+                  key={format.id} 
+                  className={isLocked ? 'cursor-not-allowed' : 'cursor-pointer'}
+                  onClick={(e) => {
+                    if (isLocked) {
+                      e.preventDefault()
+                      setShowUpgradeModal(true)
+                    }
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="format"
+                    value={format.id}
+                    checked={selectedFormat === format.id}
+                    onChange={(e) => !isLocked && setSelectedFormat(e.target.value)}
+                    className="sr-only"
+                    disabled={isLocked}
+                  />
+                  <div className={`
+                    p-4 rounded-lg border-2 transition-colors text-center relative
+                    ${selectedFormat === format.id 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : isLocked
+                      ? 'border-gray-200 bg-gray-50 opacity-60'
+                      : 'border-gray-200 hover:border-gray-300'
+                    }
+                  `}>
+                    {format.pro && (
+                      <div className="absolute top-2 right-2">
+                        <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                          PRO
+                        </span>
+                      </div>
+                    )}
+                    <div className="text-2xl mb-2">{format.icon}</div>
+                    <div className="font-semibold text-gray-900">{format.name}</div>
+                    <div className="text-xs text-gray-500 mt-1">{format.description}</div>
+                    {isLocked && (
+                      <div className="text-xs text-purple-600 mt-2 font-semibold">
+                        🔒 Upgrade to unlock
+                      </div>
+                    )}
+                  </div>
+                </label>
+              )
+            })}
           </div>
         </div>
 
@@ -711,42 +820,65 @@ export default function DownloadPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {TEMPLATES.map((template) => (
-                  <label key={template.id} className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="template"
-                      value={template.id}
-                      checked={selectedTemplate === template.id}
-                      onChange={(e) => setSelectedTemplate(e.target.value)}
-                      className="sr-only"
-                    />
-                    <div className={`
-                      h-full p-4 rounded-lg border-2 transition-all hover:shadow-md
-                      ${selectedTemplate === template.id 
-                        ? 'border-blue-500 bg-blue-50 shadow-md'
-                        : 'border-gray-200 hover:border-gray-300'
-                      }
-                    `}>
-                      <div className="flex flex-col h-full">
-                        <div className="font-medium text-gray-900 mb-2">{template.name}</div>
-                        <div className="text-sm text-gray-600 mb-3 flex-grow">{template.description}</div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {template.badge && (
-                            <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
-                              {template.badge}
-                            </span>
-                          )}
-                          {template.category && (
-                            <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
-                              {template.category}
-                            </span>
-                          )}
+                {TEMPLATES.map((template) => {
+                  const isLocked = template.pro && !isPro
+                  return (
+                    <label 
+                      key={template.id} 
+                      className={isLocked ? 'cursor-not-allowed' : 'cursor-pointer'}
+                      onClick={(e) => {
+                        if (isLocked) {
+                          e.preventDefault()
+                          setShowUpgradeModal(true)
+                        }
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="template"
+                        value={template.id}
+                        checked={selectedTemplate === template.id}
+                        onChange={(e) => !isLocked && setSelectedTemplate(e.target.value)}
+                        className="sr-only"
+                        disabled={isLocked}
+                      />
+                      <div className={`
+                        h-full p-4 rounded-lg border-2 transition-all hover:shadow-md relative
+                        ${selectedTemplate === template.id 
+                          ? 'border-blue-500 bg-blue-50 shadow-md'
+                          : isLocked
+                          ? 'border-gray-200 bg-gray-50 opacity-60'
+                          : 'border-gray-200 hover:border-gray-300'
+                        }
+                      `}>
+                        {isLocked && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
+                            <div className="text-center">
+                              <div className="text-3xl mb-2">🔒</div>
+                              <div className="text-sm font-semibold text-purple-600">Upgrade to unlock</div>
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex flex-col h-full">
+                          <div className="font-medium text-gray-900 mb-2">{template.name}</div>
+                          <div className="text-sm text-gray-600 mb-3 flex-grow">{template.description}</div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {template.badge && (
+                              <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                                {template.badge}
+                              </span>
+                            )}
+                            {template.category && (
+                              <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+                                {template.category}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </label>
-                ))}
+                    </label>
+                  )
+                })}
               </div>
 
             {/* Hobby Icons Info for Advanced Templates */}
@@ -941,6 +1073,13 @@ export default function DownloadPage() {
           }}
         />
       )}
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        trigger="manual"
+      />
     </div>
   )
 }
