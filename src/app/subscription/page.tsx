@@ -13,7 +13,10 @@ import {
   Zap,
   Star,
   CreditCard,
-  Globe
+  Globe,
+  Download,
+  XCircle,
+  FileText
 } from 'lucide-react'
 import { getCurrencyFromLocale, type CurrencyConfig, CURRENCIES } from '@/lib/currency'
 
@@ -31,6 +34,19 @@ interface UsageInfo {
   max_lifetime_generations: number
 }
 
+interface Invoice {
+  id: string
+  number: string | null
+  amount: number
+  currency: string
+  status: string
+  created: number
+  invoice_pdf: string | null
+  hosted_invoice_url: string | null
+  period_start: number
+  period_end: number
+}
+
 export default function SubscriptionPage() {
   const router = useRouter()
   const supabase = createSupabaseClient()
@@ -42,6 +58,9 @@ export default function SubscriptionPage() {
   const [isUpgrading, setIsUpgrading] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
   const [userCurrency, setUserCurrency] = useState<CurrencyConfig>(CURRENCIES.GBP)
+  const [invoices, setInvoices] = useState<Invoice[]>([])
+  const [isLoadingInvoices, setIsLoadingInvoices] = useState(false)
+  const [showCancelDialog, setShowCancelDialog] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -103,7 +122,55 @@ export default function SubscriptionPage() {
     }
   }
 
-  // No cancellation needed for one-time purchases
+  const fetchInvoices = async () => {
+    if (!user) return
+    
+    setIsLoadingInvoices(true)
+    try {
+      const response = await fetch(`/api/stripe/invoices?userId=${user.id}`)
+      const data = await response.json()
+      
+      if (data.success && data.invoices) {
+        setInvoices(data.invoices)
+      }
+    } catch (error) {
+      console.error('Error fetching invoices:', error)
+      toast.error('Failed to load invoices')
+    } finally {
+      setIsLoadingInvoices(false)
+    }
+  }
+
+  const handleCancelSubscription = async () => {
+    if (!user) return
+    
+    setIsCancelling(true)
+    try {
+      const response = await fetch('/api/stripe/cancel-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: user.id }),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok && data.success) {
+        toast.success('Subscription cancelled successfully. You\'ll have access until the end of your billing period.')
+        setShowCancelDialog(false)
+        // Refresh purchase/usage data
+        await fetchPurchaseAndUsage(user.id)
+      } else {
+        throw new Error(data.message || data.error || 'Failed to cancel subscription')
+      }
+    } catch (error: any) {
+      console.error('Cancel error:', error)
+      toast.error(error.message || 'Failed to cancel subscription')
+    } finally {
+      setIsCancelling(false)
+    }
+  }
 
   const handleUpgrade = async () => {
     if (!user) return
@@ -196,7 +263,7 @@ export default function SubscriptionPage() {
                 <Crown className="w-8 h-8 text-white mr-3" />
                 <div>
                   <h2 className="text-2xl font-bold text-white">Pro Plan Active</h2>
-                  <p className="text-green-100">Lifetime access - no recurring charges</p>
+                  <p className="text-green-100">Active subscription - unlimited access</p>
                 </div>
               </div>
             </div>
@@ -212,11 +279,11 @@ export default function SubscriptionPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Price Paid:</span>
-                      <span className="font-medium">£5 (one-time)</span>
+                      <span className="font-medium">£9.99/month</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Generations:</span>
-                      <span className="font-medium">{usage?.lifetime_generation_count || 0} / {usage?.max_lifetime_generations || 100} used</span>
+                      <span className="font-medium">{usage?.lifetime_generation_count || 0} used (unlimited)</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Purchased:</span>
@@ -239,7 +306,7 @@ export default function SubscriptionPage() {
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      100 lifetime CV generations
+                      Unlimited CV generations
                     </li>
                     <li className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
@@ -258,8 +325,76 @@ export default function SubscriptionPage() {
               </div>
 
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex justify-between items-center">
-                  <div>
+                <div className="flex flex-col space-y-4">
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={fetchInvoices}
+                      disabled={isLoadingInvoices}
+                      className="flex items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50"
+                    >
+                      {isLoadingInvoices ? (
+                        <>
+                          <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          <FileText className="w-4 h-4 mr-2" />
+                          View Invoices
+                        </>
+                      )}
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowCancelDialog(true)}
+                      className="flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                    >
+                      <XCircle className="w-4 h-4 mr-2" />
+                      Cancel Subscription
+                    </button>
+                  </div>
+
+                  {/* Invoices List */}
+                  {invoices.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="font-semibold text-gray-900 mb-3">Invoices</h4>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {invoices.map((invoice) => (
+                          <div key={invoice.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-900">
+                                  {invoice.number || `Invoice ${invoice.id.slice(-8)}`}
+                                </span>
+                                <span className={`text-xs px-2 py-1 rounded-full ${
+                                  invoice.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                                }`}>
+                                  {invoice.status}
+                                </span>
+                              </div>
+                              <div className="text-sm text-gray-600 mt-1">
+                                {new Date(invoice.created * 1000).toLocaleDateString()} • {invoice.currency} {invoice.amount.toFixed(2)}
+                              </div>
+                            </div>
+                            {invoice.invoice_pdf && (
+                              <a
+                                href={invoice.invoice_pdf}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                              >
+                                <Download className="w-4 h-4 mr-1" />
+                                PDF
+                              </a>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="pt-4">
                     <p className="text-sm text-gray-600">
                       Need help? Contact support at{' '}
                       <a href="mailto:jakedalerourke@gmail.com" className="text-blue-600 hover:text-blue-700">
@@ -268,6 +403,48 @@ export default function SubscriptionPage() {
                     </p>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Cancel Confirmation Dialog */}
+        {showCancelDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                  <XCircle className="w-6 h-6 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">Cancel Subscription?</h3>
+              </div>
+              
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to cancel your subscription? You'll continue to have access until the end of your current billing period.
+              </p>
+              
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowCancelDialog(false)}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                >
+                  Keep Subscription
+                </button>
+                <button
+                  onClick={handleCancelSubscription}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+                >
+                  {isCancelling ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Cancelling...
+                    </>
+                  ) : (
+                    'Yes, Cancel'
+                  )}
+                </button>
               </div>
             </div>
           </div>
@@ -284,9 +461,9 @@ export default function SubscriptionPage() {
                 Unlock unlimited CV generations and premium features
               </p>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {/* Free Plan */}
-              <div className="border border-gray-200 rounded-xl p-8">
+              <div className="border border-gray-200 rounded-xl p-6">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Free</h3>
                   <div className="text-3xl font-bold text-gray-900 mb-1">£0</div>
@@ -296,32 +473,32 @@ export default function SubscriptionPage() {
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">1 CV generation (lifetime)</span>
+                    <span className="text-gray-700 text-sm">1 CV generation</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">All export formats</span>
+                    <span className="text-gray-700 text-sm">All export formats</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">Basic templates</span>
+                    <span className="text-gray-700 text-sm">Basic templates</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">Email support</span>
+                    <span className="text-gray-700 text-sm">Email support</span>
                   </li>
                 </ul>
 
                 <button
                   disabled
-                  className="w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed"
+                  className="w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed text-sm"
                 >
                   Current Plan
                 </button>
               </div>
 
-              {/* Pro Plan */}
-              <div className="border-2 border-blue-500 rounded-xl p-8 relative">
+              {/* Monthly Pro Plan */}
+              <div className="border-2 border-blue-500 rounded-xl p-6 relative">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                     Most Popular
@@ -331,21 +508,16 @@ export default function SubscriptionPage() {
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
                     <Crown className="w-5 h-5 text-blue-600 mr-2" />
-                    Pro
+                    Monthly
                   </h3>
                   <div className="text-3xl font-bold text-gray-900 mb-1">{userCurrency.displayAmount}</div>
-                  <div className="text-gray-600 flex items-center justify-center space-x-2">
-                    <span>one-time payment</span>
-                    <span title={`Price in ${userCurrency.name}`} className="cursor-help">
-                      <Globe className="w-4 h-4 text-gray-400" />
-                    </span>
-                  </div>
+                  <div className="text-gray-600 text-sm">per month</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700">100 CV generations (lifetime)</span>
+                    <span className="text-gray-700">Unlimited CV generations</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -388,6 +560,75 @@ export default function SubscriptionPage() {
                     <>
                       <CreditCard className="w-4 h-4 mr-2" />
                       Buy Pro Access
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Annual Pro Plan */}
+              <div className="border-2 border-green-500 rounded-xl p-6 relative bg-gradient-to-br from-green-50 to-blue-50">
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    Save £70/year + 50% OFF with code LAUNCH50ANNUAL
+                  </span>
+                </div>
+
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
+                    <Crown className="w-5 h-5 text-green-600 mr-2" />
+                    Annual
+                  </h3>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">£49</div>
+                  <div className="text-gray-600 text-sm">per year</div>
+                  <div className="text-green-600 text-xs font-medium mt-1">Just £4.08/month</div>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">Unlimited CV generations</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">All export formats</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">Premium templates</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">Priority support</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Star className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">AI cover letter generation</span>
+                  </li>
+                  <li className="flex items-center">
+                    <Zap className="w-5 h-5 text-green-600 mr-3" />
+                    <span className="text-gray-700 text-sm">Advanced AI features</span>
+                  </li>
+                </ul>
+
+                <button
+                  onClick={handleUpgrade}
+                  disabled={isUpgrading || isPro}
+                  className="w-full py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm font-semibold"
+                >
+                  {isUpgrading ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Processing...
+                    </>
+                  ) : isPro ? (
+                    <>
+                      <Crown className="w-4 h-4 mr-2" />
+                      Already Purchased
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Buy Annual Plan
                     </>
                   )}
                 </button>

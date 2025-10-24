@@ -26,6 +26,8 @@ interface AnalyticsData {
     totalUsers: number
     freeUsers: number
     proUsers: number
+    monthlyProUsers?: number
+    annualProUsers?: number
     totalGenerations: number
     totalCVs: number
     totalCoverLetters: number
@@ -221,7 +223,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Secondary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={<UserCheck className="w-5 h-5" />}
             label="Active Users (30d)"
@@ -244,6 +246,14 @@ export default function AdminDashboard() {
             value={analytics.overview.totalCoverLetters}
             subtext="Total created"
             color="orange"
+            small
+          />
+          <StatCard
+            icon={<Crown className="w-5 h-5" />}
+            label="Pro Breakdown"
+            value={`${analytics.overview.monthlyProUsers || 0} / ${analytics.overview.annualProUsers || 0}`}
+            subtext="Monthly / Annual"
+            color="purple"
             small
           />
         </div>

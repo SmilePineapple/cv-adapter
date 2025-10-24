@@ -33,19 +33,50 @@ const getSectionContent = (section: any): string => {
   
   const content = section.content?.raw_content || section.content || ''
   
-  // If content is an array (like experience), format it
+  // If content is an array (like experience), format it properly
   if (Array.isArray(content)) {
     return content.map((item) => {
+      // Work Experience format
       if (item.company && item.job_title) {
-        return `${item.job_title} | ${item.company}\n${item.responsibilities || item.description || ''}`
+        const parts = [
+          `${item.job_title} at ${item.company}`,
+          item.dates || item.duration || '',
+          item.location || '',
+          item.responsibilities || item.description || ''
+        ].filter(Boolean)
+        return parts.join('\n')
       }
-      return JSON.stringify(item)
+      
+      // Education format
+      if (item.degree || item.institution) {
+        const parts = [
+          item.degree || '',
+          item.institution || '',
+          item.graduation_date || item.dates || '',
+          item.details || ''
+        ].filter(Boolean)
+        return parts.join('\n')
+      }
+      
+      // Skills/certifications format
+      if (item.name || item.title) {
+        return `${item.name || item.title}${item.level ? ` - ${item.level}` : ''}`
+      }
+      
+      // Fallback: try to extract meaningful text
+      if (typeof item === 'object') {
+        const values = Object.values(item).filter(v => v && typeof v === 'string')
+        return values.join(' • ')
+      }
+      
+      return String(item)
     }).join('\n\n')
   }
   
-  // If content is an object, stringify it
-  if (typeof content === 'object') {
-    return JSON.stringify(content, null, 2)
+  // If content is an object (not array), extract text values
+  if (typeof content === 'object' && content !== null) {
+    const values = Object.values(content).filter(v => v && typeof v === 'string')
+    return values.join('\n')
   }
   
   // Return as string
@@ -934,9 +965,9 @@ export default function CVEditorPage() {
                       <h3 className="font-medium text-gray-900 truncate">{section.title}</h3>
                       <p className="text-sm text-gray-500 capitalize">{section.type}</p>
                       <p className="text-xs text-gray-400 mt-1 truncate">
-                        {section.content?.raw_content ? 
-                          `${section.content.raw_content.substring(0, 50)}...` : 
-                          'No content'
+                        {getSectionContent(section) ? 
+                          `${getSectionContent(section).substring(0, 60)}...` : 
+                          'Empty - click to add content'
                         }
                       </p>
                     </div>
@@ -1039,8 +1070,8 @@ export default function CVEditorPage() {
                       return (
                         <div key={section.id} className="absolute top-0 right-0 w-1/3 z-10 mt-8">
                           <div
-                            className={`p-4 bg-white border border-gray-200 rounded-lg shadow-sm border-2 border-dashed border-transparent hover:border-blue-300 transition-colors cursor-pointer ${
-                              selectedSection === section.id ? 'border-blue-500 bg-blue-50' : 'hover:bg-gray-50'
+                            className={`p-4 bg-white border border-gray-100 rounded-lg shadow-sm transition-colors cursor-pointer ${
+                              selectedSection === section.id ? 'ring-2 ring-blue-400 ring-opacity-50' : 'hover:shadow-md'
                             }`}
                             onClick={() => setSelectedSection(section.id)}
                             style={{ color: textColor }}
@@ -1055,17 +1086,11 @@ export default function CVEditorPage() {
                                 __html: getSectionContent(section)
                                   .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                                   .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                                  .replace(/__(.*?)__/g, '<u>$1</u>')
                                   .replace(/\n/g, '<br>')
                               }}
                             />
                             {(!section.content?.raw_content && !section.content) && (
-                              <span className="text-gray-400 italic text-xs">Click to add content...</span>
-                            )}
-                            {selectedSection === section.id && (
-                              <div className="mt-2 text-xs text-blue-600 font-medium">
-                                ← Edit in Properties panel
-                              </div>
+                              <span className="text-gray-300 italic text-sm">Click to add content</span>
                             )}
                           </div>
                         </div>
@@ -1090,8 +1115,8 @@ export default function CVEditorPage() {
                         }}
                       >
                         <div
-                          className={`p-4 rounded-lg border-2 border-dashed border-transparent hover:border-blue-300 transition-colors cursor-pointer ${
-                            selectedSection === section.id ? 'border-blue-500 bg-blue-50' : 'hover:bg-gray-50'
+                          className={`p-4 rounded-lg transition-all cursor-pointer ${
+                            selectedSection === section.id ? 'ring-2 ring-blue-400 ring-opacity-50 bg-blue-50 bg-opacity-30' : 'hover:bg-gray-50'
                           } ${alignmentClasses[alignment as keyof typeof alignmentClasses]}`}
                           onClick={() => setSelectedSection(section.id)}
                           style={{ 
@@ -1118,12 +1143,7 @@ export default function CVEditorPage() {
                             }}
                           />
                           {(!section.content?.raw_content && !section.content) && (
-                            <span className="text-gray-400 italic">Click to add content...</span>
-                          )}
-                          {selectedSection === section.id && (
-                            <div className="mt-2 text-xs text-blue-600 font-medium">
-                              ← Click in Properties panel to edit
-                            </div>
+                            <span className="text-gray-300 italic">Click to add content</span>
                           )}
                         </div>
                       </div>
@@ -1323,9 +1343,13 @@ export default function CVEditorPage() {
                   <textarea
                     id="sectionContent"
                     value={
-                      cvData.sections.find(s => s.id === selectedSection)?.content?.raw_content ||
-                      cvData.sections.find(s => s.id === selectedSection)?.content ||
-                      ''
+                      (() => {
+                        const section = cvData.sections.find(s => s.id === selectedSection)
+                        if (!section) return ''
+                        
+                        // Use getSectionContent to properly format any content type
+                        return getSectionContent(section)
+                      })()
                     }
                     onChange={(e) => updateSection(selectedSection, { 
                       content: { 

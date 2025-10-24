@@ -44,10 +44,10 @@ export async function POST(request: NextRequest) {
     
     console.log('✅ Authenticated user:', user.id, user.email)
 
-    // Check usage limits (lifetime generations)
+    // Check usage limits with new subscription model
     const { data: usage, error: usageError } = await supabase
       .from('usage_tracking')
-      .select('lifetime_generation_count, plan_type, max_lifetime_generations')
+      .select('lifetime_generation_count, subscription_tier, max_lifetime_generations')
       .eq('user_id', user.id)
       .single()
 
@@ -56,15 +56,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to check usage limits' }, { status: 500 })
     }
 
-    const isPro = usage?.plan_type === 'pro'
+    const subscriptionTier = usage?.subscription_tier || 'free'
+    const isPro = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
     const currentUsage = usage?.lifetime_generation_count || 0
-    const maxGenerations = usage?.max_lifetime_generations || 1
+    const maxGenerations = isPro ? 999999 : (usage?.max_lifetime_generations || 1) // Pro = unlimited
   
-    if (currentUsage >= maxGenerations) {
+    // Check if user has EXCEEDED limit (not just reached it)
+    // This allows the first generation to complete, then blocks the second
+    if (!isPro && currentUsage >= maxGenerations) {
       return NextResponse.json({
-        error: isPro ? 'Generation limit reached' : 'Free generation used. Upgrade to Pro for 100 more!',
+        error: 'Free generation used. Upgrade to Pro for unlimited generations!',
         limit_reached: true,
-        is_pro: isPro,
+        is_pro: false,
+        subscription_tier: subscriptionTier,
         current_usage: currentUsage,
         max_usage: maxGenerations
       }, { status: 429 })
@@ -72,6 +76,10 @@ export async function POST(request: NextRequest) {
 
     const body: GenerationRequest = await request.json()
     const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language } = body
+
+    // 🔍 DEBUG: Log custom sections received
+    console.log('📥 Custom sections received from client:', custom_sections)
+    console.log('📥 Custom sections count:', custom_sections?.length || 0)
 
     // Validate request
     if (!cv_id || !job_title || !job_description) {
@@ -136,8 +144,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to generate CV rewrite' }, { status: 500 })
     }
 
+    // 🔍 DEBUG: Log AI response to see what it's actually returning
+    console.log('🤖 AI Response (first 500 chars):', aiResponse.substring(0, 500))
+    console.log('🤖 AI Response length:', aiResponse.length)
+
     // Parse AI response
     let { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
+    
+    // 🔍 DEBUG: Log parsed sections
+    console.log('📋 Parsed sections count:', rewrittenSections.length)
+    console.log('📋 Section types:', rewrittenSections.map(s => s.type).join(', '))
+    
+    // 🔍 DEBUG: Check experience section specifically
+    const expSection = rewrittenSections.find(s => s.type === 'experience')
+    if (expSection) {
+      const expContent = typeof expSection.content === 'string' ? expSection.content : JSON.stringify(expSection.content)
+      console.log('💼 Experience section length:', expContent.length)
+      console.log('💼 Experience content preview:', expContent.substring(0, 300))
+    } else {
+      console.error('❌ NO EXPERIENCE SECTION IN AI OUTPUT!')
+    }
 
     // 🚨 CRITICAL VALIDATION: Check if AI invented fake jobs or changed companies
     const originalExperience = originalSections.sections.find(s => s.type === 'experience')
@@ -167,10 +193,14 @@ export async function POST(request: NextRequest) {
       
       // Check if AI invented fake companies (common ones that appear in fake CVs)
       const suspiciousFakeCompanies = [
+        'XYZ Company',
+        'ABC Corporation',
         'Springer Nature',
         'Research Integrity Content Coordinator',
         'Content Coordinator',
-        'Research Coordinator'
+        'Research Coordinator',
+        'Content Writer at XYZ',
+        'at XYZ Company'
       ]
       
       const detectedFakeCompanies = suspiciousFakeCompanies.filter(fake =>
@@ -182,6 +212,18 @@ export async function POST(request: NextRequest) {
         console.error(`🚨 CRITICAL: AI invented fake companies: ${detectedFakeCompanies.join(', ')}`)
         return NextResponse.json({ 
           error: `AI generated invalid content - invented fake companies (${detectedFakeCompanies.join(', ')}). The system detected that job titles or companies were changed from the original CV. Please try again.` 
+        }, { status: 500 })
+      }
+      
+      // 🚨 ADDITIONAL CHECK: Detect if AI created entirely new job entries
+      // Count job entries (separated by newlines with company names)
+      const originalJobCount = (originalContent.match(/\|\s*[A-Z]/g) || []).length
+      const rewrittenJobCount = (rewrittenContent.match(/\|\s*[A-Z]/g) || []).length
+      
+      if (rewrittenJobCount < originalJobCount) {
+        console.error(`🚨 CRITICAL: AI removed jobs! Original: ${originalJobCount}, Rewritten: ${rewrittenJobCount}`)
+        return NextResponse.json({ 
+          error: `AI removed ${originalJobCount - rewrittenJobCount} job(s) from work experience. Please try again.` 
         }, { status: 500 })
       }
       
@@ -202,6 +244,47 @@ export async function POST(request: NextRequest) {
         console.log(`✅ Validation passed: ${Math.round(preservationRate * 100)}% of companies preserved`)
       }
     }
+    
+    // 🚨 CRITICAL VALIDATION: Check if AI modified education
+    const originalEducation = originalSections.sections.find(s => s.type === 'education')
+    const rewrittenEducation = rewrittenSections.find(s => s.type === 'education')
+    
+    if (originalEducation && rewrittenEducation) {
+      const originalContent = typeof originalEducation.content === 'string' 
+        ? originalEducation.content 
+        : JSON.stringify(originalEducation.content)
+      const rewrittenContent = typeof rewrittenEducation.content === 'string'
+        ? rewrittenEducation.content
+        : JSON.stringify(rewrittenEducation.content)
+      
+      // Check for suspicious fake education entries
+      const fakeEducationPatterns = [
+        'Bachelor of Arts in English Literature',
+        'University of London',
+        'Bachelor of Arts in [',
+        'Bachelor of Science in [',
+        'Master of Arts in [',
+        '[Relevant Field]'
+      ]
+      
+      const detectedFakeEducation = fakeEducationPatterns.filter(fake =>
+        rewrittenContent.includes(fake) &&
+        !originalContent.includes(fake)
+      )
+      
+      if (detectedFakeEducation.length > 0) {
+        console.error(`🚨 CRITICAL: AI invented fake education: ${detectedFakeEducation.join(', ')}`)
+        return NextResponse.json({ 
+          error: `AI modified education section with fake entries (${detectedFakeEducation.join(', ')}). Education must be copied exactly from original CV. Please try again.` 
+        }, { status: 500 })
+      }
+      
+      console.log(`✅ Education validation passed`)
+    }
+
+    // 🔍 DEBUG: Log sections before ATS calculation
+    console.log('📊 Sections before ATS calc:', rewrittenSections.length)
+    console.log('📊 Section types before ATS:', rewrittenSections.map(s => s.type).join(', '))
 
     // Calculate initial ATS score
     let atsScore = calculateATSScore(rewrittenSections, job_description)
@@ -220,15 +303,19 @@ export async function POST(request: NextRequest) {
         // Continue with original content if optimization fails
       }
     } else {
-      console.log(`✅ Good ATS score (${atsScore}%), no optimization needed`)
+      console.log(`Good ATS score (${atsScore}%), no optimization needed`)
     }
 
+    // DEBUG: Log sections RIGHT BEFORE database insert
+    console.log('Sections being saved to DB:', rewrittenSections.length)
+    console.log('Section types being saved:', rewrittenSections.map(s => s.type).join(', '))
+
     // Save generation to database
-    const { data: generationData, error: genError } = await supabase
+    const { data: generationData, error: generationError } = await supabase
       .from('generations')
       .insert({
-        user_id: user.id,
         cv_id,
+        user_id: user.id,
         job_title,
         job_description,
         rewrite_style,
@@ -241,8 +328,8 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    if (genError) {
-      console.error('Generation save error:', genError)
+    if (generationError) {
+      console.error('Generation save error:', generationError)
       return NextResponse.json({ error: 'Failed to save generation' }, { status: 500 })
     }
 
@@ -336,73 +423,192 @@ function createRewritePrompt(
     bold: 'significant optimization'
   }
 
-  return `Rewrite CV for: ${jobTitle}
+  return `🚨🚨🚨 CRITICAL INSTRUCTIONS - FAILURE = REJECTED OUTPUT 🚨🚨🚨
 
+THIS IS A CV ADAPTATION TASK, NOT A CV CREATION TASK!
+
+YOU MUST PRESERVE:
+✅ ALL job titles (e.g., "Play Therapist" → "Play Therapist")
+✅ ALL company names (e.g., "Child in Mind" → "Child in Mind")
+✅ ALL employment dates (e.g., "10/2016 – 08/2022" → "10/2016 – 08/2022")
+✅ ALL education entries EXACTLY as written
+✅ ALL certifications EXACTLY as written
+✅ ALL hobbies/interests EXACTLY as written
+
+YOU CAN ONLY CHANGE:
+✏️ Bullet points describing job responsibilities
+✏️ Professional summary wording
+✏️ Skill ordering (not content)
+
+REWRITING CV FOR: ${jobTitle}
 KEY REQUIREMENTS: ${keywords.join(', ')}
 
 CURRENT CV:
 ${sectionsText}
 
-🚨🚨🚨 ABSOLUTELY CRITICAL - DO NOT SKIP THESE RULES 🚨🚨🚨
+🚨🚨🚨 ABSOLUTELY CRITICAL - READ EVERY WORD 🚨🚨🚨
 
-YOU ARE ADAPTING A CV, NOT CREATING A NEW ONE!
+YOU ARE ADAPTING AN EXISTING CV, NOT WRITING A NEW ONE FROM SCRATCH!
 
-RULE #1: NEVER CHANGE JOB TITLES OR COMPANIES
-- If original says "Play Therapist", output MUST say "Play Therapist"
-- If original says "Child in Mind", output MUST say "Child in Mind"
-- If original says "10/2016 – 08/2022", output MUST say "10/2016 – 08/2022"
-- DO NOT create fake jobs like "Research Coordinator at Springer Nature"
+YOUR ONLY JOB: Rewrite the bullet points/descriptions to match the new job role.
+YOU MUST NOT: Change job titles, companies, dates, education, or create fake content.
 
-RULE #2: KEEP ALL SECTIONS FROM ORIGINAL
-- If original has: name, contact, summary, experience, education, skills, certifications, hobbies, groups, strengths, additional
-- Output MUST have: name, contact, summary, experience, education, skills, certifications, hobbies, groups, strengths, additional
-- DO NOT remove sections!
+RULE #1: PRESERVE ALL JOB INFORMATION EXACTLY
+- Job Title: COPY EXACTLY (e.g., "Play Therapist" stays "Play Therapist")
+- Company: COPY EXACTLY (e.g., "Child in Mind" stays "Child in Mind")
+- Dates: COPY EXACTLY (e.g., "10/2016 – 08/2022" stays "10/2016 – 08/2022")
+- Location: COPY EXACTLY (e.g., "Manchester, England" stays "Manchester, England")
+- ❌ NEVER invent: "Content Writer | XYZ Company | June 2021 - Present"
+- ❌ NEVER change: "Play Therapist" to "Content Writer"
 
-RULE #3: ONLY CHANGE THE DESCRIPTIONS
-- Keep job title: "Play Therapist" → "Play Therapist" ✅
-- Keep company: "Child in Mind" → "Child in Mind" ✅
-- Keep dates: "10/2016 – 08/2022" → "10/2016 – 08/2022" ✅
-- Change bullets: "Managed caseload" → "Led comprehensive therapy programs for 50+ families" ✅
+RULE #2: ADAPT ONLY THE DESCRIPTIONS/BULLETS
+What you CAN change:
+- Bullet points describing responsibilities
+- Action verbs and metrics
+- Wording to highlight relevant skills
 
-RULE #4: EDUCATION STAYS IDENTICAL
-- Copy EXACTLY: "Filial Therapy in Family Therapy | Manchester | 08/2019"
-- DO NOT replace with: "Bachelor of Arts in [Relevant Field]" ❌
+What you CANNOT change:
+- Job titles
+- Company names
+- Employment dates
+- Locations
+- Number of jobs
 
-RULE #5: INCLUDE ALL JOBS
-- Original has 6 jobs → Output MUST have 6 jobs
-- Each with ACTUAL title, company, dates
+RULE #3: EDUCATION SECTION - COPY 100% EXACTLY
+- DO NOT modify degrees, universities, dates, or coursework
+- DO NOT add generic placeholders like "Bachelor of Arts in [Relevant Field]"
+- COPY EXACTLY character-for-character from the original
+- Example: "Filial Therapy in Family Therapy | Manchester | 08/2019" → EXACT SAME
+
+RULE #4: PRESERVE ALL WORK HISTORY
+- If original has 6 jobs → Output MUST have 6 jobs
+- If original has 3 jobs → Output MUST have 3 jobs
+- NEVER reduce or combine jobs
+- NEVER create new fake jobs
+- Each job must have its ORIGINAL title, company, and dates
+
+RULE #5: KEEP ALL SECTIONS
+- If original has: name, contact, summary, experience, education, skills, certifications, hobbies
+- Output MUST have: name, contact, summary, experience, education, skills, certifications, hobbies
+- DO NOT remove or skip any sections
 
 TONE: ${tone}
 LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + languageName + ')' : ''}
 
-WRONG EXAMPLE (DO NOT DO THIS):
-❌ "Research Integrity Content Coordinator | Springer Nature | [Month, Year] - Present"
+❌ WRONG EXAMPLES (NEVER DO THIS):
+1. Creating fake jobs:
+   ❌ "Content Writer | XYZ Company | June 2021 - Present"
+   ❌ "Research Coordinator | Springer Nature | 2020 - Present"
 
-CORRECT EXAMPLE (DO THIS):
-✅ "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England"
-   - Led comprehensive family therapy programs for 50+ families, improving child-parent relationships
-   - Delivered specialized 1:1 therapy sessions, achieving 85% improvement in behavioral outcomes
+2. Changing job titles:
+   ❌ Original: "Play Therapist" → Output: "Content Writer" ❌ NEVER!
+
+3. Changing companies:
+   ❌ Original: "Child in Mind" → Output: "XYZ Company" ❌ NEVER!
+
+4. Modifying education:
+   ❌ Original: "Filial Therapy in Family Therapy | Manchester | 08/2019"
+   ❌ Output: "Bachelor of Arts in Psychology | University | 2019" ❌ NEVER!
+
+✅ CORRECT EXAMPLES (ALWAYS DO THIS):
+1. Preserving job info, adapting descriptions:
+   Original:
+   "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England
+   • Managed a caseload of children and families."
+   
+   ✅ Correct Output:
+   "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England
+   • Led comprehensive therapy programs for 50+ families, improving child-parent relationships
+   • Delivered specialized 1:1 therapy sessions, achieving 85% improvement in behavioral outcomes
+   • Managed diverse caseload with focus on trauma-informed care"
+
+2. Education - EXACT COPY:
+   Original: "Filial Therapy in Family Therapy | Manchester | 08/2019"
+   ✅ Output: "Filial Therapy in Family Therapy | Manchester | 08/2019"
 
 FOCUS AREAS:
-- Summary: 3-4 sentences, highlight ${keywords.slice(0, 3).join(', ')}
-- Experience: COUNT the jobs in the original CV and include THE SAME NUMBER in your output. For EACH job, include ALL original bullet points PLUS add 1-2 more with metrics and action verbs. NEVER reduce the number of bullet points.
-- Skills: Include ALL skills from original CV, prioritize job-relevant ones
-- Education: COPY EXACTLY from original - same degrees, universities, dates, coursework. DO NOT modify, replace, or leave empty.
-- Certifications: MUST include ALL certifications and licenses exactly as shown - DO NOT leave empty
-- Hobbies: MUST include ALL hobbies/interests exactly as shown - DO NOT leave empty
-- Groups: MUST include if present in original CV
-- Strengths: MUST include if present in original CV
-- Additional Info: MUST include if present in original CV
+- Summary: Write 3-4 NEW sentences highlighting ${keywords.slice(0, 3).join(', ')} from job description
+- Experience: For EACH job, you MUST:
+  1. Keep job title | company | dates | location EXACTLY as original
+  2. ADD 3-5 NEW bullet points describing responsibilities (adapted for ${jobTitle})
+  3. Use action verbs, metrics, and achievements
+  4. Example format:
+     "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England
+     • Developed and delivered comprehensive therapy programs for 50+ families
+     • Conducted in-depth assessments and created detailed documentation
+     • Collaborated with multidisciplinary teams to improve service delivery"
+- Skills: Include ALL original skills, reorder to prioritize job-relevant ones, ADD new relevant skills
+- Education: COPY 100% EXACTLY - zero modifications allowed
+- Certifications: COPY 100% EXACTLY - zero modifications allowed
+- Hobbies: COPY 100% EXACTLY - zero modifications allowed
+- Custom sections (volunteer_work, publications, awards, projects, languages, memberships, speaking, patents, research, teaching, community): 
+  * If present in original CV: COPY 100% EXACTLY - zero modifications allowed
+  * If NOT in original CV but requested: Include section with placeholder text "To be added" or leave empty
+- All other sections: COPY EXACTLY if present
 
-CRITICAL: Do NOT leave any sections empty if they have content in the original CV!
+🚨 CRITICAL: Experience section MUST have bullet points! Do NOT just list job titles!
+🚨 CRITICAL: ALL sections from original CV MUST be in output!
+🚨 CRITICAL: If custom sections are requested but not in original, include them as empty sections!
+
+VERIFICATION CHECKLIST (CHECK BEFORE RESPONDING):
+□ Same number of jobs as original?
+□ All job titles match original exactly?
+□ All company names match original exactly?
+□ All dates match original exactly?
+□ EACH job has 3-5 bullet points describing responsibilities?
+□ Education copied 100% exactly (no modifications)?
+□ Certifications copied 100% exactly?
+□ Hobbies copied 100% exactly?
+□ No fake companies like "XYZ Company", "ABC Corporation", "Springer Nature"?
+□ No fake education like "Bachelor of Arts in English Literature, University of London"?
+□ No fake job titles like "Content Writer at XYZ Company"?
+
+⚠️ IF ANY CHECKBOX IS UNCHECKED, YOUR OUTPUT WILL BE REJECTED! ⚠️
 
 ${customSections && customSections.length > 0 ? `ADD SECTIONS: ${customSections.join(', ')}` : ''}
 
-Return JSON:
+Return JSON with this EXACT structure:
 {
-  "sections": [{"type": "string", "content": "string", "order": number, "changes": ["string"]}],
-  "summary_of_changes": "string"
+  "sections": [
+    {
+      "type": "name|contact|summary|experience|education|skills|certifications|hobbies|groups|strengths|additional|interests|volunteer_work|publications|awards|projects|languages|memberships|speaking|patents|research|teaching|community",
+      "content": "EXACT content from original (for education/certifications/hobbies/volunteer_work/publications/awards/projects/languages/memberships/speaking/patents/research/teaching/community) OR adapted content (for experience/summary/skills)",
+      "order": number,
+      "changes": ["list of changes made - ONLY for modified sections"]
+    }
+  ],
+  "summary_of_changes": "Brief summary of what was adapted (NOT what was preserved)"
 }
+
+🚨 IMPORTANT: Custom sections requested: ${customSections && customSections.length > 0 ? customSections.join(', ') : 'none'}
+${customSections && customSections.length > 0 ? `
+For each requested custom section:
+1. Check if it exists in the CURRENT CV above
+2. If it EXISTS in original CV: COPY the content 100% EXACTLY
+3. If it does NOT exist in original CV: GENERATE relevant content based on the candidate's experience and the job description
+   - For volunteer_work: Generate 2-3 relevant volunteer experiences that align with their skills
+   - For publications: Generate 2-3 relevant publications/articles they could have written
+   - For awards: Generate 2-3 relevant awards/recognitions based on their achievements
+   - For projects: Generate 2-3 relevant projects based on their work experience
+   - For languages: Generate language proficiencies if relevant to the job
+   - For memberships: Generate relevant professional memberships
+   - For speaking: Generate relevant speaking engagements/presentations
+   - For patents: Generate relevant patents/innovations if applicable
+   - For research: Generate relevant research work based on their background
+   - For teaching: Generate relevant teaching/training experience
+   - For community: Generate relevant community involvement
+
+IMPORTANT: Generated content must be:
+- Realistic and believable based on their actual experience
+- Relevant to the job description
+- Professional and credible
+- Not fabricated - infer from their existing experience
+
+Example: If "volunteer_work" is requested but not in current CV, and they have therapy experience:
+{"type": "volunteer_work", "content": "Volunteer Counselor | Local Community Center | 2020-Present\n• Provide pro-bono counseling services to underserved families\n• Facilitate support groups for parents and caregivers", "order": 15}
+` : ''}
+
+REMEMBER: You are ADAPTING bullet points, NOT creating a new CV!
 `
 }
 

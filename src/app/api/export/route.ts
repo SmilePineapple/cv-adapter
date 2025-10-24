@@ -21,13 +21,14 @@ const getSectionContent = (content: any): string => {
     return content
   }
   
-  // If content is an array (like experience), format it
+  // If content is an array (like experience, education, certifications), format it
   if (Array.isArray(content)) {
     return content.map((item) => {
-      // Handle different object structures
+      // Handle string items
       if (typeof item === 'string') {
         return item
       }
+      
       if (typeof item === 'object' && item !== null) {
         // Try common field names for work experience
         const title = item.job_title || item.jobTitle || item.title || item.position || ''
@@ -51,9 +52,48 @@ const getSectionContent = (content: any): string => {
           return result
         }
         
-        // Fallback: try to extract any meaningful text
-        const values = Object.values(item).filter(v => typeof v === 'string' && v.trim())
-        return values.join('\n')
+        // Try education field names
+        const degree = item.degree || item.qualification || item.course || ''
+        const institution = item.institution || item.school || item.university || ''
+        const eduDate = item.date || item.year || item.graduation_date || ''
+        const location = item.location || ''
+        
+        if (degree || institution) {
+          const parts = [degree, institution, location, eduDate].filter(Boolean)
+          return parts.join(' | ')
+        }
+        
+        // Try certification field names
+        const certName = item.name || item.certification || item.license_name || ''
+        const issuer = item.issuer || item.organization || item.issued_by || ''
+        const licenseNum = item.license || item.license_number || item.credential_id || ''
+        const url = item.url || item.link || ''
+        const certDate = item.date || item.issued_date || item.valid_from || ''
+        
+        if (certName || issuer || licenseNum) {
+          let result = certName
+          if (issuer) result += ` | ${issuer}`
+          if (licenseNum) result += ` | License: ${licenseNum}`
+          if (url) result += `\n  URL: ${url}`
+          if (certDate) result += ` | ${certDate}`
+          return result
+        }
+        
+        // Fallback: try to extract ALL values (including nested)
+        const extractAllStrings = (obj: any): string[] => {
+          const strings: string[] = []
+          for (const value of Object.values(obj)) {
+            if (typeof value === 'string' && value.trim()) {
+              strings.push(value.trim())
+            } else if (typeof value === 'object' && value !== null) {
+              strings.push(...extractAllStrings(value))
+            }
+          }
+          return strings
+        }
+        
+        const values = extractAllStrings(item)
+        return values.join(' | ')
       }
       return ''
     }).filter(Boolean).join('\n\n')
@@ -87,6 +127,16 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Check user's subscription tier for watermark
+    const { data: usage, error: usageError } = await supabase
+      .from('usage_tracking')
+      .select('subscription_tier')
+      .eq('user_id', user.id)
+      .single()
+
+    const subscriptionTier = usage?.subscription_tier || 'free'
+    const isPro = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
+
     // Fetch generation data (allow orphaned generations with NULL cv_id)
     const { data: generation, error: genError } = await supabase
       .from('generations')
@@ -118,35 +168,31 @@ export async function POST(request: NextRequest) {
       .eq('section_type', 'hobbies')
       .single()
 
-    // Merge sections: use modified sections for experience, keep original for everything else
-    const completeSections: CVSection[] = originalSections.map(originalSection => {
-      // Check if this section was modified (typically experience sections)
-      const modifiedSection = modifiedSections.find(mod => mod.type === originalSection.type)
-      
-      // If this is the hobbies section and we have latest data, use it
-      if (originalSection.type === 'hobbies' && latestHobbies) {
-        return {
+    // CRITICAL FIX: Use AI-modified sections as the primary source
+    // The AI generation already has ALL sections (modified + preserved)
+    // We should ONLY fetch additional data from cv_sections table for user customizations
+    
+    // Start with ALL AI-generated sections (this includes everything shown on review page)
+    const completeSections: CVSection[] = [...modifiedSections]
+    
+    // Override hobbies if user customized them in the editor
+    if (latestHobbies) {
+      const hobbiesIndex = completeSections.findIndex(s => s.type === 'hobbies' || s.type === 'interests')
+      if (hobbiesIndex >= 0) {
+        completeSections[hobbiesIndex] = {
           type: 'hobbies',
           content: latestHobbies.content,
-          order: latestHobbies.order_index || originalSection.order || 999
+          order: latestHobbies.order_index || completeSections[hobbiesIndex].order || 999
         }
-      }
-      
-      if (modifiedSection) {
-        // Use the AI-modified version
-        return modifiedSection
       } else {
-        // Keep the original section (contact, education, interests, etc.)
-        return originalSection
+        // Add hobbies if not present
+        completeSections.push({
+          type: 'hobbies',
+          content: latestHobbies.content,
+          order: latestHobbies.order_index || 999
+        })
       }
-    })
-
-    // Add any new sections that were created by AI but didn't exist in original
-    modifiedSections.forEach(modSection => {
-      if (!originalSections.find(orig => orig.type === modSection.type)) {
-        completeSections.push(modSection)
-      }
-    })
+    }
 
     // Deduplicate sections by type (keep only the first occurrence)
     const seenTypes = new Set<string>()
@@ -159,17 +205,32 @@ export async function POST(request: NextRequest) {
       return true
     })
 
-    // If hobbies exist in cv_sections but not in deduplicatedSections, add them
-    if (latestHobbies && !deduplicatedSections.find(s => s.type === 'hobbies')) {
-      deduplicatedSections.push({
-        type: 'hobbies',
-        content: latestHobbies.content,
-        order: latestHobbies.order_index || 999
-      })
-    }
-
     // Sort sections by order
     const sections: CVSection[] = deduplicatedSections.sort((a, b) => (a.order || 0) - (b.order || 0))
+    
+    console.log('📄 Export sections:', sections.map(s => s.type).join(', '))
+    console.log('📄 Section details:')
+    sections.forEach(s => {
+      const contentPreview = typeof s.content === 'string' 
+        ? s.content.substring(0, 100) 
+        : JSON.stringify(s.content).substring(0, 100)
+      console.log(`  - ${s.type}: ${contentPreview}${contentPreview.length >= 100 ? '...' : ''}`)
+      
+      // Warn if critical sections are empty
+      if (['education', 'certifications'].includes(s.type)) {
+        const contentStr = getSectionContent(s.content)
+        console.log(`🔍 DEBUG ${s.type}:`)
+        console.log(`   Type: ${typeof s.content}`)
+        console.log(`   Is Array: ${Array.isArray(s.content)}`)
+        console.log(`   Raw content:`, JSON.stringify(s.content, null, 2))
+        console.log(`   Processed content: "${contentStr}"`)
+        console.log(`   Length: ${contentStr.length}`)
+        
+        if (!contentStr || contentStr.trim().length === 0) {
+          console.error(`🚨 CRITICAL: ${s.type} section is EMPTY!`)
+        }
+      }
+    })
 
     // Track analytics
     try {
@@ -183,13 +244,13 @@ export async function POST(request: NextRequest) {
     // Generate content based on format
     switch (format) {
       case 'html':
-        return handleHtmlExport(sections, template, jobTitle)
+        return handleHtmlExport(sections, template, jobTitle, isPro)
       case 'pdf':
-        return await handlePdfExport(sections, template, jobTitle)
+        return await handlePdfExport(sections, template, jobTitle, isPro)
       case 'docx':
-        return await handleDocxExport(sections, template, jobTitle)
+        return await handleDocxExport(sections, template, jobTitle, isPro)
       case 'txt':
-        return handleTxtExport(sections, jobTitle)
+        return handleTxtExport(sections, jobTitle, isPro)
       default:
         return NextResponse.json({ error: 'Unsupported format' }, { status: 400 })
     }
@@ -202,7 +263,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function handleHtmlExport(sections: CVSection[], template: string, jobTitle: string) {
+function handleHtmlExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
   const html = generateTemplateHtml(sections, template)
   
   return new NextResponse(html, {
@@ -213,7 +274,7 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
-async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string) {
+async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
   try {
     // Check if using advanced template
     let html: string
@@ -294,11 +355,31 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' })
       : { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } // Advanced templates handle their own margins
     
-    const pdf = await page.pdf({
+    // Add watermark for free users
+    const pdfOptions: any = {
       format: 'A4',
       printBackground: true,
       margin: margins
-    })
+    }
+
+    // Add footer watermark for free users only
+    if (!isPro) {
+      pdfOptions.displayHeaderFooter = true
+      pdfOptions.footerTemplate = `
+        <div style="width: 100%; text-align: center; font-size: 8px; color: #999; padding: 5px 0;">
+          <span>Created with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com</span>
+        </div>
+      `
+      pdfOptions.headerTemplate = '<div></div>' // Empty header
+      // Adjust bottom margin to accommodate footer
+      if (useOptimizedMargins) {
+        pdfOptions.margin.bottom = '15mm'
+      } else {
+        pdfOptions.margin = { ...pdfOptions.margin, bottom: '15mm' }
+      }
+    }
+
+    const pdf = await page.pdf(pdfOptions)
     
     await browser.close()
     
@@ -311,11 +392,11 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
   } catch (error) {
     console.error('PDF generation error:', error)
     // Fallback to HTML if PDF generation fails
-    return handleHtmlExport(sections, template, jobTitle)
+    return handleHtmlExport(sections, template, jobTitle, isPro)
   }
 }
 
-async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {
+async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
   try {
     const sortedSections = sections.sort((a, b) => a.order - b.order)
     const children: any[] = []
@@ -455,6 +536,36 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
       }
     })
 
+    // Add watermark for free users
+    if (!isPro) {
+      children.push(
+        new Paragraph({
+          children: [new TextRun('')],
+          spacing: { before: 400 }
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Created with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com',
+              size: 16, // 8pt
+              color: '999999',
+              italics: true
+            })
+          ],
+          alignment: AlignmentType.CENTER,
+          border: {
+            top: {
+              color: 'CCCCCC',
+              space: 1,
+              style: BorderStyle.SINGLE,
+              size: 6
+            }
+          },
+          spacing: { before: 200 }
+        })
+      )
+    }
+
     const doc = new Document({
       sections: [{
         properties: {
@@ -482,11 +593,11 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
   } catch (error) {
     console.error('DOCX generation error:', error)
     // Fallback to TXT if DOCX generation fails
-    return handleTxtExport(sections, jobTitle)
+    return handleTxtExport(sections, jobTitle, isPro)
   }
 }
 
-function handleTxtExport(sections: CVSection[], jobTitle: string) {
+function handleTxtExport(sections: CVSection[], jobTitle: string, isPro: boolean) {
   const sortedSections = sections.sort((a, b) => a.order - b.order)
   let content = ''
 
@@ -501,6 +612,11 @@ function handleTxtExport(sections: CVSection[], jobTitle: string) {
       content += `${contentStr}\n\n`
     }
   })
+
+  // Add watermark for free users
+  if (!isPro) {
+    content += '\n\n---\nCreated with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com'
+  }
 
   return new NextResponse(content, {
     headers: {

@@ -8,8 +8,7 @@ import { toast } from 'sonner'
 import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
 import PromoBanner from '@/components/PromoBanner'
-import { WelcomeModal } from '@/components/WelcomeModal'
-import { OnboardingWizard } from '@/components/OnboardingWizard'
+import { OnboardingModal } from '@/components/OnboardingModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
 import { 
@@ -36,7 +35,11 @@ import {
   Archive,
   X,
   CheckCircle,
-  Shield
+  Shield,
+  Crown,
+  User,
+  Lock,
+  Check
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 
@@ -78,6 +81,19 @@ interface CoverLetter {
   output_language?: string
 }
 
+interface InterviewPrep {
+  id: string
+  job_description: string
+  company_research: any
+  interview_data: any
+  created_at: string
+  cv?: {
+    file_meta: {
+      name: string
+    }
+  }
+}
+
 interface RecentActivity {
   id: string
   type: 'cv_upload' | 'cv_generation' | 'cover_letter' | 'cv_edit'
@@ -105,11 +121,12 @@ export default function DashboardPage() {
   const [cvs, setCvs] = useState<CV[]>([])
   const [generations, setGenerations] = useState<Generation[]>([])
   const [coverLetters, setCoverLetters] = useState<CoverLetter[]>([])
+  const [interviewPreps, setInterviewPreps] = useState<InterviewPrep[]>([])
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [usage, setUsage] = useState<UsageInfo | null>(null)
   const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters'>('generations')
+  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters' | 'interview-prep'>('generations')
   const [searchQuery, setSearchQuery] = useState('')
   const [ratingModalOpen, setRatingModalOpen] = useState(false)
   const [selectedCvForRating, setSelectedCvForRating] = useState<string | null>(null)
@@ -134,6 +151,11 @@ export default function DashboardPage() {
     cl.job_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     cl.company_name.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const filteredInterviewPreps = interviewPreps.filter(prep => 
+    prep.job_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (prep.company_research?.company_name || '').toLowerCase().includes(searchQuery.toLowerCase())
+  )
   const router = useRouter()
   const supabase = createSupabaseClient()
 
@@ -147,9 +169,9 @@ export default function DashboardPage() {
 
     if (currentUsage >= maxGenerations) {
       if (isPro) {
-        toast.error('You have used all 100 lifetime generations. Contact support for more.')
+        toast.error('You have reached your generation limit. Contact support for assistance.')
       } else {
-        toast.error('You have used your 1 free generation. Upgrade to Pro for 100 more!', {
+        toast.error('You have used your 1 free generation. Upgrade to Pro for unlimited!', {
           duration: 5000,
           action: {
             label: 'Upgrade',
@@ -185,6 +207,17 @@ export default function DashboardPage() {
       return
     }
     setUser(user)
+
+    // Check if user needs onboarding
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('onboarding_completed')
+      .eq('id', user.id)
+      .single()
+
+    if (profile && !profile.onboarding_completed) {
+      setShowOnboarding(true)
+    }
   }
 
   const fetchDashboardData = async () => {
@@ -219,7 +252,6 @@ export default function DashboardPage() {
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(20)
 
       if (generationsError) {
         // Only show error if it has a message and code (real error)
@@ -240,7 +272,6 @@ export default function DashboardPage() {
           .from('cover_letters')
           .select('id, job_title, company_name, created_at')
           .order('created_at', { ascending: false })
-          .limit(20)
         
         coverLettersData = result.data
         coverLettersError = result.error
@@ -254,6 +285,25 @@ export default function DashboardPage() {
       }
       
       setCoverLetters(coverLettersData || [])
+
+      // Fetch Interview Preps
+      let interviewPrepsData = null
+      try {
+        const result = await supabase
+          .from('interview_preps')
+          .select(`
+            id, job_description, company_research, interview_data, created_at,
+            cvs(file_meta)
+          `)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+        
+        interviewPrepsData = result.data
+      } catch (e) {
+        console.error('Interview preps fetch error:', e)
+      }
+      
+      setInterviewPreps(interviewPrepsData || [])
 
       // Create Recent Activity Feed
       const activities: RecentActivity[] = []
@@ -523,8 +573,14 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {showOnboarding && <OnboardingWizard onComplete={handleOnboardingComplete} />}
-      <WelcomeModal />
+      <OnboardingModal 
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+        onComplete={() => {
+          setShowOnboarding(false)
+          fetchDashboardData()
+        }}
+      />
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -535,6 +591,25 @@ export default function DashboardPage() {
                 </div>
                 <span className="text-xl font-bold text-gray-900">CV Adapter</span>
               </Link>
+              {/* User Info with Tier Badge */}
+              {user && (
+                <div className="flex items-center gap-3 pl-6 border-l border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-gray-600" />
+                    <span className="text-sm font-medium text-gray-700 hidden md:inline">{user.email}</span>
+                  </div>
+                  {isPro ? (
+                    <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-3 py-1 rounded-full font-semibold flex items-center gap-1">
+                      <Crown className="w-3 h-3" />
+                      PRO
+                    </span>
+                  ) : (
+                    <span className="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full font-semibold">
+                      FREE
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
             <div className="flex items-center space-x-6">
               {isAdmin && (
@@ -555,12 +630,22 @@ export default function DashboardPage() {
                   </Link>
                 </>
               )}
+              {!isPro && (
+                <Link
+                  href="/subscription"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm flex items-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span className="hidden sm:inline">Upgrade to Pro</span>
+                  <span className="sm:hidden">Upgrade</span>
+                </Link>
+              )}
               <Link
                 href="/subscription"
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
               >
                 <Settings className="w-4 h-4" />
-                <span>Subscription</span>
+                <span className="hidden sm:inline">Subscription</span>
               </Link>
               <Link
                 href="/contact"
@@ -679,6 +764,14 @@ export default function DashboardPage() {
           >
             <FileText className="w-5 h-5 mr-2" />
             Create Cover Letter
+          </Link>
+
+          <Link
+            href="/interview-prep"
+            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            <Sparkles className="w-5 h-5 mr-2" />
+            Interview Prep
           </Link>
         </div>
 
@@ -801,6 +894,22 @@ export default function DashboardPage() {
                   activeTab === 'cover-letters' ? 'bg-blue-500' : 'bg-gray-200 text-gray-700'
                 }`}>
                   {searchQuery ? filteredCoverLetters.length : coverLetters.length}
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab('interview-prep')}
+                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                  activeTab === 'interview-prep'
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <Zap className="w-5 h-5 mr-2" />
+                <span>Interview Prep</span>
+                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                  activeTab === 'interview-prep' ? 'bg-purple-500' : 'bg-gray-200 text-gray-700'
+                }`}>
+                  {searchQuery ? filteredInterviewPreps.length : interviewPreps.length}
                 </span>
               </button>
             </nav>
@@ -1055,18 +1164,29 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/review/${generation.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
                         >
                           <Eye className="w-4 h-4" />
                           View
                         </Link>
-                        <Link
-                          href={`/edit/${generation.cv_id}?generation=${generation.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                          Edit
-                        </Link>
+                        {generation.cv_id ? (
+                          <Link
+                            href={`/edit/${generation.cv_id}?generation=${generation.id}`}
+                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                            Edit
+                          </Link>
+                        ) : (
+                          <button
+                            disabled
+                            title="Original CV was deleted"
+                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed border border-gray-200"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                            Edit
+                          </button>
+                        )}
                         <Link
                           href={`/download/${generation.id}`}
                           className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-all border border-green-200"
@@ -1171,6 +1291,188 @@ export default function DashboardPage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === 'interview-prep' && (
+          <div className="bg-white rounded-lg shadow">
+            <div className="px-6 py-4 border-b flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Interview Prep Sessions</h3>
+              <Link
+                href="/interview-prep"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all text-sm font-medium"
+              >
+                <Plus className="w-4 h-4" />
+                New Interview Prep
+              </Link>
+            </div>
+            
+            {filteredInterviewPreps.length === 0 ? (
+              <div className="p-12 text-center">
+                <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {searchQuery ? 'No interview preps found' : 'No interview preps yet'}
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {searchQuery 
+                    ? `No interview preps match "${searchQuery}". Try a different search term.`
+                    : 'Generate interview questions and company research to ace your interviews!'
+                  }
+                </p>
+                {!searchQuery && (
+                  <Link
+                    href="/interview-prep"
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors"
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Start Interview Prep
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {filteredInterviewPreps.map((prep) => (
+                  <div key={prep.id} className="p-6 hover:bg-gray-50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4 flex-1">
+                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                          <Zap className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-sm font-medium text-gray-900 truncate">
+                              {prep.company_research?.company_name || 'Interview Prep'}
+                            </h3>
+                            {prep.company_research && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                <Crown className="w-3 h-3 mr-1" />
+                                Company Research
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500 truncate">
+                            {prep.job_description.substring(0, 80)}...
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            Created {formatDate(prep.created_at)}
+                            {prep.cv?.file_meta?.name && ` • ${prep.cv.file_meta.name}`}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 ml-4">
+                        <Link
+                          href={`/interview-prep/view/${prep.id}`}
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                        >
+                          <Eye className="w-4 h-4" />
+                          View
+                        </Link>
+                        <button
+                          onClick={async () => {
+                            if (confirm('Delete this interview prep?')) {
+                              const { error } = await supabase
+                                .from('interview_preps')
+                                .delete()
+                                .eq('id', prep.id)
+                              
+                              if (error) {
+                                toast.error('Failed to delete')
+                              } else {
+                                toast.success('Interview prep deleted')
+                                fetchDashboardData()
+                              }
+                            }
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-all border border-red-200"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Feature Comparison for Free Users */}
+        {!isPro && (
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border-2 border-purple-200 mt-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-purple-600" />
+              Unlock Pro Features
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <X className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <div className="font-semibold text-gray-900">Free Tier</div>
+                </div>
+                <ul className="text-sm text-gray-600 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span>1 CV generation</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span>PDF export only</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span>2 templates</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span>Watermark on exports</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg p-4 text-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                    <Crown className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="font-semibold">Pro Tier</div>
+                  <span className="ml-auto bg-white bg-opacity-20 text-xs px-2 py-1 rounded-full font-semibold">
+                    £9.99/month
+                  </span>
+                </div>
+                <ul className="text-sm space-y-2">
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <span>Unlimited generations</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <span>All export formats (PDF, DOCX, HTML, TXT)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <span>14 premium templates</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <span>No watermarks</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <span>AI Review & Cover Letters</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <Link
+              href="/subscription"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2"
+            >
+              <Sparkles className="w-5 h-5" />
+              Upgrade to Pro - £9.99/month
+            </Link>
           </div>
         )}
       </div>

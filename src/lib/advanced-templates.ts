@@ -500,10 +500,9 @@ function getSectionContent(content: any): string {
       if (typeof item === 'string') return item
       
       if (typeof item === 'object' && item !== null) {
-        // Handle work experience objects with proper formatting
         const parts = []
         
-        // Title line with company and dates
+        // Work Experience: Title line with company and dates
         const title = item.title || item.job_title || item.position || ''
         const company = item.company || item.employer || ''
         const dates = item.dates || item.duration || item.period || ''
@@ -518,6 +517,33 @@ function getSectionContent(content: any): string {
             titleLine = title || company
           }
           parts.push(titleLine)
+        }
+        
+        // Education: Degree/qualification line
+        const degree = item.degree || item.qualification || item.course || ''
+        const institution = item.institution || item.school || item.university || ''
+        const eduDate = item.date || item.year || item.graduation_date || ''
+        const location = item.location || ''
+        
+        if (degree || institution) {
+          const eduParts = [degree, institution, location, eduDate].filter(Boolean)
+          parts.push(eduParts.join(' | '))
+        }
+        
+        // Certifications: Certification line
+        const certName = item.name || item.certification || item.license_name || ''
+        const issuer = item.issuer || item.organization || item.issued_by || ''
+        const licenseNum = item.license || item.license_number || item.credential_id || ''
+        const url = item.url || item.link || ''
+        const certDate = item.date || item.issued_date || item.valid_from || ''
+        
+        if (certName || issuer || licenseNum) {
+          let certLine = certName
+          if (issuer) certLine += ` | ${issuer}`
+          if (licenseNum) certLine += ` | License: ${licenseNum}`
+          if (url) certLine += `\n  URL: ${url}`
+          if (certDate && !eduDate) certLine += ` | ${certDate}` // Only add if not already added from education
+          parts.push(certLine)
         }
         
         // Bullets/responsibilities
@@ -535,6 +561,25 @@ function getSectionContent(content: any): string {
           }
         } else if (item.description) {
           parts.push(item.description)
+        }
+        
+        // Fallback: Extract all string values if nothing matched
+        if (parts.length === 0) {
+          const extractAllStrings = (obj: any): string[] => {
+            const strings: string[] = []
+            for (const value of Object.values(obj)) {
+              if (typeof value === 'string' && value.trim()) {
+                strings.push(value.trim())
+              } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                strings.push(...extractAllStrings(value))
+              }
+            }
+            return strings
+          }
+          const values = extractAllStrings(item)
+          if (values.length > 0) {
+            parts.push(values.join(' | '))
+          }
         }
         
         return parts.join('\n')
@@ -732,6 +777,7 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
   const skillsSection = sections.find(s => s.type === 'skills' || s.type === 'key_skills')
   const hobbiesSection = sections.find(s => s.type === 'hobbies' || s.type === 'interests')
   const certificationsSection = sections.find(s => s.type === 'certifications' || s.type === 'licenses')
+  const languagesSection = sections.find(s => s.type === 'languages')
   
   // Check if hobbies section has custom icons (array of {name, icon} objects)
   let hobbies = []
@@ -747,6 +793,47 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
   }
   
   const skills = skillsSection ? parseSkills(getSectionContent(skillsSection.content)) : []
+  
+  // Parse languages with icons
+  const languageIcons: Record<string, string> = {
+    'english': '🇬🇧',
+    'spanish': '🇪🇸',
+    'french': '🇫🇷',
+    'german': '🇩🇪',
+    'italian': '🇮🇹',
+    'portuguese': '🇵🇹',
+    'chinese': '🇨🇳',
+    'japanese': '🇯🇵',
+    'korean': '🇰🇷',
+    'arabic': '🇸🇦',
+    'russian': '🇷🇺',
+    'dutch': '🇳🇱',
+    'polish': '🇵🇱',
+    'turkish': '🇹🇷',
+    'hindi': '🇮🇳'
+  }
+  
+  let languages: Array<{name: string, level: string, icon: string}> = []
+  if (languagesSection) {
+    const content = getSectionContent(languagesSection.content)
+    const lines = content.split('\n').filter(l => l.trim())
+    languages = lines.map(line => {
+      const match = line.match(/(.+?)\s*[\(:]?\s*(Native|Fluent|Advanced|Intermediate|Basic|Conversational|Professional)?/i)
+      const name = match ? match[1].trim() : line.trim()
+      const level = match && match[2] ? match[2] : ''
+      const icon = languageIcons[name.toLowerCase()] || '🌐'
+      return { name, level, icon }
+    })
+  }
+  
+  // Get remaining sections (not in sidebar or main predefined sections)
+  const remainingSections = sections.filter(s => 
+    !['name', 'contact', 'profile', 'summary', 'professional_summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests', 'certifications', 'licenses', 'languages'].includes(s.type)
+  )
+  
+  // Split remaining sections: half in sidebar, half in main content
+  const sidebarExtraSections = remainingSections.slice(0, Math.ceil(remainingSections.length / 2))
+  const mainExtraSections = remainingSections.slice(Math.ceil(remainingSections.length / 2))
   
   // Extract contact details properly
   let contactDetails = ''
@@ -826,6 +913,33 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
                 </div>
               </div>
             ` : ''}
+            
+            ${languages.length > 0 ? `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons.languages}
+                  Languages
+                </div>
+                <div class="hobbies-list">
+                  ${languages.map(lang => `
+                    <div class="hobby-badge">
+                      ${lang.icon}
+                      <span>${escapeHtml(lang.name)}${lang.level ? ` (${lang.level})` : ''}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${sidebarExtraSections.map(section => `
+              <div class="section">
+                <div class="section-header">
+                  ${sectionIcons[section.type] || sectionIcons.additional_information}
+                  ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                </div>
+                <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+              </div>
+            `).join('')}
           </div>
           
           <!-- Main Content -->
@@ -850,9 +964,7 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
               </div>
             ` : ''}
             
-            ${sections.filter(s => 
-              !['name', 'contact', 'profile', 'summary', 'professional_summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests', 'certifications', 'licenses'].includes(s.type)
-            ).map(section => `
+            ${mainExtraSections.map(section => `
               <div class="section">
                 <div class="section-header">
                   ${sectionIcons[section.type] || sectionIcons.additional_information}

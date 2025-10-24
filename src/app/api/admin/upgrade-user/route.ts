@@ -74,29 +74,56 @@ export async function POST(request: NextRequest) {
       targetEmail = user.user.email
     }
 
-    // Create/update subscription
-    const { error: subError } = await supabase
-      .from('subscriptions')
+    // UPSERT usage_tracking table (primary method)
+    // IMPORTANT: Dashboard checks 'plan_type' column!
+    // Use UPSERT because row might not exist yet
+    const { error: usageError } = await supabase
+      .from('usage_tracking')
       .upsert({
         user_id: targetUserId,
-        status: 'active',
-        plan: 'pro',
-        stripe_customer_id: `test_customer_${targetEmail}`,
-        stripe_subscription_id: `test_sub_${targetEmail}`,
-        current_period_start: new Date().toISOString(),
-        current_period_end: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-        cancel_at_period_end: false,
+        plan_type: 'pro',
+        subscription_tier: 'pro_monthly',
+        generation_count: 0,
+        lifetime_generation_count: 0,
+        max_lifetime_generations: 999999,
+        current_month: new Date().toISOString().substring(0, 7) + '-01', // First day of current month
+        job_scrapes_used: 0,
+        interview_preps_used: 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }, {
-        onConflict: 'user_id'
+        onConflict: 'user_id',
+        ignoreDuplicates: false
       })
 
-    if (subError) {
-      console.error('Subscription error:', subError)
+    if (usageError) {
+      console.error('Usage tracking upsert error:', usageError)
       return NextResponse.json({ 
-        error: `Failed to upgrade: ${subError.message}` 
+        error: `Failed to upgrade: ${usageError.message}` 
       }, { status: 500 })
+    }
+
+    // Try to update subscriptions table if it exists (optional)
+    try {
+      await supabase
+        .from('subscriptions')
+        .upsert({
+          user_id: targetUserId,
+          status: 'active',
+          plan: 'pro',
+          stripe_customer_id: `test_customer_${targetEmail}`,
+          stripe_subscription_id: `test_sub_${targetEmail}`,
+          current_period_start: new Date().toISOString(),
+          current_period_end: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+          cancel_at_period_end: false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        })
+    } catch (e) {
+      // Subscriptions table doesn't exist, that's okay
+      console.log('Subscriptions table not found, using usage_tracking only')
     }
 
     return NextResponse.json({ 

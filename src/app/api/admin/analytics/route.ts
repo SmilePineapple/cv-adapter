@@ -209,11 +209,17 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => b.generation_count - a.generation_count)
       .slice(0, 10)
 
+    // Count monthly vs annual Pro users
+    const monthlyProUsers = usageTracking.filter(u => u.subscription_tier === 'pro_monthly').length
+    const annualProUsers = usageTracking.filter(u => u.subscription_tier === 'pro_annual').length
+
     return NextResponse.json({
       overview: {
         totalUsers,
         proUsers,
         freeUsers,
+        monthlyProUsers,
+        annualProUsers,
         totalGenerations,
         totalCVs,
         totalCoverLetters,
