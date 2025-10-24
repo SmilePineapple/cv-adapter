@@ -217,11 +217,6 @@ export default function SubscriptionPage() {
   }
 
   const isPro = usage?.plan_type === 'pro'
-  
-  // Debug logging
-  console.log('Purchase state:', purchase)
-  console.log('Usage state:', usage)
-  console.log('Is Pro:', isPro)
 
   if (isLoading) {
     return (
