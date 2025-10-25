@@ -1,0 +1,296 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+/**
+ * Cron Job API Route: Post scheduled content
+ * GET /api/social-bot/cron
+ * 
+ * This should be called by a cron service (Vercel Cron, GitHub Actions, etc.)
+ * every hour to check for and post scheduled content.
+ * 
+ * Security: Verify cron secret to prevent unauthorized access
+ */
+export async function GET(request: NextRequest) {
+  try {
+    // Verify cron secret
+    const authHeader = request.headers.get('authorization')
+    const cronSecret = process.env.CRON_SECRET || 'your-secret-key'
+    
+    if (authHeader !== `Bearer ${cronSecret}`) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const now = new Date()
+    const results = {
+      checked: 0,
+      posted: 0,
+      failed: 0,
+      errors: [] as string[]
+    }
+
+    // Get posts scheduled for now or earlier that haven't been posted
+    const { data: scheduledPosts, error: fetchError } = await supabase
+      .from('social_media_posts')
+      .select('*')
+      .eq('posted', false)
+      .lte('scheduled_for', now.toISOString())
+      .order('scheduled_for', { ascending: true })
+      .limit(10) // Process max 10 posts per run
+
+    if (fetchError) {
+      console.error('Error fetching scheduled posts:', fetchError)
+      return NextResponse.json(
+        { error: 'Failed to fetch scheduled posts' },
+        { status: 500 }
+      )
+    }
+
+    results.checked = scheduledPosts?.length || 0
+
+    if (!scheduledPosts || scheduledPosts.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No posts to publish',
+        results
+      })
+    }
+
+    // Process each post
+    for (const post of scheduledPosts) {
+      try {
+        // Check if platform is enabled and has posting enabled
+        const { data: config } = await supabase
+          .from('social_media_config')
+          .select('*')
+          .eq('platform', post.platform)
+          .single()
+
+        if (!config?.enabled || !config?.posting_enabled) {
+          console.log(`Skipping ${post.platform} - not enabled for posting`)
+          continue
+        }
+
+        // Check daily limit
+        if (config.posts_today >= config.daily_post_limit) {
+          console.log(`Skipping ${post.platform} - daily limit reached`)
+          continue
+        }
+
+        // Format post for platform
+        const formattedContent = formatPostForPlatform({
+          ...post,
+          hashtags: post.hashtags || []
+        } as SocialPost)
+
+        // Post to platform (you'll implement this based on platform APIs)
+        const postResult = await postToPlatform(
+          post.platform,
+          formattedContent,
+          config
+        )
+
+        if (postResult.success) {
+          // Update post as posted
+          await supabase
+            .from('social_media_posts')
+            .update({
+              posted: true,
+              posted_at: new Date().toISOString(),
+              post_id: postResult.postId,
+              post_url: postResult.postUrl
+            })
+            .eq('id', post.id)
+
+          // Update platform config
+          await supabase
+            .from('social_media_config')
+            .update({
+              posts_today: config.posts_today + 1,
+              last_post_date: new Date().toISOString().split('T')[0]
+            })
+            .eq('platform', post.platform)
+
+          results.posted++
+        } else {
+          // Update retry count and error
+          await supabase
+            .from('social_media_posts')
+            .update({
+              retry_count: (post.retry_count || 0) + 1,
+              error_message: postResult.error
+            })
+            .eq('id', post.id)
+
+          results.failed++
+          results.errors.push(`${post.platform}: ${postResult.error}`)
+        }
+
+      } catch (error) {
+        console.error(`Error posting to ${post.platform}:`, error)
+        results.failed++
+        results.errors.push(`${post.platform}: ${error}`)
+      }
+    }
+
+    // Reset daily counts if needed
+    await supabase.rpc('reset_daily_post_counts')
+
+    return NextResponse.json({
+      success: true,
+      message: `Processed ${results.checked} posts`,
+      results
+    })
+
+  } catch (error) {
+    console.error('Cron job error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
+/**
+ * Post content to specific platform
+ * You'll need to implement this based on each platform's API
+ */
+async function postToPlatform(
+  platform: string,
+  content: string,
+  config: any
+): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
+  
+  // For now, this is a placeholder
+  // You'll need to implement actual API calls for each platform
+  
+  switch (platform) {
+    case 'twitter':
+      return await postToTwitter(content, config)
+    
+    case 'linkedin':
+      return await postToLinkedIn(content, config)
+    
+    case 'facebook':
+      return await postToFacebook(content, config)
+    
+    case 'instagram':
+      return await postToInstagram(content, config)
+    
+    default:
+      return {
+        success: false,
+        error: 'Unknown platform'
+      }
+  }
+}
+
+/**
+ * Post to Twitter/X
+ * Requires: Twitter API v2 credentials
+ */
+async function postToTwitter(
+  content: string,
+  config: any
+): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
+  try {
+    // TODO: Implement Twitter API v2 posting
+    // For now, just log
+    console.log('Would post to Twitter:', content.substring(0, 50))
+    
+    // Placeholder response
+    return {
+      success: true,
+      postId: 'twitter-' + Date.now(),
+      postUrl: `https://twitter.com/${config.account_username}/status/123456789`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
+
+/**
+ * Post to LinkedIn
+ * Requires: LinkedIn API credentials
+ */
+async function postToLinkedIn(
+  content: string,
+  config: any
+): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
+  try {
+    // TODO: Implement LinkedIn API posting
+    console.log('Would post to LinkedIn:', content.substring(0, 50))
+    
+    return {
+      success: true,
+      postId: 'linkedin-' + Date.now(),
+      postUrl: `https://www.linkedin.com/feed/update/urn:li:share:123456789`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
+
+/**
+ * Post to Facebook
+ * Requires: Facebook Graph API credentials
+ */
+async function postToFacebook(
+  content: string,
+  config: any
+): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
+  try {
+    // TODO: Implement Facebook Graph API posting
+    console.log('Would post to Facebook:', content.substring(0, 50))
+    
+    return {
+      success: true,
+      postId: 'facebook-' + Date.now(),
+      postUrl: `https://www.facebook.com/${config.account_id}/posts/123456789`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
+
+/**
+ * Post to Instagram
+ * Requires: Instagram Graph API credentials
+ */
+async function postToInstagram(
+  content: string,
+  config: any
+): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
+  try {
+    // TODO: Implement Instagram Graph API posting
+    console.log('Would post to Instagram:', content.substring(0, 50))
+    
+    return {
+      success: true,
+      postId: 'instagram-' + Date.now(),
+      postUrl: `https://www.instagram.com/p/123456789`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
