@@ -1,0 +1,9 @@
+feat: Add beautiful CV generation loading animation with progress tracking
+
+- Created CVGenerationLoader component with engaging animations
+- Added floating particles, gradient orbs, and shimmer effects
+- Shows 3-stage progress: AI Analysis, ATS Optimization, Formatting
+- Displays estimated time remaining
+- Includes reassurance message explaining why generation takes time
+- Replaces basic progress bar with professional, anxiety-reducing UI
+- Improves user experience during 2-minute generation wait
