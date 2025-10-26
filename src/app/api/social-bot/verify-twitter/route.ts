@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { verifyTwitterCredentials } from '@/lib/twitter-api'
+import { verifyTwitterCredentials } from '@/lib/twitter-api-v2'
 
 /**
  * Verify Twitter API credentials
