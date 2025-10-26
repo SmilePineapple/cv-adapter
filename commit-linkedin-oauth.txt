@@ -1,0 +1,17 @@
+feat: Add LinkedIn OAuth flow for automated posting
+
+Added OAuth endpoints to get LinkedIn access token:
+- /api/linkedin/auth - Redirects to LinkedIn for authorization
+- /api/linkedin/callback - Handles OAuth callback and stores token
+
+This completes the LinkedIn automation setup. User just needs to:
+1. Visit /api/linkedin/auth
+2. Authorize the app
+3. Access token will be stored automatically
+4. Enable posting_enabled = true
+5. LinkedIn posts will be automated!
+
+Files added:
+- src/app/api/linkedin/auth/route.ts
+- src/app/api/linkedin/callback/route.ts
+- migrations/check-linkedin-status.sql
