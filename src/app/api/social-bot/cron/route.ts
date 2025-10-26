@@ -200,6 +200,13 @@ async function postToTwitter(
 ): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
   try {
     console.log('Posting to Twitter:', content.substring(0, 50) + '...')
+    console.log('Content length:', content.length)
+    console.log('Using credentials:', {
+      api_key: config.api_key?.substring(0, 10) + '...',
+      api_key_length: config.api_key?.length,
+      access_token: config.access_token?.substring(0, 15) + '...',
+      access_token_length: config.access_token?.length,
+    })
     
     // Use real Twitter API
     const result = await postTweet(content, {
