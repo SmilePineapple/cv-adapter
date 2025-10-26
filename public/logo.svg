@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#4F46E5"/>
+  
+  <!-- Document Icon -->
+  <rect x="140" y="120" width="232" height="272" rx="16" fill="white"/>
+  
+  <!-- Lines representing CV text -->
+  <rect x="180" y="180" width="152" height="12" rx="6" fill="#4F46E5"/>
+  <rect x="180" y="212" width="120" height="12" rx="6" fill="#818CF8"/>
+  <rect x="180" y="244" width="152" height="12" rx="6" fill="#818CF8"/>
+  <rect x="180" y="276" width="100" height="12" rx="6" fill="#818CF8"/>
+  <rect x="180" y="308" width="152" height="12" rx="6" fill="#818CF8"/>
+  <rect x="180" y="340" width="130" height="12" rx="6" fill="#818CF8"/>
+  
+  <!-- AI Sparkle/Star in corner -->
+  <circle cx="340" cy="150" r="24" fill="#FCD34D"/>
+  <path d="M340 135 L345 145 L355 150 L345 155 L340 165 L335 155 L325 150 L335 145 Z" fill="white"/>
+</svg>
