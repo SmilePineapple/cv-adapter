@@ -29,6 +29,7 @@ interface PlatformConfig {
 }
 
 export default function SocialBotDashboard() {
+  // Social Media Bot Dashboard - Automated Content Management
   const [posts, setPosts] = useState<SocialPost[]>([])
   const [configs, setConfigs] = useState<PlatformConfig[]>([])
   const [loading, setLoading] = useState(true)
