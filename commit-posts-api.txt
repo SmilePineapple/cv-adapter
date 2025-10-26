@@ -1,0 +1,10 @@
+fix: Add API route for posts to bypass RLS
+
+Posts were being generated but not displayed due to RLS blocking the query.
+
+Solution:
+- Created /api/social-bot/posts route with service role key
+- Updated page to fetch posts via API instead of direct Supabase query
+- Now both configs AND posts bypass RLS properly
+
+The generated tweets will now display in the Scheduled tab.
