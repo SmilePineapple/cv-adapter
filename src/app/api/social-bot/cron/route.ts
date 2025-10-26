@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
-import { postTweet } from '@/lib/twitter-api'
+import { postTweet } from '@/lib/twitter-api-v2'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
