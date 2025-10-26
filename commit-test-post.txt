@@ -1,0 +1,8 @@
+feat: Add test post endpoint to debug 403 error
+
+Added /api/social-bot/test-post endpoint that:
+- Uses env vars directly (like verify endpoint that works)
+- Posts a simple test tweet
+- Provides detailed error messages
+
+This will help identify if the 403 is a permissions issue or something else.
