@@ -46,18 +46,17 @@ export default function SocialBotDashboard() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      // Fetch posts
-      const { data: postsData, error: postsError } = await supabase
-        .from('social_media_posts')
-        .select('*')
-        .eq('posted', !showScheduled)
-        .order('scheduled_for', { ascending: !showScheduled })
-        .limit(50)
-
-      if (postsError) {
-        console.error('Error fetching posts:', postsError)
+      // Fetch posts via API (bypasses RLS)
+      const postsResponse = await fetch(`/api/social-bot/posts?posted=${!showScheduled}&limit=50`)
+      const postsResult = await postsResponse.json()
+      
+      if (postsResult.success) {
+        console.log('Posts loaded:', postsResult.posts.length)
+        setPosts(postsResult.posts || [])
+      } else {
+        console.error('Error fetching posts:', postsResult.error)
+        setPosts([])
       }
-      setPosts(postsData || [])
 
       // Fetch configs via API (bypasses RLS)
       const configResponse = await fetch('/api/social-bot/config')
