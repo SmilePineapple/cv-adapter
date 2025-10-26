@@ -1,0 +1,8 @@
+feat: Add detailed Twitter API error logging
+
+Added comprehensive logging to twitter-api.ts to help debug posting issues:
+- Log credentials being used (masked)
+- Log full error responses from Twitter API
+- Better error message extraction
+
+This will help identify why tweets are failing to post.
