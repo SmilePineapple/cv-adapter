@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('LinkedIn OAuth error:', error, errorDescription)
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_APP_URL}/admin/social-bot?error=${encodeURIComponent(errorDescription || error)}`
+        `https://www.mycvbuddy.com/admin/social-bot?error=${encodeURIComponent(errorDescription || error)}`
       )
     }
 
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     // Exchange authorization code for access token
     const tokenUrl = 'https://www.linkedin.com/oauth/v2/accessToken'
-    const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/linkedin/callback`
+    const redirectUri = 'https://www.mycvbuddy.com/api/linkedin/callback'
 
     const tokenParams = new URLSearchParams({
       grant_type: 'authorization_code',
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
       const errorData = await tokenResponse.text()
       console.error('Token exchange failed:', errorData)
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_APP_URL}/admin/social-bot?error=token_exchange_failed`
+        `https://www.mycvbuddy.com/admin/social-bot?error=token_exchange_failed`
       )
     }
 
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     if (updateError) {
       console.error('Failed to store access token:', updateError)
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_APP_URL}/admin/social-bot?error=failed_to_store_token`
+        `https://www.mycvbuddy.com/admin/social-bot?error=failed_to_store_token`
       )
     }
 
@@ -102,13 +102,13 @@ export async function GET(request: NextRequest) {
 
     // Redirect back to admin page with success message
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/admin/social-bot?linkedin_connected=true`
+      `https://www.mycvbuddy.com/admin/social-bot?linkedin_connected=true`
     )
 
   } catch (error) {
     console.error('LinkedIn callback error:', error)
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_APP_URL}/admin/social-bot?error=callback_failed`
+      `https://www.mycvbuddy.com/admin/social-bot?error=callback_failed`
     )
   }
 }
