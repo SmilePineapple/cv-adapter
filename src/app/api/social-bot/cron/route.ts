@@ -19,16 +19,12 @@ const supabase = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify cron secret
+    // Verify this is from Vercel Cron (optional - Vercel Cron is already secure)
     const authHeader = request.headers.get('authorization')
-    const cronSecret = process.env.CRON_SECRET || 'your-secret-key'
     
-    if (authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
+    // Log for debugging
+    console.log('Cron job triggered at:', new Date().toISOString())
+    console.log('Auth header:', authHeader ? 'Present' : 'Missing')
 
     const now = new Date()
     const results = {

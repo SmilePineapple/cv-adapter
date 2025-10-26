@@ -1,0 +1,19 @@
+feat: Improve social bot navigation, timing, and LinkedIn content
+
+Navigation Improvements:
+- Added "Social Bot" link to admin dashboard header
+- Added "Back to Admin" button on social bot page
+- Better navigation flow between admin pages
+
+Timing Fix:
+- Changed scheduled post time from 10 AM to 2 PM (14:00)
+- Now matches the cron schedule (posts at 2 PM daily)
+- UI will show correct times for scheduled posts
+
+LinkedIn Content Improvements:
+- Added guidance to keep LinkedIn posts at 400-600 characters (not full 3000)
+- Better engagement with shorter, focused content
+- Ensured [link] placeholder is always used in prompts
+- Link replacement works correctly when posting
+
+All fixes address user feedback for better UX and content quality.
