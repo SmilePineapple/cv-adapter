@@ -47,21 +47,30 @@ export default function SocialBotDashboard() {
     setLoading(true)
     try {
       // Fetch posts
-      const { data: postsData } = await supabase
+      const { data: postsData, error: postsError } = await supabase
         .from('social_media_posts')
         .select('*')
         .eq('posted', !showScheduled)
         .order('scheduled_for', { ascending: !showScheduled })
         .limit(50)
 
+      if (postsError) {
+        console.error('Error fetching posts:', postsError)
+      }
       setPosts(postsData || [])
 
-      // Fetch configs
-      const { data: configsData } = await supabase
-        .from('social_media_config')
-        .select('*')
-
-      setConfigs(configsData || [])
+      // Fetch configs via API (bypasses RLS)
+      const configResponse = await fetch('/api/social-bot/config')
+      const configResult = await configResponse.json()
+      
+      if (configResult.success) {
+        console.log('Configs loaded:', configResult.configs)
+        setConfigs(configResult.configs || [])
+      } else {
+        console.error('Error fetching configs:', configResult.error)
+        toast.error(`Failed to load configs: ${configResult.error}`)
+        setConfigs([])
+      }
     } catch (error) {
       console.error('Error fetching data:', error)
       toast.error('Failed to load data')
