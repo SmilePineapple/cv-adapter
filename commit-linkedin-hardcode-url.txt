@@ -1,0 +1,8 @@
+fix: Hardcode redirect URLs for LinkedIn OAuth
+
+Fixed redirect_uri mismatch error by hardcoding the URL instead of using env var.
+
+Changed from: process.env.NEXT_PUBLIC_APP_URL
+To: https://www.mycvbuddy.com
+
+This ensures the redirect URI always matches what's registered in LinkedIn app.

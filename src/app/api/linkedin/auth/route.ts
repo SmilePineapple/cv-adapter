@@ -29,10 +29,14 @@ export async function GET(request: NextRequest) {
     // LinkedIn OAuth URLs
     const authUrl = 'https://www.linkedin.com/oauth/v2/authorization'
     const redirectUri = 'https://www.mycvbuddy.com/api/linkedin/callback'
-    const scope = 'w_member_social r_liteprofile r_emailaddress'
-    const state = crypto.randomUUID() // CSRF protection
+    const scope = 'w_member_social openid profile email'
+    const state = Date.now().toString() // Simple state for CSRF protection
     
-    console.log('LinkedIn auth redirect URI:', redirectUri)
+    console.log('LinkedIn auth config:', {
+      client_id: config.api_key?.substring(0, 10) + '...',
+      redirect_uri: redirectUri,
+      scope: scope
+    })
 
     // Build authorization URL
     const params = new URLSearchParams({
@@ -44,6 +48,8 @@ export async function GET(request: NextRequest) {
     })
 
     const linkedInAuthUrl = `${authUrl}?${params.toString()}`
+    
+    console.log('Redirecting to:', linkedInAuthUrl)
 
     // Store state in session/cookie for verification (optional but recommended)
     // For now, we'll just redirect
