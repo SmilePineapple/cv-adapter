@@ -1,0 +1,12 @@
+fix: Switch to Twitter API v1.1 to work with Free tier
+
+CRITICAL FIX: Twitter API v2 requires Elevated access for posting.
+Switched to v1.1 API which works with Free tier.
+
+Changes:
+- Changed endpoint from /2/tweets to /1.1/statuses/update.json
+- Changed request format from JSON to form-urlencoded
+- Updated response parsing for v1.1 format
+- Kept OAuth 1.0a authentication (same for both versions)
+
+This allows posting tweets without needing Elevated access approval.

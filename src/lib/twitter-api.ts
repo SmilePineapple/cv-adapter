@@ -98,9 +98,12 @@ export async function postTweet(
   try {
     console.log('Posting tweet with config:', {
       api_key: config.api_key?.substring(0, 10) + '...',
+      api_key_length: config.api_key?.length,
       access_token: config.access_token?.substring(0, 10) + '...',
+      access_token_length: config.access_token?.length,
       hasSecret: !!config.api_secret,
-      hasTokenSecret: !!config.access_token_secret
+      hasTokenSecret: !!config.access_token_secret,
+      content_length: content.length
     })
     
     // Use v1.1 API which works with Free tier
@@ -110,8 +113,12 @@ export async function postTweet(
     // URL encode the status
     const params = { status: content }
 
+    console.log('Generating OAuth signature for:', { method, url, hasParams: true })
+
     // Generate OAuth header with status parameter
     const authHeader = generateOAuthHeader(method, url, config, params)
+    
+    console.log('OAuth header generated, length:', authHeader.length)
 
     // Post tweet using form data
     const response = await fetch(url, {
