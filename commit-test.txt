@@ -1,0 +1,9 @@
+feat: Add detailed Twitter API test endpoint
+
+Added /api/social-bot/test-twitter endpoint that:
+- Tests v2 API authentication
+- Falls back to v1.1 API if v2 fails
+- Provides detailed error messages
+- Logs all steps for debugging
+
+This will help identify exactly where authentication is failing.
