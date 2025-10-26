@@ -73,18 +73,21 @@ Guidelines:
 - Be engaging, helpful, and professional
 - Include a clear call-to-action when appropriate
 - Use emojis strategically (not too many)
-- Keep it under ${maxLength} characters
+- CRITICAL: Keep it under ${maxLength} characters TOTAL (including hashtags and link)
+${platform === 'linkedin' ? '- For LinkedIn: Aim for 400-600 characters for best engagement (not the full 3000)' : ''}
 - Make it shareable and valuable
 - Focus on helping job seekers
 - Mention CV Adapter naturally when relevant
 - Create urgency or curiosity when appropriate
+- Use [link] as a placeholder for the website URL
+- End with a call to action using [link]
 
 Content Type: ${contentType}
 
 Examples of good posts:
-- "Did you know 75% of CVs never reach a human? 🤖 ATS systems filter them out first. Here's how to beat them..."
+- "Did you know 75% of CVs never reach a human? 🤖 ATS systems filter them out first. Here's how to beat them... Try CV Adapter: [link]"
 - "Your CV has 6 seconds to impress. Make every word count. ⏱️ Try our AI-powered CV optimizer: [link]"
-- "Question: What's the biggest mistake you've made on your CV? 💭 (We've seen them all!)"
+- "Question: What's the biggest mistake you've made on your CV? 💭 Share below! Check out CV Adapter for tips: [link]"
 
 Generate an engaging post now:`
 
@@ -186,7 +189,7 @@ export async function generateWeeklyContent(
     const contentType = schedule[i]
     const scheduledDate = new Date(startDate)
     scheduledDate.setDate(scheduledDate.getDate() + i)
-    scheduledDate.setHours(10, 0, 0, 0) // Post at 10 AM
+    scheduledDate.setHours(14, 0, 0, 0) // Post at 2 PM (14:00)
 
     try {
       const { content, hashtags } = await generateSocialContent(contentType, platform)
