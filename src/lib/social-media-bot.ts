@@ -235,7 +235,27 @@ export function formatPostForPlatform(post: SocialPost): string {
   // Add hashtags based on platform
   if (platform === 'twitter') {
     // Twitter: hashtags inline or at end
-    formattedContent += `\n\n${hashtags.map(h => `#${h}`).join(' ')}`
+    const hashtagString = `\n\n${hashtags.map(h => `#${h}`).join(' ')}`
+    formattedContent += hashtagString
+    
+    // Twitter has a 280 character limit - truncate if needed
+    if (formattedContent.length > 280) {
+      console.warn(`Tweet too long (${formattedContent.length} chars), truncating to 280`)
+      // Remove hashtags and try again
+      formattedContent = formattedContent.replace(hashtagString, '')
+      // If still too long, truncate content
+      if (formattedContent.length > 277) { // Leave room for "..."
+        formattedContent = formattedContent.substring(0, 277) + '...'
+      }
+      // Add back some hashtags if there's room
+      const remainingSpace = 280 - formattedContent.length - 2 // -2 for \n\n
+      if (remainingSpace > 10) {
+        const shortHashtags = hashtags.slice(0, 2).map(h => `#${h}`).join(' ')
+        if (shortHashtags.length <= remainingSpace) {
+          formattedContent += `\n\n${shortHashtags}`
+        }
+      }
+    }
   } else if (platform === 'linkedin') {
     // LinkedIn: hashtags at end, more professional
     formattedContent += `\n\n${hashtags.map(h => `#${h}`).join(' ')}`

@@ -1,0 +1,8 @@
+feat: Add detailed logging to cron Twitter posting
+
+Added logging to see:
+- Content length
+- Credentials being used
+- API key and access token prefixes
+
+This will help debug the 403 error in the cron.
