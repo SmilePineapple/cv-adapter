@@ -1,0 +1,6 @@
+fix: Change cron schedule to daily for Vercel Hobby plan compatibility
+
+Changed from hourly (0 * * * *) to daily at noon (0 12 * * *) to comply with Vercel Hobby plan limits.
+This was blocking all deployments from succeeding.
+
+The bot will now post once daily at 12:00 PM instead of hourly.
