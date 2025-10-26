@@ -1,0 +1,225 @@
+/**
+ * Twitter API v2 Integration
+ * Handles posting tweets using OAuth 1.0a
+ */
+
+import crypto from 'crypto'
+
+interface TwitterConfig {
+  api_key: string
+  api_secret: string
+  access_token: string
+  access_token_secret: string
+}
+
+/**
+ * Generate OAuth 1.0a signature for Twitter API
+ */
+function generateOAuthSignature(
+  method: string,
+  url: string,
+  params: Record<string, string>,
+  consumerSecret: string,
+  tokenSecret: string
+): string {
+  // Sort parameters
+  const sortedParams = Object.keys(params)
+    .sort()
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&')
+
+  // Create signature base string
+  const signatureBaseString = [
+    method.toUpperCase(),
+    encodeURIComponent(url),
+    encodeURIComponent(sortedParams)
+  ].join('&')
+
+  // Create signing key
+  const signingKey = `${encodeURIComponent(consumerSecret)}&${encodeURIComponent(tokenSecret)}`
+
+  // Generate signature
+  const signature = crypto
+    .createHmac('sha1', signingKey)
+    .update(signatureBaseString)
+    .digest('base64')
+
+  return signature
+}
+
+/**
+ * Generate OAuth 1.0a authorization header
+ */
+function generateOAuthHeader(
+  method: string,
+  url: string,
+  config: TwitterConfig,
+  additionalParams: Record<string, string> = {}
+): string {
+  const oauthParams: Record<string, string> = {
+    oauth_consumer_key: config.api_key,
+    oauth_token: config.access_token,
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+    oauth_nonce: crypto.randomBytes(32).toString('base64').replace(/\W/g, ''),
+    oauth_version: '1.0'
+  }
+
+  // Combine OAuth params with additional params for signature
+  const allParams = { ...oauthParams, ...additionalParams }
+
+  // Generate signature
+  const signature = generateOAuthSignature(
+    method,
+    url,
+    allParams,
+    config.api_secret,
+    config.access_token_secret
+  )
+
+  oauthParams.oauth_signature = signature
+
+  // Build authorization header
+  const authHeader = 'OAuth ' + Object.keys(oauthParams)
+    .sort()
+    .map(key => `${encodeURIComponent(key)}="${encodeURIComponent(oauthParams[key])}"`)
+    .join(', ')
+
+  return authHeader
+}
+
+/**
+ * Post a tweet to Twitter using API v2
+ */
+export async function postTweet(
+  content: string,
+  config: TwitterConfig
+): Promise<{ success: boolean; tweetId?: string; tweetUrl?: string; error?: string }> {
+  try {
+    const url = 'https://api.twitter.com/2/tweets'
+    const method = 'POST'
+
+    // Generate OAuth header
+    const authHeader = generateOAuthHeader(method, url, config)
+
+    // Post tweet
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: content
+      })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('Twitter API error:', errorData)
+      return {
+        success: false,
+        error: errorData.detail || errorData.title || 'Failed to post tweet'
+      }
+    }
+
+    const data = await response.json()
+    const tweetId = data.data?.id
+    const username = config.access_token.split('-')[0] // Extract from token or get from config
+
+    return {
+      success: true,
+      tweetId,
+      tweetUrl: `https://twitter.com/i/web/status/${tweetId}`
+    }
+
+  } catch (error) {
+    console.error('Error posting tweet:', error)
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
+
+/**
+ * Get tweet engagement metrics
+ */
+export async function getTweetMetrics(
+  tweetId: string,
+  config: TwitterConfig
+): Promise<{ likes: number; retweets: number; replies: number; impressions: number } | null> {
+  try {
+    const url = `https://api.twitter.com/2/tweets/${tweetId}?tweet.fields=public_metrics`
+    const method = 'GET'
+
+    const authHeader = generateOAuthHeader(method, url, config)
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Authorization': authHeader
+      }
+    })
+
+    if (!response.ok) {
+      console.error('Failed to get tweet metrics')
+      return null
+    }
+
+    const data = await response.json()
+    const metrics = data.data?.public_metrics
+
+    return {
+      likes: metrics?.like_count || 0,
+      retweets: metrics?.retweet_count || 0,
+      replies: metrics?.reply_count || 0,
+      impressions: metrics?.impression_count || 0
+    }
+
+  } catch (error) {
+    console.error('Error getting tweet metrics:', error)
+    return null
+  }
+}
+
+/**
+ * Verify Twitter credentials
+ */
+export async function verifyTwitterCredentials(
+  config: TwitterConfig
+): Promise<{ success: boolean; username?: string; error?: string }> {
+  try {
+    const url = 'https://api.twitter.com/2/users/me'
+    const method = 'GET'
+
+    const authHeader = generateOAuthHeader(method, url, config)
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Authorization': authHeader
+      }
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      return {
+        success: false,
+        error: errorData.detail || 'Failed to verify credentials'
+      }
+    }
+
+    const data = await response.json()
+    return {
+      success: true,
+      username: data.data?.username
+    }
+
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error)
+    }
+  }
+}
