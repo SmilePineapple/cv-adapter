@@ -96,6 +96,13 @@ export async function postTweet(
   config: TwitterConfig
 ): Promise<{ success: boolean; tweetId?: string; tweetUrl?: string; error?: string }> {
   try {
+    console.log('Posting tweet with config:', {
+      api_key: config.api_key?.substring(0, 10) + '...',
+      access_token: config.access_token?.substring(0, 10) + '...',
+      hasSecret: !!config.api_secret,
+      hasTokenSecret: !!config.access_token_secret
+    })
+    
     const url = 'https://api.twitter.com/2/tweets'
     const method = 'POST'
 
@@ -115,11 +122,21 @@ export async function postTweet(
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      console.error('Twitter API error:', errorData)
+      const errorText = await response.text()
+      let errorData
+      try {
+        errorData = JSON.parse(errorText)
+      } catch {
+        errorData = { error: errorText }
+      }
+      console.error('Twitter API error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      })
       return {
         success: false,
-        error: errorData.detail || errorData.title || 'Failed to post tweet'
+        error: errorData.detail || errorData.title || errorData.error || errorText || 'Failed to post tweet'
       }
     }
 
