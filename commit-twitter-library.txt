@@ -1,0 +1,13 @@
+fix: Use twitter-api-v2 library for reliable OAuth authentication
+
+CRITICAL FIX: Our custom OAuth implementation had signature issues.
+Switched to the official twitter-api-v2 library which handles OAuth correctly.
+
+Changes:
+- Added twitter-api-v2 package
+- Created new twitter-api-v2.ts with library-based implementation
+- Updated cron route to use new implementation
+- Updated verify endpoint to use new implementation
+
+This library is battle-tested and handles all OAuth edge cases correctly.
+Should fix the "Could not authenticate you" error.
