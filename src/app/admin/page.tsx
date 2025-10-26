@@ -16,7 +16,8 @@ import {
   Calendar,
   BarChart3,
   UserCheck,
-  Zap
+  Zap,
+  Twitter
 } from 'lucide-react'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
@@ -172,6 +173,13 @@ export default function AdminDashboard() {
               <p className="text-gray-600 mt-1">CV Adapter Analytics & User Management</p>
             </div>
             <div className="flex gap-3">
+              <Link
+                href="/admin/social-bot"
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+                Social Bot
+              </Link>
               <Link
                 href="/admin/upgrade-user"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

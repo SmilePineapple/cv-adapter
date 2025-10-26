@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { createSupabaseClient } from '@/lib/supabase'
-import { Calendar, TrendingUp, Send, RefreshCw, Settings, BarChart3, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, AlertCircle } from 'lucide-react'
+import { Calendar, TrendingUp, Send, RefreshCw, Settings, BarChart3, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, AlertCircle, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 interface SocialPost {
   id: string
@@ -147,13 +148,22 @@ export default function SocialBotDashboard() {
               <h1 className="text-3xl font-bold text-gray-900">Social Media Bot</h1>
               <p className="text-gray-600 mt-1">Automated content generation & posting</p>
             </div>
-            <button
-              onClick={fetchData}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <RefreshCw className="w-4 h-4" />
-              <span>Refresh</span>
-            </button>
+            <div className="flex gap-3">
+              <Link
+                href="/admin"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Admin
+              </Link>
+              <button
+                onClick={fetchData}
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Refresh</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
