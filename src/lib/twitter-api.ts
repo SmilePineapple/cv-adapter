@@ -103,22 +103,24 @@ export async function postTweet(
       hasTokenSecret: !!config.access_token_secret
     })
     
-    const url = 'https://api.twitter.com/2/tweets'
+    // Use v1.1 API which works with Free tier
+    const url = 'https://api.twitter.com/1.1/statuses/update.json'
     const method = 'POST'
+    
+    // URL encode the status
+    const params = { status: content }
 
-    // Generate OAuth header
-    const authHeader = generateOAuthHeader(method, url, config)
+    // Generate OAuth header with status parameter
+    const authHeader = generateOAuthHeader(method, url, config, params)
 
-    // Post tweet
+    // Post tweet using form data
     const response = await fetch(url, {
       method,
       headers: {
         'Authorization': authHeader,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify({
-        text: content
-      })
+      body: new URLSearchParams(params).toString()
     })
 
     if (!response.ok) {
@@ -141,13 +143,13 @@ export async function postTweet(
     }
 
     const data = await response.json()
-    const tweetId = data.data?.id
-    const username = config.access_token.split('-')[0] // Extract from token or get from config
+    const tweetId = data.id_str || data.id
+    const username = data.user?.screen_name || 'JPicklejak5299'
 
     return {
       success: true,
       tweetId,
-      tweetUrl: `https://twitter.com/i/web/status/${tweetId}`
+      tweetUrl: `https://twitter.com/${username}/status/${tweetId}`
     }
 
   } catch (error) {
