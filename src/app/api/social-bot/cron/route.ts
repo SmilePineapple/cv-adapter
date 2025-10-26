@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
+import { postTweet } from '@/lib/twitter-api'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -202,17 +203,25 @@ async function postToTwitter(
   config: any
 ): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
   try {
-    // TODO: Implement Twitter API v2 posting
-    // For now, just log
-    console.log('Would post to Twitter:', content.substring(0, 50))
+    console.log('Posting to Twitter:', content.substring(0, 50) + '...')
     
-    // Placeholder response
-    return {
-      success: true,
-      postId: 'twitter-' + Date.now(),
-      postUrl: `https://twitter.com/${config.account_username}/status/123456789`
+    // Use real Twitter API
+    const result = await postTweet(content, {
+      api_key: config.api_key,
+      api_secret: config.api_secret,
+      access_token: config.access_token,
+      access_token_secret: config.access_token_secret
+    })
+    
+    if (result.success) {
+      console.log('✅ Tweet posted successfully:', result.tweetUrl)
+    } else {
+      console.error('❌ Failed to post tweet:', result.error)
     }
+    
+    return result
   } catch (error) {
+    console.error('Error in postToTwitter:', error)
     return {
       success: false,
       error: String(error)
