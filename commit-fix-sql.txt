@@ -1,0 +1,3 @@
+fix: Add DROP POLICY IF EXISTS to analytics migration
+
+Prevents errors when re-running the migration by dropping existing policies first.

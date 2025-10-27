@@ -38,6 +38,11 @@ CREATE INDEX IF NOT EXISTS idx_analytics_events_user_created ON analytics_events
 -- RLS Policies
 ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can insert own analytics events" ON analytics_events;
+DROP POLICY IF EXISTS "Users can view own analytics events" ON analytics_events;
+DROP POLICY IF EXISTS "Admins can view all analytics events" ON analytics_events;
+
 -- Users can insert their own events
 CREATE POLICY "Users can insert own analytics events"
   ON analytics_events FOR INSERT
@@ -84,6 +89,8 @@ CREATE INDEX IF NOT EXISTS idx_user_sessions_start ON user_sessions(session_star
 
 ALTER TABLE user_sessions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can manage own sessions" ON user_sessions;
+
 CREATE POLICY "Users can manage own sessions"
   ON user_sessions FOR ALL
   TO authenticated
@@ -120,6 +127,8 @@ CREATE INDEX IF NOT EXISTS idx_funnel_stages_completed ON funnel_stages(complete
 
 ALTER TABLE funnel_stages ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can insert own funnel stages" ON funnel_stages;
+
 CREATE POLICY "Users can insert own funnel stages"
   ON funnel_stages FOR INSERT
   TO authenticated
@@ -149,6 +158,8 @@ CREATE INDEX IF NOT EXISTS idx_user_cohorts_month ON user_cohorts(cohort_month);
 
 ALTER TABLE user_cohorts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own cohort" ON user_cohorts;
+
 CREATE POLICY "Users can view own cohort"
   ON user_cohorts FOR SELECT
   TO authenticated
@@ -175,6 +186,8 @@ CREATE INDEX IF NOT EXISTS idx_feature_usage_user_id ON feature_usage(user_id);
 CREATE INDEX IF NOT EXISTS idx_feature_usage_feature ON feature_usage(feature_name);
 
 ALTER TABLE feature_usage ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can manage own feature usage" ON feature_usage;
 
 CREATE POLICY "Users can manage own feature usage"
   ON feature_usage FOR ALL
