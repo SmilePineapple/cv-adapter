@@ -3,6 +3,7 @@ import WelcomeEmail from '@/emails/WelcomeEmail'
 import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
 import LimitReachedEmail from '@/emails/LimitReachedEmail'
 import ReEngagementEmail from '@/emails/ReEngagementEmail'
+import PromoEmail from '@/emails/PromoEmail'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -147,6 +148,31 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
     return { success: true, data }
   } catch (error) {
     console.error('Upgrade confirmation email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
+ * Send promotional email (4 days left offer)
+ */
+export async function sendPromoEmail(email: string, name: string) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: '⏰ Only 4 Days Left - 50% Off CV Buddy Pro!',
+      react: PromoEmail({ name }),
+    })
+
+    if (error) {
+      console.error('Promo email error:', error)
+      return { success: false, error }
+    }
+
+    console.log('Promo email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Promo email exception:', error)
     return { success: false, error }
   }
 }

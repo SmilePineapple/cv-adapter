@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 import { trackPaymentCompleted } from '@/lib/analytics'
+import { sendUpgradeConfirmationEmail } from '@/lib/email'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -85,6 +86,19 @@ export async function POST(request: NextRequest) {
           await trackPaymentCompleted(session.amount_total || 0, subscriptionTier)
         } catch (analyticsError) {
           console.error('[Webhook] Analytics tracking failed:', analyticsError)
+        }
+
+        // Send upgrade confirmation email
+        try {
+          const { data: userData } = await supabase.auth.admin.getUserById(userId)
+          if (userData?.user?.email) {
+            const userName = userData.user.user_metadata?.full_name || userData.user.email.split('@')[0] || 'there'
+            await sendUpgradeConfirmationEmail(userData.user.email, userName)
+            console.log('[Webhook] Upgrade confirmation email sent to:', userData.user.email)
+          }
+        } catch (emailError) {
+          console.error('[Webhook] Failed to send upgrade confirmation email:', emailError)
+          // Don't fail the webhook if email fails
         }
 
         console.log('[Webhook] User upgraded to Pro successfully:', subscriptionTier)
