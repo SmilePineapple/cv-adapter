@@ -1,0 +1,29 @@
+feat: Integrate Crisp chat and add 2 stunning CV templates
+
+Crisp Chat Integration:
+- Added CrispChat component to layout.tsx
+- Configured Crisp Website ID in environment
+- Live chat now available on all pages
+- Ready for customer support
+
+New Stunning Templates:
+- Professional Metrics (Joanna Alvstrom style)
+  * Two-column layout with circular skill meters
+  * Clean professional design
+  * Photo placement in header
+  
+- Teal Sidebar (Martha Vader style)
+  * Left icon sidebar navigation
+  * Teal accent color (#26A69A)
+  * Skill progress bars
+  * Modern professional look
+
+Files Created:
+- src/lib/stunning-templates.ts (2 templates)
+- TEMPLATE-REDESIGN-PLAN.md (design plan)
+- TEMPLATES-IMPLEMENTATION-STATUS.md (progress tracker)
+
+Files Modified:
+- src/app/layout.tsx (added CrispChat)
+
+Next: Complete remaining 3 templates and integrate with export API

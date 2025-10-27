@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { PageTracker } from "@/components/PageTracker";
+import CrispChat from "@/components/CrispChat";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({
         <PageTracker />
         {children}
         <Toaster position="top-right" />
+        <CrispChat />
       </body>
     </html>
   );
