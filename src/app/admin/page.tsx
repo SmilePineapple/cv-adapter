@@ -58,6 +58,7 @@ interface AnalyticsData {
     lifetime_usage: number
     cv_count: number
     cover_letter_count: number
+    interview_prep_count: number
     last_activity: string
     full_name: string | null
   }>
@@ -390,6 +391,7 @@ export default function AdminDashboard() {
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Lifetime</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">CVs</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Letters</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Interview</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Joined</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Last Active</th>
                 </tr>
@@ -423,6 +425,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-900">{user.cv_count}</td>
                     <td className="py-3 px-4 text-sm text-gray-900">{user.cover_letter_count}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{user.interview_prep_count}</td>
                     <td className="py-3 px-4 text-sm text-gray-600">{formatDate(user.created_at)}</td>
                     <td className="py-3 px-4 text-sm text-gray-600">
                       {user.last_activity ? formatDateTime(user.last_activity) : 'Never'}

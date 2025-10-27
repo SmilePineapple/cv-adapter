@@ -54,7 +54,8 @@ export async function GET(request: NextRequest) {
       usageResult,
       generationsResult,
       cvsResult,
-      coverLettersResult
+      coverLettersResult,
+      interviewPrepsResult
     ] = await Promise.all([
       supabase.from('profiles').select('*'),
       supabase.from('purchases').select('*'),
@@ -62,7 +63,8 @@ export async function GET(request: NextRequest) {
       supabase.from('usage_tracking').select('*'),
       supabase.from('generations').select('id, user_id, created_at, job_title'),
       supabase.from('cvs').select('id, user_id, created_at'),
-      supabase.from('cover_letters').select('id, user_id, created_at')
+      supabase.from('cover_letters').select('id, user_id, created_at'),
+      supabase.from('interview_preps').select('id, user_id, created_at')
     ])
 
     const users = allUsers
@@ -73,6 +75,7 @@ export async function GET(request: NextRequest) {
     const generations = generationsResult.data || []
     const cvs = cvsResult.data || []
     const coverLetters = coverLettersResult.data || []
+    const interviewPreps = interviewPrepsResult.data || []
 
     // Calculate statistics - support both purchases (lifetime) and subscriptions (legacy)
     const totalUsers = users.length
@@ -87,6 +90,7 @@ export async function GET(request: NextRequest) {
     const totalGenerations = generations.length
     const totalCVs = cvs.length
     const totalCoverLetters = coverLetters.length
+    const totalInterviewPreps = interviewPreps.length
 
     // New users in last 7 days
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -125,6 +129,7 @@ export async function GET(request: NextRequest) {
       const userGenerations = generations.filter(g => g.user_id === user.id)
       const userCVs = cvs.filter(c => c.user_id === user.id)
       const userCoverLetters = coverLetters.filter(c => c.user_id === user.id)
+      const userInterviewPreps = interviewPreps.filter(i => i.user_id === user.id)
       const profile = profiles.find(p => p.id === user.id)
 
       // Determine plan: check purchases first (lifetime), then subscriptions (legacy), then usage_tracking
@@ -156,6 +161,7 @@ export async function GET(request: NextRequest) {
         lifetime_usage: usage?.lifetime_generation_count || userGenerations.length,
         cv_count: userCVs.length,
         cover_letter_count: userCoverLetters.length,
+        interview_prep_count: userInterviewPreps.length,
         last_activity: profile?.last_activity_at || user.last_sign_in_at,
         full_name: profile?.full_name || null
       }
@@ -223,6 +229,7 @@ export async function GET(request: NextRequest) {
         totalGenerations,
         totalCVs,
         totalCoverLetters,
+        totalInterviewPreps,
         totalRevenue: combinedRevenue,
         newUsersLast7Days,
         newUsersLast30Days,
