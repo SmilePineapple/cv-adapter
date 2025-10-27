@@ -8,6 +8,7 @@ import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
 import { formatErrorResponse } from '@/lib/errors'
 import { rateLimiters } from '@/lib/rate-limit-simple'
+import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -388,6 +389,23 @@ export async function POST(request: NextRequest) {
       console.error('Failed to update usage tracking:', usageUpdateError)
     } else {
       console.log('Usage tracking updated successfully:', updatedUsage)
+    }
+
+    // Send email triggers based on usage
+    const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'there'
+    
+    // First generation email
+    if (newCount === 1 && !isPro) {
+      sendFirstGenerationEmail(user.email!, userName).catch(err => 
+        console.error('Failed to send first generation email:', err)
+      )
+    }
+    
+    // Limit reached email (after using last free generation)
+    if (newCount >= maxGenerations && !isPro) {
+      sendLimitReachedEmail(user.email!, userName).catch(err => 
+        console.error('Failed to send limit reached email:', err)
+      )
     }
 
     // Update CV last accessed
