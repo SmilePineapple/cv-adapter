@@ -1,0 +1,41 @@
+feat: Major conversion optimization - UK/USA landing pages + blog + free gens
+
+CONVERSION IMPROVEMENTS:
+1. Increased free generations from 1 to 2 (better trial experience)
+2. Created UK-specific landing page (/uk-cv-builder)
+3. Created USA-specific landing page (/usa-resume-builder)
+4. New SEO-optimized blog post (ATS tips for UK 2025)
+
+UK Landing Page Features:
+- British English, UK CV formatting, 2-page standard
+- UK qualifications (A-Levels, GCSEs, NVQs)
+- ATS optimization for UK systems (Taleo, Workday)
+- £5 pricing, testimonials, FAQ
+- "Made in the UK" branding
+
+USA Landing Page Features:
+- American English, US resume formatting, 1-page standard
+- US education format (GPA, Bachelor's/Master's)
+- ATS optimization for US systems (iCIMS)
+- $7 pricing, testimonials, FAQ
+- "Made for America" branding
+
+Blog Post:
+- "How to Beat ATS Systems in the UK (2025 Guide)"
+- 8 min read, 10 optimization tips
+- SEO keywords: ATS CV UK, applicant tracking system
+- CTA to try 2 free generations
+
+Database Migration:
+- migrations/increase-free-generations.sql
+- Updates max_lifetime_generations to 2 for free users
+
+Environment:
+- MAX_FREE_GENERATIONS=2 (was 1)
+
+Expected Impact:
+- Better trial experience (2 gens vs 1)
+- Targeted traffic from UK/USA (not global)
+- Higher conversion (geo-specific messaging)
+- SEO boost from blog content
+- 10-15% conversion rate (vs current 1.3%)

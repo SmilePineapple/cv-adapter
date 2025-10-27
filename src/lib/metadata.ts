@@ -68,7 +68,7 @@ export const privacyMetadata: Metadata = {
 export const signupMetadata: Metadata = {
   ...generateMetadata('/auth/signup'),
   title: 'Sign Up | CV Buddy - Start Creating Professional CVs',
-  description: 'Create your free CV Buddy account and start building professional CVs with AI. Get 1 free CV generation, no credit card required.',
+  description: 'Create your free CV Buddy account and start building professional CVs with AI. Get 2 free CV generations, no credit card required.',
   robots: {
     index: true,
     follow: true,
