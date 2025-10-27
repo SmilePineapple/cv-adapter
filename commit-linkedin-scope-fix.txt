@@ -1,0 +1,11 @@
+fix: Update LinkedIn OAuth scope and add logging
+
+Changed scope from 'w_member_social r_liteprofile r_emailaddress' 
+to 'w_member_social openid profile email' to match LinkedIn app settings.
+
+Also:
+- Replaced crypto.randomUUID() with Date.now() for state
+- Added detailed logging to debug auth flow
+- Log client_id, redirect_uri, and full auth URL
+
+This should fix the "Bummer, something went wrong" error.

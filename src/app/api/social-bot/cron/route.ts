@@ -241,15 +241,72 @@ async function postToLinkedIn(
   config: any
 ): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
   try {
-    // TODO: Implement LinkedIn API posting
-    console.log('Would post to LinkedIn:', content.substring(0, 50))
+    console.log('Posting to LinkedIn:', content.substring(0, 50) + '...')
     
+    if (!config.access_token) {
+      throw new Error('LinkedIn access token not found')
+    }
+
+    // First, get the user's profile to get the person URN
+    const profileResponse = await fetch('https://api.linkedin.com/v2/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${config.access_token}`
+      }
+    })
+
+    if (!profileResponse.ok) {
+      const errorText = await profileResponse.text()
+      throw new Error(`Failed to get LinkedIn profile: ${errorText}`)
+    }
+
+    const profile = await profileResponse.json()
+    const personUrn = `urn:li:person:${profile.sub}`
+    
+    console.log('LinkedIn profile URN:', personUrn)
+
+    // Create the post using UGC API
+    const postData = {
+      author: personUrn,
+      lifecycleState: 'PUBLISHED',
+      specificContent: {
+        'com.linkedin.ugc.ShareContent': {
+          shareCommentary: {
+            text: content
+          },
+          shareMediaCategory: 'NONE'
+        }
+      },
+      visibility: {
+        'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'
+      }
+    }
+
+    const postResponse = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.access_token}`,
+        'Content-Type': 'application/json',
+        'X-Restli-Protocol-Version': '2.0.0'
+      },
+      body: JSON.stringify(postData)
+    })
+
+    if (!postResponse.ok) {
+      const errorText = await postResponse.text()
+      console.error('LinkedIn post failed:', errorText)
+      throw new Error(`LinkedIn API error: ${errorText}`)
+    }
+
+    const result = await postResponse.json()
+    console.log('✅ LinkedIn post created:', result.id)
+
     return {
       success: true,
-      postId: 'linkedin-' + Date.now(),
-      postUrl: `https://www.linkedin.com/feed/update/urn:li:share:123456789`
+      postId: result.id,
+      postUrl: `https://www.linkedin.com/feed/update/${result.id}`
     }
   } catch (error) {
+    console.error('Error posting to LinkedIn:', error)
     return {
       success: false,
       error: String(error)
