@@ -663,22 +663,38 @@ export default function DownloadPage() {
       <CVProgressStepper currentStep="download" />
       
       {/* Header */}
-      <header className="bg-white border-b">
+      <header className="bg-white border-b sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-4">
+          <div className="flex items-center justify-between py-4">
             <Link 
-              href={`/review/${generationId}`}
-              className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
+              href="/dashboard"
+              className="flex items-center text-gray-700 hover:text-gray-900 font-semibold transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
-              Back to Review
+              Dashboard
             </Link>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CV</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+            <div className="flex-1 text-center px-4">
+              <h1 className="text-xl font-bold text-gray-900 truncate">
+                {generationData?.job_title || 'Your CV'}
+              </h1>
             </div>
+            <button
+              onClick={handleExport}
+              disabled={isExporting}
+              className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+            >
+              {isExporting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Export
+                </>
+              )}
+            </button>
           </div>
         </div>
       </header>
