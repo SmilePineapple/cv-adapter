@@ -1,0 +1,29 @@
+fix: Critical subscription page and admin fixes
+
+Fixed 3 critical issues:
+
+1. Admin Page - Free generations display
+   - Changed "1/1" to "2/2" for free users
+   - File: src/app/admin/page.tsx (line 420)
+
+2. Subscription Page - Plan selection bug
+   - Both Monthly and Annual buttons were calling same function without plan parameter
+   - Annual button was redirecting to monthly checkout
+   - Fixed: Added plan parameter to handleUpgrade() function
+   - Monthly button: onClick={() => handleUpgrade('monthly')}
+   - Annual button: onClick={() => handleUpgrade('annual')}
+   - File: src/app/subscription/page.tsx
+
+3. Stripe Coupon Error
+   - Removed broken STRIPE_DEFAULT_COUPON logic
+   - Error: "No such coupon: 'LAUNCH50MONTHLY'"
+   - Simplified to: sessionParams.allow_promotion_codes = true
+   - Users can now enter promo codes manually at checkout
+   - Removed "50% OFF with code LAUNCH50ANNUAL" from UI
+   - Changed to "BEST VALUE - Save £70/year"
+   - File: src/app/api/stripe/create-checkout/route.ts
+
+All subscription flows now work correctly:
+- Monthly plan: £9.99/month
+- Annual plan: £49/year (£4.08/month)
+- Users can enter promo codes at Stripe checkout

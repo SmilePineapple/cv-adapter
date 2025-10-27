@@ -462,14 +462,14 @@ export default function SubscriptionPage() {
               <div className="border border-gray-200 rounded-xl p-6">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Free</h3>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">£0</div>
-                  <div className="text-gray-600">forever</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">{userCurrency.symbol}0</div>
+                  <div className="text-gray-600 text-sm">forever</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700 text-sm">1 CV generation</span>
+                    <span className="text-gray-700 text-sm">2 free CV generations</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -565,7 +565,7 @@ export default function SubscriptionPage() {
               <div className="border-2 border-green-500 rounded-xl p-6 relative bg-gradient-to-br from-green-50 to-blue-50">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    BEST VALUE - Save £70/year
+                    BEST VALUE - {userCurrency.annualSavings}
                   </span>
                 </div>
 
@@ -574,9 +574,9 @@ export default function SubscriptionPage() {
                     <Crown className="w-5 h-5 text-green-600 mr-2" />
                     Annual
                   </h3>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">£49</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">{userCurrency.annualDisplayAmount}</div>
                   <div className="text-gray-600 text-sm">per year</div>
-                  <div className="text-green-600 text-xs font-medium mt-1">Just £4.08/month</div>
+                  <div className="text-green-600 text-xs font-medium mt-1">Just {userCurrency.annualMonthlyEquivalent}</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
