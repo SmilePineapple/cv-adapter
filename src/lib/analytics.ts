@@ -283,3 +283,151 @@ export async function getDailyStats(days: number = 30) {
     return []
   }
 }
+
+/**
+ * Track funnel stage completion
+ */
+export async function trackFunnelStage(stage: 'signup' | 'first_cv_upload' | 'first_generation' | 'first_export' | 'upgrade_viewed' | 'payment_initiated' | 'payment_completed') {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    // Call database function to track funnel stage
+    const { error } = await supabase.rpc('track_funnel_stage', {
+      p_user_id: user.id,
+      p_stage: stage
+    })
+
+    if (error) {
+      console.error('Error tracking funnel stage:', error)
+    } else {
+      console.log(`📊 Funnel: ${stage}`)
+    }
+  } catch (error) {
+    console.error('Failed to track funnel stage:', error)
+  }
+}
+
+/**
+ * Track feature usage
+ */
+export async function trackFeatureUsage(featureName: string) {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    // Call database function to update feature usage
+    const { error } = await supabase.rpc('update_feature_usage', {
+      p_user_id: user.id,
+      p_feature_name: featureName
+    })
+
+    if (error) {
+      console.error('Error tracking feature usage:', error)
+    } else {
+      console.log(`📊 Feature used: ${featureName}`)
+    }
+  } catch (error) {
+    console.error('Failed to track feature usage:', error)
+  }
+}
+
+/**
+ * Get conversion funnel data (admin only)
+ */
+export async function getConversionFunnel() {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data, error } = await supabase
+      .from('conversion_funnel')
+      .select('*')
+
+    if (error) {
+      console.error('Error fetching conversion funnel:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Failed to get conversion funnel:', error)
+    return []
+  }
+}
+
+/**
+ * Get cohort retention data (admin only)
+ */
+export async function getCohortRetention() {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data, error } = await supabase
+      .from('cohort_retention')
+      .select('*')
+      .order('cohort_month', { ascending: false })
+      .limit(12) // Last 12 months
+
+    if (error) {
+      console.error('Error fetching cohort retention:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Failed to get cohort retention:', error)
+    return []
+  }
+}
+
+/**
+ * Get feature adoption rates (admin only)
+ */
+export async function getFeatureAdoptionRates() {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data, error } = await supabase
+      .from('feature_adoption_rates')
+      .select('*')
+
+    if (error) {
+      console.error('Error fetching feature adoption:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Failed to get feature adoption:', error)
+    return []
+  }
+}
+
+/**
+ * Get daily active users (admin only)
+ */
+export async function getDailyActiveUsers(days: number = 30) {
+  try {
+    const supabase = createSupabaseClient()
+    
+    const { data, error } = await supabase
+      .from('daily_active_users')
+      .select('*')
+      .order('date', { ascending: false })
+      .limit(days)
+
+    if (error) {
+      console.error('Error fetching daily active users:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Failed to get daily active users:', error)
+    return []
+  }
+}

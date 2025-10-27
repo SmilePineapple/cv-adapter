@@ -11,6 +11,7 @@ import PromoBanner from '@/components/PromoBanner'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
+import { trackPageView, trackFeatureUsage } from '@/lib/analytics'
 import { 
   Upload, 
   FileText, 
@@ -189,6 +190,9 @@ export default function DashboardPage() {
   useEffect(() => {
     checkAuth()
     fetchDashboardData()
+    
+    // Track page view
+    trackPageView('/dashboard')
 
     // Refetch data when user returns to dashboard
     const handleFocus = () => {

@@ -4,7 +4,7 @@ import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
 import OpenAI from 'openai'
 import { detectLanguage } from '@/lib/language-detection'
-import { trackCVUpload } from '@/lib/analytics'
+import { trackCVUpload, trackFunnelStage } from '@/lib/analytics'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -168,6 +168,8 @@ export async function POST(request: NextRequest) {
     // Track analytics event
     try {
       await trackCVUpload(languageResult.code, file.name)
+      // Track funnel stage - first CV upload
+      await trackFunnelStage('first_cv_upload')
     } catch (analyticsError) {
       console.error('Analytics tracking failed:', analyticsError)
       // Don't fail the upload if analytics fails

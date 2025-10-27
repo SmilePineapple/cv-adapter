@@ -3,7 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
-import { trackCVGeneration } from '@/lib/analytics'
+import { trackCVGeneration, trackFunnelStage } from '@/lib/analytics'
 import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
 import { formatErrorResponse } from '@/lib/errors'
@@ -369,6 +369,8 @@ export async function POST(request: NextRequest) {
         rewriteStyle: rewrite_style,
         tone
       })
+      // Track funnel stage - first generation
+      await trackFunnelStage('first_generation')
     } catch (analyticsError) {
       console.error('Analytics tracking failed:', analyticsError)
       // Don't fail the generation if analytics fails
