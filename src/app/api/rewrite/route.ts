@@ -6,6 +6,7 @@ import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection
 import { trackCVGeneration } from '@/lib/analytics'
 import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
+import { formatErrorResponse } from '@/lib/errors'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -390,9 +391,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Rewrite error:', error)
+    const errorResponse = formatErrorResponse(error)
     return NextResponse.json({ 
-      error: 'Internal server error' 
-    }, { status: 500 })
+      error: errorResponse.error 
+    }, { status: errorResponse.statusCode })
   }
 }
 
