@@ -154,6 +154,7 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
 
 /**
  * Send promotional email (4 days left offer)
+ * Using HTML for reliability
  */
 export async function sendPromoEmail(email: string, name: string) {
   try {
@@ -161,7 +162,99 @@ export async function sendPromoEmail(email: string, name: string) {
       from: FROM_EMAIL,
       to: email,
       subject: '⏰ Only 4 Days Left - 50% Off CV Buddy Pro!',
-      react: PromoEmail({ name }),
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f9fc; margin: 0; padding: 20px;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
+              <h1 style="color: #ffffff; font-size: 32px; margin: 0;">⏰ Only 4 Days Left!</h1>
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 40px;">
+              <p style="font-size: 18px; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Hi ${name},</p>
+              
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
+                This is your <strong>final reminder</strong> – our launch promotion ends in just <strong style="color: #dc2626;">4 days</strong>!
+              </p>
+              
+              <!-- Promo Box -->
+              <div style="background-color: #fef3c7; border: 3px solid #f59e0b; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
+                <div style="font-size: 28px; font-weight: bold; color: #92400e; margin-bottom: 8px; letter-spacing: 1px;">
+                  🎉 LAUNCH50MONTHLY
+                </div>
+                <div style="font-size: 16px; color: #78350f; margin-bottom: 16px;">
+                  50% OFF Your First Month
+                </div>
+                <div style="font-size: 18px; color: #9ca3af; text-decoration: line-through; margin-bottom: 8px;">
+                  £9.99/month
+                </div>
+                <div style="font-size: 32px; font-weight: bold; color: #dc2626;">
+                  £4.99/month
+                </div>
+              </div>
+              
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
+                <strong>What you get with Pro:</strong>
+              </p>
+              
+              <div style="margin: 16px 0 24px 0;">
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>100 CV Generations</strong> per month</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited Cover Letters</strong></p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Interview Preparation</strong> with AI</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>All Export Formats</strong> (PDF, DOCX, HTML, TXT)</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>50+ Languages</strong> supported</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Priority Support</strong></p>
+              </div>
+              
+              <!-- CTA Button -->
+              <div style="text-align: center; margin: 32px 0;">
+                <a href="https://www.mycvbuddy.com/pricing" style="display: inline-block; background-color: #7c3aed; color: #ffffff; font-size: 18px; font-weight: bold; text-decoration: none; padding: 16px 32px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                  Upgrade to Pro Now - Save 50%
+                </a>
+              </div>
+              
+              <!-- Urgency Box -->
+              <div style="background-color: #fee2e2; color: #dc2626; padding: 16px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
+                ⚠️ <strong>This offer expires in 4 days.</strong> After that, the price returns to £9.99/month.
+              </div>
+              
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
+                Don't miss out on this limited-time opportunity to supercharge your job search!
+              </p>
+              
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 8px;">
+                Best regards,
+              </p>
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
+                The CV Buddy Team
+              </p>
+            </div>
+            
+            <!-- Footer -->
+            <div style="padding: 24px; border-top: 1px solid #e5e7eb; text-align: center; background-color: #f9fafb;">
+              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                CV Buddy - AI-Powered CV & Cover Letter Generator
+              </p>
+              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                <a href="https://www.mycvbuddy.com" style="color: #7c3aed; text-decoration: underline;">www.mycvbuddy.com</a>
+              </p>
+              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                <a href="https://www.mycvbuddy.com/unsubscribe" style="color: #7c3aed; text-decoration: underline;">Unsubscribe</a>
+              </p>
+            </div>
+            
+          </div>
+        </body>
+        </html>
+      `,
     })
 
     if (error) {
