@@ -18,7 +18,8 @@ import {
   RefreshCw,
   Zap,
   Globe,
-  Calendar
+  Calendar,
+  BarChart3
 } from 'lucide-react'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
@@ -229,13 +230,22 @@ export default function AdvancedAdminDashboard() {
             <h1 className="text-3xl font-bold text-gray-900">Advanced Analytics Dashboard</h1>
             <p className="text-gray-600 mt-1">Real-time insights and metrics</p>
           </div>
-          <button
-            onClick={loadAllMetrics}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Refresh Data
-          </button>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/analytics-v2"
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2 transition-colors"
+            >
+              <BarChart3 className="w-4 h-4" />
+              User Journey Analytics
+            </Link>
+            <button
+              onClick={loadAllMetrics}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Refresh Data
+            </button>
+          </div>
         </div>
 
         {/* Real-Time Metrics */}

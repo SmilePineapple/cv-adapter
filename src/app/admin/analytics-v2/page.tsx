@@ -16,7 +16,10 @@ import {
   Activity,
   Zap,
   BarChart3,
-  RefreshCw
+  RefreshCw,
+  Download,
+  Calendar,
+  Clock
 } from 'lucide-react'
 
 interface FunnelStage {
@@ -55,10 +58,28 @@ export default function AnalyticsV2Page() {
   const [dauData, setDAUData] = useState<DAUData[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [timeRange, setTimeRange] = useState(30)
+  const [autoRefresh, setAutoRefresh] = useState(false)
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
   useEffect(() => {
     checkAdminAndFetchData()
   }, [])
+
+  useEffect(() => {
+    if (autoRefresh && isAdmin) {
+      const interval = setInterval(() => {
+        fetchAllData()
+      }, 60000) // Refresh every 60 seconds
+      return () => clearInterval(interval)
+    }
+  }, [autoRefresh, isAdmin])
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchAllData()
+    }
+  }, [timeRange])
 
   const checkAdminAndFetchData = async () => {
     const supabase = createSupabaseClient()
@@ -82,18 +103,35 @@ export default function AnalyticsV2Page() {
         getConversionFunnel(),
         getCohortRetention(),
         getFeatureAdoptionRates(),
-        getDailyActiveUsers(30)
+        getDailyActiveUsers(timeRange)
       ])
       
       setFunnelData(funnel as FunnelStage[])
       setCohortData(cohort as CohortData[])
       setFeatureData(features as FeatureData[])
       setDAUData(dau as DAUData[])
+      setLastUpdated(new Date())
     } catch (error) {
       console.error('Error fetching analytics:', error)
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const exportToCSV = (data: any[], filename: string) => {
+    if (!data || data.length === 0) return
+    
+    const headers = Object.keys(data[0]).join(',')
+    const rows = data.map(row => Object.values(row).join(','))
+    const csv = [headers, ...rows].join('\\n')
+    
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${filename}-${new Date().toISOString().split('T')[0]}.csv`
+    a.click()
+    window.URL.revokeObjectURL(url)
   }
 
   if (isCheckingAuth) {
@@ -128,18 +166,48 @@ export default function AnalyticsV2Page() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
-                <p className="text-sm text-gray-600">User journey and conversion insights</p>
+                <h1 className="text-2xl font-bold text-gray-900">User Journey Analytics</h1>
+                <p className="text-sm text-gray-600 flex items-center gap-2">
+                  <Clock className="w-3 h-3" />
+                  Last updated: {lastUpdated.toLocaleTimeString()}
+                </p>
               </div>
             </div>
-            <button
-              onClick={fetchAllData}
-              disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh Data
-            </button>
+            <div className="flex items-center gap-3">
+              {/* Time Range Selector */}
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(Number(e.target.value))}
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value={7}>Last 7 days</option>
+                <option value={30}>Last 30 days</option>
+                <option value={90}>Last 90 days</option>
+              </select>
+
+              {/* Auto Refresh Toggle */}
+              <button
+                onClick={() => setAutoRefresh(!autoRefresh)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
+                  autoRefresh 
+                    ? 'bg-green-50 border-green-300 text-green-700' 
+                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <Activity className="w-4 h-4" />
+                {autoRefresh ? 'Auto-refresh ON' : 'Auto-refresh OFF'}
+              </button>
+
+              {/* Refresh Button */}
+              <button
+                onClick={fetchAllData}
+                disabled={isLoading}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              >
+                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -156,14 +224,23 @@ export default function AnalyticsV2Page() {
           <div className="space-y-8">
             {/* Conversion Funnel */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-blue-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <TrendingUp className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Conversion Funnel</h2>
+                    <p className="text-sm text-gray-600">User journey from signup to conversion</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">Conversion Funnel</h2>
-                  <p className="text-sm text-gray-600">User journey from signup to conversion</p>
-                </div>
+                <button
+                  onClick={() => exportToCSV(funnelData, 'conversion-funnel')}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
               </div>
               
               <div className="space-y-4">
@@ -202,14 +279,23 @@ export default function AnalyticsV2Page() {
 
             {/* Daily Active Users */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Users className="w-5 h-5 text-green-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Users className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Daily Active Users</h2>
+                    <p className="text-sm text-gray-600">Last {timeRange} days</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">Daily Active Users</h2>
-                  <p className="text-sm text-gray-600">Last 30 days</p>
-                </div>
+                <button
+                  onClick={() => exportToCSV(dauData, 'daily-active-users')}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
               </div>
               
               <div className="grid grid-cols-7 gap-2">
@@ -242,14 +328,23 @@ export default function AnalyticsV2Page() {
 
             {/* Feature Adoption */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Zap className="w-5 h-5 text-purple-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <Zap className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Feature Adoption</h2>
+                    <p className="text-sm text-gray-600">Most used features</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">Feature Adoption</h2>
-                  <p className="text-sm text-gray-600">Most used features</p>
-                </div>
+                <button
+                  onClick={() => exportToCSV(featureData, 'feature-adoption')}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
               </div>
               
               <div className="space-y-3">

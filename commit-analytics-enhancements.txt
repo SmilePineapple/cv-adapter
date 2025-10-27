@@ -1,0 +1,31 @@
+feat: Enhance analytics dashboard with advanced features and add Crisp support
+
+Analytics Dashboard Enhancements:
+- Added time range selector (7/30/90 days)
+- Added auto-refresh toggle (updates every 60 seconds)
+- Added last updated timestamp
+- Added CSV export buttons for all data sections
+- Updated DAU section to use dynamic time range
+- Added purple "User Journey Analytics" button to admin dashboard
+- Improved header layout with multiple controls
+
+Customer Support Integration:
+- Created CrispChat component for live chat support
+- Added comprehensive setup guide (CUSTOMER-SUPPORT-SETUP.md)
+- Includes configuration, customization, and best practices
+- Ready to integrate with Crisp account
+
+Features:
+- Export funnel data, DAU data, and feature adoption to CSV
+- Real-time data refresh with visual indicators
+- Flexible time range analysis
+- Professional admin navigation between dashboards
+- Complete customer support system ready to deploy
+
+Files Created:
+- src/components/CrispChat.tsx
+- CUSTOMER-SUPPORT-SETUP.md
+
+Files Modified:
+- src/app/admin/dashboard/page.tsx (added analytics-v2 button)
+- src/app/admin/analytics-v2/page.tsx (enhanced with new features)
