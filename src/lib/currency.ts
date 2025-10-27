@@ -5,8 +5,12 @@
 export interface CurrencyConfig {
   code: string
   symbol: string
-  amount: number // Amount in smallest unit (e.g., pence, cents)
+  amount: number // Monthly amount in smallest unit (e.g., pence, cents)
   displayAmount: string
+  annualAmount: number // Annual amount in smallest unit
+  annualDisplayAmount: string
+  annualMonthlyEquivalent: string // e.g., "£4.08/month"
+  annualSavings: string // e.g., "Save £70/year"
   name: string
 }
 
@@ -16,6 +20,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: '£',
     amount: 999, // £9.99/month
     displayAmount: '£9.99',
+    annualAmount: 4900, // £49/year
+    annualDisplayAmount: '£49',
+    annualMonthlyEquivalent: '£4.08/month',
+    annualSavings: 'Save £70/year',
     name: 'British Pound'
   },
   USD: {
@@ -23,6 +31,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: '$',
     amount: 1299, // $12.99/month
     displayAmount: '$12.99',
+    annualAmount: 6900, // $69/year
+    annualDisplayAmount: '$69',
+    annualMonthlyEquivalent: '$5.75/month',
+    annualSavings: 'Save $87/year',
     name: 'US Dollar'
   },
   EUR: {
@@ -30,6 +42,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: '€',
     amount: 1099, // €10.99/month
     displayAmount: '€10.99',
+    annualAmount: 5900, // €59/year
+    annualDisplayAmount: '€59',
+    annualMonthlyEquivalent: '€4.92/month',
+    annualSavings: 'Save €73/year',
     name: 'Euro'
   },
   CAD: {
@@ -37,6 +53,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: 'C$',
     amount: 1499, // C$14.99/month
     displayAmount: 'C$14.99',
+    annualAmount: 7900, // C$79/year
+    annualDisplayAmount: 'C$79',
+    annualMonthlyEquivalent: 'C$6.58/month',
+    annualSavings: 'Save C$101/year',
     name: 'Canadian Dollar'
   },
   AUD: {
@@ -44,6 +64,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: 'A$',
     amount: 1599, // A$15.99/month
     displayAmount: 'A$15.99',
+    annualAmount: 8900, // A$89/year
+    annualDisplayAmount: 'A$89',
+    annualMonthlyEquivalent: 'A$7.42/month',
+    annualSavings: 'Save A$103/year',
     name: 'Australian Dollar'
   },
   INR: {
@@ -51,6 +75,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: '₹',
     amount: 99900, // ₹999/month
     displayAmount: '₹999',
+    annualAmount: 499900, // ₹4,999/year
+    annualDisplayAmount: '₹4,999',
+    annualMonthlyEquivalent: '₹416/month',
+    annualSavings: 'Save ₹7,000/year',
     name: 'Indian Rupee'
   }
 }
