@@ -1,0 +1,13 @@
+fix: Resolve dashboard syntax error with fragment wrapper
+
+Fixed JSX syntax error in dashboard overview tab:
+- Added React fragment wrapper (<>...</>)
+- Allows PhotoUpload section alongside grid layout
+- Resolves "Expected '</>', got '{'" build error
+
+Changes:
+- Wrapped overview tab content in fragment
+- PhotoUpload now renders correctly
+- Build error resolved
+
+Status: Dashboard builds successfully
