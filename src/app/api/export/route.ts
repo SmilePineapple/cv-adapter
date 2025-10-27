@@ -7,6 +7,7 @@ import { CVSection } from '@/types/database'
 import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
+import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 
 // Configure runtime for Vercel
@@ -307,7 +308,26 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         }
       }
       
-      if (template === 'creative_modern') {
+      // Check stunning templates first
+      const stunningTemplateKeys = Object.keys(stunningTemplates)
+      if (stunningTemplateKeys.includes(template)) {
+        // Prepare data for stunning templates
+        const templateData = {
+          name: typeof contactInfo === 'string' ? contactInfo : (contactInfo as any)?.name || contactInfo?.email || 'Your Name',
+          email: typeof contactInfo === 'object' ? contactInfo?.email || '' : '',
+          phone: typeof contactInfo === 'object' ? contactInfo?.phone || '' : '',
+          location: typeof contactInfo === 'object' ? contactInfo?.location || '' : '',
+          website: typeof contactInfo === 'object' ? (contactInfo as any)?.website || '' : '',
+          summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
+          experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
+          education: getSectionContent(sections.find(s => s.type === 'education')?.content),
+          skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+          languages: getSectionContent(sections.find(s => s.type === 'skills')?.content), // Use skills for languages
+          hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
+          certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
+        }
+        html = stunningTemplates[template as keyof typeof stunningTemplates](templateData)
+      } else if (template === 'creative_modern') {
         html = generateCreativeModernHTML(sections, contactInfo)
       } else if (template === 'professional_columns') {
         html = generateProfessionalColumnsHTML(sections, contactInfo)

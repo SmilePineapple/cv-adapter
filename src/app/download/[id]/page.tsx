@@ -40,23 +40,16 @@ interface AIReview {
 }
 
 const TEMPLATES = [
-  // ✨ FREE TEMPLATES (Available to all users)
-  { id: 'creative_modern', name: '✨ Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'PREMIUM', advanced: true, pro: false },
-  { id: 'professional_columns', name: '✨ Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'PREMIUM', advanced: true, pro: false },
+  // ✨ STUNNING TEMPLATES (Free - Best designs!)
+  { id: 'professional-metrics', name: '✨ Professional Metrics', description: 'Two-column with circular skill meters & clean layout', category: 'Professional', badge: 'NEW', advanced: true, pro: false },
+  { id: 'teal-sidebar', name: '✨ Teal Sidebar', description: 'Icon sidebar with teal accent & skill bars', category: 'Modern', badge: 'NEW', advanced: true, pro: false },
+  { id: 'soft-header', name: '✨ Soft Header', description: 'Gradient header with skill progress bars', category: 'Modern', badge: 'NEW', advanced: true, pro: false },
+  { id: 'artistic-header', name: '✨ Artistic Header', description: 'Decorative pattern header with pink accent', category: 'Creative', badge: 'NEW', advanced: true, pro: false },
+  { id: 'bold-split', name: '✨ Bold Split', description: 'Dark/cyan 50/50 split with high contrast', category: 'Bold', badge: 'NEW', advanced: true, pro: false },
   
-  // PRO TEMPLATES (Require Pro subscription)
-  { id: 'professional-circle', name: 'Professional Circle', description: 'Circular profile with icon sections', category: 'Professional', badge: 'PRO', pro: true },
-  { id: 'modern-coral', name: 'Modern Coral', description: 'Soft coral design with elegant typography', category: 'Modern', badge: 'PRO', pro: true },
-  { id: 'minimal-yellow', name: 'Minimal Yellow', description: 'Bold minimalist with yellow accent', category: 'Minimal', badge: 'PRO', pro: true },
-  { id: 'classic-beige', name: 'Classic Beige', description: 'Warm beige with traditional layout', category: 'Professional', badge: 'PRO', pro: true },
-  { id: 'executive-tan', name: 'Executive Tan', description: 'Sophisticated tan for executives', category: 'Professional', badge: 'PRO', pro: true },
-  { id: 'modern-sidebar', name: 'Modern Sidebar', description: 'Contemporary sidebar layout', category: 'Modern', badge: 'PRO', pro: true },
-  { id: 'minimal-gray', name: 'Minimal Gray', description: 'Ultra-minimal grayscale design', category: 'Minimal', badge: 'PRO', pro: true },
-  { id: 'artistic-pattern', name: 'Artistic Pattern', description: 'Creative with decorative patterns', category: 'Creative', badge: 'PRO', pro: true },
-  { id: 'modern-blue', name: 'Modern Blue', description: 'Clean blue professional design', category: 'Modern', badge: 'PRO', pro: true },
-  { id: 'creative-accent', name: 'Creative Accent', description: 'Bold accent colors', category: 'Creative', badge: 'PRO', pro: true },
-  { id: 'professional-split', name: 'Professional Split', description: 'Split layout with sidebar', category: 'Professional', badge: 'PRO', pro: true },
-  { id: 'minimal-clean', name: 'Minimal Clean', description: 'Clean minimal design', category: 'Minimal', badge: 'PRO', pro: true },
+  // ADVANCED TEMPLATES (Free)
+  { id: 'creative_modern', name: 'Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'FREE', advanced: true, pro: false },
+  { id: 'professional_columns', name: 'Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'FREE', advanced: true, pro: false },
 ]
 
 const EXPORT_FORMATS = [
