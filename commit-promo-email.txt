@@ -1,0 +1,21 @@
+feat: Add promotional email system and upgrade confirmation
+
+Added promotional email campaign system:
+1. Created PromoEmail template - "4 days left" offer with 50% discount
+2. Added sendPromoEmail() function to email library
+3. Created test endpoint: /api/test-promo-email (sends to Jake)
+4. Created bulk send endpoint: /api/send-promo-blast (admin only, sends to all free users)
+5. Integrated sendUpgradeConfirmationEmail() into Stripe webhook
+
+Features:
+- Beautiful promo email template with urgency messaging
+- Test endpoint for safe testing before bulk send
+- Bulk send with rate limiting (100ms delay between emails)
+- Excludes Pro users from promo emails
+- Automatic upgrade confirmation email on successful payment
+- Admin-only access with authentication check
+
+Ready to use:
+- Visit /api/test-promo-email to test
+- POST to /api/send-promo-blast to send to all users
+- Upgrade emails now send automatically on payment
