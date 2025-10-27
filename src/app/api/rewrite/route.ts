@@ -7,6 +7,7 @@ import { trackCVGeneration } from '@/lib/analytics'
 import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
 import { formatErrorResponse } from '@/lib/errors'
+import { rateLimiters } from '@/lib/rate-limit-simple'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -44,6 +45,24 @@ export async function POST(request: NextRequest) {
     }
     
     console.log('✅ Authenticated user:', user.id, user.email)
+
+    // Rate limiting: 10 requests per minute per user
+    const rateLimitResult = rateLimiters.normal(user.id)
+    if (!rateLimitResult.success) {
+      const resetDate = new Date(rateLimitResult.reset)
+      return NextResponse.json({ 
+        error: 'Too many requests. Please wait a moment and try again.',
+        retryAfter: Math.ceil((rateLimitResult.reset - Date.now()) / 1000)
+      }, { 
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-RateLimit-Reset': resetDate.toISOString(),
+          'Retry-After': Math.ceil((rateLimitResult.reset - Date.now()) / 1000).toString()
+        }
+      })
+    }
 
     // Check usage limits with new subscription model
     const { data: usage, error: usageError } = await supabase
