@@ -3,6 +3,10 @@
     {
       "path": "/api/social-bot/cron",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/re-engagement",
+      "schedule": "0 10 * * *"
     }
   ],
   "redirects": [
