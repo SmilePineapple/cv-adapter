@@ -80,8 +80,8 @@ export async function POST(request: NextRequest) {
             console.error(`❌ Failed to send to ${email}:`, result.error)
           }
           
-          // Small delay to avoid rate limiting (100ms between emails)
-          await new Promise(resolve => setTimeout(resolve, 100))
+          // Delay to respect Resend rate limit (2 requests per second = 500ms delay)
+          await new Promise(resolve => setTimeout(resolve, 500))
         } catch (error) {
           results.failed++
           results.errors.push(`${email}: ${error}`)
