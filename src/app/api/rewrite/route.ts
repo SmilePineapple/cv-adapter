@@ -82,11 +82,12 @@ export async function POST(request: NextRequest) {
     const currentUsage = usage?.lifetime_generation_count || 0
     const maxGenerations = isPro ? 999999 : (usage?.max_lifetime_generations || 1) // Pro = unlimited
   
-    // Check if user has EXCEEDED limit (not just reached it)
-    // This allows the first generation to complete, then blocks the second
+    // Check if user has reached limit BEFORE this generation
+    // If max=2, allow when currentUsage is 0 or 1 (total 2 generations)
+    // Block when currentUsage >= 2 (trying to make 3rd generation)
     if (!isPro && currentUsage >= maxGenerations) {
       return NextResponse.json({
-        error: 'Free generation used. Upgrade to Pro for unlimited generations!',
+        error: 'Free generation limit reached. Upgrade to Pro for unlimited generations!',
         limit_reached: true,
         is_pro: false,
         subscription_tier: subscriptionTier,
@@ -97,6 +98,8 @@ export async function POST(request: NextRequest) {
 
     const body: GenerationRequest = await request.json()
     const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language } = body
+    
+    console.log('🌍 Output language requested:', output_language)
 
     // 🔍 DEBUG: Log custom sections received
     console.log('📥 Custom sections received from client:', custom_sections)
@@ -124,7 +127,11 @@ export async function POST(request: NextRequest) {
     const originalSections = cvData.parsed_sections as { sections: CVSection[] }
     const detectedLanguage = cvData.detected_language || 'en'
     
-    console.log('CV language:', detectedLanguage, `(${LANGUAGE_NAMES[detectedLanguage] || 'English'})`)
+    // Use output_language if provided, otherwise fall back to detected language
+    const targetLanguage = output_language || detectedLanguage
+    
+    console.log('CV detected language:', detectedLanguage, `(${LANGUAGE_NAMES[detectedLanguage] || 'English'})`)
+    console.log('Target output language:', targetLanguage, `(${LANGUAGE_NAMES[targetLanguage] || 'English'})`)
 
     // Create OpenAI prompt with language awareness
     const prompt = createRewritePrompt(
@@ -134,12 +141,12 @@ export async function POST(request: NextRequest) {
       rewrite_style,
       tone,
       custom_sections,
-      detectedLanguage
+      targetLanguage
     )
 
     // Call OpenAI API with language-aware system prompt
-    const languageName = LANGUAGE_NAMES[detectedLanguage] || 'English'
-    const systemPrompt = detectedLanguage === 'en' 
+    const languageName = LANGUAGE_NAMES[targetLanguage] || 'English'
+    const systemPrompt = targetLanguage === 'en' 
       ? 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
@@ -344,7 +351,7 @@ export async function POST(request: NextRequest) {
         output_sections: { sections: rewrittenSections },
         diff_meta: diffMeta,
         ats_score: atsScore,
-        output_language: detectedLanguage
+        output_language: targetLanguage
       })
       .select()
       .single()
@@ -358,7 +365,7 @@ export async function POST(request: NextRequest) {
     try {
       await trackCVGeneration({
         jobTitle: job_title,
-        outputLanguage: detectedLanguage,
+        outputLanguage: targetLanguage,
         rewriteStyle: rewrite_style,
         tone
       })
@@ -394,15 +401,17 @@ export async function POST(request: NextRequest) {
     // Send email triggers based on usage
     const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'there'
     
-    // First generation email
-    if (newCount === 1 && !isPro) {
+    // First generation email (only if this was their first generation)
+    if (currentUsage === 0 && newCount === 1 && !isPro) {
+      console.log('📧 Sending first generation email to:', user.email)
       sendFirstGenerationEmail(user.email!, userName).catch(err => 
         console.error('Failed to send first generation email:', err)
       )
     }
     
-    // Limit reached email (after using last free generation)
-    if (newCount >= maxGenerations && !isPro) {
+    // Limit reached email (only if they just hit the limit)
+    if (currentUsage < maxGenerations && newCount >= maxGenerations && !isPro) {
+      console.log('📧 Sending limit reached email to:', user.email)
       sendLimitReachedEmail(user.email!, userName).catch(err => 
         console.error('Failed to send limit reached email:', err)
       )
