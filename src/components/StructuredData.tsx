@@ -18,7 +18,7 @@ export function StructuredData() {
         "name": "Is My CV Buddy free to use?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! We offer 1 free CV generation. For unlimited access, upgrade to Pro for £9.99/month."
+          "text": "Yes! We offer 2 free CV generations. For unlimited access, upgrade to Pro for £5 one-time payment."
         }
       },
       {

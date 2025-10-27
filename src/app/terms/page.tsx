@@ -128,7 +128,7 @@ export default function TermsOfServicePage() {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Free Tier</h3>
               <ul className="text-sm text-gray-700 space-y-2 list-none pl-0">
-                <li>✓ 1 free CV generation</li>
+                <li>✓ 2 free CV generations</li>
                 <li>✓ All core features</li>
                 <li>✓ No credit card required</li>
               </ul>

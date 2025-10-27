@@ -675,7 +675,7 @@ export default function LandingPage() {
                 Fix My CV Now - Free
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-              <p className="mt-4 text-sm text-gray-500">1 free generation • No credit card required</p>
+              <p className="mt-4 text-sm text-gray-500">2 free generations • No credit card required</p>
             </div>
           </div>
         </div>
@@ -804,9 +804,9 @@ export default function LandingPage() {
                   <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
                 </summary>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! We offer 1 free CV generation to try the service. This includes AI tailoring, 
+                  Yes! We offer 2 free CV generations to try the service. This includes AI tailoring, 
                   multiple export formats (PDF, DOCX, TXT), and access to all templates. For unlimited 
-                  generations and premium features, upgrade to Pro for just £9.99/month or £49/year (save £70!).
+                  generations and premium features, upgrade to Pro for just £5 one-time payment (100 lifetime generations).
                 </p>
               </details>
 

@@ -171,7 +171,7 @@ export default function DashboardPage() {
       if (isPro) {
         toast.error('You have reached your generation limit. Contact support for assistance.')
       } else {
-        toast.error('You have used your 1 free generation. Upgrade to Pro for unlimited!', {
+        toast.error('You have used your 2 free generations. Upgrade to Pro for 100 more!', {
           duration: 5000,
           action: {
             label: 'Upgrade',
