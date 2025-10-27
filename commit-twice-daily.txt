@@ -1,0 +1,20 @@
+feat: Increase posting frequency to 2 posts per day
+
+Changed from 1 post/day to 2 posts/day for maximum engagement!
+
+Changes:
+- Updated Vercel cron to run at 10 AM and 2 PM (was just 2 PM)
+- Expanded content schedule from 7 to 14 posts per week
+- Alternates between morning (10 AM) and afternoon (2 PM) posts
+- More varied content types throughout the week
+
+New schedule:
+- Monday: CV tip (10 AM) + Industry stat (2 PM)
+- Tuesday: ATS tip (10 AM) + Question (2 PM)
+- Wednesday: Career advice (10 AM) + Job search tip (2 PM)
+- Thursday: Interview prep (10 AM) + Myth buster (2 PM)
+- Friday: Success story (10 AM) + Tool feature (2 PM)
+- Saturday: CV tip (10 AM) + Industry stat (2 PM)
+- Sunday: Career advice (10 AM) + Question (2 PM)
+
+This doubles engagement opportunities and keeps audience engaged throughout the day!
