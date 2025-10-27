@@ -290,7 +290,7 @@ export default function GeneratePage() {
       if (!response.ok) {
         if (result.limit_reached) {
           setShowUpgradeModal(true)
-          toast.error('Free generation used. Upgrade to Pro for unlimited generations!')
+          toast.error('Free generation limit reached. Upgrade to Pro for unlimited generations!')
           return
         }
         

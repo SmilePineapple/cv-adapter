@@ -1,0 +1,3 @@
+docs: Add comprehensive email marketing setup guide
+
+Created EMAIL-MARKETING-SETUP-GUIDE.md with complete instructions for activating the email marketing system.

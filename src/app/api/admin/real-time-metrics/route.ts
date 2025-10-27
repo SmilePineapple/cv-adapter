@@ -17,12 +17,12 @@ export async function GET(request: NextRequest) {
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
     const todayStart = new Date(now.setHours(0, 0, 0, 0))
 
-    // Active users now (last 5 minutes)
+    // Active users now (last 5 minutes) - using usage_tracking table
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000)
     const { data: activeUsers } = await supabase
-      .from('profiles')
-      .select('id')
-      .gte('last_activity_at', fiveMinutesAgo.toISOString())
+      .from('usage_tracking')
+      .select('user_id')
+      .gte('updated_at', fiveMinutesAgo.toISOString())
 
     // Generations in last hour
     const { data: recentGenerations } = await supabase
