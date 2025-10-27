@@ -1,1 +1,1 @@
-fix: Add detailed error logging to test promo email endpoint
+add: Simple test email endpoint for debugging Resend integration
