@@ -161,17 +161,31 @@ function generateHashtags(contentType: ContentType, platform: Platform): string[
 }
 
 /**
- * Get a varied content schedule for the week
+ * Get a varied content schedule for the week (2 posts per day)
  */
 export function getWeeklyContentSchedule(): ContentType[] {
   return [
-    'cv_tip',           // Monday - Start week with actionable tip
-    'industry_stat',    // Tuesday - Share interesting data
-    'question',         // Wednesday - Engage audience
-    'ats_tip',          // Thursday - Technical advice
-    'career_advice',    // Friday - Weekend motivation
-    'success_story',    // Saturday - Inspire with success
-    'myth_buster'       // Sunday - Educational content
+    // Monday
+    'cv_tip',           // 10 AM - Start week with actionable tip
+    'industry_stat',    // 2 PM - Share interesting data
+    // Tuesday
+    'ats_tip',          // 10 AM - Technical advice
+    'question',         // 2 PM - Engage audience
+    // Wednesday
+    'career_advice',    // 10 AM - Professional development
+    'job_search_tip',   // 2 PM - Job hunting strategy
+    // Thursday
+    'interview_prep',   // 10 AM - Interview tips
+    'myth_buster',      // 2 PM - Debunk common myths
+    // Friday
+    'success_story',    // 10 AM - Inspire with success
+    'tool_feature',     // 2 PM - Highlight CV Adapter
+    // Saturday
+    'cv_tip',           // 10 AM - Weekend CV improvement
+    'industry_stat',    // 2 PM - Interesting employment data
+    // Sunday
+    'career_advice',    // 10 AM - Week prep advice
+    'question'          // 2 PM - Engage for Monday
   ]
 }
 
@@ -188,8 +202,14 @@ export async function generateWeeklyContent(
   for (let i = 0; i < schedule.length; i++) {
     const contentType = schedule[i]
     const scheduledDate = new Date(startDate)
-    scheduledDate.setDate(scheduledDate.getDate() + i)
-    scheduledDate.setHours(14, 0, 0, 0) // Post at 2 PM (14:00)
+    
+    // Calculate day and time slot (2 posts per day)
+    const dayOffset = Math.floor(i / 2)
+    const isFirstPost = i % 2 === 0
+    const hour = isFirstPost ? 10 : 14 // 10 AM or 2 PM
+    
+    scheduledDate.setDate(scheduledDate.getDate() + dayOffset)
+    scheduledDate.setHours(hour, 0, 0, 0)
 
     try {
       const { content, hashtags } = await generateSocialContent(contentType, platform)
