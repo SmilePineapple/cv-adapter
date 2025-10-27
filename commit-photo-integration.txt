@@ -1,0 +1,13 @@
+feat: Integrate PhotoUpload component into dashboard
+
+Added PhotoUpload to dashboard overview tab:
+- Shows for first CV in user's list
+- Beautiful UI with photo preview
+- Upload/remove functionality
+- Auto-refreshes after upload
+- Ready to use immediately
+
+Integration complete!
+Next: Side-by-side layout for download page
+
+Status: PhotoUpload live on dashboard!

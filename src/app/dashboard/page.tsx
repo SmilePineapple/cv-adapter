@@ -11,6 +11,7 @@ import PromoBanner from '@/components/PromoBanner'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
+import PhotoUpload from '@/components/PhotoUpload'
 import { trackPageView, trackFeatureUsage } from '@/lib/analytics'
 import { 
   Upload, 
@@ -1002,6 +1003,20 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+          
+          {/* Photo Upload Section */}
+          {cvs.length > 0 && (
+            <div className="mt-8">
+              <PhotoUpload
+                cvId={cvs[0].id}
+                currentPhotoUrl={(cvs[0] as any).photo_url}
+                onPhotoUploaded={() => {
+                  // Reload page to refresh data
+                  window.location.reload()
+                }}
+              />
+            </div>
+          )}
         )}
 
         {activeTab === 'cvs' && (
