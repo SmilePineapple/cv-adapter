@@ -1,0 +1,27 @@
+feat: Complete analytics dashboard and integrate industry templates
+
+Analytics Dashboard (admin/analytics-v2):
+- Conversion funnel visualization with drop-off tracking
+- Daily active users chart (30-day view)
+- Feature adoption rates with usage metrics
+- Cohort retention heatmap by signup month
+- Real-time data refresh
+- Admin-only access with authentication check
+
+Industry Templates Integration:
+- Integrated 8 industry templates into export API
+- Templates: Tech, Healthcare, Finance, Education, Creative, Executive, Sales, Legal
+- Automatic template detection in export flow
+- Proper type handling for user information
+- Ready for PDF/DOCX export
+
+SQL Migration Fix:
+- Added DROP TRIGGER IF EXISTS for auto_initialize_cohort
+- Prevents duplicate trigger errors on re-run
+- All analytics tables and views ready
+
+Status:
+- Analytics dashboard fully functional
+- Industry templates integrated
+- SQL migration ready to run
+- All features tested and working

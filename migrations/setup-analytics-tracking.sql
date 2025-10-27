@@ -376,6 +376,9 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- =====================================================
 
 -- Auto-initialize cohort on user signup
+DROP TRIGGER IF EXISTS trigger_auto_initialize_cohort ON auth.users;
+DROP FUNCTION IF EXISTS auto_initialize_cohort();
+
 CREATE OR REPLACE FUNCTION auto_initialize_cohort()
 RETURNS TRIGGER AS $$
 BEGIN

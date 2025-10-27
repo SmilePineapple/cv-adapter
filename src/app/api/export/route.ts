@@ -6,6 +6,7 @@ import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
 import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
+import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 
 // Configure runtime for Vercel
@@ -310,6 +311,10 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         html = generateCreativeModernHTML(sections, contactInfo)
       } else if (template === 'professional_columns') {
         html = generateProfessionalColumnsHTML(sections, contactInfo)
+      } else if (industryTemplates[template]) {
+        // Industry-specific template
+        const userName = typeof contactInfo === 'string' ? contactInfo : contactInfo?.email || 'Your Name'
+        html = generateIndustryTemplateHTML(template, sections, userName)
       } else {
         // Fallback
         const metrics = analyzeContentDensity(sections)
