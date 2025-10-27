@@ -83,12 +83,19 @@ export default function HobbySelectionPage() {
         return
       }
 
+      // Prepare hobby icons data
+      const hobbyIconsData = selectedHobbies.map((hobby: any) => ({
+        name: hobby.name,
+        icon: hobby.icon
+      }))
+
       if (hobbiesSection) {
         // Update existing section
         const { error } = await supabase
           .from('cv_sections')
           .update({
             content: selectedHobbies,
+            hobby_icons: hobbyIconsData,
             updated_at: new Date().toISOString()
           })
           .eq('id', hobbiesSection.id)
@@ -103,6 +110,7 @@ export default function HobbySelectionPage() {
             section_type: 'interests',
             title: 'Hobbies & Interests',
             content: selectedHobbies,
+            hobby_icons: hobbyIconsData,
             order_index: 999
           })
 
