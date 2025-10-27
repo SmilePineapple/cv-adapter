@@ -247,34 +247,26 @@ async function postToLinkedIn(
       throw new Error('LinkedIn access token not found')
     }
 
-    // Check if we should post to organization or person
-    let authorUrn: string
-    
-    if (config.organization_id) {
-      // Post to organization/company page
-      authorUrn = `urn:li:organization:${config.organization_id}`
-      console.log('Posting to LinkedIn organization:', authorUrn)
-    } else {
-      // Post to personal profile
-      const profileResponse = await fetch('https://api.linkedin.com/v2/userinfo', {
-        headers: {
-          'Authorization': `Bearer ${config.access_token}`
-        }
-      })
-
-      if (!profileResponse.ok) {
-        const errorText = await profileResponse.text()
-        throw new Error(`Failed to get LinkedIn profile: ${errorText}`)
+    // Get user profile for personal posting
+    const profileResponse = await fetch('https://api.linkedin.com/v2/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${config.access_token}`
       }
+    })
 
-      const profile = await profileResponse.json()
-      authorUrn = `urn:li:person:${profile.sub}`
-      console.log('Posting to LinkedIn personal profile:', authorUrn)
+    if (!profileResponse.ok) {
+      const errorText = await profileResponse.text()
+      throw new Error(`Failed to get LinkedIn profile: ${errorText}`)
     }
 
-    // Create the post using UGC API
+    const profile = await profileResponse.json()
+    const personUrn = `urn:li:person:${profile.sub}`
+    
+    console.log('Posting to LinkedIn personal profile:', personUrn)
+
+    // Create the post using UGC API (personal profile)
     const postData = {
-      author: authorUrn,
+      author: personUrn,
       lifecycleState: 'PUBLISHED',
       specificContent: {
         'com.linkedin.ugc.ShareContent': {
@@ -306,7 +298,53 @@ async function postToLinkedIn(
     }
 
     const result = await postResponse.json()
-    console.log('✅ LinkedIn post created:', result.id)
+    console.log('✅ LinkedIn post created on personal profile:', result.id)
+
+    // If organization_id is set, also share to company page
+    if (config.organization_id) {
+      try {
+        console.log('Also sharing to company page:', config.organization_id)
+        
+        // Share the personal post to the organization page
+        const shareData = {
+          author: `urn:li:organization:${config.organization_id}`,
+          lifecycleState: 'PUBLISHED',
+          specificContent: {
+            'com.linkedin.ugc.ShareContent': {
+              shareCommentary: {
+                text: content
+              },
+              shareMediaCategory: 'NONE'
+            }
+          },
+          visibility: {
+            'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'
+          }
+        }
+
+        const shareResponse = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${config.access_token}`,
+            'Content-Type': 'application/json',
+            'X-Restli-Protocol-Version': '2.0.0'
+          },
+          body: JSON.stringify(shareData)
+        })
+
+        if (shareResponse.ok) {
+          const shareResult = await shareResponse.json()
+          console.log('✅ Also posted to company page:', shareResult.id)
+        } else {
+          const errorText = await shareResponse.text()
+          console.warn('⚠️ Could not post to company page (will continue with personal post):', errorText)
+          // Don't fail the whole operation if company post fails
+        }
+      } catch (orgError) {
+        console.warn('⚠️ Company page posting failed (continuing with personal post):', orgError)
+        // Don't fail the whole operation
+      }
+    }
 
     return {
       success: true,
