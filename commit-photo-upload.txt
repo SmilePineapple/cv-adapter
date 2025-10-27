@@ -1,0 +1,25 @@
+feat: Add PhotoUpload component for profile photos
+
+Created comprehensive PhotoUpload component:
+- Upload photos to Supabase Storage
+- Preview uploaded photos
+- Remove photos
+- Validation (5MB max, image types only)
+- Beautiful UI with loading states
+- Toast notifications
+- Ready to integrate into dashboard
+
+Features:
+- Drag & drop support
+- Image preview
+- File size validation
+- Type validation
+- Error handling
+- Success feedback
+
+Files Created:
+- src/components/PhotoUpload.tsx (complete component)
+
+Next: Integrate into dashboard CVs tab
+
+Status: Component ready, needs Supabase Storage bucket setup
