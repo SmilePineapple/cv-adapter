@@ -20,6 +20,7 @@ import {
 import TemplatePreview from '@/components/TemplatePreview'
 import UpgradeModal from '@/components/UpgradeModal'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
+import { stunningTemplates } from '@/lib/stunning-templates'
 
 interface GenerationData {
   id: string
@@ -306,6 +307,50 @@ export default function DownloadPage() {
   }
 
   const generateTemplateHtml = (sections: CVSection[], templateId: string): string => {
+    // Check if it's a stunning template first
+    const stunningTemplateKeys = Object.keys(stunningTemplates)
+    if (stunningTemplateKeys.includes(templateId)) {
+      const contactSection = sections.find(s => s.type === 'contact')
+      const nameSection = sections.find(s => s.type === 'name')
+      
+      // Extract contact info
+      let contactInfo: any = {}
+      if (contactSection?.content) {
+        if (typeof contactSection.content === 'string') {
+          const content = contactSection.content
+          const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
+          const phoneMatch = content.match(/[\d\s()+-]{10,}/)
+          const lines = content.split('\n').filter(l => l.trim())
+          
+          contactInfo = {
+            email: emailMatch ? emailMatch[0] : '',
+            phone: phoneMatch ? phoneMatch[0] : '',
+            location: lines.find(l => !l.includes('@') && !l.match(/[\d\s()+-]{10,}/)) || ''
+          }
+        } else {
+          contactInfo = contactSection.content
+        }
+      }
+      
+      // Prepare data for stunning templates
+      const templateData = {
+        name: getSectionContent(nameSection?.content) || 'Your Name',
+        email: contactInfo?.email || '',
+        phone: contactInfo?.phone || '',
+        location: contactInfo?.location || '',
+        website: (contactInfo as any)?.website || '',
+        summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
+        experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
+        education: getSectionContent(sections.find(s => s.type === 'education')?.content),
+        skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+        languages: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+        hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
+        certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
+      }
+      
+      return stunningTemplates[templateId as keyof typeof stunningTemplates](templateData)
+    }
+    
     // Check if it's an advanced template
     if (templateId === 'creative_modern' || templateId === 'professional_columns') {
       const contactSection = sections.find(s => s.type === 'contact')
@@ -739,7 +784,7 @@ export default function DownloadPage() {
               </button>
             )}
             
-            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && generationData && generationData.cv_id && (
+            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns' || selectedTemplate === 'artistic-header') && generationData && generationData.cv_id && (
               <Link
                 href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
                 className="bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all flex items-center justify-center"
@@ -875,7 +920,7 @@ export default function DownloadPage() {
               </div>
 
             {/* Hobby Icons Info for Advanced Templates */}
-            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns') && generationData && (
+            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns' || selectedTemplate === 'artistic-header') && generationData && (
               <div className="mt-6 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border border-purple-200">
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
