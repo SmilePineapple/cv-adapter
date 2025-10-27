@@ -54,6 +54,7 @@ export default function AnalyticsV2Page() {
   const [featureData, setFeatureData] = useState<FeatureData[]>([])
   const [dauData, setDAUData] = useState<DAUData[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
 
   useEffect(() => {
     checkAdminAndFetchData()
@@ -64,11 +65,13 @@ export default function AnalyticsV2Page() {
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user || user.email !== 'jakedalerourke@gmail.com') {
+      setIsCheckingAuth(false)
       window.location.href = '/dashboard'
       return
     }
     
     setIsAdmin(true)
+    setIsCheckingAuth(false)
     await fetchAllData()
   }
 
@@ -91,6 +94,15 @@ export default function AnalyticsV2Page() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (isCheckingAuth) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Checking access...</p>
+      </div>
+    </div>
   }
 
   if (!isAdmin) {
@@ -169,7 +181,7 @@ export default function AnalyticsV2Page() {
                       </div>
                       <div className="text-right">
                         <div className="text-2xl font-bold text-gray-900">
-                          {stage.conversion_rate.toFixed(1)}%
+                          {stage.conversion_rate?.toFixed(1) ?? '0'}%
                         </div>
                         {stage.drop_off > 0 && (
                           <div className="text-sm text-red-600">
@@ -253,7 +265,7 @@ export default function AnalyticsV2Page() {
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-semibold text-gray-900">
-                        {feature.avg_usage_per_user.toFixed(1)}
+                        {feature.avg_usage_per_user?.toFixed(1) ?? '0'}
                       </div>
                       <div className="text-xs text-gray-600">avg per user</div>
                     </div>
@@ -305,7 +317,7 @@ export default function AnalyticsV2Page() {
                               
                               return (
                                 <td key={month} className={`text-right py-2 px-3 font-semibold ${color}`}>
-                                  {rate > 0 ? `${rate.toFixed(0)}%` : '-'}
+                                  {rate > 0 ? `${rate?.toFixed(0) ?? '0'}%` : '-'}
                                 </td>
                               )
                             })}
