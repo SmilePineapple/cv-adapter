@@ -16,8 +16,9 @@ interface TemplateData {
   education: string
   skills: string
   languages: string
-  hobbies: string
+  hobbies: string | Array<{name: string, icon: string}>
   certifications: string
+  photoUrl?: string
 }
 
 // Helper to extract skills as array
@@ -30,10 +31,33 @@ function extractSkills(skillsText: string): string[] {
 function extractLanguages(langText: string): Array<{name: string, level: number}> {
   if (!langText) return []
   const langs = langText.split(/[,\n]/).map(s => s.trim()).filter(Boolean).slice(0, 3)
-  return langs.map(lang => ({
-    name: lang.split(/[-:]/)[0].trim(),
-    level: Math.floor(Math.random() * 30) + 70 // 70-100
-  }))
+  return langs.map(lang => {
+    const name = lang.split(/[-:]/)[0].trim()
+    // Try to extract proficiency level from text
+    const lowerLang = lang.toLowerCase()
+    let level = 70 // default
+    if (lowerLang.includes('native') || lowerLang.includes('fluent')) level = 100
+    else if (lowerLang.includes('advanced') || lowerLang.includes('proficient')) level = 90
+    else if (lowerLang.includes('intermediate')) level = 75
+    else if (lowerLang.includes('basic') || lowerLang.includes('beginner')) level = 50
+    
+    return { name, level }
+  })
+}
+
+// Helper to extract hobbies with icons
+function extractHobbies(hobbiesData: string | Array<{name: string, icon: string}>): Array<{name: string, icon: string}> {
+  // If already an array of hobby objects with icons, return it
+  if (Array.isArray(hobbiesData) && hobbiesData.length > 0 && hobbiesData[0].icon) {
+    return hobbiesData.slice(0, 3)
+  }
+  
+  // Otherwise parse from text
+  const text = typeof hobbiesData === 'string' ? hobbiesData : ''
+  if (!text) return []
+  
+  const hobbies = text.split(/[,\n]/).map(h => h.trim()).filter(Boolean).slice(0, 3)
+  return hobbies.map(name => ({ name, icon: '⚪' })) // Default white circle
 }
 
 /**
@@ -491,9 +515,7 @@ export function generateArtisticHeader(data: TemplateData): string {
 export function generateBoldSplit(data: TemplateData): string {
   const skills = extractSkills(data.skills)
   const languages = extractLanguages(data.languages)
-  
-  // Extract hobbies from text
-  const hobbies = data.hobbies ? data.hobbies.split(/[,\n]/).map(h => h.trim()).filter(Boolean).slice(0, 3) : []
+  const hobbies = extractHobbies(data.hobbies)
   
   return `
 <!DOCTYPE html>
@@ -569,7 +591,10 @@ export function generateBoldSplit(data: TemplateData): string {
     
     <div class="light-side">
       <div class="photo">
-        <div class="photo-placeholder">👤</div>
+        ${data.photoUrl 
+          ? `<img src="${data.photoUrl}" alt="Profile" style="width:100%;height:100%;object-fit:cover;" />`
+          : '<div class="photo-placeholder">👤</div>'
+        }
       </div>
       
       <h1 class="name">${data.name || 'Your Name'}</h1>
@@ -616,8 +641,8 @@ export function generateBoldSplit(data: TemplateData): string {
         <div style="display: flex; gap: 20px; margin-top: 10px; justify-content: center;">
           ${hobbies.map(hobby => `
             <div class="hobby-item">
-              <div class="hobby-icon">⚪</div>
-              <div class="hobby-label">${hobby}</div>
+              <div class="hobby-icon">${hobby.icon}</div>
+              <div class="hobby-label">${hobby.name}</div>
             </div>
           `).join('')}
         </div>

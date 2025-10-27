@@ -162,12 +162,12 @@ export async function POST(request: NextRequest) {
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
 
-    // Fetch latest hobbies from cv_sections table (user may have customized icons)
+    // Fetch latest hobbies/interests from cv_sections table (user may have customized icons)
     const { data: latestHobbies } = await supabase
       .from('cv_sections')
-      .select('*')
+      .select('content, hobby_icons')
       .eq('cv_id', cvId)
-      .eq('section_type', 'hobbies')
+      .eq('section_type', 'interests')
       .single()
 
     // CRITICAL FIX: Use AI-modified sections as the primary source
@@ -183,15 +183,19 @@ export async function POST(request: NextRequest) {
       if (hobbiesIndex >= 0) {
         completeSections[hobbiesIndex] = {
           type: 'hobbies',
-          content: latestHobbies.content,
-          order: latestHobbies.order_index || completeSections[hobbiesIndex].order || 999
+          content: latestHobbies.hobby_icons && latestHobbies.hobby_icons.length > 0 
+            ? latestHobbies.hobby_icons  // Use hobby_icons if available (from hobby selector)
+            : latestHobbies.content,      // Otherwise use content
+          order: completeSections[hobbiesIndex].order || 999
         }
       } else {
         // Add hobbies if not present
         completeSections.push({
           type: 'hobbies',
-          content: latestHobbies.content,
-          order: latestHobbies.order_index || 999
+          content: latestHobbies.hobby_icons && latestHobbies.hobby_icons.length > 0
+            ? latestHobbies.hobby_icons
+            : latestHobbies.content,
+          order: 999
         })
       }
     }
