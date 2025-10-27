@@ -1,7 +1,12 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, HelpCircle, Search, Book, MessageCircle, Mail } from 'lucide-react'
+import { ArrowLeft, HelpCircle, Search, Book, MessageCircle, Mail, ChevronDown, ChevronUp } from 'lucide-react'
 
 export default function HelpCenterPage() {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set())
   const faqs = [
     {
       category: 'Getting Started',
@@ -115,6 +120,26 @@ export default function HelpCenterPage() {
     }
   ]
 
+  const toggleQuestion = (categoryIdx: number, questionIdx: number) => {
+    const key = `${categoryIdx}-${questionIdx}`
+    const newExpanded = new Set(expandedQuestions)
+    if (newExpanded.has(key)) {
+      newExpanded.delete(key)
+    } else {
+      newExpanded.add(key)
+    }
+    setExpandedQuestions(newExpanded)
+  }
+
+  const filteredFaqs = faqs.map(category => ({
+    ...category,
+    questions: category.questions.filter(faq =>
+      searchQuery === '' ||
+      faq.q.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.a.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.questions.length > 0)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -146,6 +171,8 @@ export default function HelpCenterPage() {
               <input
                 type="text"
                 placeholder="Search for help..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               />
             </div>
@@ -176,22 +203,55 @@ export default function HelpCenterPage() {
 
         {/* FAQs */}
         <div className="space-y-8">
-          {faqs.map((category, idx) => (
-            <div key={idx} className="bg-white rounded-lg shadow-sm p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.category}</h2>
-              <div className="space-y-6">
-                {category.questions.map((faq, qIdx) => (
-                  <div key={qIdx} className="border-b border-gray-200 last:border-0 pb-6 last:pb-0">
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-start">
-                      <HelpCircle className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                      {faq.q}
-                    </h3>
-                    <p className="text-gray-600 ml-7">{faq.a}</p>
-                  </div>
-                ))}
-              </div>
+          {filteredFaqs.length === 0 ? (
+            <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
+              <p className="text-gray-600">Try different keywords or browse all categories</p>
+              <button
+                onClick={() => setSearchQuery('')}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Clear Search
+              </button>
             </div>
-          ))}
+          ) : (
+            filteredFaqs.map((category, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow-sm p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.category}</h2>
+                <div className="space-y-4">
+                  {category.questions.map((faq, qIdx) => {
+                    const key = `${idx}-${qIdx}`
+                    const isExpanded = expandedQuestions.has(key)
+                    
+                    return (
+                      <div key={qIdx} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleQuestion(idx, qIdx)}
+                          className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition text-left"
+                        >
+                          <div className="flex items-start flex-1">
+                            <HelpCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
+                            <h3 className="font-semibold text-gray-900">{faq.q}</h3>
+                          </div>
+                          {isExpanded ? (
+                            <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          )}
+                        </button>
+                        {isExpanded && (
+                          <div className="px-4 pb-4 pt-0 ml-8">
+                            <p className="text-gray-600">{faq.a}</p>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Still Need Help */}

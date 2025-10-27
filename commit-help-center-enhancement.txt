@@ -1,0 +1,19 @@
+feat: Enhance help center with interactive search and accordion
+
+Help Center Improvements:
+- Added real-time search functionality across all FAQs
+- Implemented accordion-style expandable questions
+- Added empty state when no search results found
+- Improved UX with chevron icons and hover states
+- Made questions clickable to expand/collapse
+- Search filters by both question and answer content
+- Added clear search button in empty state
+
+Features:
+- Interactive search with instant filtering
+- Collapsible FAQ sections for better readability
+- Clean, modern UI with smooth transitions
+- Mobile-friendly accordion design
+- Contextual empty states
+
+This makes the help center much more user-friendly and easier to navigate!
