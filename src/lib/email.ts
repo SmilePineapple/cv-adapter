@@ -206,7 +206,7 @@ export async function sendPromoEmail(email: string, name: string) {
               </p>
               
               <div style="margin: 16px 0 24px 0;">
-                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>100 CV Generations</strong> per month</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited CV Generations</strong></p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited Cover Letters</strong></p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Interview Preparation</strong> with AI</p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>All Export Formats</strong> (PDF, DOCX, HTML, TXT)</p>
@@ -216,7 +216,7 @@ export async function sendPromoEmail(email: string, name: string) {
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 32px 0;">
-                <a href="https://www.mycvbuddy.com/pricing" style="display: inline-block; background-color: #7c3aed; color: #ffffff; font-size: 18px; font-weight: bold; text-decoration: none; padding: 16px 32px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <a href="https://www.mycvbuddy.com" style="display: inline-block; background-color: #7c3aed; color: #ffffff; font-size: 18px; font-weight: bold; text-decoration: none; padding: 16px 32px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                   Upgrade to Pro Now - Save 50%
                 </a>
               </div>

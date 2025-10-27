@@ -1,0 +1,14 @@
+feat: Update promo email and add unsubscribe page
+
+Email Updates:
+- Changed "100 CV Generations" to "Unlimited CV Generations"
+- Updated CTA button to link to homepage instead of /pricing
+- Fixed unsubscribe link to go to actual page
+
+New Features:
+- Created /unsubscribe page with beautiful UI
+- Email input form for unsubscribing
+- Success confirmation message
+- Links back to homepage
+- Note about still receiving account emails
+- Ready for future unsubscribe API integration
