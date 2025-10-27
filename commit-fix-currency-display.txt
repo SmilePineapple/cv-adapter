@@ -1,0 +1,33 @@
+fix: Dynamic currency display on subscription page
+
+Fixed mixed currency display issue (£ and $ showing together):
+
+1. Currency Config Enhancement (src/lib/currency.ts)
+   - Added annual pricing fields to CurrencyConfig interface:
+     * annualAmount: Annual price in smallest unit
+     * annualDisplayAmount: Formatted annual price (e.g., "£49", "$69")
+     * annualMonthlyEquivalent: Monthly equivalent (e.g., "£4.08/month")
+     * annualSavings: Savings text (e.g., "Save £70/year")
+   
+   - Updated all 6 currencies with annual pricing:
+     * GBP: £49/year (save £70)
+     * USD: $69/year (save $87)
+     * EUR: €59/year (save €73)
+     * CAD: C$79/year (save C$101)
+     * AUD: A$89/year (save A$103)
+     * INR: ₹4,999/year (save ₹7,000)
+
+2. Subscription Page Fixes (src/app/subscription/page.tsx)
+   - Free plan: Changed "£0" to dynamic "{userCurrency.symbol}0"
+   - Free plan: Updated "1 CV generation" to "2 free CV generations"
+   - Annual plan: Changed hardcoded "£49" to "{userCurrency.annualDisplayAmount}"
+   - Annual plan: Changed "£4.08/month" to "{userCurrency.annualMonthlyEquivalent}"
+   - Annual plan: Changed "Save £70/year" to "{userCurrency.annualSavings}"
+
+Result:
+- UK users see: £0, £9.99/month, £49/year (Save £70/year)
+- US users see: $0, $12.99/month, $69/year (Save $87/year)
+- All prices now consistent with user's detected currency
+- No more mixed £ and $ on same page!
+
+Currency detection based on browser locale (navigator.language).
