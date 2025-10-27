@@ -276,7 +276,15 @@ export function generateOptimizedTemplateCSS(
  * Check if template uses advanced layout (two-column, icons, etc.)
  */
 export function isAdvancedTemplate(templateId: string): boolean {
-  return ['creative_modern', 'professional_columns'].includes(templateId)
+  return [
+    'creative_modern', 
+    'professional_columns',
+    'professional-metrics',
+    'teal-sidebar',
+    'soft-header',
+    'artistic-header',
+    'bold-split'
+  ].includes(templateId)
 }
 
 /**
