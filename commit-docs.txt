@@ -1,3 +1,5 @@
-docs: Add comprehensive advanced admin dashboard documentation
+docs: Add user-friendly fix documentation and improvement guides
 
-Created ADVANCED-ADMIN-COMPLETE.md with full documentation of all implemented features.
+Created comprehensive documentation:
+- FIXES-SUMMARY-FOR-USER.md - User-friendly summary of all fixes
+- IMPROVE-LANGUAGE-DETECTION.md - Guide for improving language detection accuracy
