@@ -5,7 +5,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -41,9 +40,8 @@ export default function PromoEmail({ name }: PromoEmailProps) {
               <Text style={promoSubtitle}>50% OFF Your First Month</Text>
               <Text style={promoPrice}>
                 <span style={strikethrough}>£9.99/month</span>
-                <br />
-                <span style={newPrice}>£4.99/month</span>
               </Text>
+              <Text style={newPrice}>£4.99/month</Text>
             </Section>
 
             <Text style={paragraph}>
@@ -75,7 +73,8 @@ export default function PromoEmail({ name }: PromoEmailProps) {
 
             <Text style={paragraph}>
               Best regards,
-              <br />
+            </Text>
+            <Text style={paragraph}>
               The CV Buddy Team
             </Text>
           </Section>
