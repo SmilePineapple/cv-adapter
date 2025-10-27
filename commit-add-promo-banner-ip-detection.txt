@@ -1,0 +1,38 @@
+feat: Add promotional banner and improve currency detection
+
+Added two major improvements to subscription page:
+
+1. IP-Based Currency Detection (src/app/subscription/page.tsx)
+   - Replaced browser locale detection with IP-based detection
+   - Uses ipapi.co API to detect user's country from IP address
+   - Maps country code to appropriate currency (GB→GBP, US→USD, etc.)
+   - Fallback to locale-based detection if IP detection fails
+   - More accurate for VPN users and international visitors
+   
+   Benefits:
+   - UK users will always see £ (even with US browser settings)
+   - US users will always see $ (even with UK browser settings)
+   - Detects actual location, not browser preference
+
+2. Promotional Banner (src/app/subscription/page.tsx)
+   - Added eye-catching gradient banner (green to blue)
+   - Displays "Limited Time Offer - 50% OFF!" with star icons
+   - Shows both promo codes in styled boxes:
+     * LAUNCH50MONTHLY - For monthly plan
+     * LAUNCH50ANNUAL - For annual plan (marked as "Best Value!")
+   - Responsive design (stacks on mobile, side-by-side on desktop)
+   - Only shows for non-Pro users
+   - Positioned above pricing plans for maximum visibility
+
+Design Features:
+- Gradient background (green-500 to blue-600)
+- Semi-transparent white boxes with backdrop blur
+- Yellow star icons for attention
+- Monospace font for promo codes (easy to read/copy)
+- Clear labels for each plan type
+
+Result:
+- Users immediately see promo codes before selecting plan
+- No confusion about which code to use
+- Accurate currency display based on actual location
+- Better conversion with prominent 50% off messaging
