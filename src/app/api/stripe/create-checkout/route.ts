@@ -127,28 +127,8 @@ export async function POST(request: NextRequest) {
       ]
     }
 
-    // Apply default coupon if set (for automatic promotions like LAUNCH50)
-    // NOTE: If using discounts, we cannot also use allow_promotion_codes
-    if (process.env.STRIPE_DEFAULT_COUPON) {
-      try {
-        const defaultCoupon = await stripe.coupons.retrieve(process.env.STRIPE_DEFAULT_COUPON)
-        if (defaultCoupon.valid) {
-          sessionParams.discounts = [
-            {
-              coupon: process.env.STRIPE_DEFAULT_COUPON,
-            },
-          ]
-          // When using discounts, don't set allow_promotion_codes
-        }
-      } catch (error) {
-        console.error('Default coupon not valid:', error)
-        // If coupon fails, allow manual entry instead
-        sessionParams.allow_promotion_codes = true
-      }
-    } else {
-      // If no default coupon, allow users to enter their own
-      sessionParams.allow_promotion_codes = true
-    }
+    // Allow users to enter promotion codes at checkout
+    sessionParams.allow_promotion_codes = true
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create(sessionParams)
