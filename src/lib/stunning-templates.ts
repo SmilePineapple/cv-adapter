@@ -259,8 +259,378 @@ export function generateTealSidebar(data: TemplateData): string {
   `.trim()
 }
 
+/**
+ * Template 3: Soft Header (Ella Elmer Style)
+ * Colored header blocks with skill progress bars
+ */
+export function generateSoftHeader(data: TemplateData): string {
+  const skills = extractSkills(data.skills)
+  
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
+    .header { display: flex; background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 100%); padding: 40px 60px; align-items: center; justify-content: space-between; }
+    .header-left h1 { font-size: 36px; font-weight: 700; margin-bottom: 5px; }
+    .header-left .subtitle { font-size: 14px; color: #666; }
+    .header-left .contact { font-size: 11px; margin-top: 10px; line-height: 1.8; }
+    .photo { width: 110px; height: 110px; border-radius: 8px; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .photo-placeholder { width: 100%; height: 100%; background: #E0E0E0; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+    .container { padding: 40px 60px; }
+    .section { margin-bottom: 30px; }
+    .section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; }
+    .section-title::before { content: '▲'; margin-right: 8px; font-size: 12px; }
+    .summary { font-size: 12px; line-height: 1.8; margin-bottom: 25px; }
+    .two-column { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
+    .experience-item { margin-bottom: 20px; }
+    .exp-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+    .exp-meta { font-size: 11px; color: #666; margin-bottom: 8px; }
+    .exp-desc { font-size: 11px; line-height: 1.7; }
+    .skill-bars { margin-top: 15px; }
+    .skill-bar { margin-bottom: 15px; }
+    .skill-name { font-size: 11px; font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .skill-progress { height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
+    .skill-fill { height: 100%; background: linear-gradient(90deg, #FFB6C1 0%, #87CEEB 100%); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <h1>${data.name}</h1>
+      <div class="subtitle">Professional Profile</div>
+      <div class="contact">
+        <div>Address: ${data.location || '123 Street, City'}</div>
+        <div>Phone: ${data.phone}</div>
+        <div>Email: ${data.email}</div>
+        <div>Web: ${data.website}</div>
+      </div>
+    </div>
+    <div class="photo">
+      <div class="photo-placeholder">👤</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="section">
+      <div class="section-title">Resume Summary</div>
+      <div class="summary">${data.summary || 'Detail-oriented professional with proven track record.'}</div>
+    </div>
+    
+    <div class="two-column">
+      <div class="main">
+        <div class="section">
+          <div class="section-title">Work Experience</div>
+          ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+            <div class="experience-item">
+              <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
+              <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
+              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+            </div>
+          `).join('') : ''}
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Education</div>
+          <div style="font-size: 12px; line-height: 1.7;">${data.education}</div>
+        </div>
+      </div>
+      
+      <div class="sidebar">
+        <div class="section">
+          <div class="section-title">Skills</div>
+          <div class="skill-bars">
+            ${skills.slice(0, 6).map((skill, i) => `
+              <div class="skill-bar">
+                <div class="skill-name">
+                  <span>${skill}</span>
+                  <span>${95 - i * 5}%</span>
+                </div>
+                <div class="skill-progress">
+                  <div class="skill-fill" style="width: ${95 - i * 5}%"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `.trim()
+}
+
+/**
+ * Template 4: Artistic Header (Themis Bear Style)
+ * Decorative pattern header with pink accent
+ */
+export function generateArtisticHeader(data: TemplateData): string {
+  const skills = extractSkills(data.skills)
+  const languages = extractLanguages(data.languages)
+  
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
+    .decorative-header { height: 120px; background: white; border-bottom: 2px solid #FFB6D9; position: relative; overflow: hidden; }
+    .decorative-header svg { width: 100%; height: 100%; }
+    .name-section { text-align: center; padding: 30px 60px 20px; }
+    .name { font-size: 32px; font-weight: 300; color: #FFB6D9; margin-bottom: 15px; }
+    .summary { font-size: 12px; line-height: 1.8; max-width: 800px; margin: 0 auto 30px; text-align: center; }
+    .container { padding: 0 60px 40px; }
+    .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+    .section { margin-bottom: 25px; }
+    .section-title { font-size: 13px; font-weight: 700; color: #FFB6D9; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #FFB6D9; }
+    .experience-item { margin-bottom: 18px; }
+    .exp-title { font-weight: 700; font-size: 12px; margin-bottom: 3px; }
+    .exp-meta { font-size: 10px; color: #666; margin-bottom: 6px; }
+    .exp-desc { font-size: 11px; line-height: 1.6; }
+    .skill-circles { display: flex; justify-content: space-around; margin: 20px 0; }
+    .skill-circle { text-align: center; }
+    .circle { width: 70px; height: 70px; border-radius: 50%; border: 6px solid #FFB6D9; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; margin: 0 auto 8px; color: #FFB6D9; }
+    .circle-label { font-size: 10px; font-weight: 600; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .skill-tag { padding: 6px 12px; background: #FFF0F5; color: #FFB6D9; font-size: 10px; font-weight: 600; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="decorative-header">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 Q150,20 300,60 T600,60 T900,60 T1200,60 L1200,120 L0,120 Z" fill="#FFE5F0" opacity="0.3"/>
+      <path d="M0,80 Q200,40 400,80 T800,80 T1200,80 L1200,120 L0,120 Z" fill="#FFB6D9" opacity="0.2"/>
+      <circle cx="100" cy="30" r="3" fill="#FFB6D9" opacity="0.4"/>
+      <circle cx="300" cy="50" r="4" fill="#FFB6D9" opacity="0.3"/>
+      <circle cx="500" cy="25" r="3" fill="#FFB6D9" opacity="0.5"/>
+      <circle cx="700" cy="45" r="4" fill="#FFB6D9" opacity="0.3"/>
+      <circle cx="900" cy="35" r="3" fill="#FFB6D9" opacity="0.4"/>
+      <circle cx="1100" cy="55" r="4" fill="#FFB6D9" opacity="0.3"/>
+    </svg>
+  </div>
+  
+  <div class="name-section">
+    <h1 class="name">${data.name}</h1>
+    <div class="summary">${data.summary || 'Creative and detail-oriented professional with passion for excellence.'}</div>
+  </div>
+  
+  <div class="container">
+    <div class="two-column">
+      <div class="left">
+        <div class="section">
+          <div class="section-title">Work Experience</div>
+          ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+            <div class="experience-item">
+              <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
+              <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
+              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+            </div>
+          `).join('') : ''}
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Education</div>
+          <div style="font-size: 11px; line-height: 1.7;">${data.education}</div>
+        </div>
+      </div>
+      
+      <div class="right">
+        ${languages.length > 0 ? `
+        <div class="skill-circles">
+          ${languages.slice(0, 3).map(lang => `
+            <div class="skill-circle">
+              <div class="circle">${lang.level}</div>
+              <div class="circle-label">${lang.name}</div>
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+        
+        <div class="section">
+          <div class="section-title">Strengths</div>
+          <div class="skill-tags">
+            ${skills.map(skill => `<div class="skill-tag">${skill}</div>`).join('')}
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-title">Hobbies</div>
+          <div style="display: flex; gap: 20px; justify-content: center; margin-top: 15px;">
+            <div style="text-align: center;">
+              <div style="font-size: 32px;">📚</div>
+              <div style="font-size: 10px; margin-top: 5px;">Reading</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 32px;">⚽</div>
+              <div style="font-size: 10px; margin-top: 5px;">Sports</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 32px;">✈️</div>
+              <div style="font-size: 10px; margin-top: 5px;">Travel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `.trim()
+}
+
+/**
+ * Template 5: Bold Split (Lana Vader Style)
+ * 50/50 dark/cyan split with high contrast
+ */
+export function generateBoldSplit(data: TemplateData): string {
+  const skills = extractSkills(data.skills)
+  const languages = extractLanguages(data.languages)
+  
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; line-height: 1.6; }
+    .container { display: flex; min-height: 100vh; }
+    .dark-side { width: 50%; background: #1A1A1A; color: white; padding: 50px 40px; }
+    .light-side { width: 50%; background: #00BCD4; color: white; padding: 50px 40px; }
+    .section { margin-bottom: 30px; }
+    .section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: #00BCD4; }
+    .light-side .section-title { color: white; }
+    .name { font-size: 36px; font-weight: 700; margin-bottom: 10px; text-align: right; }
+    .photo { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 0 30px auto; border: 4px solid #00BCD4; }
+    .photo-placeholder { width: 100%; height: 100%; background: #333; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+    .info-item { font-size: 11px; margin-bottom: 8px; display: flex; align-items: center; }
+    .info-icon { margin-right: 10px; }
+    .experience-item { margin-bottom: 20px; }
+    .exp-title { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+    .exp-meta { font-size: 10px; opacity: 0.8; margin-bottom: 6px; }
+    .exp-desc { font-size: 11px; line-height: 1.6; }
+    .exp-desc ul { margin-left: 15px; margin-top: 5px; }
+    .lang-circle { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; font-size: 14px; font-weight: 700; margin-right: 15px; margin-bottom: 10px; }
+    .lang-label { font-size: 10px; display: block; text-align: center; margin-top: 5px; }
+    .skill-slider { margin-bottom: 15px; }
+    .skill-name { font-size: 11px; font-weight: 600; margin-bottom: 6px; }
+    .slider-track { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; position: relative; }
+    .slider-fill { height: 100%; background: white; border-radius: 3px; }
+    .slider-thumb { width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; top: -3px; right: 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="dark-side">
+      <div class="section">
+        <div class="section-title">Profile</div>
+        <p style="font-size: 11px; line-height: 1.7;">${data.summary || 'Certified professional with proven track record of success.'}</p>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Work Experience</div>
+        ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+          <div class="experience-item">
+            <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
+            <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
+            <div class="exp-desc">${exp.split('\n').slice(2, 4).join('<br>') || 'Description'}</div>
+          </div>
+        `).join('') : ''}
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Education</div>
+        <div style="font-size: 11px; line-height: 1.7;">${data.education}</div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Strengths</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+          ${skills.slice(0, 6).map(skill => `
+            <div style="padding: 6px 12px; border: 1px solid #00BCD4; font-size: 10px; font-weight: 600;">${skill}</div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    
+    <div class="light-side">
+      <div class="photo">
+        <div class="photo-placeholder">👤</div>
+      </div>
+      
+      <h1 class="name">${data.name}</h1>
+      
+      <div class="section">
+        <div class="section-title">Personal Info</div>
+        <div class="info-item"><span class="info-icon">📍</span>${data.location || 'Location'}</div>
+        <div class="info-item"><span class="info-icon">📞</span>${data.phone}</div>
+        <div class="info-item"><span class="info-icon">📧</span>${data.email}</div>
+        <div class="info-item"><span class="info-icon">🌐</span>${data.website}</div>
+      </div>
+      
+      ${languages.length > 0 ? `
+      <div class="section">
+        <div class="section-title">Languages</div>
+        <div style="margin-top: 15px;">
+          ${languages.slice(0, 3).map(lang => `
+            <div style="display: inline-block; text-align: center; margin-right: 20px;">
+              <div class="lang-circle">${lang.level}</div>
+              <div class="lang-label">${lang.name}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      ` : ''}
+      
+      <div class="section">
+        <div class="section-title">Skills</div>
+        ${skills.slice(0, 5).map((skill, i) => `
+          <div class="skill-slider">
+            <div class="skill-name">${skill}</div>
+            <div class="slider-track">
+              <div class="slider-fill" style="width: ${90 - i * 5}%">
+                <div class="slider-thumb"></div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Hobbies</div>
+        <div style="display: flex; gap: 25px; margin-top: 15px; justify-content: center;">
+          <div style="text-align: center;">
+            <div style="font-size: 36px;">🎯</div>
+            <div style="font-size: 10px; margin-top: 5px;">Goals</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 36px;">🎮</div>
+            <div style="font-size: 10px; margin-top: 5px;">Gaming</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 36px;">🎵</div>
+            <div style="font-size: 10px; margin-top: 5px;">Music</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+  `.trim()
+}
+
 // Export template generators
 export const stunningTemplates = {
   'professional-metrics': generateProfessionalMetrics,
   'teal-sidebar': generateTealSidebar,
+  'soft-header': generateSoftHeader,
+  'artistic-header': generateArtisticHeader,
+  'bold-split': generateBoldSplit,
 }
