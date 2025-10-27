@@ -247,26 +247,34 @@ async function postToLinkedIn(
       throw new Error('LinkedIn access token not found')
     }
 
-    // First, get the user's profile to get the person URN
-    const profileResponse = await fetch('https://api.linkedin.com/v2/userinfo', {
-      headers: {
-        'Authorization': `Bearer ${config.access_token}`
-      }
-    })
-
-    if (!profileResponse.ok) {
-      const errorText = await profileResponse.text()
-      throw new Error(`Failed to get LinkedIn profile: ${errorText}`)
-    }
-
-    const profile = await profileResponse.json()
-    const personUrn = `urn:li:person:${profile.sub}`
+    // Check if we should post to organization or person
+    let authorUrn: string
     
-    console.log('LinkedIn profile URN:', personUrn)
+    if (config.organization_id) {
+      // Post to organization/company page
+      authorUrn = `urn:li:organization:${config.organization_id}`
+      console.log('Posting to LinkedIn organization:', authorUrn)
+    } else {
+      // Post to personal profile
+      const profileResponse = await fetch('https://api.linkedin.com/v2/userinfo', {
+        headers: {
+          'Authorization': `Bearer ${config.access_token}`
+        }
+      })
+
+      if (!profileResponse.ok) {
+        const errorText = await profileResponse.text()
+        throw new Error(`Failed to get LinkedIn profile: ${errorText}`)
+      }
+
+      const profile = await profileResponse.json()
+      authorUrn = `urn:li:person:${profile.sub}`
+      console.log('Posting to LinkedIn personal profile:', authorUrn)
+    }
 
     // Create the post using UGC API
     const postData = {
-      author: personUrn,
+      author: authorUrn,
       lifecycleState: 'PUBLISHED',
       specificContent: {
         'com.linkedin.ugc.ShareContent': {
