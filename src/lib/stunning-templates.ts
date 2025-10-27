@@ -486,11 +486,14 @@ export function generateArtisticHeader(data: TemplateData): string {
 
 /**
  * Template 5: Bold Split (Lana Vader Style)
- * 50/50 dark/cyan split with high contrast
+ * 50/50 dark/cyan split with high contrast - COMPACT VERSION
  */
 export function generateBoldSplit(data: TemplateData): string {
   const skills = extractSkills(data.skills)
   const languages = extractLanguages(data.languages)
+  
+  // Extract hobbies from text
+  const hobbies = data.hobbies ? data.hobbies.split(/[,\n]/).map(h => h.trim()).filter(Boolean).slice(0, 3) : []
   
   return `
 <!DOCTYPE html>
@@ -499,30 +502,35 @@ export function generateBoldSplit(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Arial', sans-serif; line-height: 1.6; }
-    .container { display: flex; min-height: 100vh; }
-    .dark-side { width: 50%; background: #1A1A1A; color: white; padding: 50px 40px; }
-    .light-side { width: 50%; background: #00BCD4; color: white; padding: 50px 40px; }
-    .section { margin-bottom: 30px; }
-    .section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; color: #00BCD4; }
-    .light-side .section-title { color: white; }
-    .name { font-size: 36px; font-weight: 700; margin-bottom: 10px; text-align: right; }
-    .photo { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 0 30px auto; border: 4px solid #00BCD4; }
-    .photo-placeholder { width: 100%; height: 100%; background: #333; display: flex; align-items: center; justify-content: center; font-size: 50px; }
-    .info-item { font-size: 11px; margin-bottom: 8px; display: flex; align-items: center; }
-    .info-icon { margin-right: 10px; }
-    .experience-item { margin-bottom: 20px; }
-    .exp-title { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
-    .exp-meta { font-size: 10px; opacity: 0.8; margin-bottom: 6px; }
-    .exp-desc { font-size: 11px; line-height: 1.6; }
-    .exp-desc ul { margin-left: 15px; margin-top: 5px; }
-    .lang-circle { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; font-size: 14px; font-weight: 700; margin-right: 15px; margin-bottom: 10px; }
-    .lang-label { font-size: 10px; display: block; text-align: center; margin-top: 5px; }
-    .skill-slider { margin-bottom: 15px; }
-    .skill-name { font-size: 11px; font-weight: 600; margin-bottom: 6px; }
-    .slider-track { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; position: relative; }
+    @page { size: A4; margin: 0; }
+    body { font-family: 'Arial', sans-serif; line-height: 1.4; margin: 0; padding: 0; }
+    .container { display: flex; height: 297mm; width: 210mm; }
+    .dark-side { width: 50%; background: #1A1A1A; color: white; padding: 30px 25px; overflow: hidden; }
+    .light-side { width: 50%; background: #00BCD4; color: white; padding: 30px 25px; overflow: hidden; }
+    .section { margin-bottom: 20px; }
+    .section-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; color: #00BCD4; text-transform: uppercase; letter-spacing: 1px; }
+    .light-side .section-title { color: white; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+    .dark-side .section-title { border-bottom: 2px solid #00BCD4; padding-bottom: 5px; }
+    .name { font-size: 28px; font-weight: 700; margin-bottom: 8px; text-align: right; line-height: 1.2; }
+    .photo { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 0 20px auto; border: 3px solid white; background: #333; }
+    .photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+    .info-item { font-size: 10px; margin-bottom: 6px; display: flex; align-items: center; }
+    .info-icon { margin-right: 8px; font-size: 12px; }
+    .experience-item { margin-bottom: 15px; }
+    .exp-title { font-weight: 700; font-size: 11px; margin-bottom: 3px; }
+    .exp-meta { font-size: 9px; opacity: 0.8; margin-bottom: 4px; }
+    .exp-desc { font-size: 10px; line-height: 1.4; }
+    .lang-circle { display: inline-flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; font-size: 12px; font-weight: 700; margin-right: 12px; margin-bottom: 8px; }
+    .lang-label { font-size: 9px; display: block; text-align: center; margin-top: 4px; }
+    .skill-slider { margin-bottom: 12px; }
+    .skill-name { font-size: 10px; font-weight: 600; margin-bottom: 5px; }
+    .slider-track { height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; position: relative; }
     .slider-fill { height: 100%; background: white; border-radius: 3px; }
-    .slider-thumb { width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; top: -3px; right: 0; }
+    .slider-thumb { width: 10px; height: 10px; background: white; border-radius: 50%; position: absolute; top: -2.5px; right: 0; }
+    .hobby-item { text-align: center; }
+    .hobby-icon { font-size: 28px; filter: brightness(0) invert(1); }
+    .hobby-label { font-size: 9px; margin-top: 4px; }
+    .strength-tag { padding: 5px 10px; border: 1px solid #00BCD4; font-size: 9px; font-weight: 600; display: inline-block; margin: 0 5px 5px 0; }
   </style>
 </head>
 <body>
@@ -530,31 +538,31 @@ export function generateBoldSplit(data: TemplateData): string {
     <div class="dark-side">
       <div class="section">
         <div class="section-title">Profile</div>
-        <p style="font-size: 11px; line-height: 1.7;">${data.summary || 'Certified professional with proven track record of success.'}</p>
+        <p style="font-size: 10px; line-height: 1.5;">${data.summary ? data.summary.substring(0, 200) + (data.summary.length > 200 ? '...' : '') : 'Professional profile summary.'}</p>
       </div>
       
       <div class="section">
         <div class="section-title">Work Experience</div>
-        ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+        ${data.experience ? data.experience.split('\n\n').slice(0, 1).map(exp => {
+          const lines = exp.split('\n')
+          return `
           <div class="experience-item">
-            <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
-            <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
-            <div class="exp-desc">${exp.split('\n').slice(2, 4).join('<br>') || 'Description'}</div>
+            <div class="exp-title">${lines[0] || 'Position'}</div>
+            <div class="exp-meta">${lines[1] || 'Company'}</div>
+            <div class="exp-desc">${lines.slice(2, 4).join('<br>') || ''}</div>
           </div>
-        `).join('') : ''}
+        `}).join('') : '<p style="font-size:10px;">No experience listed</p>'}
       </div>
       
       <div class="section">
         <div class="section-title">Education</div>
-        <div style="font-size: 11px; line-height: 1.7;">${data.education}</div>
+        <div style="font-size: 10px; line-height: 1.4;">${data.education ? data.education.split('\n').slice(0, 3).join('<br>') : 'Education details'}</div>
       </div>
       
       <div class="section">
         <div class="section-title">Strengths</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-          ${skills.slice(0, 6).map(skill => `
-            <div style="padding: 6px 12px; border: 1px solid #00BCD4; font-size: 10px; font-weight: 600;">${skill}</div>
-          `).join('')}
+        <div>
+          ${skills.slice(0, 6).map(skill => `<span class="strength-tag">${skill}</span>`).join('')}
         </div>
       </div>
     </div>
@@ -564,22 +572,22 @@ export function generateBoldSplit(data: TemplateData): string {
         <div class="photo-placeholder">👤</div>
       </div>
       
-      <h1 class="name">${data.name}</h1>
+      <h1 class="name">${data.name || 'Your Name'}</h1>
       
       <div class="section">
         <div class="section-title">Personal Info</div>
         <div class="info-item"><span class="info-icon">📍</span>${data.location || 'Location'}</div>
-        <div class="info-item"><span class="info-icon">📞</span>${data.phone}</div>
-        <div class="info-item"><span class="info-icon">📧</span>${data.email}</div>
-        <div class="info-item"><span class="info-icon">🌐</span>${data.website}</div>
+        <div class="info-item"><span class="info-icon">📞</span>${data.phone || 'Phone'}</div>
+        <div class="info-item"><span class="info-icon">📧</span>${data.email || 'Email'}</div>
+        ${data.website ? `<div class="info-item"><span class="info-icon">🌐</span>${data.website}</div>` : ''}
       </div>
       
       ${languages.length > 0 ? `
       <div class="section">
         <div class="section-title">Languages</div>
-        <div style="margin-top: 15px;">
+        <div style="margin-top: 10px;">
           ${languages.slice(0, 3).map(lang => `
-            <div style="display: inline-block; text-align: center; margin-right: 20px;">
+            <div style="display: inline-block; text-align: center; margin-right: 15px;">
               <div class="lang-circle">${lang.level}</div>
               <div class="lang-label">${lang.name}</div>
             </div>
@@ -590,7 +598,7 @@ export function generateBoldSplit(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Skills</div>
-        ${skills.slice(0, 5).map((skill, i) => `
+        ${skills.slice(0, 4).map((skill, i) => `
           <div class="skill-slider">
             <div class="skill-name">${skill}</div>
             <div class="slider-track">
@@ -602,23 +610,19 @@ export function generateBoldSplit(data: TemplateData): string {
         `).join('')}
       </div>
       
+      ${hobbies.length > 0 ? `
       <div class="section">
         <div class="section-title">Hobbies</div>
-        <div style="display: flex; gap: 25px; margin-top: 15px; justify-content: center;">
-          <div style="text-align: center;">
-            <div style="font-size: 36px;">🎯</div>
-            <div style="font-size: 10px; margin-top: 5px;">Goals</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 36px;">🎮</div>
-            <div style="font-size: 10px; margin-top: 5px;">Gaming</div>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 36px;">🎵</div>
-            <div style="font-size: 10px; margin-top: 5px;">Music</div>
-          </div>
+        <div style="display: flex; gap: 20px; margin-top: 10px; justify-content: center;">
+          ${hobbies.map(hobby => `
+            <div class="hobby-item">
+              <div class="hobby-icon">⚪</div>
+              <div class="hobby-label">${hobby}</div>
+            </div>
+          `).join('')}
         </div>
       </div>
+      ` : ''}
     </div>
   </div>
 </body>
