@@ -1,0 +1,16 @@
+fix: Use service role for admin operations and improve real-time metrics
+
+Fixed two critical admin issues:
+
+1. Promo Blast Failing
+   - Now uses service role client for auth.admin.listUsers()
+   - Fixed "User not allowed" error
+   - Can now fetch all users and send emails
+
+2. Admin Dashboard Real-Time Metrics
+   - Now uses service role for all admin queries
+   - Increased active user window from 5 to 30 minutes
+   - Fixed signups today count (was always 0)
+   - All metrics now show real data
+
+Both endpoints now properly use SUPABASE_SERVICE_ROLE_KEY for admin operations.
