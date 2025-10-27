@@ -1,0 +1,11 @@
+fix: Replace React Email with HTML template for promo email
+
+Switched from React Email component to plain HTML template to avoid rendering issues in production.
+The HTML version is more reliable and works immediately without build issues.
+
+Benefits:
+- No React Email rendering errors
+- Works in all environments
+- Faster to send
+- Same beautiful design
+- All features included
