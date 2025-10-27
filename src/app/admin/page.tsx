@@ -417,7 +417,7 @@ export default function AdminDashboard() {
                       <div className="text-sm text-gray-900">
                         {user.lifetime_usage}
                         <span className="text-xs text-gray-500 ml-1">
-                          / {user.plan === 'pro' ? '100' : '1'}
+                          / {user.plan === 'pro' ? '100' : '2'}
                         </span>
                       </div>
                     </td>

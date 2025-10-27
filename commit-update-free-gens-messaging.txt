@@ -1,0 +1,22 @@
+fix: Update all messaging from 1 to 2 free generations
+
+Updated all references throughout the app to reflect the new 2 free generations:
+
+Files Updated:
+- src/lib/metadata.ts - Signup metadata
+- src/components/StructuredData.tsx - FAQ structured data
+- src/app/homepage.tsx - Hero CTA and FAQ section
+- src/app/terms/page.tsx - Free tier description
+- src/app/landing/page.tsx - Landing page CTA
+- src/app/generate/[id]/page.tsx - Error message
+- src/app/help/page.tsx - FAQ answer
+- src/app/dashboard/page.tsx - Error message
+- src/app/auth/signup/layout.tsx - Signup page metadata
+
+Changes:
+- "1 free generation" → "2 free generations"
+- "1 free CV generation" → "2 free CV generations"
+- Error messages updated to reflect 2 free gens used
+- Pricing messaging updated (£5 one-time vs £9.99/month)
+
+This ensures consistent messaging across the entire app about the improved free tier.

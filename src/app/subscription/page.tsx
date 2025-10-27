@@ -172,7 +172,7 @@ export default function SubscriptionPage() {
     }
   }
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (plan: 'monthly' | 'annual' = 'monthly') => {
     if (!user) return
 
     setIsUpgrading(true)
@@ -185,6 +185,7 @@ export default function SubscriptionPage() {
         body: JSON.stringify({
           userId: user.id,
           currency: userCurrency.code,
+          plan: plan,
         }),
       })
 
@@ -537,7 +538,7 @@ export default function SubscriptionPage() {
                 </ul>
 
                 <button
-                  onClick={handleUpgrade}
+                  onClick={() => handleUpgrade('monthly')}
                   disabled={isUpgrading || isPro}
                   className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
@@ -564,7 +565,7 @@ export default function SubscriptionPage() {
               <div className="border-2 border-green-500 rounded-xl p-6 relative bg-gradient-to-br from-green-50 to-blue-50">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    Save £70/year + 50% OFF with code LAUNCH50ANNUAL
+                    BEST VALUE - Save £70/year
                   </span>
                 </div>
 
@@ -606,7 +607,7 @@ export default function SubscriptionPage() {
                 </ul>
 
                 <button
-                  onClick={handleUpgrade}
+                  onClick={() => handleUpgrade('annual')}
                   disabled={isUpgrading || isPro}
                   className="w-full py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-sm font-semibold"
                 >
