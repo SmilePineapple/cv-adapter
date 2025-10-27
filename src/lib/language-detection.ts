@@ -97,15 +97,16 @@ export interface LanguageDetectionResult {
 /**
  * Detect language from text content
  * @param text - Text content to analyze
- * @param minLength - Minimum text length required for detection (default: 50)
+ * @param minLength - Minimum text length required for detection (default: 200 - increased for better accuracy)
  * @returns Language detection result
  */
-export function detectLanguage(text: string, minLength: number = 50): LanguageDetectionResult {
+export function detectLanguage(text: string, minLength: number = 200): LanguageDetectionResult {
   // Clean and normalize text
   const cleanText = text.trim()
   
   // Default to English if text is too short
   if (cleanText.length < minLength) {
+    console.log(`⚠️ Text too short (${cleanText.length} chars), defaulting to English`)
     return {
       code: 'en',
       name: 'English',
@@ -119,6 +120,7 @@ export function detectLanguage(text: string, minLength: number = 50): LanguageDe
     
     // Handle 'und' (undetermined)
     if (detected === 'und') {
+      console.log('⚠️ Language undetermined, defaulting to English')
       return {
         code: 'en',
         name: 'English',
@@ -131,15 +133,28 @@ export function detectLanguage(text: string, minLength: number = 50): LanguageDe
     const languageCode = LANGUAGE_MAP[detected] || 'en'
     const languageName = LANGUAGE_NAMES[languageCode] || 'English'
     
-    // Determine confidence based on text length
+    // More conservative confidence thresholds
     let confidence: 'high' | 'medium' | 'low' = 'high'
-    if (cleanText.length < 200) {
+    if (cleanText.length < 1000) {
       confidence = 'medium'
     }
-    if (cleanText.length < 100) {
+    if (cleanText.length < 500) {
       confidence = 'low'
     }
 
+    // 🔥 NEW: Default to English for low confidence non-English detections
+    // This prevents false positives like English CVs being detected as Czech
+    if (confidence === 'low' && languageCode !== 'en') {
+      console.log(`⚠️ Low confidence ${languageName} detection (${cleanText.length} chars), defaulting to English`)
+      return {
+        code: 'en',
+        name: 'English',
+        confidence: 'low',
+        rawCode: detected
+      }
+    }
+
+    console.log(`✅ Detected ${languageName} with ${confidence} confidence (${cleanText.length} chars)`)
     return {
       code: languageCode,
       name: languageName,
