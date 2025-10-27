@@ -1,0 +1,8 @@
+fix: Increase email delay to respect Resend rate limit
+
+Changed delay from 100ms to 500ms between emails to respect Resend's rate limit of 2 requests per second.
+
+This fixes the 50% failure rate where 24 out of 48 emails failed with rate_limit_exceeded error.
+
+Now emails will send at 2 per second (safe rate) instead of 10 per second.
+Total send time will be ~24 seconds for 48 emails instead of ~5 seconds.
