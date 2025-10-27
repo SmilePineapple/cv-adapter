@@ -17,8 +17,14 @@ import {
   BarChart3,
   UserCheck,
   Zap,
-  Twitter
+  Twitter,
+  Download,
+  Filter,
+  RefreshCw,
+  UserPlus,
+  Send
 } from 'lucide-react'
+import { exportUsersToCSV, exportAnalyticsToCSV, exportRevenueReportToCSV } from '@/lib/csv-export'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
@@ -76,6 +82,9 @@ export default function AdminDashboard() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPlan, setFilterPlan] = useState<'all' | 'free' | 'pro'>('all')
+  const [filterActivity, setFilterActivity] = useState<'all' | 'active' | 'inactive'>('all')
+  const [filterValue, setFilterValue] = useState<'all' | 'high' | 'low'>('all')
+  const [showFilters, setShowFilters] = useState(false)
   const supabase = createSupabaseClient()
   const router = useRouter()
 
@@ -127,10 +136,27 @@ export default function AdminDashboard() {
   }
 
   const filteredUsers = analytics?.users.filter(user => {
+    // Search filter
     const matchesSearch = user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          (user.full_name?.toLowerCase().includes(searchQuery.toLowerCase()))
+    
+    // Plan filter
     const matchesPlan = filterPlan === 'all' || user.plan === filterPlan
-    return matchesSearch && matchesPlan
+    
+    // Activity filter
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    const lastActivity = user.last_activity ? new Date(user.last_activity) : null
+    const isActive = lastActivity && lastActivity > sevenDaysAgo
+    const matchesActivity = filterActivity === 'all' || 
+                           (filterActivity === 'active' && isActive) ||
+                           (filterActivity === 'inactive' && !isActive)
+    
+    // Value filter (high = >5 generations, low = <=5 generations)
+    const matchesValue = filterValue === 'all' ||
+                        (filterValue === 'high' && user.generation_count > 5) ||
+                        (filterValue === 'low' && user.generation_count <= 5)
+    
+    return matchesSearch && matchesPlan && matchesActivity && matchesValue
   }) || []
 
   const formatDate = (dateString: string) => {
@@ -361,7 +387,7 @@ export default function AdminDashboard() {
               <Activity className="w-5 h-5 text-blue-600" />
               All Users ({filteredUsers.length})
             </h3>
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               <input
                 type="text"
                 placeholder="Search by email or name..."
@@ -378,8 +404,68 @@ export default function AdminDashboard() {
                 <option value="free">Free Only</option>
                 <option value="pro">Pro Only</option>
               </select>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+              >
+                <Filter className="w-4 h-4" />
+                {showFilters ? 'Hide Filters' : 'More Filters'}
+              </button>
+              <button
+                onClick={() => exportUsersToCSV(filteredUsers)}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Export CSV
+              </button>
             </div>
           </div>
+
+          {/* Advanced Filters */}
+          {showFilters && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Activity</label>
+                  <select
+                    value={filterActivity}
+                    onChange={(e) => setFilterActivity(e.target.value as any)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="all">All Users</option>
+                    <option value="active">Active (7 days)</option>
+                    <option value="inactive">Inactive (7+ days)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">User Value</label>
+                  <select
+                    value={filterValue}
+                    onChange={(e) => setFilterValue(e.target.value as any)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="all">All Users</option>
+                    <option value="high">High Value (&gt;5 gens)</option>
+                    <option value="low">Low Value (≤5 gens)</option>
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    onClick={() => {
+                      setFilterActivity('all')
+                      setFilterValue('all')
+                      setFilterPlan('all')
+                      setSearchQuery('')
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 flex items-center justify-center gap-2"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Reset Filters
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="overflow-x-auto">
             <table className="w-full">
