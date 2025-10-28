@@ -145,13 +145,16 @@ export function generateProfessionalMetrics(data: TemplateData): string {
         
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${data.experience ? data.experience.split('\n\n').map(exp => `
+          ${data.experience ? data.experience.split('\n\n').map(exp => {
+            const lines = exp.split('\n')
+            const titleLine = lines[0] || 'Position Title'
+            const description = lines.slice(1).join('<br>') || ''
+            return `
             <div class="experience-item">
-              <div class="experience-header">${exp.split('\n')[0] || 'Position Title'}</div>
-              <div class="experience-meta">${exp.split('\n')[1] || 'Company • Location'}</div>
-              <div class="experience-desc">${exp.split('\n').slice(2).join('<br>')}</div>
+              <div class="experience-header">${titleLine}</div>
+              <div class="experience-desc">${description}</div>
             </div>
-          `).join('') : '<p style="font-size:11px;">No experience listed</p>'}
+          `}).join('') : '<p style="font-size:11px;">No experience listed</p>'}
         </div>
       </div>
       
@@ -270,13 +273,16 @@ export function generateTealSidebar(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Work Experience</div>
-        ${data.experience ? data.experience.split('\n\n').map(exp => `
+        ${data.experience ? data.experience.split('\n\n').map(exp => {
+          const lines = exp.split('\n')
+          const titleLine = lines[0] || ''
+          const description = lines.slice(1).join('<br>') || ''
+          return `
           <div class="experience-item">
-            <div class="exp-title">${exp.split('\n')[0]}</div>
-            <div class="exp-meta">${exp.split('\n')[1]}</div>
-            <div class="exp-desc">${exp.split('\n').slice(2).join('<br>')}</div>
+            <div class="exp-title">${titleLine}</div>
+            <div class="exp-desc">${description}</div>
           </div>
-        `).join('') : ''}
+        `}).join('') : ''}
       </div>
       
       <div class="section">
@@ -374,13 +380,16 @@ export function generateSoftHeader(data: TemplateData): string {
       <div class="main">
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${data.experience ? data.experience.split('\n\n').map(exp => `
+          ${data.experience ? data.experience.split('\n\n').map(exp => {
+            const lines = exp.split('\n')
+            const titleLine = lines[0] || ''
+            const description = lines.slice(1).join('<br>') || ''
+            return `
             <div class="experience-item">
-              <div class="exp-title">${exp.split('\n')[0]}</div>
-              <div class="exp-meta">${exp.split('\n')[1]}</div>
-              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>')}</div>
+              <div class="exp-title">${titleLine}</div>
+              <div class="exp-desc">${description}</div>
             </div>
-          `).join('') : ''}
+          `}).join('') : ''}
         </div>
         
         <div class="section">
@@ -475,13 +484,16 @@ export function generateArtisticHeader(data: TemplateData): string {
       <div class="left">
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+          ${data.experience ? data.experience.split('\n\n').map(exp => {
+            const lines = exp.split('\n')
+            const titleLine = lines[0] || 'Position'
+            const description = lines.slice(1).join('<br>') || ''
+            return `
             <div class="experience-item">
-              <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
-              <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
-              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+              <div class="exp-title">${titleLine}</div>
+              <div class="exp-desc">${description}</div>
             </div>
-          `).join('') : ''}
+          `}).join('') : ''}
         </div>
         
         <div class="section">
