@@ -717,22 +717,70 @@ export default function DownloadPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Download Your Tailored CV
-          </h1>
-          <p className="text-gray-600">
-            Choose a template and format, then download your optimized CV
-          </p>
+        {/* Template Slider - Horizontal */}
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Choose Template</h2>
+          <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+            {TEMPLATES.map((template) => {
+              const isLocked = template.pro && !isPro
+              return (
+                <button
+                  key={template.id}
+                  onClick={() => {
+                    if (isLocked) {
+                      setShowUpgradeModal(true)
+                    } else {
+                      setSelectedTemplate(template.id)
+                    }
+                  }}
+                  className={`
+                    relative flex-shrink-0 w-48 p-4 rounded-lg border-2 transition-all snap-start
+                    ${selectedTemplate === template.id 
+                      ? 'border-blue-500 bg-blue-50 shadow-lg' 
+                      : isLocked
+                      ? 'border-gray-200 bg-gray-50 opacity-60'
+                      : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                    }
+                  `}
+                >
+                  <div className="text-left">
+                    <div className="font-semibold text-sm text-gray-900 mb-1">
+                      {template.name}
+                    </div>
+                    <div className="text-xs text-gray-500 line-clamp-2 mb-2">
+                      {template.description}
+                    </div>
+                    
+                    {template.badge && (
+                      <span className="inline-block px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                        {template.badge}
+                      </span>
+                    )}
+                    {template.category && (
+                      <span className="inline-block ml-1 px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+                        {template.category}
+                      </span>
+                    )}
+                  </div>
+                  
+                  {isLocked && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-2xl mb-1">🔒</div>
+                        <div className="text-xs font-semibold text-purple-600">PRO</div>
+                      </div>
+                    </div>
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {/* PDF Preview - Full Width with Sticky */}
-        <div className="max-w-7xl mx-auto mb-6">
-          <div className="bg-white rounded-lg shadow p-6 sticky top-4 z-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Eye className="w-5 h-5 text-gray-400" />
-              <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
-            </div>
+        {/* Preview - Clean and Centered */}
+        <div className="max-w-5xl mx-auto mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Preview</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6">
             <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
               <iframe
                 srcDoc={previewHtml}
@@ -743,95 +791,9 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            <button
-              onClick={handleExport}
-              disabled={isExporting}
-              className="bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-            >
-              {isExporting ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Exporting...
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4 mr-2" />
-                  Download
-                </>
-              )}
-            </button>
-            
-            {generationData && generationData.cv_id && (
-              <Link
-                href={`/edit/${generationData.cv_id}`}
-                className="bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
-              >
-                <Edit3 className="w-4 h-4 mr-2" />
-                Edit CV
-              </Link>
-            )}
-            
-            <Link
-              href="/dashboard"
-              className="border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Dashboard
-            </Link>
-            
-            {!showReview && (
-              <button
-                onClick={() => {
-                  if (!isPro) {
-                    setShowUpgradeModal(true)
-                    return
-                  }
-                  handleAIReview()
-                }}
-                disabled={isReviewing}
-                className={`py-3 px-4 rounded-lg font-semibold transition-all disabled:opacity-50 flex items-center justify-center ${
-                  isPro 
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-purple-300'
-                }`}
-              >
-                {isReviewing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Reviewing...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    AI Review
-                    {!isPro && (
-                      <span className="ml-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
-                        PRO
-                      </span>
-                    )}
-                  </>
-                )}
-              </button>
-            )}
-            
-            {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns' || selectedTemplate === 'artistic-header') && generationData && generationData.cv_id && (
-              <Link
-                href={`/hobbies/${generationData.cv_id}?returnTo=/download/${generationId}`}
-                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all flex items-center justify-center"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Hobby Icons
-              </Link>
-            )}
-          </div>
-        </div>
-
         {/* Export Format Selection */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6 max-w-4xl mx-auto">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h2>
+        <div className="max-w-5xl mx-auto mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Export Format</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {EXPORT_FORMATS.map((format) => {
               const isLocked = format.pro && !isPro
@@ -886,11 +848,56 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* Template Selection - Grid Layout */}
-        <div className="max-w-7xl mx-auto mb-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        {/* Download or Edit CV - Single Action Section */}
+        <div className="max-w-5xl mx-auto mb-8">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  Your CV is Ready!
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Download your tailored CV or make final edits
+                </p>
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={handleExport}
+                  disabled={isExporting}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
+                >
+                  {isExporting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Exporting...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-5 h-5" />
+                      Download
+                    </>
+                  )}
+                </button>
+                
+                {generationData && generationData.cv_id && (
+                  <Link
+                    href={`/edit/${generationData.cv_id}`}
+                    className="bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-gray-300 flex items-center gap-2"
+                  >
+                    <Edit3 className="w-5 h-5" />
+                    Edit CV
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Old Template Grid - Hidden */}
+        <div className="hidden">
+          <div className="hidden">
+            <div className="hidden">
                 {TEMPLATES.map((template) => {
                   const isLocked = template.pro && !isPro
                   return (
