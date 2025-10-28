@@ -147,29 +147,29 @@ SELECT * FROM pg_policies WHERE tablename = 'cv_sections';
 -- 5. ADD SKILL_SCORES TO SECTION_TYPE CHECK CONSTRAINT
 -- ============================================
 
--- First, check what section_types exist
+-- First, check what section_types exist (uncomment to debug)
 -- SELECT DISTINCT section_type FROM cv_sections;
 
--- Update any invalid section_types to valid ones (if needed)
--- UPDATE cv_sections SET section_type = 'interests' WHERE section_type NOT IN (
---   'name', 'contact', 'summary', 'experience', 'education', 
---   'skills', 'certifications', 'projects', 'publications', 
---   'hobbies', 'interests', 'languages', 'skill_scores'
--- );
-
--- Drop existing check constraint
+-- Drop existing check constraint first
 ALTER TABLE cv_sections DROP CONSTRAINT IF EXISTS cv_sections_section_type_check;
 
--- Add new check constraint with skill_scores included (NOT VALID to skip existing rows)
+-- Clean up any invalid section_types before adding constraint
+-- Map any unknown types to 'interests' as a safe default
+UPDATE cv_sections 
+SET section_type = 'interests' 
+WHERE section_type NOT IN (
+  'name', 'contact', 'summary', 'experience', 'education', 
+  'skills', 'certifications', 'projects', 'publications', 
+  'hobbies', 'interests', 'languages', 'skill_scores'
+);
+
+-- Now add the constraint (should work since we cleaned the data)
 ALTER TABLE cv_sections ADD CONSTRAINT cv_sections_section_type_check 
 CHECK (section_type IN (
   'name', 'contact', 'summary', 'experience', 'education', 
   'skills', 'certifications', 'projects', 'publications', 
   'hobbies', 'interests', 'languages', 'skill_scores'
-)) NOT VALID;
-
--- Validate the constraint (this will check new rows only)
-ALTER TABLE cv_sections VALIDATE CONSTRAINT cv_sections_section_type_check;
+));
 
 -- ============================================
 -- DONE!
