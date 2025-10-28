@@ -169,7 +169,15 @@ export async function POST(request: NextRequest) {
       .select('content, hobby_icons')
       .eq('cv_id', cvId)
       .eq('section_type', 'interests')
-      .single()
+      .maybeSingle()
+
+    // Fetch latest skill scores from cv_sections table (user may have adjusted levels)
+    const { data: latestSkillScores } = await supabase
+      .from('cv_sections')
+      .select('content')
+      .eq('cv_id', cvId)
+      .eq('section_type', 'skill_scores')
+      .maybeSingle()
 
     // CRITICAL FIX: Use AI-modified sections as the primary source
     // The AI generation already has ALL sections (modified + preserved)
@@ -201,6 +209,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Add skill scores if user customized them
+    if (latestSkillScores && latestSkillScores.content) {
+      console.log('📊 Using custom skill scores:', latestSkillScores.content)
+      completeSections.push({
+        type: 'skill_scores',
+        content: latestSkillScores.content,
+        order: 998
+      })
+    }
+
     // Deduplicate sections by type (keep only the first occurrence)
     const seenTypes = new Set<string>()
     const deduplicatedSections = completeSections.filter(section => {
@@ -223,8 +241,8 @@ export async function POST(request: NextRequest) {
         : JSON.stringify(s.content).substring(0, 100)
       console.log(`  - ${s.type}: ${contentPreview}${contentPreview.length >= 100 ? '...' : ''}`)
       
-      // Warn if critical sections are empty
-      if (['education', 'certifications'].includes(s.type)) {
+      // Warn if critical sections are empty or missing
+      if (['name', 'contact', 'education', 'certifications'].includes(s.type)) {
         const contentStr = getSectionContent(s.content)
         console.log(`🔍 DEBUG ${s.type}:`)
         console.log(`   Type: ${typeof s.content}`)
@@ -238,6 +256,14 @@ export async function POST(request: NextRequest) {
         }
       }
     })
+    
+    // Check if name and contact sections exist
+    const hasName = sections.some(s => s.type === 'name')
+    const hasContact = sections.some(s => s.type === 'contact')
+    console.log(`📋 Has name section: ${hasName}`)
+    console.log(`📋 Has contact section: ${hasContact}`)
+    if (!hasName) console.error('🚨 CRITICAL: NAME SECTION MISSING!')
+    if (!hasContact) console.error('🚨 CRITICAL: CONTACT SECTION MISSING!')
 
     // Track analytics
     try {
