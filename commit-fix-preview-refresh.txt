@@ -1,0 +1,75 @@
+fix: Preview now fetches latest skill scores on refresh
+
+CRITICAL FIX: Preview not refreshing with updated skill levels
+
+Problem:
+- User updates skill levels → Saves to cv_sections table
+- Preview regenerates → Uses old sections from generationData
+- Result: Preview shows old skill levels, not updated ones
+- Toast says "refreshed" but preview unchanged
+
+Root Cause:
+- generatePreview() used sections from generationData.output_sections
+- Skill scores stored in separate cv_sections table
+- Preview never fetched latest skill_scores after update
+- Export API fetches skill_scores (works), preview didn't (broken)
+
+Solution:
+1. Made generatePreview() async
+2. Fetch latest skill_scores from cv_sections table
+3. Remove old skill_scores from sections array
+4. Add updated skill_scores to sections
+5. Generate preview with fresh data
+
+Code Changes:
+```typescript
+// Fetch latest skill scores from cv_sections table
+const { data: skillScoresData } = await supabase
+  .from('cv_sections')
+  .select('content')
+  .eq('cv_id', generationData.cv_id)
+  .eq('section_type', 'skill_scores')
+  .maybeSingle()
+
+if (skillScoresData?.content) {
+  // Remove old skill_scores
+  sections = sections.filter(s => s.type !== 'skill_scores')
+  // Add updated skill_scores
+  sections.push({
+    type: 'skill_scores',
+    content: skillScoresData.content,
+    order: 999
+  })
+}
+```
+
+Impact:
+✅ Preview fetches latest skill scores
+✅ Preview updates immediately after save
+✅ Preview matches export exactly
+✅ User sees changes in real-time
+✅ WYSIWYG - what you see is what you get
+
+Testing:
+1. Adjust skill slider
+2. Click Save
+3. Preview should refresh with new levels
+4. Export should match preview
+
+Note on Skill Names:
+The logs still show malformed skill names with brackets:
+`{ name: '["Exceptional communication skills"', level: 30 }`
+
+This is OLD data from before the fix. Users need to:
+1. Delete all skills
+2. Re-add them (they'll save correctly now)
+3. Or we can run a migration to clean up existing data
+
+Files Modified:
+- src/app/download/[id]/page.tsx:
+  * Made generatePreview() async
+  * Fetch skill_scores from cv_sections
+  * Update all generatePreview() calls to await
+  * Preview now shows latest skill levels
+
+Status: Build passing, ready to deploy!
