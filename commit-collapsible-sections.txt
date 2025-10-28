@@ -1,0 +1,35 @@
+fix: Add collapsible photo/skill sections and fix skill save error
+
+Fixed and enhanced download page:
+
+1. Fixed Skill Save Error ✅
+   - Changed from upsert to check-then-update/insert
+   - Handles missing unique constraint gracefully
+   - No more 400 errors
+
+2. Collapsible Skill Editor ✅
+   - Toggle button with chevron icons
+   - Blue border for visual distinction
+   - Collapses to save space
+   - Open by default
+
+3. Collapsible Photo Upload ✅
+   - Added to download page under skill editor
+   - Toggle button with chevron icons
+   - Purple border for visual distinction
+   - Open by default
+   - Refreshes preview on upload
+
+Features:
+- Smooth transitions
+- Clear visual hierarchy
+- Space-efficient design
+- Better UX for optional features
+
+Files Modified:
+- src/components/SkillScoreEditor.tsx (fixed save logic)
+- src/app/download/[id]/page.tsx (added collapsible sections)
+
+Next: Dashboard button redesign
+
+Status: Build passing, ready to deploy!

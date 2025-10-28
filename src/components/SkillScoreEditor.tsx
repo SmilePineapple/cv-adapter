@@ -99,19 +99,38 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
     try {
       const supabase = createSupabaseClient()
       
-      // Save to cv_sections table
-      const { error } = await supabase
+      // Check if record exists
+      const { data: existing } = await supabase
         .from('cv_sections')
-        .upsert({
-          cv_id: cvId,
-          section_type: 'skill_scores',
-          content: skills,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'cv_id,section_type'
-        })
+        .select('id')
+        .eq('cv_id', cvId)
+        .eq('section_type', 'skill_scores')
+        .single()
 
-      if (error) throw error
+      if (existing) {
+        // Update existing record
+        const { error } = await supabase
+          .from('cv_sections')
+          .update({
+            content: skills,
+            updated_at: new Date().toISOString()
+          })
+          .eq('cv_id', cvId)
+          .eq('section_type', 'skill_scores')
+
+        if (error) throw error
+      } else {
+        // Insert new record
+        const { error } = await supabase
+          .from('cv_sections')
+          .insert({
+            cv_id: cvId,
+            section_type: 'skill_scores',
+            content: skills
+          })
+
+        if (error) throw error
+      }
 
       toast.success('Skill levels saved successfully!')
       onUpdate?.(skills)

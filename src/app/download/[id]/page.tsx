@@ -15,11 +15,14 @@ import {
   CheckCircle,
   Loader2,
   Edit3,
-  Sparkles
+  Sparkles,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
 import UpgradeModal from '@/components/UpgradeModal'
 import SkillScoreEditor from '@/components/SkillScoreEditor'
+import PhotoUpload from '@/components/PhotoUpload'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 
@@ -179,6 +182,8 @@ export default function DownloadPage() {
   const [reviewStep, setReviewStep] = useState('')
   const [isPro, setIsPro] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showSkillEditor, setShowSkillEditor] = useState(true)
+  const [showPhotoUpload, setShowPhotoUpload] = useState(true)
 
   useEffect(() => {
     fetchGenerationData()
@@ -797,14 +802,61 @@ export default function DownloadPage() {
           ['professional-metrics', 'teal-sidebar', 'soft-header', 'artistic-header', 'bold-split'].includes(selectedTemplate)
         ) && (
           <div className="max-w-5xl mx-auto mb-8">
-            <SkillScoreEditor
-              cvId={generationData.cv_id}
-              onUpdate={() => {
-                // Regenerate preview with new skill scores
-                generatePreview()
-                toast.success('Skill levels updated! Preview refreshed.')
-              }}
-            />
+            <div className="bg-white rounded-lg border-2 border-blue-200 overflow-hidden">
+              <button
+                onClick={() => setShowSkillEditor(!showSkillEditor)}
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+              >
+                <h3 className="text-lg font-bold text-gray-900">🎯 Adjust Skill Levels</h3>
+                {showSkillEditor ? (
+                  <ChevronUp className="w-5 h-5 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-gray-500" />
+                )}
+              </button>
+              {showSkillEditor && (
+                <div className="p-4 border-t">
+                  <SkillScoreEditor
+                    cvId={generationData.cv_id}
+                    onUpdate={() => {
+                      generatePreview()
+                      toast.success('Skill levels updated! Preview refreshed.')
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Photo Upload - Collapsible */}
+        {generationData && generationData.cv_id && (
+          <div className="max-w-5xl mx-auto mb-8">
+            <div className="bg-white rounded-lg border-2 border-purple-200 overflow-hidden">
+              <button
+                onClick={() => setShowPhotoUpload(!showPhotoUpload)}
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+              >
+                <h3 className="text-lg font-bold text-gray-900">📸 Upload Your Photo</h3>
+                {showPhotoUpload ? (
+                  <ChevronUp className="w-5 h-5 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-gray-500" />
+                )}
+              </button>
+              {showPhotoUpload && (
+                <div className="p-4 border-t">
+                  <PhotoUpload
+                    cvId={generationData.cv_id}
+                    currentPhotoUrl={null}
+                    onPhotoUploaded={() => {
+                      generatePreview()
+                      toast.success('Photo uploaded! Preview refreshed.')
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         )}
 
