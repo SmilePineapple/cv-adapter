@@ -374,6 +374,7 @@ export default function DownloadPage() {
         languages: getSectionContent(sections.find(s => s.type === 'skills')?.content),
         hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
+        photoUrl: currentPhotoUrl || undefined,
       }
       
       return stunningTemplates[templateId as keyof typeof stunningTemplates](templateData)

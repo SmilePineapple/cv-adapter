@@ -1,0 +1,29 @@
+fix: Add title field and photo URL to preview/export
+
+Fixed both remaining issues:
+
+1. Skill Save - Title NOT NULL Constraint ✅
+   - Added title: 'Skill Scores' to INSERT
+   - Satisfies database constraint
+   - Skills now save successfully!
+
+2. Photo Display in Preview ✅
+   - Added photoUrl to templateData
+   - Preview now uses currentPhotoUrl
+   - Photo shows in preview immediately!
+
+3. Photo Display in Export ✅
+   - Export API already fetches photo_url
+   - Templates receive photoUrl
+   - Photo appears in downloaded CV!
+
+Changes:
+- SkillScoreEditor: Add title field to insert
+- Download page: Pass photoUrl to template generation
+
+Issues Fixed:
+- ❌ "title" NOT NULL constraint violation
+- ❌ Photo not showing in preview
+- ❌ Photo not showing in export
+
+Status: Build passing, ready to deploy!
