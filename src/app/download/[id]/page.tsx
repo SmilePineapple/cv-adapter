@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
 import UpgradeModal from '@/components/UpgradeModal'
+import SkillScoreEditor from '@/components/SkillScoreEditor'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 
@@ -790,6 +791,22 @@ export default function DownloadPage() {
             </div>
           </div>
         </div>
+
+        {/* Skill Score Editor - Only for templates that use it */}
+        {generationData && generationData.cv_id && (
+          ['professional-metrics', 'teal-sidebar', 'soft-header', 'artistic-header', 'bold-split'].includes(selectedTemplate)
+        ) && (
+          <div className="max-w-5xl mx-auto mb-8">
+            <SkillScoreEditor
+              cvId={generationData.cv_id}
+              onUpdate={() => {
+                // Regenerate preview with new skill scores
+                generatePreview()
+                toast.success('Skill levels updated! Preview refreshed.')
+              }}
+            />
+          </div>
+        )}
 
         {/* Export Format Selection */}
         <div className="max-w-5xl mx-auto mb-8">
