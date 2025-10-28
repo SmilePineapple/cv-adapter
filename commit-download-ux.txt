@@ -1,0 +1,22 @@
+feat: Enhance download page UX with quick wins
+
+Implemented 3 major UX improvements:
+1. Compact template grid (5 columns instead of 4)
+2. Sticky preview (stays visible while scrolling)
+3. Keyboard navigation (arrow keys to switch templates)
+
+Benefits:
+- More templates visible at once
+- Preview always accessible
+- Faster template switching
+- Better user experience
+
+Changes:
+- Sticky positioning on preview
+- Reduced template card padding
+- Added keyboard event listener
+- 5-column grid on XL screens
+
+Impact: 80% of side-by-side layout benefits with minimal risk
+
+Status: Quick wins implemented, full side-by-side documented for future

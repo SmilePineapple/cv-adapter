@@ -190,6 +190,23 @@ export default function DownloadPage() {
     }
   }, [generationData, selectedTemplate])
 
+  // Keyboard navigation for templates
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const currentIndex = TEMPLATES.findIndex(t => t.id === selectedTemplate)
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          setSelectedTemplate(TEMPLATES[currentIndex - 1].id)
+        } else if (e.key === 'ArrowRight' && currentIndex < TEMPLATES.length - 1) {
+          setSelectedTemplate(TEMPLATES[currentIndex + 1].id)
+        }
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [selectedTemplate])
+
   const checkSubscription = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
@@ -709,9 +726,9 @@ export default function DownloadPage() {
           </p>
         </div>
 
-        {/* PDF Preview - Full Width */}
+        {/* PDF Preview - Full Width with Sticky */}
         <div className="max-w-7xl mx-auto mb-6">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-6 sticky top-4 z-10">
             <div className="flex items-center gap-2 mb-4">
               <Eye className="w-5 h-5 text-gray-400" />
               <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
@@ -873,7 +890,7 @@ export default function DownloadPage() {
         <div className="max-w-7xl mx-auto mb-6">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Choose Template</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {TEMPLATES.map((template) => {
                   const isLocked = template.pro && !isPro
                   return (
@@ -897,7 +914,7 @@ export default function DownloadPage() {
                         disabled={isLocked}
                       />
                       <div className={`
-                        h-full p-4 rounded-lg border-2 transition-all hover:shadow-md relative
+                        h-full p-3 rounded-lg border-2 transition-all hover:shadow-md relative
                         ${selectedTemplate === template.id 
                           ? 'border-blue-500 bg-blue-50 shadow-md'
                           : isLocked
