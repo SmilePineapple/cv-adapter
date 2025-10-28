@@ -323,7 +323,7 @@ export default function DownloadPage() {
     }
   }
 
-  const generatePreview = () => {
+  const generatePreview = async () => {
     if (!generationData) return
 
     let sections = [...generationData.output_sections.sections]
@@ -355,6 +355,31 @@ export default function DownloadPage() {
           order: 1
         })
       }
+    }
+    
+    // Fetch latest skill scores from cv_sections table
+    try {
+      const supabase = createSupabaseClient()
+      const { data: skillScoresData } = await supabase
+        .from('cv_sections')
+        .select('content')
+        .eq('cv_id', generationData.cv_id)
+        .eq('section_type', 'skill_scores')
+        .maybeSingle()
+      
+      if (skillScoresData?.content) {
+        console.log('✅ Preview: Using latest skill scores from cv_sections')
+        // Remove old skill_scores if present
+        sections = sections.filter(s => s.type !== 'skill_scores')
+        // Add updated skill_scores
+        sections.push({
+          type: 'skill_scores' as any,
+          content: skillScoresData.content,
+          order: 999
+        })
+      }
+    } catch (error) {
+      console.error('Error fetching skill scores for preview:', error)
     }
     
     const template = TEMPLATES.find(t => t.id === selectedTemplate)
@@ -871,8 +896,8 @@ export default function DownloadPage() {
                       // Refetch generation data to get updated skill scores
                       await fetchGenerationData()
                       // Then regenerate preview with new data
-                      setTimeout(() => {
-                        generatePreview()
+                      setTimeout(async () => {
+                        await generatePreview()
                         toast.success('Skill levels updated! Preview refreshed.')
                       }, 100)
                     }}
@@ -903,10 +928,10 @@ export default function DownloadPage() {
                   <PhotoUpload
                     cvId={generationData.cv_id}
                     currentPhotoUrl={currentPhotoUrl}
-                    onPhotoUploaded={(url) => {
+                    onPhotoUploaded={async (url) => {
                       setCurrentPhotoUrl(url)
-                      fetchGenerationData() // Refresh data
-                      generatePreview() // Refresh preview
+                      await fetchGenerationData() // Refresh data
+                      await generatePreview() // Refresh preview
                       toast.success('Photo uploaded! Preview refreshed.')
                     }}
                   />
