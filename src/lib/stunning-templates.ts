@@ -208,6 +208,20 @@ export function generateProfessionalMetrics(data: TemplateData): string {
 export function generateTealSidebar(data: TemplateData): string {
   const skills = extractSkills(data.skills)
   
+  // Generate dynamic sidebar icons based on sections present
+  const sectionIcons: Array<{icon: string, label: string}> = []
+  
+  // Always show profile icon first
+  sectionIcons.push({ icon: '👤', label: 'Profile' })
+  
+  // Add icons for sections that have content
+  if (data.experience) sectionIcons.push({ icon: '💼', label: 'Experience' })
+  if (data.education) sectionIcons.push({ icon: '🎓', label: 'Education' })
+  if (data.skills) sectionIcons.push({ icon: '⚡', label: 'Skills' })
+  if (data.certifications) sectionIcons.push({ icon: '📜', label: 'Certifications' })
+  if (data.languages) sectionIcons.push({ icon: '🌐', label: 'Languages' })
+  if (data.hobbies) sectionIcons.push({ icon: '🎯', label: 'Hobbies' })
+  
   return `
 <!DOCTYPE html>
 <html>
@@ -244,11 +258,7 @@ export function generateTealSidebar(data: TemplateData): string {
 <body>
   <div class="container">
     <div class="sidebar">
-      <div class="sidebar-icon">👤</div>
-      <div class="sidebar-icon">💼</div>
-      <div class="sidebar-icon">🎓</div>
-      <div class="sidebar-icon">⚡</div>
-      <div class="sidebar-icon">🎯</div>
+      ${sectionIcons.map(item => `<div class="sidebar-icon" title="${item.label}">${item.icon}</div>`).join('\n      ')}
     </div>
     
     <div class="main">
