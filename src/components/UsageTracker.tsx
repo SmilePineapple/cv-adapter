@@ -1,6 +1,6 @@
 'use client'
 
-import { Crown, Zap, TrendingUp } from 'lucide-react'
+import { Crown, Zap, TrendingUp, Upload } from 'lucide-react'
 import Link from 'next/link'
 
 interface UsageTrackerProps {
@@ -162,6 +162,17 @@ export default function UsageTracker({
           </p>
         </div>
       )}
+
+      {/* Upload CV & Photo Button - Secondary Action */}
+      <div className="mt-4">
+        <Link
+          href="/upload"
+          className="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-300 bg-white text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors gap-2"
+        >
+          <Upload className="w-5 h-5" />
+          Upload CV & Photo
+        </Link>
+      </div>
     </div>
   )
 }
