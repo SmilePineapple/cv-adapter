@@ -186,6 +186,35 @@ export async function POST(request: NextRequest) {
     // Start with ALL AI-generated sections (this includes everything shown on review page)
     const completeSections: CVSection[] = [...modifiedSections]
     
+    // CRITICAL: Ensure name and contact sections are ALWAYS present from original CV
+    // The AI sometimes doesn't include these in output_sections
+    const nameInOutput = completeSections.find(s => s.type === 'name')
+    const contactInOutput = completeSections.find(s => s.type === 'contact')
+    
+    if (!nameInOutput && originalSections) {
+      const nameFromOriginal = originalSections.find(s => s.type === 'name')
+      if (nameFromOriginal) {
+        console.log('✅ Adding name section from original CV:', nameFromOriginal.content)
+        completeSections.unshift({
+          type: 'name',
+          content: nameFromOriginal.content,
+          order: 0
+        })
+      }
+    }
+    
+    if (!contactInOutput && originalSections) {
+      const contactFromOriginal = originalSections.find(s => s.type === 'contact')
+      if (contactFromOriginal) {
+        console.log('✅ Adding contact section from original CV:', contactFromOriginal.content)
+        completeSections.splice(1, 0, {
+          type: 'contact',
+          content: contactFromOriginal.content,
+          order: 1
+        })
+      }
+    }
+    
     // Override hobbies if user customized them in the editor
     if (latestHobbies) {
       const hobbiesIndex = completeSections.findIndex(s => s.type === 'hobbies' || s.type === 'interests')
