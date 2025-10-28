@@ -24,13 +24,13 @@ interface TemplateData {
 // Helper to extract skills as array
 function extractSkills(skillsText: string): string[] {
   if (!skillsText) return []
-  return skillsText.split(/[,\n•]/).map(s => s.trim()).filter(Boolean).slice(0, 8)
+  return skillsText.split(/[,\n•]/).map(s => s.trim()).filter(Boolean)
 }
 
 // Helper to extract languages
 function extractLanguages(langText: string): Array<{name: string, level: number}> {
   if (!langText) return []
-  const langs = langText.split(/[,\n]/).map(s => s.trim()).filter(Boolean).slice(0, 3)
+  const langs = langText.split(/[,\n]/).map(s => s.trim()).filter(Boolean)
   return langs.map(lang => {
     const name = lang.split(/[-:]/)[0].trim()
     // Try to extract proficiency level from text
@@ -49,14 +49,14 @@ function extractLanguages(langText: string): Array<{name: string, level: number}
 function extractHobbies(hobbiesData: string | Array<{name: string, icon: string}>): Array<{name: string, icon: string}> {
   // If already an array of hobby objects with icons, return it
   if (Array.isArray(hobbiesData) && hobbiesData.length > 0 && hobbiesData[0].icon) {
-    return hobbiesData.slice(0, 3)
+    return hobbiesData
   }
   
   // Otherwise parse from text
   const text = typeof hobbiesData === 'string' ? hobbiesData : ''
   if (!text) return []
   
-  const hobbies = text.split(/[,\n]/).map(h => h.trim()).filter(Boolean).slice(0, 3)
+  const hobbies = text.split(/[,\n]/).map(h => h.trim()).filter(Boolean)
   return hobbies.map(name => ({ name, icon: '⚪' })) // Default white circle
 }
 
@@ -130,11 +130,11 @@ export function generateProfessionalMetrics(data: TemplateData): string {
         
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${data.experience ? data.experience.split('\n\n').slice(0, 3).map(exp => `
+          ${data.experience ? data.experience.split('\n\n').map(exp => `
             <div class="experience-item">
               <div class="experience-header">${exp.split('\n')[0] || 'Position Title'}</div>
               <div class="experience-meta">${exp.split('\n')[1] || 'Company • Location'}</div>
-              <div class="experience-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+              <div class="experience-desc">${exp.split('\n').slice(2).join('<br>')}</div>
             </div>
           `).join('') : '<p style="font-size:11px;">No experience listed</p>'}
         </div>
@@ -255,11 +255,11 @@ export function generateTealSidebar(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Work Experience</div>
-        ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+        ${data.experience ? data.experience.split('\n\n').map(exp => `
           <div class="experience-item">
-            <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
-            <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
-            <div class="exp-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+            <div class="exp-title">${exp.split('\n')[0]}</div>
+            <div class="exp-meta">${exp.split('\n')[1]}</div>
+            <div class="exp-desc">${exp.split('\n').slice(2).join('<br>')}</div>
           </div>
         `).join('') : ''}
       </div>
@@ -272,7 +272,7 @@ export function generateTealSidebar(data: TemplateData): string {
       <div class="section">
         <div class="section-title">Skills</div>
         <div class="skill-bars">
-          ${skills.slice(0, 5).map((skill, i) => `
+          ${skills.map((skill, i) => `
             <div class="skill-bar">
               <div class="skill-name">${skill}</div>
               <div class="skill-progress">
@@ -357,11 +357,11 @@ export function generateSoftHeader(data: TemplateData): string {
       <div class="main">
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${data.experience ? data.experience.split('\n\n').slice(0, 2).map(exp => `
+          ${data.experience ? data.experience.split('\n\n').map(exp => `
             <div class="experience-item">
-              <div class="exp-title">${exp.split('\n')[0] || 'Position'}</div>
-              <div class="exp-meta">${exp.split('\n')[1] || 'Company'}</div>
-              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>') || 'Description'}</div>
+              <div class="exp-title">${exp.split('\n')[0]}</div>
+              <div class="exp-meta">${exp.split('\n')[1]}</div>
+              <div class="exp-desc">${exp.split('\n').slice(2).join('<br>')}</div>
             </div>
           `).join('') : ''}
         </div>
@@ -376,7 +376,7 @@ export function generateSoftHeader(data: TemplateData): string {
         <div class="section">
           <div class="section-title">Skills</div>
           <div class="skill-bars">
-            ${skills.slice(0, 6).map((skill, i) => `
+            ${skills.map((skill, i) => `
               <div class="skill-bar">
                 <div class="skill-name">
                   <span>${skill}</span>
@@ -476,7 +476,7 @@ export function generateArtisticHeader(data: TemplateData): string {
       <div class="right">
         ${languages.length > 0 ? `
         <div class="skill-circles">
-          ${languages.slice(0, 3).map(lang => `
+          ${languages.map(lang => `
             <div class="skill-circle">
               <div class="circle">${lang.level}</div>
               <div class="circle-label">${lang.name}</div>
@@ -574,7 +574,7 @@ export function generateBoldSplit(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Work Experience</div>
-        ${data.experience ? data.experience.split('\n\n').slice(0, 1).map(exp => {
+        ${data.experience ? data.experience.split('\n\n').map(exp => {
           const lines = exp.split('\n')
           return `
           <div class="experience-item">
@@ -587,13 +587,13 @@ export function generateBoldSplit(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Education</div>
-        <div style="font-size: 10px; line-height: 1.4;">${data.education ? data.education.split('\n').slice(0, 3).join('<br>') : 'Education details'}</div>
+        <div style="font-size: 10px; line-height: 1.4;">${data.education ? data.education.split('\n').join('<br>') : 'Education details'}</div>
       </div>
       
       <div class="section">
         <div class="section-title">Strengths</div>
         <div>
-          ${skills.slice(0, 6).map(skill => `<span class="strength-tag">${skill}</span>`).join('')}
+          ${skills.map(skill => `<span class="strength-tag">${skill}</span>`).join('')}
         </div>
       </div>
     </div>
@@ -620,7 +620,7 @@ export function generateBoldSplit(data: TemplateData): string {
       <div class="section">
         <div class="section-title">Languages</div>
         <div style="margin-top: 10px;">
-          ${languages.slice(0, 3).map(lang => `
+          ${languages.map(lang => `
             <div style="display: inline-block; text-align: center; margin-right: 15px;">
               <div class="lang-circle">${lang.level}</div>
               <div class="lang-label">${lang.name}</div>
@@ -632,7 +632,7 @@ export function generateBoldSplit(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Skills</div>
-        ${skills.slice(0, 4).map((skill, i) => `
+        ${skills.map((skill, i) => `
           <div class="skill-slider">
             <div class="skill-name">${skill}</div>
             <div class="slider-track">
