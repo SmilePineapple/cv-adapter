@@ -824,9 +824,14 @@ export default function DownloadPage() {
                 <div className="p-4 border-t">
                   <SkillScoreEditor
                     cvId={generationData.cv_id}
-                    onUpdate={() => {
-                      generatePreview()
-                      toast.success('Skill levels updated! Preview refreshed.')
+                    onUpdate={async () => {
+                      // Refetch generation data to get updated skill scores
+                      await fetchGenerationData()
+                      // Then regenerate preview with new data
+                      setTimeout(() => {
+                        generatePreview()
+                        toast.success('Skill levels updated! Preview refreshed.')
+                      }, 100)
                     }}
                   />
                 </div>
