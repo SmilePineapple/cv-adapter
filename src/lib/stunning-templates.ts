@@ -114,7 +114,10 @@ export function generateProfessionalMetrics(data: TemplateData): string {
         <h2>${data.name.split(' ').slice(1).join(' ') || 'Last'}</h2>
       </div>
       <div class="photo">
-        <div style="width:100%;height:100%;background:#E0E0E0;display:flex;align-items:center;justify-content:center;font-size:40px;color:#999;">👤</div>
+        ${data.photoUrl 
+          ? `<img src="${data.photoUrl}" alt="Profile" style="width:100%;height:100%;object-fit:cover;" />`
+          : '<div style="width:100%;height:100%;background:#E0E0E0;display:flex;align-items:center;justify-content:center;font-size:40px;color:#999;">👤</div>'
+        }
       </div>
     </div>
     
@@ -232,7 +235,10 @@ export function generateTealSidebar(data: TemplateData): string {
     
     <div class="main">
       <div class="photo">
-        <div class="photo-placeholder">👤</div>
+        ${data.photoUrl 
+          ? `<img src="${data.photoUrl}" alt="Profile" style="width:100%;height:100%;object-fit:cover;" />`
+          : '<div class="photo-placeholder">👤</div>'
+        }
       </div>
       
       <h1 class="name">${data.name}</h1>
@@ -334,7 +340,10 @@ export function generateSoftHeader(data: TemplateData): string {
       </div>
     </div>
     <div class="photo">
-      <div class="photo-placeholder">👤</div>
+      ${data.photoUrl 
+        ? `<img src="${data.photoUrl}" alt="Profile" style="width:100%;height:100%;object-fit:cover;" />`
+        : '<div class="photo-placeholder">👤</div>'
+      }
     </div>
   </div>
   

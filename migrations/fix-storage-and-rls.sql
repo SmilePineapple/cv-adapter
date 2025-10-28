@@ -144,6 +144,21 @@ SELECT * FROM pg_policies WHERE tablename = 'objects' AND schemaname = 'storage'
 SELECT * FROM pg_policies WHERE tablename = 'cv_sections';
 
 -- ============================================
+-- 5. ADD SKILL_SCORES TO SECTION_TYPE CHECK CONSTRAINT
+-- ============================================
+
+-- Drop existing check constraint
+ALTER TABLE cv_sections DROP CONSTRAINT IF EXISTS cv_sections_section_type_check;
+
+-- Add new check constraint with skill_scores included
+ALTER TABLE cv_sections ADD CONSTRAINT cv_sections_section_type_check 
+CHECK (section_type IN (
+  'name', 'contact', 'summary', 'experience', 'education', 
+  'skills', 'certifications', 'projects', 'publications', 
+  'hobbies', 'interests', 'languages', 'skill_scores'
+));
+
+-- ============================================
 -- DONE!
 -- ============================================
 -- Now test:
