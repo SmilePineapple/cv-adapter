@@ -20,15 +20,10 @@ SET content = (
   SELECT jsonb_agg(
     jsonb_build_object(
       'name', 
-      -- Remove leading [", trailing "], and any extra quotes
+      -- Remove all brackets and quotes from skill names
       regexp_replace(
-        regexp_replace(
-          (skill->>'name')::text,
-          '^\\["|"\\]$',  -- Remove [" at start or "] at end
-          '',
-          'g'
-        ),
-        '^"|"$',  -- Remove remaining quotes at start/end
+        (skill->>'name')::text,
+        '[\[\]"]',  -- Remove [, ], and " characters
         '',
         'g'
       ),
@@ -38,8 +33,7 @@ SET content = (
   )
   FROM jsonb_array_elements(content::jsonb) AS skill
 )
-WHERE section_type = 'skill_scores'
-  AND content::text LIKE '%[""%';
+WHERE section_type = 'skill_scores';
 
 -- Step 3: Verify the cleanup
 SELECT 

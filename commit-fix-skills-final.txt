@@ -1,0 +1,96 @@
+fix: Use skillScores names in template + auto-refresh + better migration
+
+CRITICAL FIXES - The Real Problem Found!
+
+1. Skills Mismatch - ROOT CAUSE ✅
+   Problem: Template showing WRONG skills with wrong levels
+   - Template displayed: "SEO-optimised content writing" at 90%
+   - User set: "Therapeutic skills" at 80%
+   - These are DIFFERENT skills!
+   
+   Root Cause:
+   - Template used `extractSkills(data.skills)` from AI generation
+   - User's custom levels in `data.skillScores` had different skill names
+   - getSkillLevel() couldn't match because names didn't match
+   
+   Solution: Use skill names from skillScores
+   ```typescript
+   // Before: Always used AI-generated skills
+   const skills = extractSkills(data.skills)
+   
+   // After: Use skillScores names if available
+   if (data.skillScores && Array.isArray(data.skillScores)) {
+     skills = data.skillScores.map(s => s.name)
+   } else {
+     skills = extractSkills(data.skills)
+   }
+   ```
+   
+   Impact:
+   ✅ Template shows skills user actually set levels for
+   ✅ Skill names match between display and levels
+   ✅ Custom levels display correctly
+   ✅ No more mismatch!
+
+2. Auto-Refresh After Save ✅
+   Problem: User had to manually click Refresh button
+   Solution: Simplified callbacks to auto-refresh
+   - SkillScoreEditor onUpdate → calls generatePreview()
+   - PhotoUpload onPhotoUploaded → calls generatePreview()
+   - Removed unnecessary fetchGenerationData() calls
+   
+   Impact:
+   ✅ Preview auto-refreshes after skill save
+   ✅ Preview auto-refreshes after photo upload
+   ✅ No manual refresh needed
+   ✅ Immediate visual feedback
+
+3. Better Migration ✅
+   Problem: Complex regex wasn't cleaning brackets properly
+   Solution: Simplified to remove all brackets and quotes
+   ```sql
+   -- Before: Multiple regex passes
+   regexp_replace(regexp_replace(...))
+   
+   -- After: Single pass removes all
+   regexp_replace((skill->>'name')::text, '[\[\]"]', '', 'g')
+   ```
+   
+   Impact:
+   ✅ Removes [, ], and " in one pass
+   ✅ Cleaner, more reliable
+   ✅ Works on all skill_scores
+
+Changes Made:
+- src/lib/stunning-templates.ts:
+  * Check if skillScores exists and has data
+  * Use skillScores.map(s => s.name) for skill names
+  * Falls back to extractSkills(data.skills) if no skillScores
+  * Now template skills match user's custom skills
+  
+- src/app/download/[id]/page.tsx:
+  * Simplified SkillScoreEditor onUpdate callback
+  * Simplified PhotoUpload onPhotoUploaded callback
+  * Removed unnecessary fetchGenerationData() calls
+  * Just call generatePreview() which fetches fresh data
+  
+- migrations/clean-skill-scores.sql:
+  * Simplified regex to '[\[\]"]'
+  * Removes all brackets and quotes in one pass
+  * More reliable cleanup
+
+Testing Flow:
+1. Run migration in Supabase (cleans existing data)
+2. Deploy code (uses skillScores names)
+3. Adjust skill slider
+4. Click Save
+5. Preview auto-refreshes
+6. Skills show correct names and levels
+
+Expected Result:
+- Skills displayed: "Exceptional communication skills" at 55%
+- Skills displayed: "Therapeutic skills" at 80%
+- Skills displayed: "Ability to create..." at 30%
+- All match what user set!
+
+Status: Build passing, ready to deploy!
