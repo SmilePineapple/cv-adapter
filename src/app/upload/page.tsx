@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useDropzone } from 'react-dropzone'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
+import PhotoUpload from '@/components/PhotoUpload'
 import { 
   Upload, 
   FileText, 
@@ -285,6 +286,19 @@ export default function UploadPage() {
                 ))}
               </div>
             </div>
+
+            {/* Photo Upload */}
+            {parseResult?.cv_id && (
+              <div className="mb-8">
+                <PhotoUpload
+                  cvId={parseResult.cv_id}
+                  currentPhotoUrl={null}
+                  onPhotoUploaded={(url) => {
+                    toast.success('Photo uploaded! It will appear in your CV templates.')
+                  }}
+                />
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4">

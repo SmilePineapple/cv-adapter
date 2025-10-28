@@ -1,0 +1,34 @@
+feat: Add photo upload to upload page and create skill score editor
+
+Implemented 2 major features:
+
+1. Photo Upload on Upload Page ✅
+   - Added PhotoUpload component after successful CV upload
+   - Users can now upload photo immediately after CV upload
+   - Better workflow - photo ready before job matching
+   - Toast notification on success
+
+2. SkillScoreEditor Component ✅
+   - Complete skill proficiency editor
+   - Load skills from CV or saved scores
+   - Adjustable sliders (0-100%)
+   - Add/remove skills
+   - Save to database (cv_sections table)
+   - Beautiful UI with visual feedback
+   - Ready to integrate into edit page
+
+Features:
+- Photo upload: 192px circular preview, 5MB max
+- Skill editor: Range sliders, add/remove, save/load
+- Database: Uses cv_sections with section_type='skill_scores'
+- Toast notifications for user feedback
+
+Files Created:
+- src/components/SkillScoreEditor.tsx (complete component)
+
+Files Modified:
+- src/app/upload/page.tsx (added PhotoUpload)
+
+Next: Add SkillScoreEditor to edit page
+
+Status: Build passing, ready to deploy!
