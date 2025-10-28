@@ -733,49 +733,41 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Main Action Buttons - Professional Styling */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {cvs.length > 0 && (
             <button
               onClick={(e) => handleGenerateClick(e, cvs[0].id)}
-              className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
             >
-              <Zap className="w-5 h-5 mr-2" />
+              <Zap className="w-5 h-5" />
               Generate Tailored CV
             </button>
           )}
-          
-          <Link
-            href="/upload"
-            className="flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-          >
-            <Upload className="w-5 h-5 mr-2" />
-            Upload New CV
-          </Link>
 
           {!isPro && (
             <Link
               href="/subscription"
-              className="flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg gap-2"
             >
-              <Star className="w-5 h-5 mr-2" />
+              <Star className="w-5 h-5" />
               Upgrade to Pro
             </Link>
           )}
 
           <Link
             href="/cover-letter"
-            className="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
           >
-            <FileText className="w-5 h-5 mr-2" />
+            <FileText className="w-5 h-5" />
             Create Cover Letter
           </Link>
 
           <Link
             href="/interview-prep"
-            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
           >
-            <Sparkles className="w-5 h-5 mr-2" />
+            <Sparkles className="w-5 h-5" />
             Interview Prep
           </Link>
         </div>
