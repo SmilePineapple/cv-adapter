@@ -184,6 +184,7 @@ export default function DownloadPage() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showSkillEditor, setShowSkillEditor] = useState(true)
   const [showPhotoUpload, setShowPhotoUpload] = useState(true)
+  const [currentPhotoUrl, setCurrentPhotoUrl] = useState<string | null>(null)
 
   useEffect(() => {
     fetchGenerationData()
@@ -242,7 +243,7 @@ export default function DownloadPage() {
 
       const { data: generation, error } = await supabase
         .from('generations')
-        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(parsed_sections)')
+        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(parsed_sections, photo_url)')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
@@ -252,6 +253,10 @@ export default function DownloadPage() {
         router.push('/dashboard')
         return
       }
+
+      // Set photo URL from CV data
+      const photoUrl = (generation as any).cvs?.photo_url || null
+      setCurrentPhotoUrl(photoUrl)
 
       // Fetch latest hobbies from cv_sections (user may have customized icons)
       // Note: hobbies are stored as 'interests' in the database
@@ -848,9 +853,11 @@ export default function DownloadPage() {
                 <div className="p-4 border-t">
                   <PhotoUpload
                     cvId={generationData.cv_id}
-                    currentPhotoUrl={null}
-                    onPhotoUploaded={() => {
-                      generatePreview()
+                    currentPhotoUrl={currentPhotoUrl}
+                    onPhotoUploaded={(url) => {
+                      setCurrentPhotoUrl(url)
+                      fetchGenerationData() // Refresh data
+                      generatePreview() // Refresh preview
                       toast.success('Photo uploaded! Preview refreshed.')
                     }}
                   />

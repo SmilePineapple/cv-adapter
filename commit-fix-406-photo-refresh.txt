@@ -1,0 +1,41 @@
+fix: Fix 406 errors and photo preview refresh
+
+Fixed critical issues with skill save and photo display:
+
+1. Fixed 406 Errors on cv_sections ✅
+   - Changed .single() to .maybeSingle()
+   - Handles "not found" gracefully
+   - No more 406 status errors
+   - Skill save now works!
+
+2. Fixed Photo Preview Not Showing ✅
+   - Fetch photo_url from CV data
+   - Pass currentPhotoUrl to PhotoUpload
+   - Update state after upload
+   - Refresh preview after upload
+   - Photo now displays correctly!
+
+3. Auto-Refresh After Upload ✅
+   - Call fetchGenerationData() after photo upload
+   - Call generatePreview() to refresh preview
+   - Update currentPhotoUrl state
+   - User sees photo immediately
+
+Technical Changes:
+- SkillScoreEditor: Use maybeSingle() instead of single()
+- Download page: Add currentPhotoUrl state
+- Download page: Fetch photo_url in query
+- Download page: Pass photo URL to PhotoUpload
+- Download page: Refresh data after upload
+
+Issues Fixed:
+- ❌ 406 error on cv_sections SELECT
+- ❌ 406 error on cv_sections INSERT check
+- ❌ Photo not showing in preview
+- ❌ Preview not refreshing after upload
+
+Files Modified:
+- src/components/SkillScoreEditor.tsx
+- src/app/download/[id]/page.tsx
+
+Status: Build passing, ready to deploy!
