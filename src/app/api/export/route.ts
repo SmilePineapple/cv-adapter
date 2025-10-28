@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
         output_sections, 
         job_title,
         cv_id,
-        cvs(parsed_sections)
+        cvs(parsed_sections, photo_url)
       `)
       .eq('id', generation_id)
       .eq('user_id', user.id)
@@ -161,6 +161,7 @@ export async function POST(request: NextRequest) {
     const modifiedSections: CVSection[] = generation.output_sections.sections
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
+    const photoUrl = (generation as any).cvs?.photo_url || null
 
     // Fetch latest hobbies/interests from cv_sections table (user may have customized icons)
     const { data: latestHobbies } = await supabase
@@ -252,7 +253,7 @@ export async function POST(request: NextRequest) {
       case 'html':
         return handleHtmlExport(sections, template, jobTitle, isPro)
       case 'pdf':
-        return await handlePdfExport(sections, template, jobTitle, isPro)
+        return await handlePdfExport(sections, template, jobTitle, isPro, photoUrl)
       case 'docx':
         return await handleDocxExport(sections, template, jobTitle, isPro)
       case 'txt':
@@ -280,7 +281,7 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
-async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
+async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean, photoUrl?: string | null) {
   try {
     // Check if using advanced template
     let html: string
@@ -326,9 +327,10 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
           education: getSectionContent(sections.find(s => s.type === 'education')?.content),
           skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
-          languages: getSectionContent(sections.find(s => s.type === 'skills')?.content), // Use skills for languages
+          languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
           hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
           certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
+          photoUrl: photoUrl || undefined,
         }
         html = stunningTemplates[template as keyof typeof stunningTemplates](templateData)
       } else if (template === 'creative_modern') {
