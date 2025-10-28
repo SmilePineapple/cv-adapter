@@ -17,7 +17,8 @@ import {
   Edit3,
   Sparkles,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  RefreshCw
 } from 'lucide-react'
 import TemplatePreview from '@/components/TemplatePreview'
 import UpgradeModal from '@/components/UpgradeModal'
@@ -859,10 +860,23 @@ export default function DownloadPage() {
 
         {/* Preview - Clean and Centered */}
         <div className="max-w-5xl mx-auto mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Preview</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-gray-900">Preview</h2>
+            <button
+              onClick={async () => {
+                await generatePreview()
+                toast.success('Preview refreshed!')
+              }}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Refresh Preview
+            </button>
+          </div>
           <div className="bg-white rounded-lg shadow-lg p-6">
             <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
               <iframe
+                key={previewHtml} 
                 srcDoc={previewHtml}
                 className="w-full h-[800px] border-0"
                 title="CV Preview"
