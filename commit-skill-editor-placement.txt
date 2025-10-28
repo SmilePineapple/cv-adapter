@@ -1,0 +1,39 @@
+feat: Add skill score editor to download page for skill-based templates
+
+Implemented skill score editor placement:
+
+1. Skill Score Editor on Download Page ✅
+   - Shows before Export Format section
+   - Only for templates that use skill scores:
+     * Professional Metrics
+     * Teal Sidebar
+     * Soft Header
+     * Artistic Header
+     * Bold Split
+   - Auto-loads skills from CV
+   - Adjustable sliders (0-100%)
+   - Add/remove skills
+   - Save to database
+   - Preview refreshes on update
+
+2. Photo Upload Stays on Upload Page ✅
+   - Shows after successful CV upload
+   - Requires cvId (can't show before upload)
+   - Perfect workflow timing
+
+Features:
+- Conditional rendering based on template
+- Real-time preview updates
+- Toast notifications
+- Clean UI integration
+
+Files Modified:
+- src/app/download/[id]/page.tsx (added SkillScoreEditor)
+- src/app/upload/page.tsx (kept PhotoUpload after CV upload)
+
+Documentation:
+- DASHBOARD-REDESIGN-SUMMARY.md (complete plan)
+
+Next: Dashboard button redesign
+
+Status: Build passing, ready to deploy!
