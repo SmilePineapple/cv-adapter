@@ -326,7 +326,37 @@ export default function DownloadPage() {
   const generatePreview = () => {
     if (!generationData) return
 
-    const sections = generationData.output_sections.sections
+    let sections = [...generationData.output_sections.sections]
+    
+    // CRITICAL: Ensure name and contact sections are present from original CV
+    const originalSections = generationData.cvs?.parsed_sections?.sections || []
+    const nameInOutput = sections.find(s => s.type === 'name')
+    const contactInOutput = sections.find(s => s.type === 'contact')
+    
+    if (!nameInOutput && originalSections.length > 0) {
+      const nameFromOriginal = originalSections.find(s => s.type === 'name')
+      if (nameFromOriginal) {
+        console.log('✅ Preview: Adding name section from original CV')
+        sections.unshift({
+          type: 'name',
+          content: nameFromOriginal.content,
+          order: 0
+        })
+      }
+    }
+    
+    if (!contactInOutput && originalSections.length > 0) {
+      const contactFromOriginal = originalSections.find(s => s.type === 'contact')
+      if (contactFromOriginal) {
+        console.log('✅ Preview: Adding contact section from original CV')
+        sections.splice(1, 0, {
+          type: 'contact',
+          content: contactFromOriginal.content,
+          order: 1
+        })
+      }
+    }
+    
     const template = TEMPLATES.find(t => t.id === selectedTemplate)
     
     // Generate HTML preview based on template

@@ -1,0 +1,34 @@
+fix: Always include name and contact sections from original CV
+
+CRITICAL FIX: The AI generation doesn't always include name and contact 
+sections in output_sections, causing "Your Name" and empty contact info 
+to display in exports and previews.
+
+Root Cause (from logs):
+- Export sections: summary, experience, education, skills, etc.
+- Missing: name, contact
+- Result: Templates show "Your Name" and empty contact fields
+
+Solution:
+1. Export API: Check if name/contact missing from AI output
+2. If missing, fetch from original CV parsed_sections
+3. Add to beginning of sections array
+4. Preview: Same logic to ensure preview matches export
+
+Changes:
+- src/app/api/export/route.ts: Add name/contact from original if missing
+- src/app/download/[id]/page.tsx: Add name/contact to preview if missing
+
+Impact:
+✅ User's actual name will display (not "Your Name")
+✅ Contact info (email, phone, location) will display
+✅ Preview and export will match
+✅ All templates will show correct personal info
+
+Logs will show:
+- "✅ Adding name section from original CV"
+- "✅ Adding contact section from original CV"
+- "📋 Has name section: true"
+- "📋 Has contact section: true"
+
+Status: Build passing, ready to deploy!
