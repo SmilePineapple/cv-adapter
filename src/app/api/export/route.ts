@@ -382,13 +382,30 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         console.log('📊 Skill scores for template:', skillScores)
         console.log('📧 Contact info for template:', contactInfo)
         
+        // Normalize contact info field names (handle both formats)
+        let normalizedContact = {
+          email: '',
+          phone: '',
+          location: '',
+          website: ''
+        }
+        
+        if (typeof contactInfo === 'object' && contactInfo) {
+          normalizedContact = {
+            email: (contactInfo as any).email_address || (contactInfo as any).email || '',
+            phone: (contactInfo as any).phone_number || (contactInfo as any).phone || '',
+            location: (contactInfo as any).address || (contactInfo as any).location || '',
+            website: (contactInfo as any).web || (contactInfo as any).website || ''
+          }
+        }
+        
         // Prepare data for stunning templates
         const templateData = {
           name: userName,
-          email: typeof contactInfo === 'object' ? contactInfo?.email || '' : '',
-          phone: typeof contactInfo === 'object' ? contactInfo?.phone || '' : '',
-          location: typeof contactInfo === 'object' ? contactInfo?.location || '' : '',
-          website: typeof contactInfo === 'object' ? (contactInfo as any)?.website || '' : '',
+          email: normalizedContact.email,
+          phone: normalizedContact.phone,
+          location: normalizedContact.location,
+          website: normalizedContact.website,
           summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
           experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
           education: getSectionContent(sections.find(s => s.type === 'education')?.content),

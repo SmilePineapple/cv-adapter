@@ -1,0 +1,55 @@
+fix: Fix contact info fields and work experience descriptions in all templates
+
+CRITICAL FIXES for all 5 stunning templates based on screenshots and logs:
+
+1. Contact Info Field Names ✅
+   Problem: Templates looking for phone/email but data has phone_number/email_address
+   Solution: Normalize contact field names in export API
+   - email_address → email
+   - phone_number → phone  
+   - address → location
+   - web → website
+   Impact: Contact info now displays correctly in all templates
+
+2. Work Experience Descriptions ✅
+   Problem: Showing "undefined" instead of job descriptions
+   Root Cause: Template parsing mismatch
+   - getSectionContent formats as: "Title | Company (Dates)\nDescription"
+   - Templates expected: Line[0]=Title, Line[1]=Company, Line[2+]=Description
+   - Actually: Line[0]="Title | Company (Dates)", Line[1+]=Description
+   Solution: Fixed all 5 templates to parse correctly
+   - Professional Metrics ✅
+   - Teal Sidebar ✅
+   - Soft Header ✅
+   - Artistic Header ✅
+   - Bold Split ✅ (already correct)
+   Impact: Job descriptions now display properly
+
+3. Template-Specific Fixes ✅
+   - Removed .slice(0, 2) limit from Artistic Header
+   - Fixed exp-meta removal (was showing "Company" separately)
+   - Unified experience parsing across all templates
+   - Descriptions now show full content
+
+Changes Made:
+- src/app/api/export/route.ts:
+  * Added normalizedContact object
+  * Maps email_address→email, phone_number→phone, etc.
+  * Passes normalized fields to templates
+  
+- src/lib/stunning-templates.ts:
+  * Fixed all 5 templates' experience parsing
+  * Changed from: exp.split('\n')[0], [1], [2+]
+  * Changed to: lines[0] = titleLine, lines.slice(1) = description
+  * Removed fallback text like "Position", "Company", "Description"
+
+Impact:
+✅ Contact info displays (phone, email, location, website)
+✅ Work experience descriptions show properly
+✅ No more "undefined" text
+✅ All templates parse experience correctly
+✅ Full job descriptions visible
+
+Next: Fix sidebar icon alignment (separate CSS issue)
+
+Status: Build passing, ready to deploy!
