@@ -1,0 +1,33 @@
+fix: Clean invalid data before adding constraint + template analysis
+
+1. SQL Constraint Fix ✅
+   - Clean up invalid section_types before adding constraint
+   - UPDATE any unknown types to 'interests'
+   - Then add constraint (will work now)
+   
+   SQL:
+   UPDATE cv_sections SET section_type = 'interests' 
+   WHERE section_type NOT IN (...);
+   
+   ALTER TABLE cv_sections ADD CONSTRAINT cv_sections_section_type_check 
+   CHECK (section_type IN (...));
+
+2. Template Issues Analysis ✅
+   - Created TEMPLATE-ISSUES-ANALYSIS.md
+   - Documented all template rendering issues
+   - Identified root causes
+   - Provided fix recommendations
+
+Template Issues Found:
+- Personal Info not showing (empty data)
+- "Description" fallback text showing
+- Content limited by .slice() calls
+- Sidebar icons not aligned with sections
+
+Next Steps:
+- Run updated SQL migration
+- Fix template content limits
+- Remove fallback text
+- Fix sidebar alignment
+
+Status: SQL ready, template fixes documented
