@@ -1,0 +1,43 @@
+fix: Add skill_scores to check constraint and photo support to all templates
+
+Fixed both critical issues:
+
+1. Skill Save Check Constraint ✅
+   - Added 'skill_scores' to section_type CHECK constraint
+   - Updated SQL migration to include new section type
+   - Skills now save without constraint violation!
+
+2. Photo Display in All Templates ✅
+   - Professional Metrics: Added photo support
+   - Teal Sidebar: Added photo support
+   - Soft Header: Added photo support
+   - Bold Split: Already had photo support
+   - Artistic Header: No photo section (by design)
+   
+   All templates now check for data.photoUrl and display:
+   - Photo if URL exists
+   - Placeholder emoji if no photo
+
+Changes:
+- migrations/fix-storage-and-rls.sql: Add skill_scores to constraint
+- src/lib/stunning-templates.ts: Add photo support to 3 templates
+
+SQL Migration Update:
+ALTER TABLE cv_sections DROP CONSTRAINT IF EXISTS cv_sections_section_type_check;
+ALTER TABLE cv_sections ADD CONSTRAINT cv_sections_section_type_check 
+CHECK (section_type IN (
+  'name', 'contact', 'summary', 'experience', 'education', 
+  'skills', 'certifications', 'projects', 'publications', 
+  'hobbies', 'interests', 'languages', 'skill_scores'
+));
+
+Issues Fixed:
+- ❌ Check constraint violation on skill_scores
+- ❌ Photo not showing in Professional Metrics
+- ❌ Photo not showing in Teal Sidebar
+- ❌ Photo not showing in Soft Header
+- ❌ Photo not showing in exported PDFs
+
+Status: Build passing, ready to deploy!
+
+IMPORTANT: Run updated SQL migration in Supabase!
