@@ -907,13 +907,9 @@ export default function DownloadPage() {
                   <SkillScoreEditor
                     cvId={generationData.cv_id}
                     onUpdate={async () => {
-                      // Refetch generation data to get updated skill scores
-                      await fetchGenerationData()
-                      // Then regenerate preview with new data
-                      setTimeout(async () => {
-                        await generatePreview()
-                        toast.success('Skill levels updated! Preview refreshed.')
-                      }, 100)
+                      // Regenerate preview with fresh data from database
+                      await generatePreview()
+                      toast.success('Skill levels updated! Preview refreshed.')
                     }}
                   />
                 </div>
@@ -944,7 +940,6 @@ export default function DownloadPage() {
                     currentPhotoUrl={currentPhotoUrl}
                     onPhotoUploaded={async (url) => {
                       setCurrentPhotoUrl(url)
-                      await fetchGenerationData() // Refresh data
                       await generatePreview() // Refresh preview
                       toast.success('Photo uploaded! Preview refreshed.')
                     }}

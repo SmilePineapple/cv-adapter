@@ -206,7 +206,13 @@ export function generateProfessionalMetrics(data: TemplateData): string {
  * Left sidebar with teal accent and icons
  */
 export function generateTealSidebar(data: TemplateData): string {
-  const skills = extractSkills(data.skills)
+  // If skillScores exist, use those skill names; otherwise extract from skills text
+  let skills: string[] = []
+  if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    skills = data.skillScores.map(s => s.name)
+  } else {
+    skills = extractSkills(data.skills)
+  }
   
   // Generate dynamic sidebar icons based on sections present
   const sectionIcons: Array<{icon: string, label: string}> = []
