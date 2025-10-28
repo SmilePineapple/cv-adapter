@@ -1,0 +1,42 @@
+fix: Add skill scores to templates and fix contact info display
+
+Fixed 3 critical issues identified in screenshots:
+
+1. Contact Info Not Displaying ✅
+   - Removed hardcoded "01/01/1990" date of birth
+   - Changed to conditional rendering (only show if data exists)
+   - Fixed: Phone, Email, Location, Website now display actual values
+   - Template now shows: "Phone: xxx" instead of empty fields
+
+2. Skills Not Updating ✅
+   - Added skillScores to TemplateData interface
+   - Pass skillScores from export API to templates
+   - Created getSkillLevel() helper function
+   - Skill bars now use actual custom skill levels
+   - Falls back to default if no custom scores
+
+3. Skill Scores Integration ✅
+   - Fetch skill_scores section in export
+   - Pass to templateData as skillScores
+   - Templates use getSkillLevel(skill, data.skillScores, default)
+   - Matches skill names intelligently (handles quotes, brackets)
+
+Changes:
+- src/app/api/export/route.ts: Add skillScores to templateData
+- src/lib/stunning-templates.ts: 
+  * Add skillScores to interface
+  * Add getSkillLevel() helper
+  * Update Teal Sidebar to use skill scores
+  * Fix contact info rendering (conditional)
+  * Remove hardcoded date of birth
+
+Impact:
+✅ Contact info displays correctly (phone, email, location)
+✅ Skills update when user adjusts sliders
+✅ Skill bars show actual custom levels
+✅ No more empty contact fields
+✅ No more hardcoded placeholder data
+
+Next: Fix sidebar icon alignment (separate issue)
+
+Status: Build passing, ready to deploy!
