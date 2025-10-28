@@ -20,6 +20,12 @@ ON CONFLICT (id) DO NOTHING;
 -- 2. STORAGE POLICIES FOR CV-ASSETS BUCKET
 -- ============================================
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can upload their own photos" ON storage.objects;
+DROP POLICY IF EXISTS "Public read access to photos" ON storage.objects;
+DROP POLICY IF EXISTS "Users can update their own photos" ON storage.objects;
+DROP POLICY IF EXISTS "Users can delete their own photos" ON storage.objects;
+
 -- Allow authenticated users to upload to their own folder
 CREATE POLICY "Users can upload their own photos"
 ON storage.objects

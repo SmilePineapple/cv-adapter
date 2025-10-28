@@ -123,7 +123,10 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
           .eq('cv_id', cvId)
           .eq('section_type', 'skill_scores')
 
-        if (error) throw error
+        if (error) {
+          console.error('Update error:', error)
+          throw error
+        }
       } else {
         // Insert new record
         const { error } = await supabase
@@ -134,15 +137,19 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
             content: skills
           })
 
-        if (error) throw error
+        if (error) {
+          console.error('Insert error:', error)
+          throw error
+        }
       }
 
       toast.success('Skill levels saved successfully!')
       onUpdate?.(skills)
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save error:', error)
-      toast.error('Failed to save skill levels')
+      console.error('Error details:', error.message, error.details, error.hint)
+      toast.error(`Failed to save: ${error.message || 'Unknown error'}`)
     } finally {
       setIsSaving(false)
     }
