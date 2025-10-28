@@ -1,0 +1,98 @@
+fix: Add manual Refresh Preview button and skill_scores cleanup migration
+
+CRITICAL FIXES:
+
+1. Manual Refresh Preview Button ✅
+   Problem: Preview doesn't auto-refresh after changes
+   - Users adjust skills → Save → Preview unchanged
+   - Need to manually trigger refresh
+   
+   Solution: Added "Refresh Preview" button
+   - Button next to "Preview" heading
+   - Calls generatePreview() on click
+   - Shows toast confirmation
+   - Forces iframe reload with key prop
+   
+   Impact:
+   ✅ Users can manually refresh preview anytime
+   ✅ Immediate visual feedback
+   ✅ Works for skill changes, photo uploads, etc.
+   ✅ No need to wait for auto-refresh
+
+2. Skill Scores Cleanup Migration ✅
+   Problem: Existing skill_scores have malformed names
+   - Database: '["Exceptional communication skills"'
+   - Should be: 'Exceptional communication skills'
+   - Prevents getSkillLevel() from matching
+   
+   Solution: SQL migration to clean up data
+   - Find all skill_scores with brackets
+   - Remove leading [" and trailing "]
+   - Remove extra quotes
+   - Update in place
+   
+   Migration: migrations/clean-skill-scores.sql
+   ```sql
+   UPDATE cv_sections
+   SET content = (
+     SELECT jsonb_agg(
+       jsonb_build_object(
+         'name', 
+         regexp_replace(
+           regexp_replace(
+             (skill->>'name')::text,
+             '^\\["|"\\]$',
+             '',
+             'g'
+           ),
+           '^"|"$',
+           '',
+           'g'
+         ),
+         'level', 
+         (skill->>'level')::int
+       )
+     )
+     FROM jsonb_array_elements(content::jsonb) AS skill
+   )
+   WHERE section_type = 'skill_scores'
+     AND content::text LIKE '%[""%';
+   ```
+   
+   Impact:
+   ✅ Cleans up existing bad data
+   ✅ Skill names match template skills
+   ✅ getSkillLevel() can find matches
+   ✅ Custom levels will display correctly
+
+Changes Made:
+- src/app/download/[id]/page.tsx:
+  * Added RefreshCw icon import
+  * Added "Refresh Preview" button
+  * Button calls generatePreview() + toast
+  * Added key prop to iframe for force reload
+  
+- migrations/clean-skill-scores.sql:
+  * New migration to fix existing data
+  * Removes brackets and quotes from skill names
+  * Updates all skill_scores in cv_sections table
+
+Usage:
+1. Deploy code (Refresh button available)
+2. Run migration in Supabase SQL Editor
+3. Users can click "Refresh Preview" anytime
+4. Skill levels will match after migration
+
+Testing:
+1. Adjust skill slider
+2. Click Save
+3. Click "Refresh Preview" button
+4. Preview should update with new levels
+
+Status: Build passing, ready to deploy!
+
+Next Steps:
+1. Deploy to Vercel
+2. Run clean-skill-scores.sql in Supabase
+3. Test with existing CV
+4. Skill levels should now work correctly
