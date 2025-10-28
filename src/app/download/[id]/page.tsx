@@ -390,17 +390,30 @@ export default function DownloadPage() {
         }
       }
       
+      // Normalize contact info field names (handle both formats)
+      const normalizedContact = {
+        email: contactInfo?.email_address || contactInfo?.email || '',
+        phone: contactInfo?.phone_number || contactInfo?.phone || '',
+        location: contactInfo?.address || contactInfo?.location || '',
+        website: contactInfo?.web || contactInfo?.website || ''
+      }
+      
+      // Get skill scores if available
+      const skillScoresSection = sections.find(s => s.type === 'skill_scores')
+      const skillScores = skillScoresSection?.content || null
+      
       // Prepare data for stunning templates
       const templateData = {
         name: getSectionContent(nameSection?.content) || 'Your Name',
-        email: contactInfo?.email || '',
-        phone: contactInfo?.phone || '',
-        location: contactInfo?.location || '',
-        website: (contactInfo as any)?.website || '',
+        email: normalizedContact.email,
+        phone: normalizedContact.phone,
+        location: normalizedContact.location,
+        website: normalizedContact.website,
         summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
         experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
         education: getSectionContent(sections.find(s => s.type === 'education')?.content),
         skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+        skillScores: skillScores,
         languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
         hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
