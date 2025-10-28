@@ -1,0 +1,14 @@
+debug: Add console logs to track skill usage
+
+Added console logs to see which skills are being used in the template.
+This will help debug why preview is still showing old skills.
+
+Logs will show:
+- Whether skillScores are being used
+- The actual skill names being displayed
+- The final skills array
+
+This will help identify if the issue is:
+1. Browser caching old JavaScript
+2. Deployment not complete
+3. skillScores not being passed correctly
