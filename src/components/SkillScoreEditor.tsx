@@ -58,18 +58,22 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
           )
           
           if (skillsSection?.content) {
-            // Parse skills from text
-            const skillText = typeof skillsSection.content === 'string' 
-              ? skillsSection.content 
-              : JSON.stringify(skillsSection.content)
+            // Parse skills from content
+            let skillNames: string[] = []
             
-            const skillNames = skillText
-              .split(/[,\n•]/)
-              .map(s => s.trim())
-              .filter(Boolean)
-              .slice(0, 10) // Limit to 10 skills
+            if (Array.isArray(skillsSection.content)) {
+              // Already an array of skill names
+              skillNames = skillsSection.content.map(s => String(s).trim()).filter(Boolean)
+            } else if (typeof skillsSection.content === 'string') {
+              // Parse from comma/newline separated string
+              skillNames = skillsSection.content
+                .split(/[,\n•]/)
+                .map(s => s.trim())
+                .filter(Boolean)
+            }
             
-            setSkills(skillNames.map(name => ({ name, level: 70 })))
+            // Limit to 10 skills and create skill objects
+            setSkills(skillNames.slice(0, 10).map(name => ({ name, level: 70 })))
           }
         }
       }

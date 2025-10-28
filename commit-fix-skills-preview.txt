@@ -1,0 +1,68 @@
+fix: Fix skills not updating and preview contact info display
+
+CRITICAL FIXES:
+
+1. Skills Not Updating ✅
+   Problem: Skill names had malformed JSON brackets
+   - Database: `{ name: '["Exceptional communication skills"', level: 65 }`
+   - Root Cause: SkillScoreEditor was using JSON.stringify on arrays
+   - Result: Skill names had brackets, couldn't match for level lookup
+   
+   Solution:
+   - Fixed SkillScoreEditor.tsx to handle arrays properly
+   - Check if content is array first, map directly
+   - Only split string content, never stringify arrays
+   - Clean skill names: `{ name: 'Exceptional communication skills', level: 65 }`
+   
+   Impact:
+   ✅ Skill scores save with clean names
+   ✅ getSkillLevel() can now match skills correctly
+   ✅ Custom skill levels will display in templates
+   ✅ Both preview and export will show correct levels
+
+2. Preview Not Showing Contact Info ✅
+   Problem: Export showed contact info, preview didn't
+   Root Cause: Preview wasn't normalizing field names
+   - Database has: phone_number, email_address, address, web
+   - Templates expect: phone, email, location, website
+   - Export API normalized, preview didn't
+   
+   Solution:
+   - Added same normalization logic to preview
+   - Maps email_address→email, phone_number→phone, etc.
+   - Now preview matches export exactly
+   
+   Impact:
+   ✅ Preview shows phone, email, location, website
+   ✅ Preview matches exported PDF
+   ✅ WYSIWYG - what you see is what you get
+
+3. Added skillScores to Preview ✅
+   Problem: Preview wasn't passing skillScores to templates
+   Solution: Fetch skill_scores section and pass to templateData
+   Impact: Preview will now show custom skill levels
+
+Changes Made:
+- src/components/SkillScoreEditor.tsx:
+  * Fixed skill loading to handle arrays without stringify
+  * Check Array.isArray() first
+  * Map array items directly to strings
+  * Only split if string content
+  
+- src/app/download/[id]/page.tsx:
+  * Added contact field normalization (same as export)
+  * Added skillScores to templateData
+  * Preview now matches export exactly
+
+Impact:
+✅ Skills update correctly in preview and export
+✅ Contact info shows in preview
+✅ Custom skill levels display
+✅ No more malformed skill names
+✅ Preview = Export (WYSIWYG)
+
+Remaining Issues:
+- Social bot not auto-posting (need to check Vercel cron logs)
+- Sidebar icon alignment (template design issue)
+
+Status: Build passing, ready to deploy!
