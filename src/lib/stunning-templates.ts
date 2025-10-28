@@ -209,10 +209,13 @@ export function generateTealSidebar(data: TemplateData): string {
   // If skillScores exist, use those skill names; otherwise extract from skills text
   let skills: string[] = []
   if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    console.log('🎯 Using skillScores for skill names:', data.skillScores.map(s => s.name))
     skills = data.skillScores.map(s => s.name)
   } else {
+    console.log('📝 Using extracted skills from text')
     skills = extractSkills(data.skills)
   }
+  console.log('✨ Final skills array:', skills)
   
   // Generate dynamic sidebar icons based on sections present
   const sectionIcons: Array<{icon: string, label: string}> = []
