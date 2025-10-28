@@ -80,7 +80,17 @@ function getSkillLevel(skillName: string, skillScores: Array<{name: string, leve
  * Two-column with circular skill meters
  */
 export function generateProfessionalMetrics(data: TemplateData): string {
-  const skills = extractSkills(data.skills)
+  // If skillScores exist, use those skill names; otherwise extract from skills text
+  let skills: string[] = []
+  if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    console.log('🎯 Professional Metrics: Using skillScores for skill names:', data.skillScores.map(s => s.name))
+    skills = data.skillScores.map(s => s.name)
+  } else {
+    console.log('📝 Professional Metrics: Using extracted skills from text')
+    skills = extractSkills(data.skills)
+  }
+  console.log('✨ Professional Metrics: Final skills array:', skills)
+  
   const languages = extractLanguages(data.languages)
   
   return `
@@ -336,7 +346,16 @@ export function generateTealSidebar(data: TemplateData): string {
  * Colored header blocks with skill progress bars
  */
 export function generateSoftHeader(data: TemplateData): string {
-  const skills = extractSkills(data.skills)
+  // If skillScores exist, use those skill names; otherwise extract from skills text
+  let skills: string[] = []
+  if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    console.log('🎯 Soft Header: Using skillScores for skill names:', data.skillScores.map(s => s.name))
+    skills = data.skillScores.map(s => s.name)
+  } else {
+    console.log('📝 Soft Header: Using extracted skills from text')
+    skills = extractSkills(data.skills)
+  }
+  console.log('✨ Soft Header: Final skills array:', skills)
   
   return `
 <!DOCTYPE html>
@@ -447,7 +466,17 @@ export function generateSoftHeader(data: TemplateData): string {
  * Decorative pattern header with pink accent
  */
 export function generateArtisticHeader(data: TemplateData): string {
-  const skills = extractSkills(data.skills)
+  // If skillScores exist, use those skill names; otherwise extract from skills text
+  let skills: string[] = []
+  if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    console.log('🎯 Artistic Header: Using skillScores for skill names:', data.skillScores.map(s => s.name))
+    skills = data.skillScores.map(s => s.name)
+  } else {
+    console.log('📝 Artistic Header: Using extracted skills from text')
+    skills = extractSkills(data.skills)
+  }
+  console.log('✨ Artistic Header: Final skills array:', skills)
+  
   const languages = extractLanguages(data.languages)
   
   return `
@@ -570,7 +599,17 @@ export function generateArtisticHeader(data: TemplateData): string {
  * 50/50 dark/cyan split with high contrast - COMPACT VERSION
  */
 export function generateBoldSplit(data: TemplateData): string {
-  const skills = extractSkills(data.skills)
+  // If skillScores exist, use those skill names; otherwise extract from skills text
+  let skills: string[] = []
+  if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
+    console.log('🎯 Bold Split: Using skillScores for skill names:', data.skillScores.map(s => s.name))
+    skills = data.skillScores.map(s => s.name)
+  } else {
+    console.log('📝 Bold Split: Using extracted skills from text')
+    skills = extractSkills(data.skills)
+  }
+  console.log('✨ Bold Split: Final skills array:', skills)
+  
   const languages = extractLanguages(data.languages)
   const hobbies = extractHobbies(data.hobbies)
   
