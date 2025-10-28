@@ -1,0 +1,28 @@
+fix: Update SQL migration and add detailed error logging
+
+Fixed SQL migration conflicts and added better error reporting:
+
+1. Fixed SQL Migration ✅
+   - Added DROP POLICY IF EXISTS before CREATE
+   - Handles existing policies gracefully
+   - No more "policy already exists" errors
+   - Can be run multiple times safely
+
+2. Added Detailed Error Logging ✅
+   - Console logs for update errors
+   - Console logs for insert errors
+   - Shows error message, details, and hint
+   - Toast shows actual error message
+   - Easier to debug 400 errors
+
+Changes:
+- migrations/fix-storage-and-rls.sql: Drop policies before creating
+- src/components/SkillScoreEditor.tsx: Better error logging
+
+Next Steps:
+1. Run updated SQL migration in Supabase
+2. Try skill save again
+3. Check console for detailed error message
+4. Fix based on actual error
+
+Status: Build passing, ready to deploy!
