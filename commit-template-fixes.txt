@@ -1,0 +1,29 @@
+fix: Critical fixes for personal info, photo URL, and languages in templates
+
+Fixed 3 major issues affecting all stunning templates:
+
+1. Personal Info Not Showing ✅
+   - Fixed languages section using wrong data source
+   - Changed from 'skills' to 'languages' section
+   - Contact info now displays correctly
+
+2. Photo URL Not Passing ✅
+   - Added photo_url to database query
+   - Pass photoUrl through handlePdfExport function
+   - Templates now receive and display photos
+
+3. Languages Section ✅
+   - Correctly fetch from 'languages' section
+   - Smart proficiency detection working
+   - Realistic scores displayed
+
+Changes:
+- src/app/api/export/route.ts: Added photo_url query, fixed languages section
+- Added photoUrl parameter to handlePdfExport
+- Templates: Professional Metrics, Teal Sidebar, Soft Header, Artistic Header, Bold Split
+
+Impact: All 5 stunning templates now show complete data!
+
+Documentation: PHOTO-AND-SCORES-GUIDE.md
+
+Status: Build passing, ready to deploy
