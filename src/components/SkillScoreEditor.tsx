@@ -30,12 +30,17 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
       const supabase = createSupabaseClient()
       
       // Try to load existing skill scores
-      const { data: savedScores } = await supabase
+      const { data: savedScores, error: scoresError } = await supabase
         .from('cv_sections')
         .select('content')
         .eq('cv_id', cvId)
         .eq('section_type', 'skill_scores')
-        .single()
+        .maybeSingle()
+      
+      // Ignore "not found" errors
+      if (scoresError && scoresError.code !== 'PGRST116') {
+        console.error('Error loading skill scores:', scoresError)
+      }
 
       if (savedScores?.content && Array.isArray(savedScores.content)) {
         setSkills(savedScores.content)
@@ -105,7 +110,7 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
         .select('id')
         .eq('cv_id', cvId)
         .eq('section_type', 'skill_scores')
-        .single()
+        .maybeSingle()
 
       if (existing) {
         // Update existing record
