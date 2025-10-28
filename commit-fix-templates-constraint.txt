@@ -1,0 +1,38 @@
+fix: Fix template data extraction and constraint validation
+
+Fixed multiple critical issues:
+
+1. SQL Check Constraint with Existing Data ✅
+   - Use NOT VALID to add constraint without checking existing rows
+   - Allows constraint to be added even if bad data exists
+   - New rows will be validated going forward
+   
+   SQL:
+   ALTER TABLE cv_sections ADD CONSTRAINT cv_sections_section_type_check 
+   CHECK (...) NOT VALID;
+   ALTER TABLE cv_sections VALIDATE CONSTRAINT cv_sections_section_type_check;
+
+2. Template Name Extraction ✅
+   - Fixed: Was trying to get name from contactInfo
+   - Now: Gets name from name section properly
+   - Export API: Extract nameSection and use getSectionContent()
+   - Download page: Already correct
+
+3. Languages Section ✅
+   - Fixed: Was using 'skills' type for languages
+   - Now: Uses 'languages' type correctly
+   - Both export API and download page updated
+
+Changes:
+- migrations/fix-storage-and-rls.sql: Use NOT VALID for constraint
+- src/app/api/export/route.ts: Extract name from name section
+- src/app/download/[id]/page.tsx: Fix languages section type
+
+Issues Fixed:
+- ❌ Check constraint violation on existing data
+- ❌ "Your Name" showing instead of actual name
+- ❌ Languages not displaying correctly
+
+Status: Build passing, ready to deploy!
+
+IMPORTANT: Run updated SQL migration in Supabase!
