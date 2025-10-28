@@ -134,6 +134,7 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
           .insert({
             cv_id: cvId,
             section_type: 'skill_scores',
+            title: 'Skill Scores',
             content: skills
           })
 
