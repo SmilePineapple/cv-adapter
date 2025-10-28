@@ -371,7 +371,7 @@ export default function DownloadPage() {
         experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
         education: getSectionContent(sections.find(s => s.type === 'education')?.content),
         skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
-        languages: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+        languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
         hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
         photoUrl: currentPhotoUrl || undefined,

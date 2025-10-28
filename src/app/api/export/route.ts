@@ -316,9 +316,13 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
       // Check stunning templates first
       const stunningTemplateKeys = Object.keys(stunningTemplates)
       if (stunningTemplateKeys.includes(template)) {
+        // Get name from name section
+        const nameSection = sections.find(s => s.type === 'name')
+        const userName = getSectionContent(nameSection?.content) || 'Your Name'
+        
         // Prepare data for stunning templates
         const templateData = {
-          name: typeof contactInfo === 'string' ? contactInfo : (contactInfo as any)?.name || contactInfo?.email || 'Your Name',
+          name: userName,
           email: typeof contactInfo === 'object' ? contactInfo?.email || '' : '',
           phone: typeof contactInfo === 'object' ? contactInfo?.phone || '' : '',
           location: typeof contactInfo === 'object' ? contactInfo?.location || '' : '',
