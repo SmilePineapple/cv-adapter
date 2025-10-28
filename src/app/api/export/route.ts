@@ -375,6 +375,13 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         const nameSection = sections.find(s => s.type === 'name')
         const userName = getSectionContent(nameSection?.content) || 'Your Name'
         
+        // Get skill scores if available
+        const skillScoresSection = sections.find(s => s.type === 'skill_scores')
+        const skillScores = skillScoresSection?.content || null
+        
+        console.log('📊 Skill scores for template:', skillScores)
+        console.log('📧 Contact info for template:', contactInfo)
+        
         // Prepare data for stunning templates
         const templateData = {
           name: userName,
@@ -386,6 +393,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
           education: getSectionContent(sections.find(s => s.type === 'education')?.content),
           skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+          skillScores: skillScores,
           languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
           hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
           certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),

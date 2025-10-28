@@ -15,6 +15,7 @@ interface TemplateData {
   experience: string
   education: string
   skills: string
+  skillScores?: Array<{name: string, level: number}> | null
   languages: string
   hobbies: string | Array<{name: string, icon: string}>
   certifications: string
@@ -58,6 +59,20 @@ function extractHobbies(hobbiesData: string | Array<{name: string, icon: string}
   
   const hobbies = text.split(/[,\n]/).map(h => h.trim()).filter(Boolean)
   return hobbies.map(name => ({ name, icon: '⚪' })) // Default white circle
+}
+
+// Helper to get skill level from skill scores
+function getSkillLevel(skillName: string, skillScores: Array<{name: string, level: number}> | null | undefined, defaultLevel: number): number {
+  if (!skillScores || !Array.isArray(skillScores)) return defaultLevel
+  
+  // Try to find matching skill score
+  const match = skillScores.find(score => {
+    const scoreName = score.name?.toLowerCase().replace(/["\[\]]/g, '').trim()
+    const searchName = skillName.toLowerCase().trim()
+    return scoreName?.includes(searchName) || searchName?.includes(scoreName)
+  })
+  
+  return match ? match.level : defaultLevel
 }
 
 /**
@@ -247,10 +262,10 @@ export function generateTealSidebar(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Personal Info</div>
-        <div class="info-row"><span class="info-label">Date of birth:</span><span>01/01/1990</span></div>
-        <div class="info-row"><span class="info-label">Phone number:</span><span>${data.phone}</span></div>
-        <div class="info-row"><span class="info-label">Email address:</span><span>${data.email}</span></div>
-        <div class="info-row"><span class="info-label">Web:</span><span>${data.website}</span></div>
+        ${data.phone ? `<div class="info-row"><span class="info-label">Phone:</span><span>${data.phone}</span></div>` : ''}
+        ${data.email ? `<div class="info-row"><span class="info-label">Email:</span><span>${data.email}</span></div>` : ''}
+        ${data.location ? `<div class="info-row"><span class="info-label">Location:</span><span>${data.location}</span></div>` : ''}
+        ${data.website ? `<div class="info-row"><span class="info-label">Web:</span><span>${data.website}</span></div>` : ''}
       </div>
       
       <div class="section">
@@ -272,14 +287,16 @@ export function generateTealSidebar(data: TemplateData): string {
       <div class="section">
         <div class="section-title">Skills</div>
         <div class="skill-bars">
-          ${skills.map((skill, i) => `
+          ${skills.map((skill, i) => {
+            const level = getSkillLevel(skill, data.skillScores, 95 - i * 5)
+            return `
             <div class="skill-bar">
               <div class="skill-name">${skill}</div>
               <div class="skill-progress">
-                <div class="skill-fill" style="width: ${95 - i * 5}%"></div>
+                <div class="skill-fill" style="width: ${level}%"></div>
               </div>
             </div>
-          `).join('')}
+          `}).join('')}
         </div>
       </div>
     </div>
