@@ -204,15 +204,15 @@ export default function CompetitionAdminPage() {
     }
   }
 
-  const handleGrantProAccess = async () => {
+  const handleGrantFreeGenerations = async () => {
     const winners = allScores.filter(s => s.is_winner && !s.prize_claimed)
     
     if (winners.length === 0) {
-      toast.error('No winners to grant Pro access')
+      toast.error('No winners to grant free generations')
       return
     }
 
-    if (!confirm(`Grant Pro access to ${winners.length} winners?`)) {
+    if (!confirm(`Grant 20 free generations to ${winners.length} winners?`)) {
       return
     }
 
@@ -223,24 +223,32 @@ export default function CompetitionAdminPage() {
       for (const winner of winners) {
         if (!winner.user_id) continue
 
-        // Grant Pro access
-        const { error } = await supabase
+        // Get current max generations
+        const { data: currentUsage } = await supabase
           .from('usage_tracking')
-          .update({
-            plan_type: 'pro',
-            max_lifetime_generations: 100,
-            upgraded_at: new Date().toISOString()
-          })
+          .select('max_lifetime_generations')
           .eq('user_id', winner.user_id)
+          .single()
 
-        if (!error) {
-          // Mark prize as claimed
-          await supabase
-            .from('competition_scores')
-            .update({ prize_claimed: true })
-            .eq('id', winner.id)
+        if (currentUsage) {
+          // Add 20 free generations
+          const { error } = await supabase
+            .from('usage_tracking')
+            .update({
+              max_lifetime_generations: currentUsage.max_lifetime_generations + 20,
+              updated_at: new Date().toISOString()
+            })
+            .eq('user_id', winner.user_id)
 
-          successCount++
+          if (!error) {
+            // Mark prize as claimed
+            await supabase
+              .from('competition_scores')
+              .update({ prize_claimed: true })
+              .eq('id', winner.id)
+
+            successCount++
+          }
         }
       }
 
@@ -250,12 +258,12 @@ export default function CompetitionAdminPage() {
         origin: { y: 0.6 }
       })
 
-      toast.success(`Pro access granted to ${successCount} winners!`)
+      toast.success(`20 free generations granted to ${successCount} winners!`)
       fetchCompetitionData()
 
     } catch (error) {
-      console.error('Error granting Pro access:', error)
-      toast.error('Failed to grant Pro access')
+      console.error('Error granting free generations:', error)
+      toast.error('Failed to grant free generations')
     } finally {
       setProcessing(false)
     }
@@ -415,12 +423,12 @@ export default function CompetitionAdminPage() {
             </button>
 
             <button
-              onClick={handleGrantProAccess}
+              onClick={handleGrantFreeGenerations}
               disabled={processing || allScores.filter(s => s.is_winner && !s.prize_claimed).length === 0}
               className="flex items-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Sparkles className="w-5 h-5" />
-              <span>Grant Pro Access to Winners</span>
+              <span>Grant 20 Free Generations</span>
             </button>
 
             <button
@@ -512,7 +520,7 @@ export default function CompetitionAdminPage() {
                           {prizeClaimed && (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                               <Check className="w-3 h-3 mr-1" />
-                              Pro Granted
+                              +20 Gens
                             </span>
                           )}
                         </div>
