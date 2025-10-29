@@ -147,6 +147,17 @@ export default function LandingPage() {
               See How It Works
             </Link>
           </div>
+
+          {/* Competition Button */}
+          <div className="mb-8">
+            <a 
+              href="#competition" 
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-sm font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse"
+            >
+              <Trophy className="w-5 h-5" />
+              🎮 Win Free CV Generations - Play Now!
+            </a>
+          </div>
           
           {/* Progress Indicator */}
           <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 max-w-2xl mx-auto mb-8 border border-gray-200 shadow-sm">

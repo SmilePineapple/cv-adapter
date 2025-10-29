@@ -40,16 +40,20 @@ export default function EmailCampaignPage() {
 
   const fetchUserCount = async () => {
     try {
-      // Fetch from auth.users instead of profiles
-      const { data: { users }, error } = await supabase.auth.admin.listUsers()
+      const { data: { session } } = await supabase.auth.getSession()
       
-      if (error) {
-        console.error('Error fetching users:', error)
-        setUserCount(0)
+      const response = await fetch('/api/admin/user-count', {
+        headers: {
+          'Authorization': `Bearer ${session?.access_token}`
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUserCount(data.count || 0)
       } else {
-        // Count only confirmed emails
-        const confirmedUsers = users?.filter(u => u.email && u.email_confirmed_at) || []
-        setUserCount(confirmedUsers.length)
+        console.error('Failed to fetch user count')
+        setUserCount(0)
       }
     } catch (error) {
       console.error('Error fetching user count:', error)
