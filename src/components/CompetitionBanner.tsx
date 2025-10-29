@@ -71,10 +71,10 @@ export default function CompetitionBanner({ userEmail }: CompetitionBannerProps)
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
               <Trophy className="w-8 h-8 text-yellow-300" />
-              <h3 className="text-2xl font-bold">Win 1 Month Pro FREE! 🎉</h3>
+              <h3 className="text-2xl font-bold">Win 20 Free Generations! 🎉</h3>
             </div>
             <p className="text-purple-100 mb-4 md:mb-0">
-              Play our CV Clicker game and compete for the top 5 spots. Winners get 1 month of Pro access absolutely FREE!
+              Play our monthly CV Clicker game and compete for the top 3 spots. Winners get 20 free CV generations added to their account!
             </p>
             
             {userRank && (

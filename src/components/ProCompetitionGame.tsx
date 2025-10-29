@@ -133,10 +133,10 @@ export default function ProCompetitionGame({ userEmail, onClose }: ProCompetitio
           
           <div className="flex items-center space-x-3 mb-2">
             <Trophy className="w-8 h-8" />
-            <h2 className="text-2xl font-bold">Win 1 Month Pro FREE!</h2>
+            <h2 className="text-2xl font-bold">Win 20 Free Generations!</h2>
           </div>
           <p className="text-purple-100">
-            Top 5 scores win a free month of Pro access. Play now!
+            Monthly competition - Top 3 scores win 20 free CV generations!
           </p>
         </div>
 
@@ -194,10 +194,10 @@ export default function ProCompetitionGame({ userEmail, onClose }: ProCompetitio
 
               <div className="bg-blue-50 border-l-4 border-blue-600 p-4 text-left">
                 <p className="text-sm text-blue-900">
-                  <strong>🏆 Prize:</strong> Top 5 players win 1 month of Pro access (100 generations + unlimited features)
+                  <strong>🏆 Prize:</strong> Top 3 players win 20 free CV generations added to their account
                 </p>
                 <p className="text-xs text-blue-700 mt-2">
-                  Competition ends in 7 days. Winners announced via email!
+                  Monthly competition - Winners announced at the start of each month!
                 </p>
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function ProCompetitionGame({ userEmail, onClose }: ProCompetitio
                         ✅ Score Submitted Successfully!
                       </p>
                       <p className="text-sm text-green-700">
-                        You're now entered in the competition. Top 5 scores win 1 month Pro FREE!
+                        You're now entered in the monthly competition. Top 3 scores win 20 free generations!
                       </p>
                     </div>
                     <div className="flex justify-center space-x-4">

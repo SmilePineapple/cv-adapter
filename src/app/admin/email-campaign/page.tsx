@@ -54,7 +54,7 @@ export default function EmailCampaignPage() {
   }
 
   const loadTemplate = () => {
-    setSubject('🎉 New Updates at My CV Buddy - Win Pro Access!')
+    setSubject('🎉 New Updates at My CV Buddy - Win Free Generations!')
     setHtmlContent(`<!DOCTYPE html>
 <html>
 <head>
@@ -115,14 +115,14 @@ export default function EmailCampaignPage() {
               <table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 0 30px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; padding: 25px;">
                 <tr>
                   <td>
-                    <h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 22px; font-weight: 700;">🏆 Win 1 Month Pro FREE!</h2>
+                    <h2 style="margin: 0 0 10px 0; color: #ffffff; font-size: 22px; font-weight: 700;">🏆 Win 20 Free Generations!</h2>
                     <p style="margin: 0 0 15px 0; color: #e0e7ff; font-size: 15px; line-height: 1.5;">
-                      Play our new CV Clicker game and compete for the top 5 spots. Winners get 1 month of Pro access absolutely FREE!
+                      Play our monthly CV Clicker game and compete for the top 3 spots. Winners get 20 free CV generations added to their account!
                     </p>
                     <p style="margin: 0 0 20px 0; color: #ffffff; font-size: 14px;">
-                      <strong>Prize:</strong> 100 CV generations + all premium features<br>
-                      <strong>Duration:</strong> 7 days to play<br>
-                      <strong>Winners:</strong> Top 5 scores
+                      <strong>Prize:</strong> 20 free CV generations (added to your account)<br>
+                      <strong>Competition:</strong> Monthly - new winners each month!<br>
+                      <strong>Winners:</strong> Top 3 scores
                     </p>
                     <table cellpadding="0" cellspacing="0" style="margin: 0;">
                       <tr>
