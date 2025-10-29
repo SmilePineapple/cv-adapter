@@ -9,7 +9,7 @@ export default function PublicCompetitionSection() {
 
   return (
     <>
-      <section className="py-20 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+      <section id="competition" className="py-20 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Header */}
