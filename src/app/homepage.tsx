@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield } from 'lucide-react'
+import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield, Trophy } from 'lucide-react'
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
 import PromoBanner from '@/components/PromoBanner'
+import PublicCompetitionSection from '@/components/PublicCompetitionSection'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
@@ -757,16 +758,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ Section with Schema */}
+      {/* Competition Section */}
+      <PublicCompetitionSection />
+
+      {/* FAQ Section */}
       <section id="faq" className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-gray-600 text-center mb-12">
-              Everything you need to know about My CV Buddy
-            </p>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+              <p className="text-xl text-gray-600">Everything you need to know about My CV Buddy</p>
+            </div>
 
             <div className="space-y-4">
               {/* FAQ Item 1 */}

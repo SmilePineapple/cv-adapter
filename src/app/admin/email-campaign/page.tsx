@@ -40,14 +40,20 @@ export default function EmailCampaignPage() {
 
   const fetchUserCount = async () => {
     try {
-      const { count } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .not('email', 'is', null)
-
-      setUserCount(count || 0)
+      // Fetch from auth.users instead of profiles
+      const { data: { users }, error } = await supabase.auth.admin.listUsers()
+      
+      if (error) {
+        console.error('Error fetching users:', error)
+        setUserCount(0)
+      } else {
+        // Count only confirmed emails
+        const confirmedUsers = users?.filter(u => u.email && u.email_confirmed_at) || []
+        setUserCount(confirmedUsers.length)
+      }
     } catch (error) {
       console.error('Error fetching user count:', error)
+      setUserCount(0)
     } finally {
       setLoading(false)
     }

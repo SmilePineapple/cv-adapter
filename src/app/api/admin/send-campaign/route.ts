@@ -35,11 +35,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Fetch all users
-    const { data: users, error: usersError } = await supabase
-      .from('profiles')
-      .select('email, full_name')
-      .not('email', 'is', null)
+    // Fetch all users from auth.users (not profiles)
+    const { data: { users: authUsers }, error: usersError } = await supabase.auth.admin.listUsers()
 
     if (usersError) {
       console.error('Error fetching users:', usersError)
@@ -49,12 +46,27 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!users || users.length === 0) {
+    if (!authUsers || authUsers.length === 0) {
       return NextResponse.json(
         { error: 'No users found' },
         { status: 404 }
       )
     }
+
+    // Get profiles for full names
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, full_name')
+
+    const profilesMap = new Map(profiles?.map(p => [p.id, p.full_name]) || [])
+
+    // Map auth users to our format
+    const users = authUsers
+      .filter(u => u.email && u.email_confirmed_at) // Only confirmed emails
+      .map(u => ({
+        email: u.email!,
+        full_name: profilesMap.get(u.id) || null
+      }))
 
     // Test mode: only send to admin
     const recipients = testMode 
