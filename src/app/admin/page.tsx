@@ -22,7 +22,8 @@ import {
   Filter,
   RefreshCw,
   UserPlus,
-  Send
+  Send,
+  Trophy
 } from 'lucide-react'
 import { exportUsersToCSV, exportAnalyticsToCSV, exportRevenueReportToCSV } from '@/lib/csv-export'
 
@@ -206,6 +207,13 @@ export default function AdminDashboard() {
               >
                 <BarChart3 className="w-4 h-4" />
                 Advanced Analytics
+              </Link>
+              <Link
+                href="/admin/competition"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg"
+              >
+                <Trophy className="w-4 h-4" />
+                Competition
               </Link>
               <Link
                 href="/admin/social-bot"

@@ -44,6 +44,7 @@ import {
   Check
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
+import CompetitionBanner from '@/components/CompetitionBanner'
 
 interface CV {
   id: string
@@ -732,6 +733,9 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Competition Banner */}
+        {user && <CompetitionBanner userEmail={user.email} />}
 
         {/* Main Action Buttons - Professional Styling */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
