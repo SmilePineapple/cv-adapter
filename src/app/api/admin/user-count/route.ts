@@ -23,15 +23,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch all users from auth
-    const { data: { users }, error } = await supabase.auth.admin.listUsers()
+    console.log('Fetching users from auth.admin.listUsers()...')
+    const { data: authData, error } = await supabase.auth.admin.listUsers()
+
+    console.log('Auth data:', authData)
+    console.log('Error:', error)
 
     if (error) {
       console.error('Error fetching users:', error)
-      return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 })
+      return NextResponse.json({ 
+        error: 'Failed to fetch users: ' + error.message 
+      }, { status: 500 })
     }
 
+    const users = authData?.users || []
+    console.log(`Found ${users.length} total users`)
+
     // Count only confirmed emails
-    const confirmedUsers = users?.filter(u => u.email && u.email_confirmed_at) || []
+    const confirmedUsers = users.filter(u => u.email && u.email_confirmed_at)
+    console.log(`Filtered to ${confirmedUsers.length} confirmed users`)
 
     return NextResponse.json({
       count: confirmedUsers.length,

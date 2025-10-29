@@ -36,19 +36,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch all users from auth.users (not profiles)
-    const { data: { users: authUsers }, error: usersError } = await supabase.auth.admin.listUsers()
+    console.log('Fetching users from auth.admin.listUsers()...')
+    const { data: authData, error: usersError } = await supabase.auth.admin.listUsers()
+
+    console.log('Auth data:', authData)
+    console.log('Users error:', usersError)
 
     if (usersError) {
       console.error('Error fetching users:', usersError)
       return NextResponse.json(
-        { error: 'Failed to fetch users' },
+        { error: 'Failed to fetch users: ' + usersError.message },
         { status: 500 }
       )
     }
 
-    if (!authUsers || authUsers.length === 0) {
+    const authUsers = authData?.users || []
+    console.log(`Found ${authUsers.length} total auth users`)
+
+    if (authUsers.length === 0) {
       return NextResponse.json(
-        { error: 'No users found' },
+        { error: 'No users found in auth system' },
         { status: 404 }
       )
     }
@@ -67,6 +74,8 @@ export async function POST(request: NextRequest) {
         email: u.email!,
         full_name: profilesMap.get(u.id) || null
       }))
+
+    console.log(`Filtered to ${users.length} confirmed users`)
 
     // Test mode: only send to admin
     const recipients = testMode 
