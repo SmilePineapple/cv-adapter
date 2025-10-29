@@ -9,13 +9,22 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: 'ai-powered-cv-optimization-2025',
+    title: 'AI-Powered CV Optimization: The Future of Job Applications in 2025',
+    excerpt: 'Discover how AI is revolutionizing CV writing and job applications. Learn how intelligent CV optimization can boost your interview chances by 3x.',
+    date: 'October 29, 2025',
+    readTime: '8 min read',
+    category: 'AI & Technology',
+    featured: true,
+  },
+  {
     slug: 'ai-cv-generator-guide',
     title: 'AI CV Generator: Complete Guide for 2025',
     excerpt: 'Discover how AI CV generators work and why they\'re revolutionizing job applications. Create professional, ATS-optimized CVs in minutes.',
     date: 'October 21, 2025',
     readTime: '10 min read',
     category: 'AI & Technology',
-    featured: true,
+    featured: false,
   },
   {
     slug: 'resume-vs-cv-difference',
