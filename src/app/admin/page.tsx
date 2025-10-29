@@ -229,6 +229,13 @@ export default function AdminDashboard() {
                 Upgrade User
               </Link>
               <Link
+                href="/admin/email-campaign"
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                Email Campaign
+              </Link>
+              <Link
                 href="/dashboard"
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
               >

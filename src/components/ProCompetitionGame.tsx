@@ -44,7 +44,7 @@ export default function ProCompetitionGame({ userEmail, onClose }: ProCompetitio
       const randomType = types[Math.floor(Math.random() * types.length)]
       
       const newTarget = {
-        id: Date.now(),
+        id: Date.now() + Math.random(), // Ensure unique IDs
         x: Math.random() * 80 + 10, // 10-90% of width
         y: Math.random() * 70 + 10, // 10-80% of height
         type: randomType
@@ -52,11 +52,11 @@ export default function ProCompetitionGame({ userEmail, onClose }: ProCompetitio
 
       setTargets((prev) => [...prev, newTarget])
 
-      // Remove target after 2 seconds
+      // Remove target after 1.5 seconds (faster)
       setTimeout(() => {
         setTargets((prev) => prev.filter((t) => t.id !== newTarget.id))
-      }, 2000)
-    }, 800)
+      }, 1500)
+    }, 400) // Spawn every 400ms (twice as fast!)
 
     return () => clearInterval(spawnInterval)
   }, [gameStarted, gameOver])
