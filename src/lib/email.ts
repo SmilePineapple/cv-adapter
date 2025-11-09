@@ -48,6 +48,10 @@ export async function sendWelcomeEmail(email: string, name: string) {
                         <strong>You have 1 free CV generation to get started!</strong>
                       </p>
                       
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0; background-color: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <strong>⚠️ Important:</strong> If you signed up with email/password, you can log in immediately and start creating your CV. No email confirmation needed!
+                      </p>
+                      
                       <!-- Benefits Box -->
                       <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0f9ff; border-radius: 8px; padding: 24px; margin: 24px 0;">
                         <tr>
