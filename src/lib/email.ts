@@ -14,11 +14,102 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <noreply@mycvbuddy
  */
 export async function sendWelcomeEmail(email: string, name: string) {
   try {
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif; background-color: #f6f9fc;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f9fc; padding: 40px 0;">
+            <tr>
+              <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                  <!-- Header -->
+                  <tr>
+                    <td style="background-color: #4F46E5; padding: 32px; text-align: center;">
+                      <h1 style="color: #ffffff; font-size: 32px; margin: 0;">Welcome to CV Buddy! 🎉</h1>
+                    </td>
+                  </tr>
+                  
+                  <!-- Content -->
+                  <tr>
+                    <td style="padding: 40px;">
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        Hi ${name || 'there'},
+                      </p>
+                      
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        Welcome aboard! We're thrilled to have you join thousands of job seekers who are landing their dream jobs with AI-powered CVs.
+                      </p>
+                      
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        <strong>You have 1 free CV generation to get started!</strong>
+                      </p>
+                      
+                      <!-- Benefits Box -->
+                      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0f9ff; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                        <tr>
+                          <td>
+                            <p style="font-size: 18px; font-weight: bold; color: #1e40af; margin: 0 0 12px 0;">
+                              What you can do with CV Buddy:
+                            </p>
+                            <p style="font-size: 15px; line-height: 24px; color: #334155; margin: 8px 0;">✅ Generate ATS-optimized CVs in seconds</p>
+                            <p style="font-size: 15px; line-height: 24px; color: #334155; margin: 8px 0;">✅ Create personalized cover letters</p>
+                            <p style="font-size: 15px; line-height: 24px; color: #334155; margin: 8px 0;">✅ Prepare for interviews with AI</p>
+                            <p style="font-size: 15px; line-height: 24px; color: #334155; margin: 8px 0;">✅ Export to PDF, DOCX, or TXT</p>
+                            <p style="font-size: 15px; line-height: 24px; color: #334155; margin: 8px 0;">✅ Support for 50+ languages</p>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <!-- CTA Button -->
+                      <table width="100%" cellpadding="0" cellspacing="0" style="margin: 32px 0;">
+                        <tr>
+                          <td align="center">
+                            <a href="https://www.mycvbuddy.com/dashboard" style="background-color: #4F46E5; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: bold; display: inline-block;">
+                              Start Creating Your CV
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 20px 0;">
+                        Need help? Just reply to this email and we'll be happy to assist you!
+                      </p>
+                      
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 20px 0 0 0;">
+                        Best regards,<br>
+                        The CV Buddy Team
+                      </p>
+                    </td>
+                  </tr>
+                  
+                  <!-- Footer -->
+                  <tr>
+                    <td style="padding: 24px 40px; border-top: 1px solid #e5e7eb;">
+                      <p style="font-size: 12px; line-height: 20px; color: #6b7280; text-align: center; margin: 0 0 8px 0;">
+                        You're receiving this email because you signed up for CV Buddy.
+                      </p>
+                      <p style="font-size: 12px; line-height: 20px; color: #6b7280; text-align: center; margin: 0;">
+                        <a href="https://www.mycvbuddy.com" style="color: #4F46E5; text-decoration: underline;">mycvbuddy.com</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
+    `
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'Welcome to CV Buddy - Your AI-Powered CV Assistant 🎉',
-      react: WelcomeEmail({ name, email }),
+      html: htmlContent,
     })
 
     if (error) {
