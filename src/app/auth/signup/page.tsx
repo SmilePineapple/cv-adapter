@@ -34,8 +34,20 @@ export default function SignupPage() {
       if (error) {
         toast.error(error.message)
       } else {
-        toast.success('Account created! Please check your email to verify your account.')
-        router.push('/auth/login')
+        // Send welcome email
+        try {
+          await fetch('/api/send-welcome-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name: fullName })
+          })
+        } catch (emailError) {
+          console.error('Failed to send welcome email:', emailError)
+          // Don't block signup if email fails
+        }
+        
+        toast.success('Account created successfully! Welcome to CV Adapter.')
+        router.push('/dashboard')
       }
     } catch (error) {
       toast.error('An unexpected error occurred')
