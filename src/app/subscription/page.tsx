@@ -475,29 +475,6 @@ export default function SubscriptionPage() {
           </div>
         )}
 
-        {/* Promotional Banner */}
-        {!isPro && (
-          <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl shadow-xl p-6 mb-6 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <Star className="w-6 h-6 text-yellow-300 mr-2" />
-              <h2 className="text-2xl font-bold text-white">Limited Time Offer - 50% OFF!</h2>
-              <Star className="w-6 h-6 text-yellow-300 ml-2" />
-            </div>
-            <p className="text-white text-lg mb-4">
-              Use promo codes at checkout to save 50% on your first payment
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3 border-2 border-white/40">
-                <p className="text-white text-sm font-medium mb-1">Monthly Plan</p>
-                <p className="text-white text-2xl font-bold font-mono">LAUNCH50MONTHLY</p>
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3 border-2 border-white/40">
-                <p className="text-white text-sm font-medium mb-1">Annual Plan (Best Value!)</p>
-                <p className="text-white text-2xl font-bold font-mono">LAUNCH50ANNUAL</p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Pricing Plans */}
         {!isPro && (
