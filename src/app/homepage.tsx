@@ -3,7 +3,6 @@ import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileT
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
-import PromoBanner from '@/components/PromoBanner'
 import PublicCompetitionSection from '@/components/PublicCompetitionSection'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
@@ -76,75 +75,80 @@ export default function LandingPage() {
       <OAuthHandler />
       <StructuredData />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Promo Banner - 50% Off */}
-      <PromoBanner variant="homepage" />
-      
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CV</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-gray-900">CV Adapter</span>
           </div>
           
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#features" className="text-gray-600 hover:text-gray-900">Features</Link>
-            <Link href="/blog" className="text-gray-600 hover:text-gray-900">Blog</Link>
-            <Link href="#pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link>
-            <Link href="/auth/login" className="text-gray-600 hover:text-gray-900">Login</Link>
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+            <Link href="#features" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Features</Link>
+            <Link href="/blog" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Blog</Link>
+            <Link href="#pricing" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Pricing</Link>
+            <Link href="/auth/login" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Login</Link>
             <Link 
               href="/auth/signup" 
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm lg:text-base"
             >
               Get Started
             </Link>
           </nav>
+          
+          {/* Mobile Menu Button */}
+          <Link 
+            href="/auth/signup" 
+            className="md:hidden bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          >
+            Sign Up
+          </Link>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+          <div className="absolute top-0 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
         </div>
         
         <div className="container mx-auto text-center max-w-5xl">
           {/* Trust Badge */}
-          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-4 py-2 mb-6">
-            <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-            <span className="text-sm font-medium text-green-900">✨ 10,000+ CVs generated this month • 95% ATS pass rate</span>
+          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-4 sm:mb-6">
+            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 mr-1.5 sm:mr-2 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-green-900">✨ 10,000+ CVs generated • 95% ATS pass rate</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
             Get Your Dream Job with an{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ATS-Optimized CV</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-3 sm:mb-4 max-w-3xl mx-auto leading-relaxed px-4">
             <strong>75% of CVs never reach human eyes.</strong> Don't let yours be one of them.
           </p>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
             Our AI tailors your CV to any job description in 2 minutes. <strong>Try free</strong> • No credit card required • Then £9.99/month or £49/year
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
             <Link 
               href="/auth/signup" 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-5 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 sm:px-8 md:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl active:scale-95 sm:transform sm:hover:scale-105 flex items-center justify-center gap-2 min-h-[56px] touch-manipulation"
             >
-              <Zap className="w-5 h-5" />
-              Create Your CV Now - Free
+              <Zap className="w-5 h-5 flex-shrink-0" />
+              <span className="whitespace-nowrap">Create Your CV Now - Free</span>
             </Link>
             <Link 
               href="#demo" 
-              className="border-2 border-gray-300 text-gray-700 px-10 py-5 rounded-xl text-lg font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+              className="border-2 border-gray-300 text-gray-700 px-6 sm:px-8 md:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 min-h-[56px] touch-manipulation"
             >
-              <FileText className="w-5 h-5" />
-              See How It Works
+              <FileText className="w-5 h-5 flex-shrink-0" />
+              <span className="whitespace-nowrap">See How It Works</span>
             </Link>
           </div>
 
