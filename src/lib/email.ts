@@ -134,11 +134,63 @@ export async function sendWelcomeEmail(email: string, name: string) {
  */
 export async function sendFirstGenerationEmail(email: string, name: string) {
   try {
+    // Use HTML fallback for production stability
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f9fc;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f9fc; padding: 40px 0;">
+            <tr>
+              <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                  <tr>
+                    <td style="background-color: #4F46E5; padding: 32px; text-align: center;">
+                      <h1 style="color: #ffffff; font-size: 32px; margin: 0;">Great Job! 🚀</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 40px;">
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        Hi ${name || 'there'},
+                      </p>
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        Congratulations on generating your first AI-powered CV! You're one step closer to landing your dream job.
+                      </p>
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
+                        <strong>You have 1 more free generation remaining.</strong> Make it count!
+                      </p>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding: 20px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription" style="background-color: #4F46E5; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">
+                              Upgrade to Pro for Unlimited
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="font-size: 14px; line-height: 22px; color: #666666; margin: 30px 0 0 0;">
+                        Best regards,<br>
+                        The CV Buddy Team
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
+    `
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'Great job on your first CV! 🚀',
-      react: FirstGenerationEmail({ name }),
+      html: htmlContent,
     })
 
     if (error) {
@@ -159,11 +211,69 @@ export async function sendFirstGenerationEmail(email: string, name: string) {
  */
 export async function sendLimitReachedEmail(email: string, name: string) {
   try {
+    // Use HTML fallback for production stability
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f9fc;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f9fc; padding: 40px 0;">
+            <tr>
+              <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                  <tr>
+                    <td style="background-color: #4F46E5; padding: 32px; text-align: center;">
+                      <h1 style="color: #ffffff; font-size: 32px; margin: 0;">Upgrade to Pro! 🎯</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 40px;">
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        Hi ${name || 'there'},
+                      </p>
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        You've used all your free CV generations! Ready to unlock unlimited access?
+                      </p>
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
+                        <strong>Upgrade to Pro for just £9.99/month</strong> and get:
+                      </p>
+                      <ul style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
+                        <li>Unlimited CV generations</li>
+                        <li>All premium templates</li>
+                        <li>Priority support</li>
+                        <li>Advanced ATS optimization</li>
+                      </ul>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding: 20px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription" style="background-color: #4F46E5; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">
+                              Upgrade to Pro Now
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="font-size: 14px; line-height: 22px; color: #666666; margin: 30px 0 0 0;">
+                        Best regards,<br>
+                        The CV Buddy Team
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
+    `
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'You\'ve used your free generations - Upgrade to Pro! 🎯',
-      react: LimitReachedEmail({ name }),
+      html: htmlContent,
     })
 
     if (error) {

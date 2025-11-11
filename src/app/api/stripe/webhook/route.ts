@@ -57,11 +57,43 @@ export async function POST(request: NextRequest) {
           break
         }
 
+        if (!subscriptionId) {
+          console.error('[Webhook] No subscription ID found in session')
+          break
+        }
+
         console.log('[Webhook] Processing subscription for user:', userId, 'Plan:', planType)
 
-        // Get subscription details
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-        const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000)
+        // Get subscription details - expand to ensure we have all data
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+          expand: ['latest_invoice', 'customer']
+        })
+        
+        // Access subscription properties safely
+        const subData = subscription as any
+        
+        console.log('[Webhook] Retrieved subscription:', {
+          id: subscription.id,
+          status: subscription.status,
+          current_period_end: subData.current_period_end,
+          current_period_start: subData.current_period_start
+        })
+        
+        // Validate current_period_end exists
+        if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
+          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
+          throw new Error('Invalid subscription: missing or invalid current_period_end')
+        }
+        
+        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+        
+        // Validate the date is valid
+        if (isNaN(currentPeriodEnd.getTime())) {
+          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
+          throw new Error('Invalid subscription: invalid current_period_end timestamp')
+        }
+
+        console.log('[Webhook] Subscription period end:', currentPeriodEnd.toISOString())
 
         // Upgrade user to pro with subscription tier
         const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
@@ -105,6 +137,71 @@ export async function POST(request: NextRequest) {
         break
       }
 
+      case 'customer.subscription.created': {
+        const subscription = event.data.object as Stripe.Subscription
+        const customerId = subscription.customer as string
+
+        console.log('[Webhook] Subscription created:', subscription.id)
+
+        // Get customer to find user_id from metadata
+        const customer = await stripe.customers.retrieve(customerId)
+        
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
+          break
+        }
+
+        const userId = customer.metadata?.supabase_user_id
+
+        if (!userId) {
+          console.error('[Webhook] No user_id found in customer metadata')
+          break
+        }
+
+        // Access subscription properties safely
+        const subData = subscription as any
+
+        // Validate current_period_end exists
+        if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
+          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
+          break
+        }
+        
+        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+        
+        // Validate the date is valid
+        if (isNaN(currentPeriodEnd.getTime())) {
+          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
+          break
+        }
+
+        // Determine plan type from subscription interval
+        const interval = subscription.items.data[0]?.price?.recurring?.interval
+        const planType = interval === 'year' ? 'annual' : 'monthly'
+        const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
+
+        console.log('[Webhook] Upgrading user to:', subscriptionTier)
+
+        // Upgrade user to pro
+        const { error: upgradeError } = await supabase
+          .from('usage_tracking')
+          .update({
+            subscription_tier: subscriptionTier,
+            subscription_start_date: new Date().toISOString(),
+            subscription_end_date: currentPeriodEnd.toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        if (upgradeError) {
+          console.error('[Webhook] User upgrade error:', upgradeError)
+          throw upgradeError
+        }
+
+        console.log('[Webhook] User upgraded via subscription.created:', userId)
+        break
+      }
+
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
@@ -124,7 +221,23 @@ export async function POST(request: NextRequest) {
         }
 
         const userId = purchases[0].user_id
-        const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000)
+        
+        // Access subscription properties safely
+        const subData = subscription as any
+        
+        // Validate current_period_end exists
+        if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
+          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
+          break
+        }
+        
+        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+        
+        // Validate the date is valid
+        if (isNaN(currentPeriodEnd.getTime())) {
+          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
+          break
+        }
 
         // Update subscription end date
         await supabase

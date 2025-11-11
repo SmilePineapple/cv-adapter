@@ -299,9 +299,10 @@ CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include 
 
 // Map parsed section types to valid database enum values
 const mapSectionType = (type: string): string => {
-  // Valid section types based on cv-editor-schema.sql constraint:
+  // Valid section types based on database constraint:
   // 'name', 'contact', 'summary', 'experience', 'education', 'skills', 'certifications', 
-  // 'projects', 'publications', 'hobbies', 'volunteer', 'awards', 'languages', 'custom'
+  // 'projects', 'publications', 'hobbies', 'volunteer', 'awards', 'languages'
+  // NOTE: 'custom' is NOT a valid type in current schema
   const typeMap: Record<string, string> = {
     'name': 'name',
     'contact': 'contact',
@@ -323,14 +324,15 @@ const mapSectionType = (type: string): string => {
     'awards': 'awards',
     'achievements': 'awards',
     'languages': 'languages',
-    'groups': 'custom',
-    'strengths': 'custom',
-    'additional': 'custom',
-    'additional_information': 'custom'
+    // Map unsupported types to closest valid type
+    'groups': 'volunteer', // Groups/memberships -> volunteer
+    'strengths': 'skills', // Strengths -> skills
+    'additional': 'summary', // Additional info -> summary
+    'additional_information': 'summary'
   }
 
   const normalized = type.toLowerCase().replace(/\s+/g, '_')
-  return typeMap[normalized] || 'custom'
+  return typeMap[normalized] || 'summary' // Default to summary instead of custom
 }
 
 // Simple CV section parser
