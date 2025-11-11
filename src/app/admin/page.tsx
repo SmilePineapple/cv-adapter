@@ -319,18 +319,27 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Generations Chart */}
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-blue-600" />
-              Generations (Last 30 Days)
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-blue-600" />
+                Generations (Last 7 Days)
+              </h3>
+              <Link 
+                href="/admin/analytics"
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+              >
+                View Full Analytics
+                <BarChart3 className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="space-y-2">
-              {Object.entries(analytics.charts.generationsByDay).slice(-14).map(([date, count]) => (
+              {Object.entries(analytics.charts.generationsByDay).slice(-7).map(([date, count]) => (
                 <div key={date} className="flex items-center gap-3">
                   <span className="text-xs text-gray-500 w-20">{formatDate(date)}</span>
                   <div className="flex-1 bg-gray-100 rounded-full h-6 relative overflow-hidden">
                     <div 
                       className="bg-blue-500 h-full rounded-full transition-all"
-                      style={{ width: `${Math.min((count / Math.max(...Object.values(analytics.charts.generationsByDay))) * 100, 100)}%` }}
+                      style={{ width: `${Math.min((count / Math.max(...Object.values(analytics.charts.generationsByDay).slice(-7))) * 100, 100)}%` }}
                     />
                     <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700">
                       {count}
@@ -343,18 +352,27 @@ export default function AdminDashboard() {
 
           {/* Signups Chart */}
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-600" />
-              User Signups (Last 30 Days)
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+                User Signups (Last 7 Days)
+              </h3>
+              <Link 
+                href="/admin/analytics"
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+              >
+                Monthly Stats
+                <Calendar className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="space-y-2">
-              {Object.entries(analytics.charts.signupsByDay).slice(-14).map(([date, count]) => (
+              {Object.entries(analytics.charts.signupsByDay).slice(-7).map(([date, count]) => (
                 <div key={date} className="flex items-center gap-3">
                   <span className="text-xs text-gray-500 w-20">{formatDate(date)}</span>
                   <div className="flex-1 bg-gray-100 rounded-full h-6 relative overflow-hidden">
                     <div 
                       className="bg-green-500 h-full rounded-full transition-all"
-                      style={{ width: `${Math.min((count / Math.max(...Object.values(analytics.charts.signupsByDay))) * 100, 100)}%` }}
+                      style={{ width: `${Math.min((count / Math.max(...Object.values(analytics.charts.signupsByDay).slice(-7))) * 100, 100)}%` }}
                     />
                     <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700">
                       {count}

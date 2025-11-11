@@ -9,13 +9,40 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    slug: 'career-change-cv-guide-uk',
+    title: 'Career Change CV: How to Switch Industries in the UK (2025)',
+    excerpt: 'Complete guide to writing a career change CV. Learn how to highlight transferable skills and land your dream role in a new industry.',
+    date: 'November 9, 2025',
+    readTime: '12 min read',
+    category: 'Career Advice',
+    featured: true,
+  },
+  {
+    slug: 'graduate-cv-no-experience-uk',
+    title: 'Graduate CV with No Experience: UK Guide (2025)',
+    excerpt: 'How to write a winning graduate CV with no work experience. Expert tips for UK university leavers to land their first job.',
+    date: 'November 9, 2025',
+    readTime: '10 min read',
+    category: 'CV Writing',
+    featured: false,
+  },
+  {
+    slug: 'cv-keywords-for-ats-2025',
+    title: 'CV Keywords for ATS: Complete List for UK Jobs (2025)',
+    excerpt: '500+ ATS-friendly CV keywords for UK job applications. Industry-specific keywords that get your CV past applicant tracking systems.',
+    date: 'November 9, 2025',
+    readTime: '15 min read',
+    category: 'ATS Optimization',
+    featured: false,
+  },
+  {
     slug: 'ai-powered-cv-optimization-2025',
     title: 'AI-Powered CV Optimization: The Future of Job Applications in 2025',
     excerpt: 'Discover how AI is revolutionizing CV writing and job applications. Learn how intelligent CV optimization can boost your interview chances by 3x.',
     date: 'October 29, 2025',
     readTime: '8 min read',
     category: 'AI & Technology',
-    featured: true,
+    featured: false,
   },
   {
     slug: 'ai-cv-generator-guide',
