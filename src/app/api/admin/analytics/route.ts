@@ -77,15 +77,18 @@ export async function GET(request: NextRequest) {
     const coverLetters = coverLettersResult.data || []
     const interviewPreps = interviewPrepsResult.data || []
 
-    // Calculate statistics - support both purchases (lifetime) and subscriptions (legacy)
+    // Calculate statistics
     const totalUsers = users.length
     
-    // Count pro users from both purchases and subscriptions tables
-    const proUsersFromPurchases = new Set(purchases.filter(p => p.status === 'completed').map(p => p.user_id))
-    const proUsersFromSubscriptions = new Set(subscriptions.filter(s => s.status === 'active' && s.plan === 'pro').map(s => s.user_id))
-    const allProUsers = new Set([...proUsersFromPurchases, ...proUsersFromSubscriptions])
+    // Count Pro users from usage_tracking (source of truth for subscription model)
+    // Include: pro_monthly, pro_annual, and any plan_type='pro' (legacy manual upgrades)
+    const proUsersCount = usageTracking.filter(u => 
+      u.subscription_tier === 'pro_monthly' || 
+      u.subscription_tier === 'pro_annual' ||
+      u.plan_type === 'pro'
+    ).length
     
-    const proUsers = allProUsers.size
+    const proUsers = proUsersCount
     const freeUsers = totalUsers - proUsers
     const totalGenerations = generations.length
     const totalCVs = cvs.length
