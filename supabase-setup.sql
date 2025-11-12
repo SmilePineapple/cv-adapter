@@ -60,12 +60,15 @@ CREATE TABLE IF NOT EXISTS generations (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Usage tracking table - monthly generation limits
+-- Usage tracking table - lifetime generation limits (one-time payment model)
 CREATE TABLE IF NOT EXISTS usage_tracking (
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   current_month DATE NOT NULL DEFAULT DATE_TRUNC('month', NOW()),
   generation_count INTEGER NOT NULL DEFAULT 0,
   last_reset_at TIMESTAMPTZ DEFAULT NOW(),
+  lifetime_generation_count INTEGER NOT NULL DEFAULT 0,
+  plan_type TEXT NOT NULL DEFAULT 'free' CHECK (plan_type IN ('free', 'pro')),
+  max_lifetime_generations INTEGER NOT NULL DEFAULT 2,  -- Free users get 2 generations
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -189,25 +192,57 @@ RETURNS TRIGGER AS $$
 DECLARE
   user_full_name TEXT;
 BEGIN
+  -- Log the attempt
+  RAISE NOTICE 'Creating profile for user: %', NEW.id;
+  
   -- Safely extract full_name from metadata, default to NULL if not present
   user_full_name := COALESCE(NEW.raw_user_meta_data->>'full_name', NULL);
   
   -- Insert into profiles table
-  INSERT INTO public.profiles (id, email, full_name)
-  VALUES (NEW.id, NEW.email, user_full_name)
-  ON CONFLICT (id) DO NOTHING;
+  BEGIN
+    INSERT INTO public.profiles (id, email, full_name)
+    VALUES (NEW.id, NEW.email, user_full_name)
+    ON CONFLICT (id) DO UPDATE
+    SET email = EXCLUDED.email,
+        full_name = EXCLUDED.full_name,
+        updated_at = NOW();
+    
+    RAISE NOTICE 'Profile created successfully for user: %', NEW.id;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE WARNING 'Failed to create profile for user %: %', NEW.id, SQLERRM;
+  END;
   
-  -- Insert into usage_tracking table
-  INSERT INTO public.usage_tracking (user_id)
-  VALUES (NEW.id)
-  ON CONFLICT (user_id) DO NOTHING;
+  -- Insert into usage_tracking table with lifetime payment columns
+  BEGIN
+    INSERT INTO public.usage_tracking (
+      user_id,
+      lifetime_generation_count,
+      plan_type,
+      max_lifetime_generations
+    )
+    VALUES (
+      NEW.id,
+      0,      -- Start with 0 generations used
+      'free', -- New users start on free plan
+      2       -- Free plan gets 2 generations
+    )
+    ON CONFLICT (user_id) DO NOTHING;
+    
+    RAISE NOTICE 'Usage tracking created for user: %', NEW.id;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE WARNING 'Failed to create usage tracking for user %: %', NEW.id, SQLERRM;
+      -- Re-raise to prevent user creation if usage tracking fails
+      RAISE;
+  END;
   
   RETURN NEW;
 EXCEPTION
   WHEN OTHERS THEN
-    -- Log the error but don't fail the user creation
+    -- Log the error and fail the user creation
     RAISE WARNING 'Error in handle_new_user for user %: %', NEW.id, SQLERRM;
-    RETURN NEW;
+    RAISE;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
