@@ -108,18 +108,28 @@ export async function GET(request: NextRequest) {
     )
     const activeUsers = activeUserIds.size
 
-    // Revenue calculation - sum actual amounts paid from purchases table
-    // Note: amount_paid is in pence (500 = £5.00, 250 = £2.50)
-    const totalRevenue = purchases
+    // Revenue calculation for MONTHLY SUBSCRIPTION MODEL
+    // Monthly Pro: £9.99/month, Annual Pro: £99/year
+    
+    // Count active Pro users from usage_tracking (source of truth)
+    const monthlyProCount = usageTracking.filter(u => u.subscription_tier === 'pro_monthly').length
+    const annualProCount = usageTracking.filter(u => u.subscription_tier === 'pro_annual').length
+    
+    // Calculate Monthly Recurring Revenue (MRR)
+    const monthlyMRR = monthlyProCount * 9.99
+    const annualMRR = annualProCount * (99 / 12) // Annual converted to monthly
+    const totalMRR = monthlyMRR + annualMRR
+    
+    // Calculate projected annual revenue (ARR)
+    const projectedARR = totalMRR * 12
+    
+    // Legacy one-time purchases (if any exist from old model)
+    const legacyRevenue = purchases
       .filter(p => p.status === 'completed')
-      .reduce((sum, p) => sum + (p.amount_paid || 0), 0) / 100 // Convert pence to pounds
+      .reduce((sum, p) => sum + (p.amount_paid || 0), 0) / 100
     
-    // Legacy subscriptions revenue (if any exist)
-    const legacyRevenue = subscriptions
-      .filter(s => s.status === 'active' && s.plan === 'pro')
-      .length * 5 // Assume £5 for legacy subscriptions
-    
-    const combinedRevenue = totalRevenue + legacyRevenue
+    // Total revenue = MRR + legacy one-time purchases
+    const combinedRevenue = totalMRR + legacyRevenue
 
     // User details with their stats
     const userDetails = users.map(user => {
@@ -132,19 +142,29 @@ export async function GET(request: NextRequest) {
       const userInterviewPreps = interviewPreps.filter(i => i.user_id === user.id)
       const profile = profiles.find(p => p.id === user.id)
 
-      // Determine plan: check purchases first (lifetime), then subscriptions (legacy), then usage_tracking
+      // Determine plan: check usage_tracking.subscription_tier (source of truth for subscription model)
       let userPlan = 'free'
       let userStatus = 'none'
+      let subscriptionType = null
       
-      if (purchase) {
+      if (usage?.subscription_tier === 'pro_monthly') {
         userPlan = 'pro'
         userStatus = 'active'
+        subscriptionType = 'monthly'
+      } else if (usage?.subscription_tier === 'pro_annual') {
+        userPlan = 'pro'
+        userStatus = 'active'
+        subscriptionType = 'annual'
+      } else if (purchase) {
+        // Legacy one-time purchase
+        userPlan = 'pro'
+        userStatus = 'active'
+        subscriptionType = 'lifetime'
       } else if (subscription?.status === 'active' && subscription?.plan === 'pro') {
+        // Legacy subscription
         userPlan = 'pro'
         userStatus = subscription.status
-      } else if (usage?.plan_type === 'pro') {
-        userPlan = 'pro'
-        userStatus = 'active'
+        subscriptionType = 'legacy'
       } else if (subscription) {
         userStatus = subscription.status
       }
@@ -231,14 +251,18 @@ export async function GET(request: NextRequest) {
         totalCoverLetters,
         totalInterviewPreps,
         totalRevenue: combinedRevenue,
+        monthlyRecurringRevenue: totalMRR,
+        projectedAnnualRevenue: projectedARR,
         newUsersLast7Days,
         newUsersLast30Days,
         activeUsers,
         conversionRate: totalUsers > 0 ? ((proUsers / totalUsers) * 100).toFixed(1) : '0',
         avgGenerationsPerUser: totalUsers > 0 ? (totalGenerations / totalUsers).toFixed(1) : '0',
-        revenueFromPurchases: totalRevenue,
-        revenueFromLegacySubscriptions: legacyRevenue,
-        averageRevenuePerProUser: proUsers > 0 ? (combinedRevenue / proUsers).toFixed(2) : '0'
+        revenueFromSubscriptions: totalMRR,
+        revenueFromLegacyPurchases: legacyRevenue,
+        averageRevenuePerProUser: proUsers > 0 ? (combinedRevenue / proUsers).toFixed(2) : '0',
+        monthlyProRevenue: monthlyMRR,
+        annualProRevenue: annualMRR
       },
       charts: {
         generationsByDay,

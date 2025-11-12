@@ -43,11 +43,15 @@ interface AnalyticsData {
     newUsersLast30Days: number
     activeUsers: number
     totalRevenue: number
+    monthlyRecurringRevenue?: number
+    projectedAnnualRevenue?: number
     conversionRate: string
     avgGenerationsPerUser: string
-    revenueFromPurchases?: number
-    revenueFromLegacySubscriptions?: number
+    revenueFromSubscriptions?: number
+    revenueFromLegacyPurchases?: number
     averageRevenuePerProUser?: string
+    monthlyProRevenue?: number
+    annualProRevenue?: number
   }
   charts: {
     generationsByDay: { [key: string]: number }
@@ -272,11 +276,41 @@ export default function AdminDashboard() {
           />
           <StatCard
             icon={<DollarSign className="w-6 h-6" />}
-            label="Total Revenue"
-            value={`£${analytics.overview.totalRevenue.toFixed(2)}`}
-            subtext={`£${analytics.overview.averageRevenuePerProUser || '0'} avg per Pro user`}
+            label="Monthly Recurring Revenue"
+            value={`£${(analytics.overview.monthlyRecurringRevenue || 0).toFixed(2)}`}
+            subtext={`£${(analytics.overview.projectedAnnualRevenue || 0).toFixed(0)} projected ARR`}
             color="emerald"
           />
+        </div>
+
+        {/* Revenue Breakdown */}
+        <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg shadow-lg p-6 mb-8 text-white">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <DollarSign className="w-6 h-6" />
+            Revenue Breakdown
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div>
+              <div className="text-sm opacity-90 mb-1">Monthly MRR</div>
+              <div className="text-3xl font-bold">£{(analytics.overview.monthlyRecurringRevenue || 0).toFixed(2)}</div>
+              <div className="text-xs opacity-75 mt-1">{analytics.overview.monthlyProUsers || 0} monthly × £9.99</div>
+            </div>
+            <div>
+              <div className="text-sm opacity-90 mb-1">Projected ARR</div>
+              <div className="text-3xl font-bold">£{(analytics.overview.projectedAnnualRevenue || 0).toFixed(0)}</div>
+              <div className="text-xs opacity-75 mt-1">MRR × 12 months</div>
+            </div>
+            <div>
+              <div className="text-sm opacity-90 mb-1">Monthly Subs</div>
+              <div className="text-3xl font-bold">{analytics.overview.monthlyProUsers || 0}</div>
+              <div className="text-xs opacity-75 mt-1">£{(analytics.overview.monthlyProRevenue || 0).toFixed(2)}/month</div>
+            </div>
+            <div>
+              <div className="text-sm opacity-90 mb-1">Annual Subs</div>
+              <div className="text-3xl font-bold">{analytics.overview.annualProUsers || 0}</div>
+              <div className="text-xs opacity-75 mt-1">£{(analytics.overview.annualProRevenue || 0).toFixed(2)}/month</div>
+            </div>
+          </div>
         </div>
 
         {/* Secondary Stats */}
@@ -307,9 +341,9 @@ export default function AdminDashboard() {
           />
           <StatCard
             icon={<Crown className="w-5 h-5" />}
-            label="Pro Breakdown"
-            value={`${analytics.overview.monthlyProUsers || 0} / ${analytics.overview.annualProUsers || 0}`}
-            subtext="Monthly / Annual"
+            label="Conversion Rate"
+            value={`${analytics.overview.conversionRate}%`}
+            subtext={`${analytics.overview.proUsers} / ${analytics.overview.totalUsers} users`}
             color="purple"
             small
           />
