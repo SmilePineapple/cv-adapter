@@ -177,22 +177,29 @@ export async function POST(request: NextRequest) {
 
     // Create CV sections for the editor
     console.log('Creating CV sections for editor...')
-    const sectionsToInsert = parsedSections.sections.map((section, index) => ({
-      cv_id: cvData.id,
-      section_type: mapSectionType(section.type),
-      title: section.type.charAt(0).toUpperCase() + section.type.slice(1).replace('_', ' '),
-      content: section.content,
-      order_index: index
-      // Removed user_id, raw_content, and layout fields - don't exist in database
-    }))
+    const sectionsToInsert = parsedSections.sections.map((section, index) => {
+      const mappedType = mapSectionType(section.type)
+      console.log(`Mapping section: "${section.type}" → "${mappedType}"`)
+      return {
+        cv_id: cvData.id,
+        section_type: mappedType,
+        title: mappedType.charAt(0).toUpperCase() + mappedType.slice(1).replace('_', ' '),
+        content: section.content,
+        order_index: index
+        // Removed user_id, raw_content, and layout fields - don't exist in database
+      }
+    })
 
     if (sectionsToInsert.length > 0) {
+      console.log('Sections to insert:', sectionsToInsert.map(s => ({ type: s.section_type, title: s.title })))
+      
       const { error: sectionsError } = await supabaseAdmin
         .from('cv_sections')
         .insert(sectionsToInsert)
 
       if (sectionsError) {
         console.error('Error creating CV sections:', sectionsError)
+        console.error('Failed sections data:', JSON.stringify(sectionsToInsert, null, 2))
         // Don't fail the upload if sections creation fails
       } else {
         console.log('CV sections created successfully')
