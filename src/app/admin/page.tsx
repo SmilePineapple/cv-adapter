@@ -43,6 +43,7 @@ interface AnalyticsData {
     newUsersLast30Days: number
     activeUsers: number
     totalRevenue: number
+    payingProUsers?: number  // Only customers with active Stripe subscriptions
     monthlyRecurringRevenue?: number
     projectedAnnualRevenue?: number
     conversionRate: string
@@ -269,9 +270,9 @@ export default function AdminDashboard() {
           />
           <StatCard
             icon={<Crown className="w-6 h-6" />}
-            label="Pro Users"
-            value={analytics.overview.proUsers}
-            subtext={`${analytics.overview.conversionRate}% conversion rate`}
+            label="Paying Customers"
+            value={analytics.overview.payingProUsers || 0}
+            subtext={`${analytics.overview.proUsers} total Pro (${analytics.overview.conversionRate}% paid)`}
             color="purple"
           />
           <StatCard
