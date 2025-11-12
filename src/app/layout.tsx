@@ -14,11 +14,27 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.mycvbuddy.com'),
   title: {
-    default: "CV Adapter - AI-Powered CV Tailoring for Job Applications",
-    template: "%s | CV Adapter"
+    default: "Free CV Builder UK | AI-Powered CV Maker & Generator | CV Adapter",
+    template: "%s | CV Adapter - Free CV Builder UK"
   },
-  description: "Tailor your CV to any job description with AI in 2 minutes. Get ATS-optimized CVs, professional templates, and cover letters. Try free - no credit card required.",
-  keywords: ["CV generator UK", "AI CV maker", "ATS-friendly CV", "resume builder", "job application", "CV tailoring", "professional CV templates", "cover letter generator"],
+  description: "Free CV builder UK trusted by professionals. Create ATS-optimized CVs in 2 minutes with AI. Professional CV templates, cover letters & interview prep. No credit card required. Perfect for UK job seekers.",
+  keywords: [
+    "CV builder UK",
+    "free CV builder",
+    "CV maker UK",
+    "CV generator UK",
+    "AI CV builder",
+    "ATS-friendly CV",
+    "professional CV templates UK",
+    "CV tailoring",
+    "resume builder UK",
+    "cover letter generator UK",
+    "job application CV",
+    "CV writing service",
+    "online CV maker",
+    "CV template UK",
+    "ATS CV checker"
+  ],
   authors: [{ name: "CV Adapter" }],
   creator: "CV Adapter",
   publisher: "CV Adapter",
@@ -29,9 +45,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GB',
     url: 'https://www.mycvbuddy.com',
-    siteName: 'CV Adapter',
-    title: 'CV Adapter - AI-Powered CV Tailoring',
-    description: 'Tailor your CV to any job description with AI in 2 minutes. ATS-optimized, professional templates.',
+    siteName: 'CV Adapter - Free CV Builder UK',
+    title: 'Free CV Builder UK | AI-Powered CV Maker | CV Adapter',
+    description: 'Free CV builder UK trusted by professionals. Create ATS-optimized CVs in 2 minutes with AI. No credit card required.',
     images: [
       {
         url: '/og-image.png',
@@ -43,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CV Adapter - AI-Powered CV Tailoring',
-    description: 'Tailor your CV to any job description with AI in 2 minutes.',
+    title: 'Free CV Builder UK | AI-Powered CV Maker',
+    description: 'Free CV builder UK. Create ATS-optimized CVs in 2 minutes with AI. No credit card required.',
     images: ['/og-image.png'],
   },
   robots: {
