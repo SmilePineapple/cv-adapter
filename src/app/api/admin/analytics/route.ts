@@ -80,15 +80,28 @@ export async function GET(request: NextRequest) {
     // Calculate statistics
     const totalUsers = users.length
     
-    // Count Pro users from usage_tracking (source of truth for subscription model)
-    // Include: pro_monthly, pro_annual, and any plan_type='pro' (legacy manual upgrades)
-    const proUsersCount = usageTracking.filter(u => 
+    // Get active Stripe subscriptions FIRST (needed for revenue calculations)
+    const activeSubscriptionUserIds = new Set(
+      subscriptions
+        .filter(s => s.status === 'active' && s.stripe_subscription_id)
+        .map(s => s.user_id)
+    )
+    
+    // Count ALL Pro users (including free Pro, manual upgrades, testing)
+    const totalProUsersCount = usageTracking.filter(u => 
       u.subscription_tier === 'pro_monthly' || 
       u.subscription_tier === 'pro_annual' ||
       u.plan_type === 'pro'
     ).length
     
-    const proUsers = proUsersCount
+    // Count PAYING Pro users only (must have active Stripe subscription)
+    const payingProUsersCount = usageTracking.filter(u => 
+      (u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual') &&
+      activeSubscriptionUserIds.has(u.user_id)
+    ).length
+    
+    const proUsers = totalProUsersCount  // Total Pro users (for display)
+    const payingProUsers = payingProUsersCount  // Paying customers (for revenue)
     const freeUsers = totalUsers - proUsers
     const totalGenerations = generations.length
     const totalCVs = cvs.length
@@ -113,12 +126,17 @@ export async function GET(request: NextRequest) {
 
     // Revenue calculation for MONTHLY SUBSCRIPTION MODEL
     // Monthly Pro: £9.99/month, Annual Pro: £99/year
+    // NOTE: activeSubscriptionUserIds already defined above
     
-    // Count active Pro users from usage_tracking (source of truth)
-    const monthlyProCount = usageTracking.filter(u => u.subscription_tier === 'pro_monthly').length
-    const annualProCount = usageTracking.filter(u => u.subscription_tier === 'pro_annual').length
+    // Count PAYING Pro users only (must have active Stripe subscription)
+    const monthlyProCount = usageTracking.filter(u => 
+      u.subscription_tier === 'pro_monthly' && activeSubscriptionUserIds.has(u.user_id)
+    ).length
+    const annualProCount = usageTracking.filter(u => 
+      u.subscription_tier === 'pro_annual' && activeSubscriptionUserIds.has(u.user_id)
+    ).length
     
-    // Calculate Monthly Recurring Revenue (MRR)
+    // Calculate Monthly Recurring Revenue (MRR) - only from PAYING customers
     const monthlyMRR = monthlyProCount * 9.99
     const annualMRR = annualProCount * (99 / 12) // Annual converted to monthly
     const totalMRR = monthlyMRR + annualMRR
@@ -238,14 +256,15 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => b.generation_count - a.generation_count)
       .slice(0, 10)
 
-    // Count monthly vs annual Pro users
-    const monthlyProUsers = usageTracking.filter(u => u.subscription_tier === 'pro_monthly').length
-    const annualProUsers = usageTracking.filter(u => u.subscription_tier === 'pro_annual').length
+    // Count monthly vs annual Pro users (PAYING customers only)
+    const monthlyProUsers = monthlyProCount  // Already filtered for paying customers above
+    const annualProUsers = annualProCount  // Already filtered for paying customers above
 
     return NextResponse.json({
       overview: {
         totalUsers,
-        proUsers,
+        proUsers,  // Total Pro users (including free Pro)
+        payingProUsers,  // Only paying customers with Stripe subscriptions
         freeUsers,
         monthlyProUsers,
         annualProUsers,
@@ -259,11 +278,11 @@ export async function GET(request: NextRequest) {
         newUsersLast7Days,
         newUsersLast30Days,
         activeUsers,
-        conversionRate: totalUsers > 0 ? ((proUsers / totalUsers) * 100).toFixed(1) : '0',
+        conversionRate: totalUsers > 0 ? ((payingProUsers / totalUsers) * 100).toFixed(1) : '0',  // Use paying customers for conversion
         avgGenerationsPerUser: totalUsers > 0 ? (totalGenerations / totalUsers).toFixed(1) : '0',
         revenueFromSubscriptions: totalMRR,
         revenueFromLegacyPurchases: legacyRevenue,
-        averageRevenuePerProUser: proUsers > 0 ? (combinedRevenue / proUsers).toFixed(2) : '0',
+        averageRevenuePerProUser: payingProUsers > 0 ? (combinedRevenue / payingProUsers).toFixed(2) : '0',  // Use paying customers
         monthlyProRevenue: monthlyMRR,
         annualProRevenue: annualMRR
       },
