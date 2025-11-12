@@ -24,6 +24,7 @@ import { LanguageBadge } from '@/components/LanguageBadge'
 import { LANGUAGE_NAMES } from '@/lib/language-detection'
 import { LoadingProgress } from '@/components/LoadingProgress'
 import UpgradeModal from '@/components/UpgradeModal'
+import UpgradePromptModal from '@/components/UpgradePromptModal'
 import JobScraper from '@/components/JobScraper'
 import { analyzeJobPaste } from '@/lib/smart-paste'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
@@ -53,6 +54,8 @@ export default function GeneratePage() {
   const [outputLanguage, setOutputLanguage] = useState<string>('en')
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
+  const [upgradeTrigger, setUpgradeTrigger] = useState<'limit_reached' | 'second_generation' | 'manual'>('manual')
 
   useEffect(() => {
     fetchCVData()
@@ -312,6 +315,24 @@ export default function GeneratePage() {
       setGenerateProgress(100)
       setGenerateStep('Complete!')
       toast.success('CV tailored successfully!')
+      
+      // Check if user just hit their 2nd generation (show upgrade prompt)
+      if (usageData && !usageData.is_pro) {
+        const newCount = usageData.generation_count + 1
+        if (newCount === 2) {
+          // Show upgrade prompt after 2nd generation
+          setUpgradeTrigger('second_generation')
+          setTimeout(() => {
+            setShowUpgradePrompt(true)
+          }, 1000) // Show after success message
+        } else if (newCount >= usageData.max_generations) {
+          // Show limit reached prompt
+          setUpgradeTrigger('limit_reached')
+          setTimeout(() => {
+            setShowUpgradePrompt(true)
+          }, 1000)
+        }
+      }
       
       // Small delay to show completion
       setTimeout(() => {
@@ -718,6 +739,15 @@ export default function GeneratePage() {
         trigger="limit_reached"
         currentUsage={usageData?.generation_count || 1}
         maxGenerations={usageData?.max_generations || 1}
+      />
+
+      {/* Upgrade Prompt Modal (after 2nd generation) */}
+      <UpgradePromptModal
+        isOpen={showUpgradePrompt}
+        onClose={() => setShowUpgradePrompt(false)}
+        trigger={upgradeTrigger}
+        generationsUsed={usageData?.generation_count || 0}
+        maxGenerations={usageData?.max_generations || 2}
       />
     </div>
   )

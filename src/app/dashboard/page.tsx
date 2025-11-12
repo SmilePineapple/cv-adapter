@@ -7,7 +7,6 @@ import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
-import PromoBanner from '@/components/PromoBanner'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
@@ -673,11 +672,6 @@ export default function DashboardPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Promo Banner - Only show to free users */}
-        {!isPro && (
-          <PromoBanner variant="dashboard" />
-        )}
-
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">

@@ -131,28 +131,29 @@ Before posting promotional content:
 ```
 Hey everyone,
 
+
 I've been working on My CV Buddy (an AI CV optimization tool) and wanted to do something fun for the job search community.
 
-**What I built:**
+What I built:
 A 30-second CV Clicker game where you can win 20 free CV generations. Top 3 scores each month win.
 
-**Why I built it:**
+Why I built it:
 Job searching is stressful enough. I wanted to add a bit of fun while giving people a chance to try our AI CV tool for free.
 
-**How it works:**
+How it works:
 - Play the game (takes 30 seconds)
 - Submit your score with your email
 - Top 3 scores monthly win 20 AI-powered CV rewrites
 - No signup required, no credit card, no catch
 
-**What you get if you win:**
+What you get if you win:
 20 CV generations that tailor your CV to specific job descriptions, optimize for ATS, and use professional templates.
 
 I'm not trying to sell anything here - just sharing something I thought this community might find useful (and fun!).
 
-You can try it here: [mycvbuddy.com/#competition](https://www.mycvbuddy.com/#competition)
+You can try it here: https://www.mycvbuddy.com/#competition 
 
-**About the tool itself:**
+About the tool itself:
 My CV Buddy is an AI tool that adapts your CV to specific job descriptions. It's helped people get past ATS systems and land interviews.
 
 - Free tier: 1 CV generation
