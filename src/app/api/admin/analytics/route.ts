@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     const activeUsers = activeUserIds.size
 
     // Revenue calculation for MONTHLY SUBSCRIPTION MODEL
-    // Monthly Pro: £9.99/month, Annual Pro: £99/year
+    // Monthly Pro: £9.99/month, Annual Pro: £49/year
     // NOTE: activeSubscriptionUserIds already defined above
     
     // Count PAYING Pro users only (must have active Stripe subscription)
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     
     // Calculate Monthly Recurring Revenue (MRR) - only from PAYING customers
     const monthlyMRR = monthlyProCount * 9.99
-    const annualMRR = annualProCount * (99 / 12) // Annual converted to monthly
+    const annualMRR = annualProCount * (49 / 12) // Annual £49/year = £4.08/month
     const totalMRR = monthlyMRR + annualMRR
     
     // Calculate projected annual revenue (ARR)
