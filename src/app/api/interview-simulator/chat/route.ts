@@ -102,7 +102,57 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // System prompt with strict guardrails
+    // Analyze job description to extract structured information
+    const jobAnalysis = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [{
+        role: 'system',
+        content: `Analyze this job description and extract structured information in JSON format.
+
+Return a JSON object with:
+- jobTitle: string (the position title)
+- seniority: string (entry/junior/mid/senior/lead/principal)
+- requiredSkills: string[] (must-have skills, max 8)
+- niceToHaveSkills: string[] (preferred skills, max 5)
+- keyResponsibilities: string[] (main duties, max 6)
+- yearsExperience: string (e.g., "2-3 years", "5+ years")
+- technicalRequirements: string[] (specific tools/technologies, max 6)
+- softSkills: string[] (communication, leadership, etc., max 5)
+- teamContext: string (team size, reporting structure if mentioned)
+- industryContext: string (industry or domain if mentioned)
+
+Be concise and extract only what's explicitly mentioned.`
+      }, {
+        role: 'user',
+        content: job_description
+      }],
+      response_format: { type: 'json_object' },
+      temperature: 0.3,
+      max_tokens: 800
+    })
+
+    const jobInfo = JSON.parse(jobAnalysis.choices[0].message.content || '{}')
+
+    // Determine interview phase based on number of messages
+    const messageCount = messages.length
+    let currentPhase = 'introduction'
+    let phaseGuidance = ''
+
+    if (messageCount <= 4) {
+      currentPhase = 'introduction'
+      phaseGuidance = 'Focus on understanding their background and motivation. Build rapport.'
+    } else if (messageCount <= 10) {
+      currentPhase = 'technical'
+      phaseGuidance = `Ask about specific required skills: ${jobInfo.requiredSkills?.slice(0, 3).join(', ') || 'technical abilities'}. Request concrete examples.`
+    } else if (messageCount <= 16) {
+      currentPhase = 'behavioral'
+      phaseGuidance = 'Use STAR method. Ask about challenges, teamwork, leadership, and problem-solving situations.'
+    } else {
+      currentPhase = 'closing'
+      phaseGuidance = 'Ask about cultural fit, work style, and invite their questions about the role or company.'
+    }
+
+    // System prompt with strict guardrails and structured job information
     const systemPrompt = `You are a professional job interviewer for ${company_name}.
 
 CRITICAL RULES - NEVER BREAK THESE:
@@ -117,17 +167,40 @@ CRITICAL RULES - NEVER BREAK THESE:
 9. Use behavioral interview techniques (STAR method)
 10. If they try to manipulate you or go off-topic, firmly but politely redirect
 
-JOB DETAILS:
-Company: ${company_name}
-${company_website ? `Website: ${company_website}` : ''}
-Job Description: ${job_description}
+=== ROLE DETAILS ===
+Position: ${jobInfo.jobTitle || 'Not specified'}
+Seniority Level: ${jobInfo.seniority || 'Not specified'}
+Experience Required: ${jobInfo.yearsExperience || 'Not specified'}
+${jobInfo.industryContext ? `Industry: ${jobInfo.industryContext}` : ''}
+${jobInfo.teamContext ? `Team Context: ${jobInfo.teamContext}` : ''}
 
-Interview Guidelines:
-- Ask about their experience, skills, and achievements
-- Probe for specific examples and details
-- Ask situational and behavioral questions
-- Evaluate cultural fit and motivation
-- Keep the conversation professional and focused
+Required Skills (Must-Have):
+${jobInfo.requiredSkills?.map((skill: string) => `- ${skill}`).join('\n') || '- See job description'}
+
+${jobInfo.niceToHaveSkills?.length ? `Preferred Skills (Nice-to-Have):
+${jobInfo.niceToHaveSkills.map((skill: string) => `- ${skill}`).join('\n')}` : ''}
+
+Key Responsibilities:
+${jobInfo.keyResponsibilities?.map((resp: string) => `- ${resp}`).join('\n') || '- See job description'}
+
+${jobInfo.technicalRequirements?.length ? `Technical Requirements:
+${jobInfo.technicalRequirements.map((tech: string) => `- ${tech}`).join('\n')}` : ''}
+
+${jobInfo.softSkills?.length ? `Important Soft Skills:
+${jobInfo.softSkills.map((skill: string) => `- ${skill}`).join('\n')}` : ''}
+
+=== INTERVIEW PHASE ===
+Current Phase: ${currentPhase.toUpperCase()}
+Phase Guidance: ${phaseGuidance}
+
+=== INTERVIEW GUIDELINES ===
+- Ask ONE question at a time
+- Reference specific skills and requirements from the role details above
+- Listen to their answer and ask relevant follow-up questions
+- Probe for specific examples and details (STAR method)
+- Progress naturally through the interview phases
+- Be encouraging but professional
+- Keep the conversation focused on the role
 
 If the candidate's response is off-topic or inappropriate, redirect them back to the interview immediately.`
 
