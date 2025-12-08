@@ -763,10 +763,11 @@ export default function DashboardPage() {
 
           <Link
             href="/interview-prep"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2 relative"
           >
             <Sparkles className="w-5 h-5" />
             Interview Prep
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
           </Link>
 
           <Link

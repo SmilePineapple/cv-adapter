@@ -31,12 +31,23 @@ export default function InterviewPrepPage() {
   const [companyResearch, setCompanyResearch] = useState<any>(null)
   const [interviewData, setInterviewData] = useState<any>(null)
   const [isPro, setIsPro] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [usageData, setUsageData] = useState<{interview_preps_used: number} | null>(null)
 
   useEffect(() => {
-    fetchCVs()
-    checkSubscription()
+    checkAuth()
   }, [])
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      router.push('/auth/signin')
+      return
+    }
+
+    await Promise.all([fetchCVs(), checkSubscription()])
+    setIsLoading(false)
+  }
 
   const fetchCVs = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -65,12 +76,11 @@ export default function InterviewPrepPage() {
 
     const { data: usage } = await supabase
       .from('usage_tracking')
-      .select('subscription_tier, interview_preps_used')
+      .select('plan_type, interview_preps_used')
       .eq('user_id', user.id)
       .single()
 
-    const subscriptionTier = usage?.subscription_tier || 'free'
-    const isProUser = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
+    const isProUser = usage?.plan_type === 'pro'
     setIsPro(isProUser)
     setUsageData({ interview_preps_used: usage?.interview_preps_used || 0 })
   }
@@ -188,6 +198,65 @@ export default function InterviewPrepPage() {
     }
   }
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    )
+  }
+
+  // Pro gate
+  if (!isPro) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
+          <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Crown className="w-8 h-8 text-purple-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Pro Feature</h2>
+          <p className="text-gray-600 mb-6">
+            Interview Prep is available exclusively to Pro users. Upgrade now to generate personalized interview questions and answers based on your CV!
+          </p>
+          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-gray-900 mb-2">What you'll get:</h3>
+            <ul className="text-sm text-gray-700 space-y-2 text-left">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <span>Personalized interview questions based on your CV</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <span>Company research and insights</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <span>Suggested answers with examples</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <span>Unlimited interview prep sessions</span>
+              </li>
+            </ul>
+          </div>
+          <Link
+            href="/subscription"
+            className="inline-block w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all"
+          >
+            Upgrade to Pro
+          </Link>
+          <Link
+            href="/dashboard"
+            className="inline-block mt-4 text-gray-600 hover:text-gray-900"
+          >
+            Back to Dashboard
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-5xl mx-auto px-4">
@@ -203,20 +272,19 @@ export default function InterviewPrepPage() {
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
             <Sparkles className="w-8 h-8 text-purple-600" />
             Interview Prep Assistant
+            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">PRO</span>
           </h1>
           <p className="text-gray-600 mt-2">
             Generate personalized interview questions and answers based on your CV
           </p>
         </div>
 
-        {/* Usage Info */}
-        {!isPro && usageData && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <p className="text-sm text-blue-800">
-              <strong>Free tier:</strong> {usageData.interview_preps_used}/2 interview preps used.{' '}
-              <Link href="/subscription" className="underline font-semibold">
-                Upgrade to Pro
-              </Link>{' '}
+        {/* Pro Badge Info */}
+        {usageData && (
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 mb-6">
+            <p className="text-sm text-purple-900">
+              <Crown className="w-4 h-4 inline mr-1" />
+              <strong>Pro Feature:</strong> Unlimited interview prep sessions.{' '}
               for unlimited preps + company research!
             </p>
           </div>
