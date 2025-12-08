@@ -68,6 +68,7 @@ interface AnalyticsData {
     generation_count: number
     monthly_usage: number
     lifetime_usage: number
+    max_lifetime_generations: number
     cv_count: number
     cover_letter_count: number
     interview_prep_count: number
@@ -587,7 +588,7 @@ export default function AdminDashboard() {
                       <div className="text-sm text-gray-900">
                         {user.lifetime_usage}
                         <span className="text-xs text-gray-500 ml-1">
-                          / {user.plan === 'pro' ? '100' : '2'}
+                          / {user.max_lifetime_generations === 999999 ? '∞' : user.max_lifetime_generations}
                         </span>
                       </div>
                     </td>
