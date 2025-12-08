@@ -123,10 +123,21 @@ export default function InterviewSimulatorPage() {
     setIsSending(true)
 
     try {
+      // Get auth token
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        toast.error('Authentication required')
+        router.push('/auth/signin')
+        return
+      }
+
       // Call API to start interview
       const response = await fetch('/api/interview-simulator/start', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
         body: JSON.stringify({
           company_name: companyName,
           company_website: companyWebsite,
@@ -180,9 +191,20 @@ export default function InterviewSimulatorPage() {
     setIsSending(true)
 
     try {
+      // Get auth token
+      const { data: { session: authSession } } = await supabase.auth.getSession()
+      if (!authSession) {
+        toast.error('Authentication required')
+        router.push('/auth/signin')
+        return
+      }
+
       const response = await fetch('/api/interview-simulator/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authSession.access_token}`
+        },
         body: JSON.stringify({
           company_name: session?.company_name,
           company_website: session?.company_website,
