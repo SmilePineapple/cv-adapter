@@ -43,7 +43,8 @@ import {
   Check
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
-import CompetitionBanner from '@/components/CompetitionBanner'
+import RotatingTipsBar from '@/components/RotatingTipsBar'
+import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 
 interface CV {
   id: string
@@ -135,6 +136,8 @@ export default function DashboardPage() {
   const [cvRating, setCvRating] = useState<any>(null)
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
+  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [isAdmin, setIsAdmin] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
 
@@ -173,13 +176,9 @@ export default function DashboardPage() {
       if (isPro) {
         toast.error('You have reached your generation limit. Contact support for assistance.')
       } else {
-        toast.error('You have used your 1 free generation. Upgrade to Pro for unlimited generations!', {
-          duration: 5000,
-          action: {
-            label: 'Upgrade',
-            onClick: () => router.push('/subscription')
-          }
-        })
+        // Show enhanced upgrade modal instead of toast
+        setUpgradeModalTrigger('limit_reached')
+        setShowEnhancedUpgradeModal(true)
       }
       return
     }
@@ -728,8 +727,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Competition Banner */}
-        {user && <CompetitionBanner userEmail={user.email} />}
+        {/* Rotating Tips Bar - Feature Discovery */}
+        <RotatingTipsBar />
 
         {/* Main Action Buttons - Professional Styling */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -1624,6 +1623,13 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+
+      {/* Enhanced Upgrade Modal */}
+      <EnhancedUpgradeModal
+        isOpen={showEnhancedUpgradeModal}
+        onClose={() => setShowEnhancedUpgradeModal(false)}
+        trigger={upgradeModalTrigger}
+      />
     </div>
   )
 }
