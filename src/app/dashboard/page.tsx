@@ -767,6 +767,15 @@ export default function DashboardPage() {
             <Sparkles className="w-5 h-5" />
             Interview Prep
           </Link>
+
+          <Link
+            href="/interview-simulator"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg gap-2 relative"
+          >
+            <MessageSquare className="w-5 h-5" />
+            Interview Simulator
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+          </Link>
         </div>
 
         {/* Usage Tracker - Prominent Display */}
