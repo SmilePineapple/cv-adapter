@@ -212,7 +212,7 @@ export default function ATSCVTipsUK2025() {
               href="/auth/signup"
               className="inline-block px-8 py-3 bg-white text-purple-600 font-semibold rounded-lg hover:shadow-xl transition-all"
             >
-              Optimize My CV Now (2 Free Generations)
+              Optimize My CV Now (1 Free Generation)
             </Link>
           </div>
 

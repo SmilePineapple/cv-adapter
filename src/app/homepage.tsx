@@ -691,7 +691,7 @@ export default function LandingPage() {
                 Fix My CV Now - Free
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-              <p className="mt-4 text-sm text-gray-500">2 free generations • No credit card required</p>
+              <p className="mt-4 text-sm text-gray-500">1 free generation • No credit card required</p>
             </div>
           </div>
         </div>
