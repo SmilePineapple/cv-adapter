@@ -40,7 +40,8 @@ import {
   Crown,
   User,
   Lock,
-  Check
+  Check,
+  MessageSquare
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import RotatingTipsBar from '@/components/RotatingTipsBar'
