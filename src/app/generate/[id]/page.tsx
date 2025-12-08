@@ -25,6 +25,7 @@ import { LANGUAGE_NAMES } from '@/lib/language-detection'
 import { LoadingProgress } from '@/components/LoadingProgress'
 import UpgradeModal from '@/components/UpgradeModal'
 import UpgradePromptModal from '@/components/UpgradePromptModal'
+import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 import JobScraper from '@/components/JobScraper'
 import { analyzeJobPaste } from '@/lib/smart-paste'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
@@ -55,6 +56,8 @@ export default function GeneratePage() {
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
+  const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
+  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [upgradeTrigger, setUpgradeTrigger] = useState<'limit_reached' | 'second_generation' | 'manual'>('manual')
 
   useEffect(() => {
@@ -185,13 +188,9 @@ export default function GeneratePage() {
       if (usageData.is_pro) {
         toast.error('Unexpected error. Please contact support.')
       } else {
-        toast.error('You have used your 1 free generation. Upgrade to Pro for unlimited generations!', {
-          duration: 5000,
-          action: {
-            label: 'Upgrade',
-            onClick: () => router.push('/subscription')
-          }
-        })
+        // Show enhanced upgrade modal instead of toast
+        setUpgradeModalTrigger('limit_reached')
+        setShowEnhancedUpgradeModal(true)
       }
       return
     }
@@ -748,6 +747,13 @@ export default function GeneratePage() {
         trigger={upgradeTrigger}
         generationsUsed={usageData?.generation_count || 0}
         maxGenerations={usageData?.max_generations || 2}
+      />
+
+      {/* Enhanced Upgrade Modal */}
+      <EnhancedUpgradeModal
+        isOpen={showEnhancedUpgradeModal}
+        onClose={() => setShowEnhancedUpgradeModal(false)}
+        trigger={upgradeModalTrigger}
       />
     </div>
   )
