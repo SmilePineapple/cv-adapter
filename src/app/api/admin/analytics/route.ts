@@ -200,6 +200,7 @@ export async function GET(request: NextRequest) {
         generation_count: userGenerations.length,
         monthly_usage: usage?.generation_count || 0,
         lifetime_usage: usage?.lifetime_generation_count || userGenerations.length,
+        max_lifetime_generations: usage?.max_lifetime_generations || (userPlan === 'pro' ? 999999 : 1),
         cv_count: userCVs.length,
         cover_letter_count: userCoverLetters.length,
         interview_prep_count: userInterviewPreps.length,
