@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'UK CV Builder - AI-Powered CV Generator for British Job Market | CV Adapter',
-  description: 'Create ATS-optimized CVs tailored for UK employers. AI-powered CV builder with British English, UK formatting, and templates trusted by UK professionals. Try 2 free generations!',
+  description: 'Create ATS-optimized CVs tailored for UK employers. AI-powered CV builder with British English, UK formatting, and templates trusted by UK professionals. Try 1 free generation!',
   keywords: 'UK CV builder, CV generator UK, British CV template, ATS CV UK, professional CV UK, CV writing service UK, AI CV builder UK',
   openGraph: {
     title: 'UK CV Builder - Professional CVs for the British Job Market',
@@ -264,10 +264,10 @@ export default function UKCVBuilder() {
               href="/auth/signup"
               className="block w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:shadow-xl transition-all"
             >
-              Start Free Trial (2 Generations)
+              Start Free Trial (1 Generation)
             </Link>
             <p className="text-gray-500 text-sm mt-4">
-              Try 2 free generations before upgrading
+              Try 1 free generation before upgrading
             </p>
           </div>
         </div>
@@ -340,14 +340,14 @@ export default function UKCVBuilder() {
             </div>
 
             <div className="bg-white p-6 rounded-lg">
-              <h3 className="font-semibold text-gray-900 mb-2">Do I get 2 free generations?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Do I get 1 free generation?</h3>
               <p className="text-gray-600">
-                Yes! Every new user gets 2 free CV generations to try the service. No credit card required.
+                Yes! Every new user gets 1 free CV generation to try the service. No credit card required.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg">
-              <h3 className="font-semibold text-gray-900 mb-2">What happens after I use my 2 free generations?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">What happens after I use my 1 free generation?</h3>
               <p className="text-gray-600">
                 You can upgrade to Pro for a one-time payment of £5, which gives you 100 lifetime generations. 
                 No subscription, no recurring fees.
@@ -372,7 +372,7 @@ export default function UKCVBuilder() {
         </h2>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
           Join thousands of UK professionals who've upgraded their CVs with CV Adapter. 
-          Start with 2 free generations today!
+          Start with 1 free generation today!
         </p>
         <Link
           href="/auth/signup"

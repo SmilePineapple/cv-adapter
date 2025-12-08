@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS usage_tracking (
   last_reset_at TIMESTAMPTZ DEFAULT NOW(),
   lifetime_generation_count INTEGER NOT NULL DEFAULT 0,
   plan_type TEXT NOT NULL DEFAULT 'free' CHECK (plan_type IN ('free', 'pro')),
-  max_lifetime_generations INTEGER NOT NULL DEFAULT 2,  -- Free users get 2 generations
+  max_lifetime_generations INTEGER NOT NULL DEFAULT 1,  -- Free users get 1 generation
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
