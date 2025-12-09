@@ -225,7 +225,7 @@ BEGIN
       NEW.id,
       0,      -- Start with 0 generations used
       'free', -- New users start on free plan
-      2       -- Free plan gets 2 generations
+      1       -- Free plan gets 1 generation
     )
     ON CONFLICT (user_id) DO NOTHING;
     

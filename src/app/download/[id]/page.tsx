@@ -259,59 +259,40 @@ export default function DownloadPage() {
       const photoUrl = (generation as any).cvs?.photo_url || null
       setCurrentPhotoUrl(photoUrl)
 
-      // Fetch latest hobbies from cv_sections (user may have customized icons)
-      // Note: hobbies are stored as 'interests' in the database
-      // Only fetch hobbies if cv_id exists (not orphaned)
-      let latestHobbies = null
+      // CRITICAL FIX: Fetch ALL current sections from cv_sections table
+      // This is the source of truth - it reflects user edits and deletions
+      let finalSections: CVSection[] = []
+      
       if (generation.cv_id) {
-        const { data: hobbiesData } = await supabase
+        const { data: currentSections } = await supabase
           .from('cv_sections')
-          .select('*')
+          .select('section_type, title, content, order_index, hobby_icons')
           .eq('cv_id', generation.cv_id)
-          .eq('section_type', 'interests')
-          .single()
-        latestHobbies = hobbiesData
-      }
+          .order('order_index')
 
-      // Merge original and modified sections for full CV preview
-      const originalSections = (generation as any).cvs?.parsed_sections?.sections || []
-      const modifiedSections = generation.output_sections?.sections || []
-      
-      const mergedSections = originalSections.map((originalSection: CVSection) => {
-        const modifiedSection = modifiedSections.find((mod: CVSection) => mod.type === originalSection.type)
-        
-        // If this is hobbies and we have latest data, use it
-        if (originalSection.type === 'hobbies' && latestHobbies) {
-          return {
-            type: 'hobbies',
-            content: latestHobbies.content,
-            order: latestHobbies.order_index || originalSection.order || 999
-          }
+        if (currentSections && currentSections.length > 0) {
+          console.log('✅ Download Preview: Using edited sections from cv_sections:', currentSections.length, 'sections')
+          finalSections = currentSections.map(section => ({
+            type: section.section_type,
+            content: section.hobby_icons && section.hobby_icons.length > 0 
+              ? section.hobby_icons  // Use hobby_icons if available
+              : section.content,
+            order: section.order_index
+          }))
+        } else {
+          console.log('⚠️ Download Preview: No cv_sections found, using generation output_sections')
+          finalSections = generation.output_sections?.sections || []
         }
-        
-        return modifiedSection || originalSection
-      })
-      
-      // Add any new sections from modifications
-      modifiedSections.forEach((modSection: CVSection) => {
-        if (!originalSections.find((orig: CVSection) => orig.type === modSection.type)) {
-          mergedSections.push(modSection)
-        }
-      })
-      
-      // If hobbies exist in cv_sections but not in original/modified, add them
-      if (latestHobbies && !mergedSections.find((s: CVSection) => s.type === 'hobbies')) {
-        mergedSections.push({
-          type: 'hobbies',
-          content: latestHobbies.content,
-          order: latestHobbies.order_index || 999
-        })
+      } else {
+        // Orphaned generation - use output_sections
+        console.log('⚠️ Download Preview: Orphaned generation, using output_sections')
+        finalSections = generation.output_sections?.sections || []
       }
       
-      // Update generation data with merged sections
+      // Update generation data with final sections
       const completeGeneration = {
         ...generation,
-        output_sections: { sections: mergedSections }
+        output_sections: { sections: finalSections }
       }
 
       setGenerationData(completeGeneration)
@@ -327,63 +308,8 @@ export default function DownloadPage() {
   const generatePreview = async () => {
     if (!generationData) return
 
-    let sections = [...generationData.output_sections.sections]
-    
-    // CRITICAL: Ensure name and contact sections are present from original CV
-    const originalSections = generationData.cvs?.parsed_sections?.sections || []
-    const nameInOutput = sections.find(s => s.type === 'name')
-    const contactInOutput = sections.find(s => s.type === 'contact')
-    
-    if (!nameInOutput && originalSections.length > 0) {
-      const nameFromOriginal = originalSections.find(s => s.type === 'name')
-      if (nameFromOriginal) {
-        console.log('✅ Preview: Adding name section from original CV')
-        sections.unshift({
-          type: 'name',
-          content: nameFromOriginal.content,
-          order: 0
-        })
-      }
-    }
-    
-    if (!contactInOutput && originalSections.length > 0) {
-      const contactFromOriginal = originalSections.find(s => s.type === 'contact')
-      if (contactFromOriginal) {
-        console.log('✅ Preview: Adding contact section from original CV')
-        sections.splice(1, 0, {
-          type: 'contact',
-          content: contactFromOriginal.content,
-          order: 1
-        })
-      }
-    }
-    
-    // Fetch latest skill scores from cv_sections table
-    try {
-      const supabase = createSupabaseClient()
-      const { data: skillScoresData } = await supabase
-        .from('cv_sections')
-        .select('content')
-        .eq('cv_id', generationData.cv_id)
-        .eq('section_type', 'skill_scores')
-        .maybeSingle()
-      
-      if (skillScoresData?.content) {
-        console.log('✅ Preview: Using latest skill scores from cv_sections')
-        // Remove old skill_scores if present
-        sections = sections.filter(s => s.type !== 'skill_scores')
-        // Add updated skill_scores
-        sections.push({
-          type: 'skill_scores' as any,
-          content: skillScoresData.content,
-          order: 999
-        })
-      }
-    } catch (error) {
-      console.error('Error fetching skill scores for preview:', error)
-    }
-    
-    const template = TEMPLATES.find(t => t.id === selectedTemplate)
+    // Use sections from generationData (already fetched from cv_sections in fetchGenerationData)
+    const sections = [...generationData.output_sections.sections]
     
     // Generate HTML preview based on template
     const html = generateTemplateHtml(sections, selectedTemplate)

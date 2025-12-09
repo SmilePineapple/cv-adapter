@@ -163,28 +163,31 @@ export async function POST(request: NextRequest) {
     const cvId = generation.cv_id
     const photoUrl = (generation as any).cvs?.photo_url || null
 
-    // Fetch latest hobbies/interests from cv_sections table (user may have customized icons)
-    const { data: latestHobbies } = await supabase
+    // CRITICAL FIX: Fetch ALL current sections from cv_sections table
+    // This is the source of truth - it reflects user edits and deletions
+    const { data: currentSections } = await supabase
       .from('cv_sections')
-      .select('content, hobby_icons')
+      .select('section_type, title, content, order_index, hobby_icons')
       .eq('cv_id', cvId)
-      .eq('section_type', 'interests')
-      .maybeSingle()
+      .order('order_index')
 
-    // Fetch latest skill scores from cv_sections table (user may have adjusted levels)
-    const { data: latestSkillScores } = await supabase
-      .from('cv_sections')
-      .select('content')
-      .eq('cv_id', cvId)
-      .eq('section_type', 'skill_scores')
-      .maybeSingle()
-
-    // CRITICAL FIX: Use AI-modified sections as the primary source
-    // The AI generation already has ALL sections (modified + preserved)
-    // We should ONLY fetch additional data from cv_sections table for user customizations
+    // If cv_sections has data, use it as the primary source (user has edited the CV)
+    // Otherwise fall back to generation output_sections
+    let completeSections: CVSection[] = []
     
-    // Start with ALL AI-generated sections (this includes everything shown on review page)
-    const completeSections: CVSection[] = [...modifiedSections]
+    if (currentSections && currentSections.length > 0) {
+      console.log('✅ Using edited sections from cv_sections table:', currentSections.length, 'sections')
+      completeSections = currentSections.map(section => ({
+        type: section.section_type,
+        content: section.hobby_icons && section.hobby_icons.length > 0 
+          ? section.hobby_icons  // Use hobby_icons if available
+          : section.content,
+        order: section.order_index
+      }))
+    } else {
+      console.log('⚠️ No cv_sections found, using generation output_sections')
+      completeSections = [...modifiedSections]
+    }
     
     // CRITICAL: Ensure name and contact sections are ALWAYS present from original CV
     // The AI sometimes doesn't include these in output_sections
@@ -213,39 +216,6 @@ export async function POST(request: NextRequest) {
           order: 1
         })
       }
-    }
-    
-    // Override hobbies if user customized them in the editor
-    if (latestHobbies) {
-      const hobbiesIndex = completeSections.findIndex(s => s.type === 'hobbies' || s.type === 'interests')
-      if (hobbiesIndex >= 0) {
-        completeSections[hobbiesIndex] = {
-          type: 'hobbies',
-          content: latestHobbies.hobby_icons && latestHobbies.hobby_icons.length > 0 
-            ? latestHobbies.hobby_icons  // Use hobby_icons if available (from hobby selector)
-            : latestHobbies.content,      // Otherwise use content
-          order: completeSections[hobbiesIndex].order || 999
-        }
-      } else {
-        // Add hobbies if not present
-        completeSections.push({
-          type: 'hobbies',
-          content: latestHobbies.hobby_icons && latestHobbies.hobby_icons.length > 0
-            ? latestHobbies.hobby_icons
-            : latestHobbies.content,
-          order: 999
-        })
-      }
-    }
-
-    // Add skill scores if user customized them
-    if (latestSkillScores && latestSkillScores.content) {
-      console.log('📊 Using custom skill scores:', latestSkillScores.content)
-      completeSections.push({
-        type: 'skill_scores',
-        content: latestSkillScores.content,
-        order: 998
-      })
     }
 
     // Deduplicate sections by type (keep only the first occurrence)
