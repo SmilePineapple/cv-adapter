@@ -778,6 +778,15 @@ export default function DashboardPage() {
             Interview Simulator
             <span className="absolute -top-2 -right-2 bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
           </Link>
+
+          <Link
+            href="/career-coach"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg gap-2 relative"
+          >
+            <TrendingUp className="w-5 h-5" />
+            Career Coach
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+          </Link>
         </div>
 
         {/* Usage Tracker - Prominent Display */}
