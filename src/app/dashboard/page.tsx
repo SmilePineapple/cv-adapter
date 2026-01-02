@@ -41,7 +41,8 @@ import {
   User,
   Lock,
   Check,
-  MessageSquare
+  MessageSquare,
+  Flame
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import RotatingTipsBar from '@/components/RotatingTipsBar'
@@ -786,6 +787,15 @@ export default function DashboardPage() {
             <TrendingUp className="w-5 h-5" />
             Career Coach
             <span className="absolute -top-2 -right-2 bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+          </Link>
+
+          <Link
+            href="/roast-cv"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all shadow-lg gap-2 relative"
+          >
+            <Flame className="w-5 h-5" />
+            Roast Your CV
+            <span className="absolute -top-2 -right-2 bg-yellow-400 text-orange-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
           </Link>
         </div>
 
