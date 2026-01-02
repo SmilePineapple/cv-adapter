@@ -577,17 +577,17 @@ LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + lang
    ✅ Output: "Filial Therapy in Family Therapy | Manchester | 08/2019"
 
 FOCUS AREAS:
-- Summary: Write 3-4 NEW sentences highlighting ${keywords.slice(0, 3).join(', ')} from job description
+- Summary: Write 3-4 NEW sentences highlighting transferable skills that connect the candidate's background to ${keywords.slice(0, 3).join(', ')} from job description
 - Experience: For EACH job, you MUST:
   1. Keep job title | company | dates | location EXACTLY as original
-  2. ADD 3-5 NEW bullet points describing responsibilities (adapted for ${jobTitle})
-  3. Use action verbs, metrics, and achievements
+  2. ADD 3-5 NEW bullet points describing responsibilities using language that emphasizes transferable skills relevant to ${jobTitle}
+  3. Use action verbs like "developed", "managed", "coordinated" (NOT overly technical terms like "engineered" or "architected" unless the original role was technical)
   4. Example format:
      "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England
      • Developed and delivered comprehensive therapy programs for 50+ families
      • Conducted in-depth assessments and created detailed documentation
      • Collaborated with multidisciplinary teams to improve service delivery"
-- Skills: Include ALL original skills, reorder to prioritize job-relevant ones, ADD new relevant skills
+- Skills: Include ALL original skills ONLY, reorder to prioritize job-relevant ones. DO NOT add any new skills that are not in the original CV.
 - Education: COPY 100% EXACTLY - zero modifications allowed
 - Certifications: COPY 100% EXACTLY - zero modifications allowed
 - Hobbies: COPY 100% EXACTLY - zero modifications allowed
@@ -612,6 +612,7 @@ VERIFICATION CHECKLIST (CHECK BEFORE RESPONDING):
 □ No fake companies like "XYZ Company", "ABC Corporation", "Springer Nature"?
 □ No fake education like "Bachelor of Arts in English Literature, University of London"?
 □ No fake job titles like "Content Writer at XYZ Company"?
+□ No fabricated skills that don't exist in the original CV (e.g., adding "React, Node.js" when original has therapy skills)?
 
 ⚠️ IF ANY CHECKBOX IS UNCHECKED, YOUR OUTPUT WILL BE REJECTED! ⚠️
 
