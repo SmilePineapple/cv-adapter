@@ -39,11 +39,13 @@ export async function POST(request: NextRequest) {
       }, { status: 403 })
     }
 
-    const { itemId, itemType, roastLevel, roastStyle } = await request.json()
+    const { itemId, itemType, roastLevel, roastStyle, userName } = await request.json()
 
     if (!itemId || !itemType) {
       return NextResponse.json({ error: 'Item ID and type are required' }, { status: 400 })
     }
+
+    const name = userName || 'friend'
 
     let cvContent: any
     let fileName: string
@@ -97,6 +99,8 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `You are a hilarious CV roaster with years of recruitment experience. Your job is to roast CVs with humor while providing genuine insights.
 
+IMPORTANT: Address the person as "${name}" throughout the roast to make it personal and engaging.
+
 Roast Level: ${roastLevel.toUpperCase()}
 ${levelPrompts[roastLevel] || levelPrompts.medium}
 
@@ -115,6 +119,8 @@ Focus on:
 - Irrelevant details
 
 Format your roast as a cohesive, entertaining commentary. Use emojis sparingly for emphasis. Make it feel like a stand-up comedy routine about their CV.
+
+Start with addressing ${name} directly (e.g., "Alright ${name}, let's talk about this CV..." or "Oh ${name}..." or "${name}, ${name}, ${name}...").
 
 End with 2-3 actual helpful tips for improvement (even in brutal mode, give them something useful).`
 
