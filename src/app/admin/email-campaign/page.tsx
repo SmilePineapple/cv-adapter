@@ -229,7 +229,7 @@ export default function EmailCampaignPage() {
         toast.error(data.error || 'Failed to send campaign')
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error sending campaign:', error)
       toast.error('Failed to send campaign')
     } finally {
@@ -357,7 +357,7 @@ export default function EmailCampaignPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
               />
               <p className="text-xs text-gray-500 mt-2">
-                Use <code className="bg-gray-100 px-1 rounded">{'{name}'}</code> for user's name and <code className="bg-gray-100 px-1 rounded">{'{email}'}</code> for email
+                Use <code className="bg-gray-100 px-1 rounded">{'{name}'}</code> for user&apos;s name and <code className="bg-gray-100 px-1 rounded">{'{email}'}</code> for email
               </p>
             </div>
 

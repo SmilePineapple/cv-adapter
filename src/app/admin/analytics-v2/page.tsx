@@ -15,10 +15,8 @@ import {
   Users, 
   Activity,
   Zap,
-  BarChart3,
   RefreshCw,
   Download,
-  Calendar,
   Clock
 } from 'lucide-react'
 
@@ -118,11 +116,12 @@ export default function AnalyticsV2Page() {
     }
   }
 
-  const exportToCSV = (data: any[], filename: string) => {
+  const exportToCSV = (data: unknown[], filename: string) => {
     if (!data || data.length === 0) return
     
-    const headers = Object.keys(data[0]).join(',')
-    const rows = data.map(row => Object.values(row).join(','))
+    const firstItem = data[0] as Record<string, unknown>
+    const headers = Object.keys(firstItem).join(',')
+    const rows = data.map(row => Object.values(row as Record<string, unknown>).join(','))
     const csv = [headers, ...rows].join('\\n')
     
     const blob = new Blob([csv], { type: 'text/csv' })
