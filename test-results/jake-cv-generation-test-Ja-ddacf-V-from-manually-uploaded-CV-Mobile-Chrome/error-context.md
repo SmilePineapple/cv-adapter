@@ -1,0 +1,173 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - link "CV CV Adapter" [ref=e7] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e9]: CV
+            - generic [ref=e10]: CV Adapter
+          - generic [ref=e11]:
+            - img [ref=e13]
+            - generic [ref=e16]: FREE
+        - generic [ref=e17]:
+          - link "Upgrade" [ref=e18] [cursor=pointer]:
+            - /url: /subscription
+            - img [ref=e19]
+            - generic [ref=e22]: Upgrade
+          - link [ref=e23] [cursor=pointer]:
+            - /url: /subscription
+            - img [ref=e24]
+          - link "Contact Support" [ref=e27] [cursor=pointer]:
+            - /url: /contact
+            - img [ref=e28]
+            - generic [ref=e31]: Contact Support
+          - button "Logout" [ref=e32]:
+            - img [ref=e33]
+            - generic [ref=e36]: Logout
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e40]:
+          - img [ref=e41]
+          - generic [ref=e44]:
+            - paragraph [ref=e45]: Total CVs
+            - paragraph [ref=e46]: "1"
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - generic [ref=e52]:
+            - paragraph [ref=e53]: Generations
+            - paragraph [ref=e54]: "0"
+        - generic [ref=e56]:
+          - img [ref=e57]
+          - generic [ref=e60]:
+            - paragraph [ref=e61]: Cover Letters
+            - paragraph [ref=e62]: "0"
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - img [ref=e65]
+            - generic [ref=e67]:
+              - paragraph [ref=e68]: This Month
+              - paragraph [ref=e69]: 0/1
+          - paragraph [ref=e72]: 1 generations remaining
+      - generic [ref=e75]:
+        - img [ref=e78]
+        - paragraph [ref=e82]: "💡 Pro Tip: Generate unlimited cover letters tailored to any job description"
+        - link "Try Cover Letters" [ref=e83] [cursor=pointer]:
+          - /url: /cover-letter
+        - button "Dismiss tips" [ref=e84]:
+          - img [ref=e85]
+      - generic [ref=e99]:
+        - button "Generate Tailored CV" [ref=e100]:
+          - img [ref=e101]
+          - text: Generate Tailored CV
+        - link "Upgrade to Pro" [ref=e103] [cursor=pointer]:
+          - /url: /subscription
+          - img [ref=e104]
+          - text: Upgrade to Pro
+        - link "Create Cover Letter" [ref=e106] [cursor=pointer]:
+          - /url: /cover-letter
+          - img [ref=e107]
+          - text: Create Cover Letter
+        - link "Interview Prep PRO" [ref=e110] [cursor=pointer]:
+          - /url: /interview-prep
+          - img [ref=e111]
+          - text: Interview Prep
+          - generic [ref=e114]: PRO
+        - link "Interview Simulator PRO" [ref=e115] [cursor=pointer]:
+          - /url: /interview-simulator
+          - img [ref=e116]
+          - text: Interview Simulator
+          - generic [ref=e118]: PRO
+      - generic [ref=e120]:
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - img [ref=e123]
+            - heading "Free Plan" [level=3] [ref=e125]
+          - generic [ref=e126]:
+            - generic [ref=e127]: "1"
+            - generic [ref=e128]: remaining
+        - generic [ref=e130]:
+          - generic [ref=e131]: 0 used
+          - generic [ref=e132]: 1 total
+        - generic [ref=e134]:
+          - paragraph [ref=e135]: "💡 Pro Tip: Upgrade to Pro for unlimited generations at £9.99/month"
+          - button "Learn more →" [ref=e136]
+        - link "Upload CV & Photo" [ref=e138] [cursor=pointer]:
+          - /url: /upload
+          - img [ref=e139]
+          - text: Upload CV & Photo
+      - generic [ref=e143]:
+        - generic [ref=e144]:
+          - img [ref=e145]
+          - textbox "Search documents..." [ref=e148]
+        - button "Filter" [ref=e149]:
+          - img [ref=e150]
+          - text: Filter
+      - combobox [ref=e154]:
+        - option "📊 Overview"
+        - option "📄 CVs (1)"
+        - option "✨ Generations (0)" [selected]
+        - option "✉️ Cover Letters (0)"
+      - generic [ref=e155]:
+        - heading "CV Generations" [level=3] [ref=e157]
+        - generic [ref=e158]:
+          - img [ref=e159]
+          - heading "No generations yet" [level=3] [ref=e162]
+          - paragraph [ref=e163]: Generate your first tailored CV to see it here.
+          - button "Generate CV" [ref=e164]:
+            - img [ref=e165]
+            - text: Generate CV
+      - generic [ref=e168]:
+        - heading "Unlock Pro Features" [level=3] [ref=e169]:
+          - img [ref=e170]
+          - text: Unlock Pro Features
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - img [ref=e177]
+              - generic [ref=e180]: Free Tier
+            - list [ref=e181]:
+              - listitem [ref=e182]:
+                - generic [ref=e183]: •
+                - generic [ref=e184]: 1 CV generation
+              - listitem [ref=e185]:
+                - generic [ref=e186]: •
+                - generic [ref=e187]: PDF export only
+              - listitem [ref=e188]:
+                - generic [ref=e189]: •
+                - generic [ref=e190]: 2 templates
+              - listitem [ref=e191]:
+                - generic [ref=e192]: •
+                - generic [ref=e193]: Watermark on exports
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - img [ref=e197]
+              - generic [ref=e199]: Pro Tier
+              - generic [ref=e200]: £9.99/month
+            - list [ref=e201]:
+              - listitem [ref=e202]:
+                - img [ref=e203]
+                - generic [ref=e205]: Unlimited generations
+              - listitem [ref=e206]:
+                - img [ref=e207]
+                - generic [ref=e209]: All export formats (PDF, DOCX, HTML, TXT)
+              - listitem [ref=e210]:
+                - img [ref=e211]
+                - generic [ref=e213]: 14 premium templates
+              - listitem [ref=e214]:
+                - img [ref=e215]
+                - generic [ref=e217]: No watermarks
+              - listitem [ref=e218]:
+                - img [ref=e219]
+                - generic [ref=e221]: AI Review & Cover Letters
+        - link "Upgrade to Pro - £9.99/month" [ref=e222] [cursor=pointer]:
+          - /url: /subscription
+          - img [ref=e223]
+          - text: Upgrade to Pro - £9.99/month
+  - region "Notifications alt+T"
+  - alert [ref=e226]
+  - button "Open chat" [ref=e227] [cursor=pointer]
+```

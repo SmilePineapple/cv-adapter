@@ -125,7 +125,7 @@ export default function EnhancedUpgradeModal({ isOpen, onClose, trigger = 'manua
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Monthly Pro</h3>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-bold text-gray-900">£9.99</span>
+                  <span className="text-4xl font-bold text-gray-900">£2.99</span>
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-2">Cancel anytime</p>

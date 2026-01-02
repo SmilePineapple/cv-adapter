@@ -85,26 +85,26 @@ export async function POST(request: NextRequest) {
       
       // Monthly pricing by currency
       const monthlyPricing: Record<string, number> = {
-        gbp: 999,     // £9.99/month
-        usd: 1299,    // $12.99/month
-        eur: 1099,    // €10.99/month
-        cad: 1499,    // C$14.99/month
-        aud: 1599,    // A$15.99/month
-        inr: 99900,   // ₹999/month
+        gbp: 299,     // £2.99/month
+        usd: 399,     // $3.99/month
+        eur: 349,     // €3.49/month
+        cad: 449,     // C$4.49/month
+        aud: 499,     // A$4.99/month
+        inr: 24900,   // ₹249/month
       }
 
-      // Annual pricing by currency (save ~59%)
+      // Annual pricing by currency (save ~17%)
       const annualPricing: Record<string, number> = {
-        gbp: 4900,    // £49/year (£4.08/month)
-        usd: 6900,    // $69/year ($5.75/month)
-        eur: 5900,    // €59/year (€4.92/month)
-        cad: 7900,    // C$79/year (C$6.58/month)
-        aud: 8900,    // A$89/year (A$7.42/month)
-        inr: 499900,  // ₹4,999/year (₹416/month)
+        gbp: 2999,    // £29.99/year (£2.50/month)
+        usd: 3999,    // $39.99/year ($3.33/month)
+        eur: 3499,    // €34.99/year (€2.92/month)
+        cad: 4499,    // C$44.99/year (C$3.75/month)
+        aud: 4999,    // A$49.99/year (A$4.17/month)
+        inr: 249900,  // ₹2,499/year (₹208/month)
       }
 
       const pricing = plan === 'annual' ? annualPricing : monthlyPricing
-      const amount = pricing[currency.toLowerCase()] || (plan === 'annual' ? 4900 : 999)
+      const amount = pricing[currency.toLowerCase()] || (plan === 'annual' ? 2999 : 299)
       const interval = plan === 'annual' ? 'year' : 'month'
 
       sessionParams.line_items = [
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
             product_data: {
               name: `CV Adapter Pro - ${plan === 'annual' ? 'Annual' : 'Monthly'} Plan`,
               description: plan === 'annual' 
-                ? 'Unlimited CV generations - Billed annually (Save 59%)'
+                ? 'Unlimited CV generations - Billed annually (Save 17%)'
                 : 'Unlimited CV generations - Billed monthly',
             },
             unit_amount: amount,

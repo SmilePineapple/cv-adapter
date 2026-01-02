@@ -195,7 +195,7 @@ export function FeatureLockedEmptyState({ featureName }: { featureName: string }
         Unlock {featureName}
       </h3>
       <p className="text-gray-600 mb-6 max-w-md mx-auto">
-        Upgrade to Pro for £9.99/month to access {featureName} and unlimited CV generations.
+        Upgrade to Pro for £2.99/month to access {featureName} and unlimited CV generations.
       </p>
       <Link
         href="/subscription"
@@ -205,7 +205,7 @@ export function FeatureLockedEmptyState({ featureName }: { featureName: string }
         Upgrade to Pro
       </Link>
       <p className="text-sm text-gray-500 mt-4">
-        One-time payment • No subscription
+        Cancel anytime • No hidden fees
       </p>
     </div>
   )

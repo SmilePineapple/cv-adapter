@@ -135,7 +135,7 @@ export default function UpgradePromptModal({
           {/* Pricing */}
           <div className="bg-white border-2 border-purple-200 rounded-xl p-6 mb-6">
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-4xl font-bold text-gray-900">£9.99</span>
+              <span className="text-4xl font-bold text-gray-900">£2.99</span>
               <span className="text-gray-600">/month</span>
             </div>
             <p className="text-sm text-gray-600">Cancel anytime. No hidden fees.</p>

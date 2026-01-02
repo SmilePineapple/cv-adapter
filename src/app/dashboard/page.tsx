@@ -1460,7 +1460,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="font-semibold">Pro Tier</div>
                   <span className="ml-auto bg-white bg-opacity-20 text-xs px-2 py-1 rounded-full font-semibold">
-                    £9.99/month
+                    £2.99/month
                   </span>
                 </div>
                 <ul className="text-sm space-y-2">
@@ -1492,7 +1492,7 @@ export default function DashboardPage() {
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2"
             >
               <Sparkles className="w-5 h-5" />
-              Upgrade to Pro - £9.99/month
+              Upgrade to Pro - £2.99/month
             </Link>
           </div>
         )}

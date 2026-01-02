@@ -302,7 +302,7 @@ export default function AdminDashboard() {
             <div>
               <div className="text-sm opacity-90 mb-1">Monthly MRR</div>
               <div className="text-3xl font-bold">£{(analytics.overview.monthlyRecurringRevenue || 0).toFixed(2)}</div>
-              <div className="text-xs opacity-75 mt-1">{analytics.overview.monthlyProUsers || 0} monthly × £9.99</div>
+              <div className="text-xs opacity-75 mt-1">{analytics.overview.monthlyProUsers || 0} monthly × £2.99</div>
             </div>
             <div>
               <div className="text-sm opacity-90 mb-1">Projected ARR</div>
