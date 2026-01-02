@@ -151,8 +151,8 @@ export default function AdminUpgradeUserPage() {
           <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 className="font-semibold text-blue-900 mb-2">📝 What This Does:</h3>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Sets user plan to "pro"</li>
-              <li>• Sets status to "active"</li>
+              <li>• Sets user plan to &quot;pro&quot;</li>
+              <li>• Sets status to &quot;active&quot;</li>
               <li>• Valid for 1 year</li>
               <li>• No Stripe charges</li>
               <li>• Unlimited CV generations</li>

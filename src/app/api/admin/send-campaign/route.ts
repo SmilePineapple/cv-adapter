@@ -111,9 +111,9 @@ export async function POST(request: NextRequest) {
         results.sent++
         console.log(`✓ Sent to ${user.email} (${i + 1}/${recipients.length})`)
 
-      } catch (error: any) {
+      } catch (error: unknown) {
         results.failed++
-        const errorMsg = `Failed to send to ${user.email}: ${error.message}`
+        const errorMsg = `Failed to send to ${user.email}: ${(error as Error).message}`
         results.errors.push(errorMsg)
         console.error(errorMsg)
       }
@@ -130,10 +130,10 @@ export async function POST(request: NextRequest) {
       results
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Campaign error:', error)
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: (error as Error).message || 'Internal server error' },
       { status: 500 }
     )
   }

@@ -63,11 +63,12 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState(false)
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
+  const [timeRange] = useState<'7d' | '30d' | '90d'>('30d')
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
   useEffect(() => {
     checkAuthAndLoadData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuthAndLoadData = async () => {
@@ -120,8 +121,8 @@ export default function AnalyticsPage() {
     const last7Days = Object.entries(analytics.charts.generationsByDay).slice(-7)
     const prev7Days = Object.entries(analytics.charts.generationsByDay).slice(-14, -7)
     
-    const last7Total = last7Days.reduce((sum, [_, count]) => sum + count, 0)
-    const prev7Total = prev7Days.reduce((sum, [_, count]) => sum + count, 0)
+    const last7Total = last7Days.reduce((sum, [, count]) => sum + count, 0)
+    const prev7Total = prev7Days.reduce((sum, [, count]) => sum + count, 0)
     
     const generationsGrowth = prev7Total > 0 
       ? ((last7Total - prev7Total) / prev7Total * 100).toFixed(1)
@@ -130,8 +131,8 @@ export default function AnalyticsPage() {
     const last7Signups = Object.entries(analytics.charts.signupsByDay).slice(-7)
     const prev7Signups = Object.entries(analytics.charts.signupsByDay).slice(-14, -7)
     
-    const last7SignupsTotal = last7Signups.reduce((sum, [_, count]) => sum + count, 0)
-    const prev7SignupsTotal = prev7Signups.reduce((sum, [_, count]) => sum + count, 0)
+    const last7SignupsTotal = last7Signups.reduce((sum, [, count]) => sum + count, 0)
+    const prev7SignupsTotal = prev7Signups.reduce((sum, [, count]) => sum + count, 0)
     
     const signupsGrowth = prev7SignupsTotal > 0
       ? ((last7SignupsTotal - prev7SignupsTotal) / prev7SignupsTotal * 100).toFixed(1)
