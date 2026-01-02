@@ -39,22 +39,46 @@ export async function POST(request: NextRequest) {
       }, { status: 403 })
     }
 
-    const { cvId, roastLevel, roastStyle } = await request.json()
+    const { itemId, itemType, roastLevel, roastStyle } = await request.json()
 
-    if (!cvId) {
-      return NextResponse.json({ error: 'CV ID is required' }, { status: 400 })
+    if (!itemId || !itemType) {
+      return NextResponse.json({ error: 'Item ID and type are required' }, { status: 400 })
     }
 
-    // Get CV data
-    const { data: cvData, error: cvError } = await supabase
-      .from('cvs')
-      .select('parsed_content, file_meta')
-      .eq('id', cvId)
-      .eq('user_id', user.id)
-      .single()
+    let cvContent: any
+    let fileName: string
 
-    if (cvError || !cvData) {
-      return NextResponse.json({ error: 'CV not found' }, { status: 404 })
+    // Get CV data based on type
+    if (itemType === 'uploaded') {
+      const { data: cvData, error: cvError } = await supabase
+        .from('cvs')
+        .select('parsed_content, file_meta')
+        .eq('id', itemId)
+        .eq('user_id', user.id)
+        .single()
+
+      if (cvError || !cvData) {
+        return NextResponse.json({ error: 'CV not found' }, { status: 404 })
+      }
+
+      cvContent = cvData.parsed_content
+      fileName = cvData.file_meta?.original_name || 'Unknown'
+    } else if (itemType === 'generated') {
+      const { data: genData, error: genError } = await supabase
+        .from('generations')
+        .select('output_sections, job_title')
+        .eq('id', itemId)
+        .eq('user_id', user.id)
+        .single()
+
+      if (genError || !genData) {
+        return NextResponse.json({ error: 'Generated CV not found' }, { status: 404 })
+      }
+
+      cvContent = genData.output_sections
+      fileName = `Generated CV - ${genData.job_title || 'Untitled'}`
+    } else {
+      return NextResponse.json({ error: 'Invalid item type' }, { status: 400 })
     }
 
     // Build roast prompt based on settings
@@ -96,9 +120,9 @@ End with 2-3 actual helpful tips for improvement (even in brutal mode, give them
 
     const userPrompt = `Roast this CV:
 
-${JSON.stringify(cvData.parsed_content, null, 2)}
+${JSON.stringify(cvContent, null, 2)}
 
-File name: ${cvData.file_meta?.original_name || 'Unknown'}
+File name: ${fileName}
 
 Give me your best roast!`
 
