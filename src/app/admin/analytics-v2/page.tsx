@@ -62,6 +62,7 @@ export default function AnalyticsV2Page() {
 
   useEffect(() => {
     checkAdminAndFetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -71,13 +72,15 @@ export default function AnalyticsV2Page() {
       }, 60000) // Refresh every 60 seconds
       return () => clearInterval(interval)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, isAdmin])
 
   useEffect(() => {
     if (isAdmin) {
       fetchAllData()
     }
-  }, [timeRange])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRange, isAdmin])
 
   const checkAdminAndFetchData = async () => {
     const supabase = createSupabaseClient()

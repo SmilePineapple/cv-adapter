@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch all users with pagination (listUsers has a default limit of 50)
-    let allUsers: any[] = []
+    let allUsers: Array<{id: string, email?: string, created_at: string, email_confirmed_at?: string, last_sign_in_at?: string}> = []
     let page = 1
     let hasMore = true
     
