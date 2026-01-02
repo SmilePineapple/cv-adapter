@@ -21,10 +21,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is Pro
+    // Check if user is Pro and get roast count
     const { data: usage } = await supabase
       .from('usage_tracking')
-      .select('plan_type, subscription_tier')
+      .select('plan_type, subscription_tier, roast_count, roast_last_reset')
       .eq('user_id', user.id)
       .single()
 
@@ -39,7 +39,16 @@ export async function POST(request: NextRequest) {
       }, { status: 403 })
     }
 
-    const { itemId, itemType, roastLevel, roastStyle, userName } = await request.json()
+    // Check roast limit (10 per month)
+    const currentRoastCount = usage?.roast_count || 0
+    if (currentRoastCount >= 10) {
+      return NextResponse.json({ 
+        error: 'Monthly roast limit reached (10/month). Resets next month!',
+        roastCount: currentRoastCount
+      }, { status: 429 })
+    }
+
+    const { itemId, itemType, roastLevel, roastStyle, userName, customPrompt } = await request.json()
 
     if (!itemId || !itemType) {
       return NextResponse.json({ error: 'Item ID and type are required' }, { status: 400 })
@@ -122,6 +131,8 @@ Format your roast as a cohesive, entertaining commentary. Use emojis sparingly f
 
 Start with addressing ${name} directly (e.g., "Alright ${name}, let's talk about this CV..." or "Oh ${name}..." or "${name}, ${name}, ${name}...").
 
+${customPrompt ? `\nSPECIAL INSTRUCTION: ${customPrompt}. Adopt this persona/style throughout the entire roast while maintaining the roast level and style settings.` : ''}
+
 End with 2-3 actual helpful tips for improvement (even in brutal mode, give them something useful).`
 
     const userPrompt = `Roast this CV:
@@ -150,15 +161,23 @@ Give me your best roast!`
 
     const roast = completion.choices[0]?.message?.content || 'Failed to generate roast. Even AI is speechless at this CV! 😅'
 
+    // Increment roast count
+    const newRoastCount = currentRoastCount + 1
+    await supabase
+      .from('usage_tracking')
+      .update({ roast_count: newRoastCount })
+      .eq('user_id', user.id)
+
     return NextResponse.json({
       roast,
+      roastCount: newRoastCount,
       message: 'CV roasted successfully'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Roast CV error:', error)
     return NextResponse.json({ 
-      error: error.message || 'Internal server error'
+      error: (error as Error).message || 'Internal server error'
     }, { status: 500 })
   }
 }
