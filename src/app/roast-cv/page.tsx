@@ -28,14 +28,23 @@ interface CV {
   created_at: string
 }
 
+interface RoastableItem {
+  id: string
+  type: 'uploaded' | 'generated'
+  name: string
+  created_at: string
+  content: any
+}
+
 export default function RoastCVPage() {
   const router = useRouter()
   const supabase = createSupabaseClient()
   const [user, setUser] = useState<any>(null)
   const [isPro, setIsPro] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [cvs, setCvs] = useState<CV[]>([])
-  const [selectedCvId, setSelectedCvId] = useState<string>('')
+  const [roastableItems, setRoastableItems] = useState<RoastableItem[]>([])
+  const [selectedItemId, setSelectedItemId] = useState<string>('')
+  const [selectedItemType, setSelectedItemType] = useState<'uploaded' | 'generated'>('uploaded')
   const [roastLevel, setRoastLevel] = useState<'mild' | 'medium' | 'brutal'>('medium')
   const [roastStyle, setRoastStyle] = useState<'funny' | 'sarcastic' | 'professional' | 'savage'>('funny')
   const [isRoasting, setIsRoasting] = useState(false)
@@ -89,22 +98,58 @@ export default function RoastCVPage() {
   }
 
   const loadCVs = async (userId: string) => {
-    const { data, error } = await supabase
+    const items: RoastableItem[] = []
+
+    // Load uploaded CVs
+    const { data: uploadedCVs, error: cvError } = await supabase
       .from('cvs')
       .select('id, file_meta, parsed_content, created_at')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
 
-    if (!error && data) {
-      setCvs(data)
-      if (data.length > 0) {
-        setSelectedCvId(data[0].id)
-      }
+    if (!cvError && uploadedCVs) {
+      uploadedCVs.forEach((cv) => {
+        items.push({
+          id: cv.id,
+          type: 'uploaded',
+          name: cv.file_meta?.original_name || 'Untitled CV',
+          created_at: cv.created_at,
+          content: cv.parsed_content
+        })
+      })
+    }
+
+    // Load generated CVs
+    const { data: generatedCVs, error: genError } = await supabase
+      .from('generations')
+      .select('id, job_title, output_sections, created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (!genError && generatedCVs) {
+      generatedCVs.forEach((gen) => {
+        items.push({
+          id: gen.id,
+          type: 'generated',
+          name: `Generated CV - ${gen.job_title || 'Untitled'}`,
+          created_at: gen.created_at,
+          content: gen.output_sections
+        })
+      })
+    }
+
+    // Sort all items by date
+    items.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+
+    setRoastableItems(items)
+    if (items.length > 0) {
+      setSelectedItemId(items[0].id)
+      setSelectedItemType(items[0].type)
     }
   }
 
   const handleRoast = async () => {
-    if (!selectedCvId) {
+    if (!selectedItemId) {
       toast.error('Please select a CV to roast')
       return
     }
@@ -117,7 +162,8 @@ export default function RoastCVPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          cvId: selectedCvId,
+          itemId: selectedItemId,
+          itemType: selectedItemType,
           roastLevel,
           roastStyle,
           userId: user.id
@@ -219,30 +265,45 @@ export default function RoastCVPage() {
           {/* CV Selection */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select CV to Roast
+              Select CV to Roast (Uploaded or Generated)
             </label>
-            {cvs.length > 0 ? (
+            {roastableItems.length > 0 ? (
               <select
-                value={selectedCvId}
-                onChange={(e) => setSelectedCvId(e.target.value)}
+                value={selectedItemId}
+                onChange={(e) => {
+                  const selectedId = e.target.value
+                  const selectedItem = roastableItems.find(item => item.id === selectedId)
+                  setSelectedItemId(selectedId)
+                  if (selectedItem) {
+                    setSelectedItemType(selectedItem.type)
+                  }
+                }}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
-                {cvs.map((cv) => (
-                  <option key={cv.id} value={cv.id}>
-                    {cv.file_meta?.original_name || 'Untitled CV'} - {new Date(cv.created_at).toLocaleDateString()}
+                {roastableItems.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.type === 'uploaded' ? '📄' : '✨'} {item.name} - {new Date(item.created_at).toLocaleDateString()}
                   </option>
                 ))}
               </select>
             ) : (
               <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
                 <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-600 mb-4">No CVs found. Upload one first!</p>
-                <button
-                  onClick={() => router.push('/upload')}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
-                >
-                  Upload CV
-                </button>
+                <p className="text-gray-600 mb-4">No CVs found. Upload or generate one first!</p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => router.push('/upload')}
+                    className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+                  >
+                    Upload CV
+                  </button>
+                  <button
+                    onClick={() => router.push('/dashboard')}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                  >
+                    Generate CV
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -353,7 +414,7 @@ export default function RoastCVPage() {
           {/* Roast Button */}
           <button
             onClick={handleRoast}
-            disabled={isRoasting || !selectedCvId}
+            disabled={isRoasting || !selectedItemId}
             className="w-full py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-lg hover:from-orange-700 hover:to-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
           >
             {isRoasting ? (
