@@ -47,15 +47,85 @@ interface AIReview {
 
 const TEMPLATES = [
   // ✨ STUNNING TEMPLATES (Free - Best designs!)
-  { id: 'professional-metrics', name: '✨ Professional Metrics', description: 'Two-column with circular skill meters & clean layout', category: 'Professional', badge: 'NEW', advanced: true, pro: false },
-  { id: 'teal-sidebar', name: '✨ Teal Sidebar', description: 'Icon sidebar with teal accent & skill bars', category: 'Modern', badge: 'NEW', advanced: true, pro: false },
-  { id: 'soft-header', name: '✨ Soft Header', description: 'Gradient header with skill progress bars', category: 'Modern', badge: 'NEW', advanced: true, pro: false },
-  { id: 'artistic-header', name: '✨ Artistic Header', description: 'Decorative pattern header with pink accent', category: 'Creative', badge: 'NEW', advanced: true, pro: false },
-  { id: 'bold-split', name: '✨ Bold Split', description: 'Dark/cyan 50/50 split with high contrast', category: 'Bold', badge: 'NEW', advanced: true, pro: false },
+  { 
+    id: 'professional-metrics', 
+    name: '✨ Professional Metrics', 
+    description: 'Two-column with circular skill meters & clean layout', 
+    category: 'Professional', 
+    badge: 'POPULAR', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/professional-metrics.png',
+    colors: ['#4F46E5', '#6366F1', '#818CF8']
+  },
+  { 
+    id: 'teal-sidebar', 
+    name: '✨ Teal Sidebar', 
+    description: 'Icon sidebar with teal accent & skill bars', 
+    category: 'Modern', 
+    badge: 'NEW', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/teal-sidebar.png',
+    colors: ['#14B8A6', '#2DD4BF', '#5EEAD4']
+  },
+  { 
+    id: 'soft-header', 
+    name: '✨ Soft Header', 
+    description: 'Gradient header with skill progress bars', 
+    category: 'Modern', 
+    badge: 'NEW', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/soft-header.png',
+    colors: ['#8B5CF6', '#A78BFA', '#C4B5FD']
+  },
+  { 
+    id: 'artistic-header', 
+    name: '✨ Artistic Header', 
+    description: 'Decorative pattern header with pink accent', 
+    category: 'Creative', 
+    badge: 'NEW', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/artistic-header.png',
+    colors: ['#EC4899', '#F472B6', '#F9A8D4']
+  },
+  { 
+    id: 'bold-split', 
+    name: '✨ Bold Split', 
+    description: 'Dark/cyan 50/50 split with high contrast', 
+    category: 'Bold', 
+    badge: 'NEW', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/bold-split.png',
+    colors: ['#06B6D4', '#22D3EE', '#67E8F9']
+  },
   
   // ADVANCED TEMPLATES (Free)
-  { id: 'creative_modern', name: 'Creative Modern', description: 'Two-column with icons & decorative elements', category: 'Advanced', badge: 'FREE', advanced: true, pro: false },
-  { id: 'professional_columns', name: 'Professional Columns', description: 'Sidebar layout with skill bars & hobby badges', category: 'Advanced', badge: 'FREE', advanced: true, pro: false },
+  { 
+    id: 'creative_modern', 
+    name: 'Creative Modern', 
+    description: 'Two-column with icons & decorative elements', 
+    category: 'Advanced', 
+    badge: 'FREE', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/creative-modern.png',
+    colors: ['#7C3AED', '#8B5CF6', '#A78BFA']
+  },
+  { 
+    id: 'professional_columns', 
+    name: 'Professional Columns', 
+    description: 'Sidebar layout with skill bars & hobby badges', 
+    category: 'Advanced', 
+    badge: 'FREE', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/professional-columns.png',
+    colors: ['#3B82F6', '#60A5FA', '#93C5FD']
+  },
 ]
 
 const EXPORT_FORMATS = [
@@ -1229,6 +1299,8 @@ export default function DownloadPage() {
       {previewTemplate && (
         <TemplatePreview
           templateId={previewTemplate}
+          screenshot={TEMPLATES.find(t => t.id === previewTemplate)?.screenshot}
+          colors={TEMPLATES.find(t => t.id === previewTemplate)?.colors}
           onClose={() => {
             const templateToSelect = previewTemplate
             setPreviewTemplate(null)
