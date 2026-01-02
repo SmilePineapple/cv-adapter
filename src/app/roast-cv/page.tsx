@@ -49,6 +49,9 @@ export default function RoastCVPage() {
   const [roastStyle, setRoastStyle] = useState<'funny' | 'sarcastic' | 'professional' | 'savage'>('funny')
   const [isRoasting, setIsRoasting] = useState(false)
   const [roastResult, setRoastResult] = useState<string>('')
+  const [roastProgress, setRoastProgress] = useState(0)
+  const [roastHistory, setRoastHistory] = useState<Array<{level: string, style: string, result: string, date: string}>>([])
+  const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -156,6 +159,15 @@ export default function RoastCVPage() {
 
     setIsRoasting(true)
     setRoastResult('')
+    setRoastProgress(0)
+
+    // Simulate progress animation
+    const progressInterval = setInterval(() => {
+      setRoastProgress(prev => {
+        if (prev >= 90) return prev
+        return prev + Math.random() * 15
+      })
+    }, 500)
 
     try {
       const response = await fetch('/api/roast-cv', {
@@ -166,14 +178,28 @@ export default function RoastCVPage() {
           itemType: selectedItemType,
           roastLevel,
           roastStyle,
-          userId: user.id
+          userId: user.id,
+          userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
         })
       })
 
       const data = await response.json()
 
+      clearInterval(progressInterval)
+      setRoastProgress(100)
+
       if (response.ok) {
         setRoastResult(data.roast)
+        
+        // Add to history
+        const newHistoryItem = {
+          level: roastLevel,
+          style: roastStyle,
+          result: data.roast,
+          date: new Date().toISOString()
+        }
+        setRoastHistory(prev => [newHistoryItem, ...prev].slice(0, 5)) // Keep last 5 roasts
+        
         toast.success('🔥 Your CV has been roasted!')
       } else {
         throw new Error(data.error || 'Failed to roast CV')
@@ -181,8 +207,12 @@ export default function RoastCVPage() {
     } catch (error: any) {
       console.error('Roast error:', error)
       toast.error(error.message || 'Failed to roast CV')
+      clearInterval(progressInterval)
     } finally {
-      setIsRoasting(false)
+      setTimeout(() => {
+        setIsRoasting(false)
+        setRoastProgress(0)
+      }, 500)
     }
   }
 
@@ -429,6 +459,40 @@ export default function RoastCVPage() {
               </>
             )}
           </button>
+
+          {/* Loading Progress Bar */}
+          {isRoasting && (
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700">AI is analyzing your CV...</span>
+                <span className="text-sm font-bold text-orange-600">{Math.round(roastProgress)}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 transition-all duration-500 ease-out animate-pulse"
+                  style={{ width: `${roastProgress}%` }}
+                />
+              </div>
+              <div className="mt-3 space-y-2">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" />
+                  <span>Reading your CV content...</span>
+                </div>
+                {roastProgress > 30 && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                    <span>Finding things to roast...</span>
+                  </div>
+                )}
+                {roastProgress > 60 && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                    <span>Crafting the perfect roast...</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Roast Result */}
@@ -477,6 +541,62 @@ export default function RoastCVPage() {
                 </div>
               </div>
             </div>
+
+            {/* Roast Again Button */}
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => {
+                  setRoastResult('')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold rounded-lg hover:from-orange-700 hover:to-red-700 transition-all"
+              >
+                🔥 Roast Again
+              </button>
+              {roastHistory.length > 0 && (
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
+                >
+                  {showHistory ? 'Hide' : 'Show'} History ({roastHistory.length})
+                </button>
+              )}
+            </div>
+
+            {/* Roast History */}
+            {showHistory && roastHistory.length > 0 && (
+              <div className="mt-6 space-y-3">
+                <h3 className="text-lg font-bold text-gray-900">Previous Roasts</h3>
+                {roastHistory.map((item, index) => (
+                  <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold px-2 py-1 bg-orange-100 text-orange-700 rounded">
+                          {item.level.toUpperCase()}
+                        </span>
+                        <span className="text-xs font-bold px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                          {item.style.toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        {new Date(item.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-700 line-clamp-3">{item.result}</p>
+                    <button
+                      onClick={() => {
+                        setRoastResult(item.result)
+                        setShowHistory(false)
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+                      }}
+                      className="mt-2 text-xs text-orange-600 hover:text-orange-700 font-medium"
+                    >
+                      View Full Roast →
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
