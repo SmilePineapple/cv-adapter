@@ -14,8 +14,8 @@ describe('ATS Calculator', () => {
       const sections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Software Engineer at Tech Corp'
+          content: 'Software Engineer at Tech Corp',
+          order: 0
         }
       ]
 
@@ -28,16 +28,16 @@ describe('ATS Calculator', () => {
       const sectionsWithKeywords: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Senior Software Engineer with React, TypeScript, and Node.js experience. Managed teams and developed scalable applications.'
+          content: 'Senior Software Engineer with React, TypeScript, and Node.js experience. Managed teams and developed scalable applications.',
+          order: 0
         }
       ]
 
       const sectionsWithoutKeywords: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Worked on various projects using different technologies.'
+          content: 'Worked on various projects using different technologies.',
+          order: 0
         }
       ]
 
@@ -51,26 +51,26 @@ describe('ATS Calculator', () => {
       const completeSections: CVSection[] = [
         {
           type: 'summary',
-          title: 'Professional Summary',
-          content: 'Experienced software engineer'
+          content: 'Experienced software engineer',
+          order: 0
         },
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Software Engineer at Tech Corp'
+          content: 'Software Engineer at Tech Corp',
+          order: 1
         },
         {
           type: 'skills',
-          title: 'Skills',
-          content: 'React, TypeScript, Node.js'
+          content: 'React, TypeScript, Node.js',
+          order: 2
         }
       ]
 
       const incompleteSections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Software Engineer'
+          content: 'Software Engineer',
+          order: 0
         }
       ]
 
@@ -84,16 +84,16 @@ describe('ATS Calculator', () => {
       const optimalContent: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Senior Software Engineer with extensive experience in React, TypeScript, and Node.js. Led multiple teams to deliver high-quality software products. Developed scalable applications serving millions of users. Improved system performance by 50% through optimization. Managed cross-functional teams and coordinated with stakeholders. Implemented best practices and streamlined development processes.'.repeat(3)
+          content: 'Senior Software Engineer with extensive experience in React, TypeScript, and Node.js. Led multiple teams to deliver high-quality software products. Developed scalable applications serving millions of users. Improved system performance by 50% through optimization. Managed cross-functional teams and coordinated with stakeholders. Implemented best practices and streamlined development processes.'.repeat(3),
+          order: 0
         }
       ]
 
       const shortContent: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Software Engineer'
+          content: 'Software Engineer',
+          order: 0
         }
       ]
 
@@ -107,16 +107,16 @@ describe('ATS Calculator', () => {
       const withActionVerbs: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Achieved 50% performance improvement. Managed team of 10 engineers. Led development of new features. Developed scalable architecture. Created automated testing framework. Improved code quality. Increased deployment frequency. Delivered projects on time.'
+          content: 'Achieved 50% performance improvement. Managed team of 10 engineers. Led development of new features. Developed scalable architecture. Created automated testing framework. Improved code quality. Increased deployment frequency. Delivered projects on time.',
+          order: 0
         }
       ]
 
       const withoutActionVerbs: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Was responsible for software development. Part of engineering team. Worked on various projects.'
+          content: 'Was responsible for software development. Part of engineering team. Worked on various projects.',
+          order: 0
         }
       ]
 
@@ -130,16 +130,16 @@ describe('ATS Calculator', () => {
       const withBullets: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: '• Developed React applications\n• Managed team of engineers\n• Improved system performance'
+          content: '• Developed React applications\n• Managed team of engineers\n• Improved system performance',
+          order: 0
         }
       ]
 
       const withoutBullets: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Developed React applications. Managed team of engineers. Improved system performance.'
+          content: 'Developed React applications. Managed team of engineers. Improved system performance.',
+          order: 0
         }
       ]
 
@@ -153,10 +153,8 @@ describe('ATS Calculator', () => {
       const sections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: [
-            { company: 'Tech Corp', role: 'Software Engineer', description: 'Developed React applications' }
-          ]
+          content: 'Tech Corp - Software Engineer - Developed React applications',
+          order: 0
         }
       ]
 
@@ -168,12 +166,8 @@ describe('ATS Calculator', () => {
       const sections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: {
-            company: 'Tech Corp',
-            role: 'Software Engineer',
-            description: 'Developed React applications with TypeScript'
-          }
+          content: 'Tech Corp - Software Engineer - Developed React applications with TypeScript',
+          order: 0
         }
       ]
 
@@ -192,8 +186,8 @@ describe('ATS Calculator', () => {
       const sections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'Software Engineer'
+          content: 'Software Engineer',
+          order: 0
         }
       ]
 
@@ -207,8 +201,8 @@ describe('ATS Calculator', () => {
       const sections: CVSection[] = [
         {
           type: 'experience',
-          title: 'Work Experience',
-          content: 'this that with from have will your their'
+          content: 'this that with from have will your their',
+          order: 0
         }
       ]
 
@@ -221,12 +215,11 @@ describe('ATS Calculator', () => {
       const idealSections: CVSection[] = [
         {
           type: 'summary',
-          title: 'Professional Summary',
-          content: 'Senior Software Engineer with 10+ years of experience in React, TypeScript, and Node.js. Proven track record of leading teams and delivering scalable applications.'
+          content: 'Senior Software Engineer with 10+ years of experience in React, TypeScript, and Node.js. Proven track record of leading teams and delivering scalable applications.',
+          order: 0
         },
         {
           type: 'experience',
-          title: 'Work Experience',
           content: `
             • Managed team of 15 engineers developing React and TypeScript applications
             • Led development of scalable Node.js microservices architecture
@@ -236,12 +229,13 @@ describe('ATS Calculator', () => {
             • Implemented best practices and streamlined development workflows
             • Coordinated with stakeholders and delivered projects on time
             • Created technical documentation and mentored junior developers
-          `.repeat(2)
+          `.repeat(2),
+          order: 1
         },
         {
           type: 'skills',
-          title: 'Technical Skills',
-          content: 'React, TypeScript, Node.js, JavaScript, Python, AWS, Docker, Kubernetes, CI/CD, Agile, Scrum, Leadership, Problem-solving'
+          content: 'React, TypeScript, Node.js, JavaScript, Python, AWS, Docker, Kubernetes, CI/CD, Agile, Scrum, Leadership, Problem-solving',
+          order: 2
         }
       ]
 
