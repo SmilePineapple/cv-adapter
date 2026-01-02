@@ -76,11 +76,13 @@ export default function InterviewPrepPage() {
 
     const { data: usage } = await supabase
       .from('usage_tracking')
-      .select('plan_type, interview_preps_used')
+      .select('plan_type, subscription_tier, interview_preps_used')
       .eq('user_id', user.id)
       .single()
 
-    const isProUser = usage?.plan_type === 'pro'
+    const isProUser = usage?.plan_type === 'pro' || 
+                      usage?.subscription_tier === 'pro_monthly' || 
+                      usage?.subscription_tier === 'pro_annual'
     setIsPro(isProUser)
     setUsageData({ interview_preps_used: usage?.interview_preps_used || 0 })
   }
