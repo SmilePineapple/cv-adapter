@@ -30,21 +30,31 @@ export async function POST(request: NextRequest) {
       }, { status: 503 })
     }
 
-    // Get the user's subscription from database
-    const { data: subscriptionData, error: subError } = await supabase
-      .from('subscriptions')
-      .select('stripe_subscription_id, status')
+    // Get the user's subscription info from usage_tracking
+    const { data: usageData, error: usageError } = await supabase
+      .from('usage_tracking')
+      .select('subscription_tier, stripe_subscription_id')
       .eq('user_id', userId)
       .single()
 
-    if (subError || !subscriptionData) {
+    if (usageError || !usageData) {
       return NextResponse.json({ 
-        error: 'No active subscription found',
+        error: 'No user data found',
         message: 'Please contact support if you believe this is an error.'
       }, { status: 404 })
     }
 
-    if (!subscriptionData.stripe_subscription_id) {
+    // Check if user is actually on a paid subscription
+    const isPro = usageData.subscription_tier === 'pro_monthly' || usageData.subscription_tier === 'pro_annual'
+    
+    if (!isPro) {
+      return NextResponse.json({ 
+        error: 'No active subscription',
+        message: 'You are currently on the free plan.'
+      }, { status: 400 })
+    }
+
+    if (!usageData.stripe_subscription_id) {
       return NextResponse.json({ 
         error: 'No Stripe subscription ID found',
         message: 'Please contact support to cancel your subscription.'
@@ -53,18 +63,17 @@ export async function POST(request: NextRequest) {
 
     // Cancel the subscription in Stripe (at period end)
     const canceledSubscription = await stripe.subscriptions.update(
-      subscriptionData.stripe_subscription_id,
+      usageData.stripe_subscription_id,
       {
         cancel_at_period_end: true,
       }
     )
 
-    // Update the subscription status in database
+    // Update the subscription status in usage_tracking
     const { error: updateError } = await supabase
-      .from('subscriptions')
+      .from('usage_tracking')
       .update({
-        status: 'canceling',
-        cancel_at_period_end: true,
+        subscription_status: 'canceling',
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
