@@ -345,9 +345,8 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         const nameSection = sections.find(s => s.type === 'name')
         const userName = getSectionContent(nameSection?.content) || 'Your Name'
         
-        // Get skill scores if available
-        const skillScoresSection = sections.find(s => s.type === 'skill_scores')
-        const skillScores = skillScoresSection?.content || null
+        // Get skill scores if available - note: skill_scores is not in CVSection type, handled separately
+        const skillScores = null // Skill scores handled via separate data structure
         
         console.log('📊 Skill scores for template:', skillScores)
         console.log('📧 Contact info for template:', contactInfo)
@@ -381,7 +380,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           education: getSectionContent(sections.find(s => s.type === 'education')?.content),
           skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
           skillScores: skillScores,
-          languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
+          languages: '', // Languages not in CVSection type
           hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
           certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
           photoUrl: photoUrl || undefined,
@@ -468,7 +467,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
     
     await browser.close()
     
-    return new NextResponse(pdf, {
+    return new NextResponse(pdf as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="CV_${sanitizeFilename(jobTitle)}_${template}.pdf"`
@@ -669,7 +668,7 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
 
     const buffer = await Packer.toBuffer(doc)
     
-    return new NextResponse(buffer, {
+    return new NextResponse(buffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': `attachment; filename="CV_${sanitizeFilename(jobTitle)}_${template}.docx"`

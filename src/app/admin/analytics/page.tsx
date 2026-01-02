@@ -6,12 +6,8 @@ import { createSupabaseClient } from '@/lib/supabase'
 import {
   BarChart3,
   TrendingUp,
-  TrendingDown,
   Users,
   FileText,
-  Globe,
-  Download,
-  Calendar,
   DollarSign,
   ArrowLeft,
   Crown,

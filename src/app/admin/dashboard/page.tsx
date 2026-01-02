@@ -54,9 +54,9 @@ export default function AdvancedAdminDashboard() {
   const [realTimeMetrics, setRealTimeMetrics] = useState<RealTimeMetrics | null>(null)
   const [conversionFunnel, setConversionFunnel] = useState<ConversionFunnel | null>(null)
   const [retention, setRetention] = useState<RetentionData | null>(null)
-  const [revenueData, setRevenueData] = useState<any[]>([])
-  const [geoData, setGeoData] = useState<any[]>([])
-  const [featureUsage, setFeatureUsage] = useState<any>(null)
+  const [revenueData, setRevenueData] = useState<Array<{date: string, revenue: number}>>([])
+  const [geoData, setGeoData] = useState<Array<{flag: string, name: string, count: number, percentage: number}>>([])
+  const [featureUsage, setFeatureUsage] = useState<Record<string, number> | null>(null)
   const [churnRate, setChurnRate] = useState<number>(0)
 
   useEffect(() => {
@@ -279,7 +279,7 @@ export default function AdvancedAdminDashboard() {
                 <DollarSign className="w-4 h-4 text-green-500" />
               </div>
               <p className="text-3xl font-bold text-gray-900">£{realTimeMetrics?.revenueToday?.toFixed(2) || '0.00'}</p>
-              <p className="text-xs text-gray-500 mt-1">Today's earnings</p>
+              <p className="text-xs text-gray-500 mt-1">Today&apos;s earnings</p>
             </div>
 
             <div className="bg-white rounded-lg shadow p-6">
@@ -488,7 +488,7 @@ export default function AdvancedAdminDashboard() {
 }
 
 // Helper Components
-function FunnelStep({ label, count, percentage, color }: any) {
+function FunnelStep({ label, count, percentage, color }: { label: string; count: number; percentage: number; color: string }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
@@ -507,7 +507,7 @@ function FunnelStep({ label, count, percentage, color }: any) {
   )
 }
 
-function FeatureUsageCard({ feature, usage, total }: any) {
+function FeatureUsageCard({ feature, usage, total }: { feature: string; usage: number; total: number }) {
   const percentage = (usage / total) * 100
   return (
     <div className="p-4 border border-gray-200 rounded-lg">

@@ -9,11 +9,12 @@ module.exports = {
   '*.{ts,tsx}': () => 'tsc --noEmit',
   
   // Run tests related to changed files
-  '*.{ts,tsx}': (filenames) => {
+  '*.{ts,tsx}': async (filenames) => {
+    const fs = await import('fs')
     const testFiles = filenames
       .filter(file => !file.includes('.test.') && !file.includes('.spec.'))
       .map(file => file.replace(/\.(ts|tsx)$/, '.test.$1'))
-      .filter(file => require('fs').existsSync(file))
+      .filter(file => fs.existsSync(file))
     
     if (testFiles.length > 0) {
       return `vitest run ${testFiles.join(' ')}`
