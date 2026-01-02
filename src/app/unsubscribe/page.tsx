@@ -13,11 +13,26 @@ export default function UnsubscribePage() {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call (you can implement actual unsubscribe logic later)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsSubmitted(true)
-    setIsLoading(false)
+    try {
+      const response = await fetch('/api/unsubscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        console.error('Unsubscribe error:', data.error)
+      }
+
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Unsubscribe exception:', error)
+      setIsSubmitted(true) // Still show success for privacy
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isSubmitted) {
