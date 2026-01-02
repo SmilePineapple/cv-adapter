@@ -10,8 +10,122 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <noreply@mycvbuddy.com>'
 
 /**
- * Send welcome email to new users
+ * Send 3-day reminder email to users who haven't generated a CV yet
  */
+export async function send3DayReminderEmail(email: string, name: string) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: "Don't forget your free CV generation! 🚀",
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif; background-color: #f6f9fc;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f9fc; padding: 40px 0;">
+              <tr>
+                <td align="center">
+                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                    <!-- Header -->
+                    <tr>
+                      <td style="background-color: #4F46E5; padding: 32px; text-align: center;">
+                        <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Still looking for your dream job? 🎯</h1>
+                      </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                      <td style="padding: 40px;">
+                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                          Hi ${name || 'there'},
+                        </p>
+                        
+                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                          We noticed you haven't created your AI-powered CV yet! You still have <strong>1 free generation</strong> waiting for you.
+                        </p>
+                        
+                        <div style="background-color: #f0f9ff; border-left: 4px solid #4F46E5; padding: 20px; margin: 0 0 30px 0; border-radius: 4px;">
+                          <p style="font-size: 16px; line-height: 26px; color: #1e40af; margin: 0 0 12px 0;">
+                            <strong>⏱️ It only takes 2 minutes to:</strong>
+                          </p>
+                          <ul style="margin: 0; padding-left: 20px; color: #1e40af;">
+                            <li style="margin-bottom: 8px;">Upload your existing CV</li>
+                            <li style="margin-bottom: 8px;">Paste a job description</li>
+                            <li style="margin-bottom: 8px;">Get an ATS-optimized CV tailored to the role</li>
+                          </ul>
+                        </div>
+                        
+                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
+                          <strong>Why wait?</strong> Our AI has helped thousands of job seekers land interviews by creating CVs that pass Applicant Tracking Systems and impress hiring managers.
+                        </p>
+                        
+                        <!-- CTA Button -->
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td align="center" style="padding: 20px 0;">
+                              <a href="https://www.mycvbuddy.com/dashboard" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">Create My CV Now →</a>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 30px 0 0 0; border-radius: 4px;">
+                          <p style="font-size: 14px; line-height: 22px; color: #92400e; margin: 0;">
+                            <strong>💡 Pro Tip:</strong> Users who create their CV within the first week are 3x more likely to land an interview!
+                          </p>
+                        </div>
+                        
+                        <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin: 30px 0 0 0;">
+                          Best regards,<br>
+                          The CV Buddy Team
+                        </p>
+                      </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                      <td style="padding: 24px; border-top: 1px solid #e5e7eb; text-align: center; background-color: #f9fafb;">
+                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                          CV Buddy - AI-Powered CV & Cover Letter Generator
+                        </p>
+                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                          <a href="https://www.mycvbuddy.com" style="color: #7c3aed; text-decoration: underline;">www.mycvbuddy.com</a>
+                        </p>
+                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
+                          <a href="https://www.mycvbuddy.com/unsubscribe" style="color: #7c3aed; text-decoration: underline;">Unsubscribe</a>
+                        </p>
+                      </td>
+                    </tr>
+                    
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('3-day reminder email error:', error)
+      return { success: false, error }
+    }
+
+    console.log('3-day reminder email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('3-day reminder email exception:', error)
+    return { success: false, error }
+  }
+}
+
 export async function sendWelcomeEmail(email: string, name: string) {
   try {
     const htmlContent = `
@@ -203,6 +317,10 @@ export async function sendFirstGenerationEmail(email: string, name: string) {
       from: FROM_EMAIL,
       to: email,
       subject: 'Great job on your first CV! 🚀',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       html: htmlContent,
     })
 
@@ -303,6 +421,10 @@ export async function sendLimitReachedEmail(email: string, name: string) {
       from: FROM_EMAIL,
       to: email,
       subject: 'You\'ve used your free generation - Upgrade to Pro for £2.99/month! 🚀',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       html: htmlContent,
     })
 
@@ -319,6 +441,7 @@ export async function sendLimitReachedEmail(email: string, name: string) {
   }
 }
 
+
 /**
  * Send re-engagement email to inactive users
  */
@@ -333,6 +456,10 @@ export async function sendReEngagementEmail(
       from: FROM_EMAIL,
       to: email,
       subject: 'We miss you! Come back and use your free CV generation 👋',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       react: ReEngagementEmail({ name, daysAgo, remainingGenerations }),
     })
 
@@ -358,6 +485,10 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
       from: FROM_EMAIL,
       to: email,
       subject: 'Welcome to CV Buddy Pro! 🎉',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       html: `
         <h1>Welcome to Pro!</h1>
         <p>Hi ${name},</p>
