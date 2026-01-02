@@ -52,6 +52,14 @@ export default function RoastCVPage() {
   const [roastProgress, setRoastProgress] = useState(0)
   const [roastHistory, setRoastHistory] = useState<Array<{level: string, style: string, result: string, date: string}>>([])
   const [showHistory, setShowHistory] = useState(false)
+  const [roastCount, setRoastCount] = useState(0)
+  const [customPrompt, setCustomPrompt] = useState('')
+  const [showCustomPrompt, setShowCustomPrompt] = useState(false)
+  const [comparisonMode, setComparisonMode] = useState(false)
+  const [comparison, setComparison] = useState<{roast1: string, roast2: string, settings1: any, settings2: any} | null>(null)
+  const [battleMode, setBattleMode] = useState(false)
+  const [battleCv2Id, setBattleCv2Id] = useState('')
+  const [battleResult, setBattleResult] = useState<{roast1: string, roast2: string, winner: string} | null>(null)
 
   useEffect(() => {
     checkAuth()
@@ -68,10 +76,10 @@ export default function RoastCVPage() {
 
       setUser(user)
 
-      // Check if user is Pro
+      // Check if user is Pro and get roast count
       const { data: usage } = await supabase
         .from('usage_tracking')
-        .select('plan_type, subscription_tier')
+        .select('plan_type, subscription_tier, roast_count, roast_last_reset')
         .eq('user_id', user.id)
         .single()
 
@@ -79,6 +87,7 @@ export default function RoastCVPage() {
                         usage?.subscription_tier === 'pro_monthly' || 
                         usage?.subscription_tier === 'pro_annual'
       setIsPro(isProUser)
+      setRoastCount(usage?.roast_count || 0)
 
       if (!isProUser) {
         toast.error('Roast Your CV is a Pro feature. Please upgrade to continue.', {
@@ -157,6 +166,21 @@ export default function RoastCVPage() {
       return
     }
 
+    // Check roast limit (10 per month for Pro users)
+    if (roastCount >= 10) {
+      toast.error('You\'ve reached your monthly limit of 10 roasts. Resets next month!', {
+        duration: 5000
+      })
+      return
+    }
+
+    // Warning at 8th roast
+    if (roastCount === 8) {
+      toast.warning('⚠️ You only have 2 more roasts left this month!', {
+        duration: 5000
+      })
+    }
+
     setIsRoasting(true)
     setRoastResult('')
     setRoastProgress(0)
@@ -179,7 +203,8 @@ export default function RoastCVPage() {
           roastLevel,
           roastStyle,
           userId: user.id,
-          userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
+          userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend',
+          customPrompt: customPrompt || undefined
         })
       })
 
@@ -190,6 +215,7 @@ export default function RoastCVPage() {
 
       if (response.ok) {
         setRoastResult(data.roast)
+        setRoastCount(data.roastCount || roastCount + 1)
         
         // Add to history
         const newHistoryItem = {
@@ -198,15 +224,15 @@ export default function RoastCVPage() {
           result: data.roast,
           date: new Date().toISOString()
         }
-        setRoastHistory(prev => [newHistoryItem, ...prev].slice(0, 5)) // Keep last 5 roasts
+        setRoastHistory(prev => [newHistoryItem, ...prev].slice(0, 5))
         
         toast.success('🔥 Your CV has been roasted!')
       } else {
         throw new Error(data.error || 'Failed to roast CV')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Roast error:', error)
-      toast.error(error.message || 'Failed to roast CV')
+      toast.error((error as Error).message || 'Failed to roast CV')
       clearInterval(progressInterval)
     } finally {
       setTimeout(() => {
@@ -229,6 +255,141 @@ export default function RoastCVPage() {
       })
     } else {
       copyToClipboard()
+    }
+  }
+
+  const handleComparison = async () => {
+    if (!selectedItemId) {
+      toast.error('Please select a CV to compare')
+      return
+    }
+
+    setIsRoasting(true)
+    setComparison(null)
+
+    try {
+      // Get two different roasts with different settings
+      const [response1, response2] = await Promise.all([
+        fetch('/api/roast-cv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            itemId: selectedItemId,
+            itemType: selectedItemType,
+            roastLevel: 'mild',
+            roastStyle: roastStyle,
+            userId: user.id,
+            userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
+          })
+        }),
+        fetch('/api/roast-cv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            itemId: selectedItemId,
+            itemType: selectedItemType,
+            roastLevel: 'brutal',
+            roastStyle: roastStyle,
+            userId: user.id,
+            userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
+          })
+        })
+      ])
+
+      const [data1, data2] = await Promise.all([response1.json(), response2.json()])
+
+      if (response1.ok && response2.ok) {
+        setComparison({
+          roast1: data1.roast,
+          roast2: data2.roast,
+          settings1: { level: 'mild', style: roastStyle },
+          settings2: { level: 'brutal', style: roastStyle }
+        })
+        setRoastCount(data2.roastCount || roastCount + 2)
+        toast.success('🔥 Comparison complete!')
+      }
+    } catch (error) {
+      console.error('Comparison error:', error)
+      toast.error('Failed to generate comparison')
+    } finally {
+      setIsRoasting(false)
+    }
+  }
+
+  const handleBattle = async () => {
+    if (!selectedItemId || !battleCv2Id) {
+      toast.error('Please select two CVs to battle')
+      return
+    }
+
+    setIsRoasting(true)
+    setBattleResult(null)
+
+    try {
+      const [response1, response2] = await Promise.all([
+        fetch('/api/roast-cv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            itemId: selectedItemId,
+            itemType: selectedItemType,
+            roastLevel,
+            roastStyle,
+            userId: user.id,
+            userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
+          })
+        }),
+        fetch('/api/roast-cv', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            itemId: battleCv2Id,
+            itemType: 'uploaded',
+            roastLevel,
+            roastStyle,
+            userId: user.id,
+            userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'friend'
+          })
+        })
+      ])
+
+      const [data1, data2] = await Promise.all([response1.json(), response2.json()])
+
+      if (response1.ok && response2.ok) {
+        // Determine winner based on roast severity
+        const winner = data1.roast.length > data2.roast.length ? 'CV 1' : 'CV 2'
+        setBattleResult({
+          roast1: data1.roast,
+          roast2: data2.roast,
+          winner
+        })
+        setRoastCount(data2.roastCount || roastCount + 2)
+        toast.success('⚔️ Battle complete!')
+      }
+    } catch (error) {
+      console.error('Battle error:', error)
+      toast.error('Failed to battle CVs')
+    } finally {
+      setIsRoasting(false)
+    }
+  }
+
+  const generateShareCard = () => {
+    // Create shareable text for social media
+    const blurredRoast = roastResult.replace(/[A-Z][a-z]+ [A-Z][a-z]+/g, '[NAME]')
+      .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, '[EMAIL]')
+      .replace(/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g, '[PHONE]')
+
+    const shareText = `🔥 I got my CV roasted by AI! 🔥\n\n${blurredRoast.slice(0, 200)}...\n\nTry it yourself at CV Adapter!`
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'My CV Got Roasted!',
+        text: shareText
+      })
+    } else {
+      navigator.clipboard.writeText(shareText)
+      toast.success('Share text copied! Paste it on Twitter/LinkedIn')
     }
   }
 
@@ -441,24 +602,164 @@ export default function RoastCVPage() {
             </div>
           </div>
 
-          {/* Roast Button */}
-          <button
-            onClick={handleRoast}
-            disabled={isRoasting || !selectedItemId}
-            className="w-full py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-lg hover:from-orange-700 hover:to-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
-          >
-            {isRoasting ? (
-              <>
-                <Loader2 className="w-6 h-6 animate-spin" />
-                Roasting Your CV...
-              </>
-            ) : (
-              <>
-                <Flame className="w-6 h-6" />
-                Roast My CV!
-              </>
+          {/* Custom Prompt Toggle */}
+          <div className="mb-6">
+            <button
+              onClick={() => setShowCustomPrompt(!showCustomPrompt)}
+              className="flex items-center gap-2 text-sm text-orange-600 hover:text-orange-700 font-medium"
+            >
+              <Sparkles className="w-4 h-4" />
+              {showCustomPrompt ? 'Hide' : 'Show'} Custom Roast Prompts
+            </button>
+            
+            {showCustomPrompt && (
+              <div className="mt-3 space-y-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Choose a Celebrity Roaster
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setCustomPrompt('Roast my CV as if you\'re Gordon Ramsay')}
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
+                      customPrompt.includes('Gordon Ramsay')
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 hover:border-orange-300'
+                    }`}
+                  >
+                    👨‍🍳 Gordon Ramsay
+                  </button>
+                  <button
+                    onClick={() => setCustomPrompt('Roast my CV like a pirate')}
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
+                      customPrompt.includes('pirate')
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 hover:border-orange-300'
+                    }`}
+                  >
+                    🏴‍☠️ Pirate
+                  </button>
+                  <button
+                    onClick={() => setCustomPrompt('Roast my CV as if you\'re a British aristocrat')}
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
+                      customPrompt.includes('aristocrat')
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 hover:border-orange-300'
+                    }`}
+                  >
+                    🎩 British Aristocrat
+                  </button>
+                  <button
+                    onClick={() => setCustomPrompt('Roast my CV like a Gen Z influencer')}
+                    className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
+                      customPrompt.includes('Gen Z')
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 hover:border-orange-300'
+                    }`}
+                  >
+                    📱 Gen Z Influencer
+                  </button>
+                </div>
+                {customPrompt && (
+                  <button
+                    onClick={() => setCustomPrompt('')}
+                    className="text-xs text-gray-500 hover:text-gray-700"
+                  >
+                    Clear custom prompt
+                  </button>
+                )}
+              </div>
             )}
-          </button>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+            <button
+              onClick={handleRoast}
+              disabled={isRoasting || !selectedItemId}
+              className="py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold rounded-lg hover:from-orange-700 hover:to-red-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isRoasting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Roasting...
+                </>
+              ) : (
+                <>
+                  <Flame className="w-5 h-5" />
+                  Roast My CV
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => setComparisonMode(!comparisonMode)}
+              disabled={isRoasting || !selectedItemId}
+              className="py-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <Zap className="w-5 h-5" />
+              Compare Roasts
+            </button>
+
+            <button
+              onClick={() => setBattleMode(!battleMode)}
+              disabled={isRoasting}
+              className="py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <Skull className="w-5 h-5" />
+              CV Battle
+            </button>
+          </div>
+
+          {/* Comparison Mode UI */}
+          {comparisonMode && (
+            <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <h3 className="font-bold text-purple-900 mb-2">🔥 Roast Comparison Mode</h3>
+              <p className="text-sm text-purple-700 mb-3">
+                Compare Mild vs Brutal roasts side-by-side to see how different settings change the feedback!
+              </p>
+              <button
+                onClick={handleComparison}
+                disabled={isRoasting || !selectedItemId}
+                className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50"
+              >
+                Generate Comparison (Uses 2 roasts)
+              </button>
+            </div>
+          )}
+
+          {/* Battle Mode UI */}
+          {battleMode && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="font-bold text-blue-900 mb-2">⚔️ AI Roast Battle</h3>
+              <p className="text-sm text-blue-700 mb-3">
+                Select two CVs to battle! AI will roast both and declare a winner.
+              </p>
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-blue-900 mb-2">
+                  Select Second CV
+                </label>
+                <select
+                  value={battleCv2Id}
+                  onChange={(e) => setBattleCv2Id(e.target.value)}
+                  className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Choose a CV...</option>
+                  {roastableItems.filter(item => item.id !== selectedItemId).map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.type === 'uploaded' ? '📄' : '✨'} {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={handleBattle}
+                disabled={isRoasting || !selectedItemId || !battleCv2Id}
+                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50"
+              >
+                Start Battle! (Uses 2 roasts)
+              </button>
+            </div>
+          )}
 
           {/* Loading Progress Bar */}
           {isRoasting && (
@@ -512,11 +813,12 @@ export default function RoastCVPage() {
                   <Copy className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={shareRoast}
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Share"
+                  onClick={generateShareCard}
+                  className="px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors flex items-center gap-2"
+                  title="Share on social media"
                 >
                   <Share2 className="w-5 h-5" />
+                  <span className="text-sm font-medium">Share Card</span>
                 </button>
               </div>
             </div>
@@ -600,8 +902,110 @@ export default function RoastCVPage() {
           </div>
         )}
 
+        {/* Comparison Result */}
+        {comparison && (
+          <div className="bg-white rounded-xl shadow-sm p-6 border-2 border-purple-200 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Zap className="w-6 h-6 text-purple-600" />
+              Roast Comparison: Mild vs Brutal
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Mild Roast */}
+              <div className="border-2 border-green-200 rounded-lg p-4 bg-green-50">
+                <div className="flex items-center gap-2 mb-3">
+                  <ThumbsUp className="w-5 h-5 text-green-600" />
+                  <h3 className="font-bold text-green-900">Mild Roast</h3>
+                </div>
+                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                  {comparison.roast1}
+                </p>
+              </div>
+
+              {/* Brutal Roast */}
+              <div className="border-2 border-red-200 rounded-lg p-4 bg-red-50">
+                <div className="flex items-center gap-2 mb-3">
+                  <Flame className="w-5 h-5 text-red-600" />
+                  <h3 className="font-bold text-red-900">Brutal Roast</h3>
+                </div>
+                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                  {comparison.roast2}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-sm text-purple-800">
+                💡 <strong>Comparison Insight:</strong> Notice how the brutal roast is more direct and specific, while the mild roast is gentler but still constructive!
+              </p>
+            </div>
+
+            <button
+              onClick={() => setComparison(null)}
+              className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+            >
+              Close Comparison
+            </button>
+          </div>
+        )}
+
+        {/* Battle Result */}
+        {battleResult && (
+          <div className="bg-white rounded-xl shadow-sm p-6 border-2 border-blue-200 mb-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Skull className="w-6 h-6 text-blue-600" />
+              CV Battle Results
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              {/* CV 1 */}
+              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 1' ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-gray-50'}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-gray-900">CV 1</h3>
+                  {battleResult.winner === 'CV 1' && (
+                    <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+                      🏆 WINNER
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                  {battleResult.roast1}
+                </p>
+              </div>
+
+              {/* CV 2 */}
+              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 2' ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-gray-50'}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-gray-900">CV 2</h3>
+                  {battleResult.winner === 'CV 2' && (
+                    <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+                      🏆 WINNER
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                  {battleResult.roast2}
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                ⚔️ <strong>Battle Verdict:</strong> {battleResult.winner} had more issues to roast! Both CVs could use some improvements.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setBattleResult(null)}
+              className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+            >
+              Close Battle
+            </button>
+          </div>
+        )}
+
         {/* Info Card */}
-        {!roastResult && (
+        {!roastResult && !comparison && !battleResult && (
           <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
             <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
               <Flame className="w-5 h-5 text-orange-600" />
