@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'
 // SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
   title: 'Free AI CV & Resume Builder | ATS-Optimized Resume Generator | My CV Buddy',
-  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free AI-powered CV builder and resume maker for job seekers worldwide. Try free, then £9.99/month for unlimited access.',
+  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free AI-powered CV builder and resume maker for job seekers worldwide. Try free, then £2.99/month for unlimited access.',
   keywords: [
     // UK Terms
     'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
@@ -132,7 +132,7 @@ export default function LandingPage() {
             <strong>75% of CVs never reach human eyes.</strong> Don't let yours be one of them.
           </p>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
-            Our AI tailors your CV to any job description in 2 minutes. <strong>Try free</strong> • No credit card required • Then £9.99/month or £49/year
+            Our AI tailors your CV to any job description in 2 minutes. <strong>Try free</strong> • No credit card required • Then £2.99/month or £29.99/year
           </p>
           
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
@@ -318,10 +318,10 @@ export default function LandingPage() {
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">💰 Affordable Pricing</h3>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Unlike expensive CV writing services that charge £100-500 per CV, My CV Buddy costs just £9.99/month for unlimited generations. That's unlimited tailoring for dozens of job applications.
+                Unlike expensive CV writing services that charge £100-500 per CV, My CV Buddy costs just £2.99/month for unlimited generations. That's unlimited tailoring for dozens of job applications.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                <strong>Value comparison:</strong> Professional CV writers: £150-300 per CV. CV writing services: £50-100 per revision. My CV Buddy: £9.99/month for unlimited CVs. The choice is clear.
+                <strong>Value comparison:</strong> Professional CV writers: £150-300 per CV. CV writing services: £50-100 per revision. My CV Buddy: £2.99/month for unlimited CVs. The choice is clear.
               </p>
             </div>
           </div>
@@ -501,7 +501,7 @@ export default function LandingPage() {
             <div className="bg-white p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-300 transition-all">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Monthly</h3>
               <div className="text-4xl font-bold text-blue-600 mb-4">
-                £9.99<span className="text-lg text-gray-600">/month</span>
+                £2.99<span className="text-lg text-gray-600">/month</span>
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
@@ -537,15 +537,15 @@ export default function LandingPage() {
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-500 relative hover:border-blue-600 transition-all">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                  Save £70/year
+                  Save £6/year
                 </span>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Annual</h3>
               <div className="text-4xl font-bold text-blue-600 mb-1">
-                £49<span className="text-lg text-gray-600">/year</span>
+                £29.99<span className="text-lg text-gray-600">/year</span>
               </div>
               <div className="text-sm text-gray-600 mb-4">
-                Just £4.08/month
+                Just £2.50/month
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
@@ -597,7 +597,7 @@ export default function LandingPage() {
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
           <p className="mt-4 text-sm text-blue-100">
-            No credit card required • Try free • £9.99/month or £49/year
+            No credit card required • Try free • £2.99/month or £29.99/year
           </p>
         </div>
       </section>

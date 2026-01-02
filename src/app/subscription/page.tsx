@@ -304,7 +304,7 @@ export default function SubscriptionPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Price Paid:</span>
-                      <span className="font-medium">£9.99/month</span>
+                      <span className="font-medium">£2.99/month</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Generations:</span>

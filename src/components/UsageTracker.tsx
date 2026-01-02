@@ -78,21 +78,21 @@ export default function UsageTracker({
                 🚫 You've used all your free generations!
               </p>
               <p className="text-xs text-red-700 mb-3">
-                Upgrade to Pro for unlimited generations at just £9.99/month
+                Upgrade to Pro for unlimited generations at just £2.99/month
               </p>
               {onUpgradeClick ? (
                 <button
                   onClick={onUpgradeClick}
                   className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all"
                 >
-                  Upgrade to Pro - £9.99/month
+                  Upgrade to Pro - £2.99/month
                 </button>
               ) : (
                 <Link
                   href="/subscription"
                   className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all text-center"
                 >
-                  Upgrade to Pro - £9.99/month
+                  Upgrade to Pro - £2.99/month
                 </Link>
               )}
             </div>
@@ -102,28 +102,28 @@ export default function UsageTracker({
                 ⚠️ Almost out of generations!
               </p>
               <p className="text-xs text-orange-700 mb-3">
-                Upgrade now for unlimited generations at £9.99/month
+                Upgrade now for unlimited generations at £2.99/month
               </p>
               {onUpgradeClick ? (
                 <button
                   onClick={onUpgradeClick}
                   className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all"
                 >
-                  Upgrade to Pro - £9.99/month
+                  Upgrade to Pro - £2.99/month
                 </button>
               ) : (
                 <Link
                   href="/subscription"
                   className="block w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:from-purple-700 hover:to-blue-700 transition-all text-center"
                 >
-                  Upgrade to Pro - £9.99/month
+                  Upgrade to Pro - £2.99/month
                 </Link>
               )}
             </div>
           ) : (
             <div className="bg-white rounded-lg p-3 border border-blue-200">
               <p className="text-xs text-gray-600 mb-2">
-                💡 <span className="font-semibold">Pro Tip:</span> Upgrade to Pro for unlimited generations at £9.99/month
+                💡 <span className="font-semibold">Pro Tip:</span> Upgrade to Pro for unlimited generations at £2.99/month
               </p>
               {onUpgradeClick ? (
                 <button

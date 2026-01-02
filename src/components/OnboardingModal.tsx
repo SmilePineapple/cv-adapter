@@ -301,7 +301,7 @@ export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModal
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-6 text-white">
                   <h4 className="font-semibold mb-2">🚀 Upgrade to Pro</h4>
                   <p className="text-sm text-purple-100 mb-4">
-                    Get unlimited generations, company research, and premium features for just £9.99/month
+                    Get unlimited generations, company research, and premium features for just £2.99/month
                   </p>
                   <button
                     onClick={() => router.push('/subscription')}

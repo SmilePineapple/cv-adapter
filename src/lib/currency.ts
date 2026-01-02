@@ -18,67 +18,67 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
   GBP: {
     code: 'gbp',
     symbol: '£',
-    amount: 999, // £9.99/month
-    displayAmount: '£9.99',
-    annualAmount: 4900, // £49/year
-    annualDisplayAmount: '£49',
-    annualMonthlyEquivalent: '£4.08/month',
-    annualSavings: 'Save £70/year',
+    amount: 299, // £2.99/month
+    displayAmount: '£2.99',
+    annualAmount: 2999, // £29.99/year
+    annualDisplayAmount: '£29.99',
+    annualMonthlyEquivalent: '£2.50/month',
+    annualSavings: 'Save £6/year',
     name: 'British Pound'
   },
   USD: {
     code: 'usd',
     symbol: '$',
-    amount: 1299, // $12.99/month
-    displayAmount: '$12.99',
-    annualAmount: 6900, // $69/year
-    annualDisplayAmount: '$69',
-    annualMonthlyEquivalent: '$5.75/month',
-    annualSavings: 'Save $87/year',
+    amount: 399, // $3.99/month
+    displayAmount: '$3.99',
+    annualAmount: 3999, // $39.99/year
+    annualDisplayAmount: '$39.99',
+    annualMonthlyEquivalent: '$3.33/month',
+    annualSavings: 'Save $8/year',
     name: 'US Dollar'
   },
   EUR: {
     code: 'eur',
     symbol: '€',
-    amount: 1099, // €10.99/month
-    displayAmount: '€10.99',
-    annualAmount: 5900, // €59/year
-    annualDisplayAmount: '€59',
-    annualMonthlyEquivalent: '€4.92/month',
-    annualSavings: 'Save €73/year',
+    amount: 349, // €3.49/month
+    displayAmount: '€3.49',
+    annualAmount: 3499, // €34.99/year
+    annualDisplayAmount: '€34.99',
+    annualMonthlyEquivalent: '€2.92/month',
+    annualSavings: 'Save €7/year',
     name: 'Euro'
   },
   CAD: {
     code: 'cad',
     symbol: 'C$',
-    amount: 1499, // C$14.99/month
-    displayAmount: 'C$14.99',
-    annualAmount: 7900, // C$79/year
-    annualDisplayAmount: 'C$79',
-    annualMonthlyEquivalent: 'C$6.58/month',
-    annualSavings: 'Save C$101/year',
+    amount: 449, // C$4.49/month
+    displayAmount: 'C$4.49',
+    annualAmount: 4499, // C$44.99/year
+    annualDisplayAmount: 'C$44.99',
+    annualMonthlyEquivalent: 'C$3.75/month',
+    annualSavings: 'Save C$9/year',
     name: 'Canadian Dollar'
   },
   AUD: {
     code: 'aud',
     symbol: 'A$',
-    amount: 1599, // A$15.99/month
-    displayAmount: 'A$15.99',
-    annualAmount: 8900, // A$89/year
-    annualDisplayAmount: 'A$89',
-    annualMonthlyEquivalent: 'A$7.42/month',
-    annualSavings: 'Save A$103/year',
+    amount: 499, // A$4.99/month
+    displayAmount: 'A$4.99',
+    annualAmount: 4999, // A$49.99/year
+    annualDisplayAmount: 'A$49.99',
+    annualMonthlyEquivalent: 'A$4.17/month',
+    annualSavings: 'Save A$10/year',
     name: 'Australian Dollar'
   },
   INR: {
     code: 'inr',
     symbol: '₹',
-    amount: 99900, // ₹999/month
-    displayAmount: '₹999',
-    annualAmount: 499900, // ₹4,999/year
-    annualDisplayAmount: '₹4,999',
-    annualMonthlyEquivalent: '₹416/month',
-    annualSavings: 'Save ₹7,000/year',
+    amount: 24900, // ₹249/month
+    displayAmount: '₹249',
+    annualAmount: 249900, // ₹2,499/year
+    annualDisplayAmount: '₹2,499',
+    annualMonthlyEquivalent: '₹208/month',
+    annualSavings: 'Save ₹1,500/year',
     name: 'Indian Rupee'
   }
 }

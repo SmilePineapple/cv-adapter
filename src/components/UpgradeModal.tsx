@@ -46,7 +46,7 @@ export default function UpgradeModal({
   const getSubheadline = () => {
     switch (trigger) {
       case 'limit_reached':
-        return "You've experienced the power of AI-tailored CVs. Get unlimited generations for just £9.99/month!"
+        return "You've experienced the power of AI-tailored CVs. Get unlimited generations for just £2.99/month!"
       case 'first_generation':
         return "You just created an amazing CV! Upgrade now for unlimited generations."
       case 'dashboard':
@@ -115,10 +115,10 @@ export default function UpgradeModal({
               </div>
               <div className="text-right">
                 <div className="flex flex-col gap-1">
-                  <div className="text-4xl font-bold text-purple-600">£9.99</div>
+                  <div className="text-4xl font-bold text-purple-600">£2.99</div>
                   <div className="text-sm text-gray-600">per month</div>
                 </div>
-                <div className="text-xs text-green-600 font-semibold mt-1">or £49/year (save 59%!)</div>
+                <div className="text-xs text-green-600 font-semibold mt-1">or £29.99/year (save 17%!)</div>
               </div>
             </div>
 
@@ -196,12 +196,12 @@ export default function UpgradeModal({
 
           {/* Annual Plan Savings Banner */}
           <div className="bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg p-4 mb-6 text-center">
-            <p className="text-2xl font-bold mb-1">💰 SAVE 59% WITH ANNUAL PLAN!</p>
+            <p className="text-2xl font-bold mb-1">💰 SAVE 17% WITH ANNUAL PLAN!</p>
             <p className="text-lg mb-2">
-              Pay <span className="font-bold text-3xl">£49/year</span> instead of £119.88
+              Pay <span className="font-bold text-3xl">£29.99/year</span> instead of £35.88
             </p>
             <p className="text-sm opacity-90">
-              That's only £4.08/month - cheaper than a coffee!
+              That's only £2.50/month - cheaper than a coffee!
             </p>
             <p className="text-xs mt-2 opacity-75">
               Choose annual plan at checkout

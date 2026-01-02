@@ -196,7 +196,7 @@ export function PaymentRequiredError({ onUpgrade }: { onUpgrade?: () => void }) 
     <ErrorMessage
       type="limit"
       title="Upgrade to Continue"
-      message="You've reached your free generation limit. Upgrade to Pro for £9.99/month to unlock unlimited generations!"
+      message="You've reached your free generation limit. Upgrade to Pro for £2.99/month to unlock unlimited generations!"
       actionLabel="Upgrade Now"
       actionLink="/subscription"
     />
