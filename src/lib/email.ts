@@ -158,11 +158,24 @@ export async function sendFirstGenerationEmail(email: string, name: string) {
                         Hi ${name || 'there'},
                       </p>
                       <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
-                        Congratulations on generating your first AI-powered CV! You're one step closer to landing your dream job.
+                        Congratulations on generating your first AI-powered CV! 🎉 You're one step closer to landing your dream job.
                       </p>
-                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
-                        <strong>You have 1 more free generation remaining.</strong> Make it count!
+                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                        <strong>You've used your 1 free generation.</strong> Want to create more tailored CVs for different jobs?
                       </p>
+                      <div style="background-color: #f0f9ff; border-left: 4px solid #4F46E5; padding: 20px; margin: 0 0 30px 0; border-radius: 4px;">
+                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 15px 0;">
+                          <strong>🚀 Upgrade to Pro for just £2.99/month and unlock:</strong>
+                        </p>
+                        <ul style="font-size: 15px; line-height: 24px; color: #333333; margin: 0; padding-left: 20px;">
+                          <li><strong>Unlimited CV generations</strong> - Create as many tailored CVs as you need</li>
+                          <li><strong>AI Expert Review</strong> - Get professional feedback on your CV</li>
+                          <li><strong>Cover Letter Generator</strong> - AI-powered cover letters for every application</li>
+                          <li><strong>14 Premium Templates</strong> - Stand out with advanced designs</li>
+                          <li><strong>All Export Formats</strong> - PDF, DOCX, HTML, and TXT</li>
+                          <li><strong>No Watermarks</strong> - Professional exports every time</li>
+                        </ul>
+                      </div>
                       <table width="100%" cellpadding="0" cellspacing="0">
                         <tr>
                           <td align="center" style="padding: 20px 0;">
@@ -235,17 +248,34 @@ export async function sendLimitReachedEmail(email: string, name: string) {
                         Hi ${name || 'there'},
                       </p>
                       <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
-                        You've used all your free CV generations! Ready to unlock unlimited access?
+                        You've used your free CV generation! 🎯 Ready to take your job search to the next level?
                       </p>
-                      <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
-                        <strong>Upgrade to Pro for just £9.99/month</strong> and get:
+                      <p style="font-size: 18px; line-height: 28px; color: #333333; margin: 0 0 10px 0;">
+                        <strong>Upgrade to Pro for just £2.99/month</strong>
                       </p>
-                      <ul style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
-                        <li>Unlimited CV generations</li>
-                        <li>All premium templates</li>
-                        <li>Priority support</li>
-                        <li>Advanced ATS optimization</li>
-                      </ul>
+                      <p style="font-size: 14px; line-height: 22px; color: #666666; margin: 0 0 30px 0;">
+                        That's less than a coffee! ☕ Or save 17% with our annual plan at £29.99/year.
+                      </p>
+                      <div style="background-color: #f0f9ff; border-left: 4px solid #4F46E5; padding: 25px; margin: 0 0 30px 0; border-radius: 4px;">
+                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
+                          <strong>🚀 What You'll Get:</strong>
+                        </p>
+                        <ul style="font-size: 15px; line-height: 26px; color: #333333; margin: 0; padding-left: 20px;">
+                          <li><strong>∞ Unlimited CV Generations</strong> - Create tailored CVs for every job application</li>
+                          <li><strong>🤖 AI Expert Review</strong> - Get professional feedback to improve your CV</li>
+                          <li><strong>✉️ Cover Letter Generator</strong> - AI-powered cover letters that match your CV</li>
+                          <li><strong>🎨 14 Premium Templates</strong> - Stand out with advanced, ATS-friendly designs</li>
+                          <li><strong>📄 All Export Formats</strong> - PDF, DOCX, HTML, and TXT</li>
+                          <li><strong>🚫 No Watermarks</strong> - Professional exports every time</li>
+                          <li><strong>⚡ Priority Support</strong> - Get help when you need it most</li>
+                          <li><strong>🎯 Advanced ATS Optimization</strong> - Beat applicant tracking systems</li>
+                        </ul>
+                      </div>
+                      <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 0 0 30px 0; border-radius: 4px;">
+                        <p style="font-size: 15px; line-height: 24px; color: #92400e; margin: 0;">
+                          <strong>💡 Pro Tip:</strong> Most users apply to 10-20 jobs before landing an interview. With Pro, you can create a perfectly tailored CV for each one!
+                        </p>
+                      </div>
                       <table width="100%" cellpadding="0" cellspacing="0">
                         <tr>
                           <td align="center" style="padding: 20px 0;">
@@ -272,7 +302,7 @@ export async function sendLimitReachedEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: 'You\'ve used your free generations - Upgrade to Pro! 🎯',
+      subject: 'You\'ve used your free generation - Upgrade to Pro for £2.99/month! 🚀',
       html: htmlContent,
     })
 
