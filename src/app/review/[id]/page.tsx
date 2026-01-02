@@ -293,12 +293,8 @@ export default function ReviewPage() {
         setUsageInfo(usage)
         
         // Show upgrade modal after first generation for free users
-        if (usage.plan_type === 'free' && usage.lifetime_generation_count === 1) {
-          // Delay modal to let user see their result first
-          setTimeout(() => {
-            setShowUpgradeModal(true)
-          }, 3000)
-        }
+        // Don't auto-show upgrade modal - let users explore their results first
+        // Modal will show when they click "Download" or try to use Pro features
       }
       
       // Check if user has used their free improvement (only for free users)
