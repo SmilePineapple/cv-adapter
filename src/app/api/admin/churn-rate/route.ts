@@ -3,7 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const supabase = createSupabaseRouteClient()
     
@@ -16,9 +16,6 @@ export async function GET(_request: NextRequest) {
     const now = new Date()
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000)
-
-    // Get all users
-    const { data: _allUsers } = await supabase.auth.admin.listUsers()
 
     // Users who were active 30-60 days ago
     const { data: previouslyActiveUsers } = await supabase

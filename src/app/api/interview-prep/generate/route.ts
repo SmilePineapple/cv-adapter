@@ -162,23 +162,24 @@ Generate 3-4 questions per category. Make answers specific to the candidate's ex
       message: 'Interview prep generated successfully!'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Interview Prep] Error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to generate interview prep' },
+      { error: (error as Error).message || 'Failed to generate interview prep' },
       { status: 500 }
     )
   }
 }
 
-function extractCVSummary(cv: any): string {
+function extractCVSummary(cv: {parsed_sections?: Record<string, unknown>}): string {
   const sections = cv.parsed_sections || {}
   let summary = ''
 
   // Extract key information
   if (sections.personal_info) {
-    summary += `Name: ${sections.personal_info.name || 'N/A'}\n`
-    summary += `Title: ${sections.personal_info.title || 'N/A'}\n\n`
+    const personalInfo = sections.personal_info as Record<string, unknown>
+    summary += `Name: ${personalInfo.name || 'N/A'}\n`
+    summary += `Title: ${personalInfo.title || 'N/A'}\n\n`
   }
 
   if (sections.work_experience) {

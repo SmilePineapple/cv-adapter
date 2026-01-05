@@ -73,7 +73,7 @@ const COUNTRY_NAMES: { [key: string]: string } = {
   'EG': 'Egypt'
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = createSupabaseRouteClient()
     

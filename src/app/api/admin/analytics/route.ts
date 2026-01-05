@@ -185,7 +185,6 @@ export async function GET(request: NextRequest) {
         // Legacy subscription
         userPlan = 'pro'
         userStatus = subscription.status
-        const _subscriptionType = 'legacy'
       } else if (subscription) {
         userStatus = subscription.status
       }

@@ -74,7 +74,7 @@ export default function AdminUpgradeUserPage() {
         setEmail('')
         setUserId('')
       }
-    } catch (_error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

@@ -37,8 +37,6 @@ export default function SocialBotDashboard() {
   const [generating, setGenerating] = useState(false)
   const [showScheduled, setShowScheduled] = useState(true)
 
-  const _supabase = createSupabaseClient()
-
   useEffect(() => {
     fetchData()
   // eslint-disable-next-line react-hooks/exhaustive-deps

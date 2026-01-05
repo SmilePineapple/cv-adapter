@@ -75,20 +75,21 @@ export async function POST(request: NextRequest) {
     }
     
     // Use fallback data
-    const cvSections = (fallbackData as any).cvs.parsed_sections.sections
-    const personalDetails = cvSections.find((s: any) => 
+    const fallbackCV = fallbackData as unknown as {cvs: {parsed_sections: {sections: Array<{type: string, content?: string}>}}}
+    const cvSections = fallbackCV.cvs.parsed_sections.sections
+    const personalDetails = cvSections.find((s: {type: string, content?: string}) => 
       s.type === 'personal_details' || s.type === 'contact' || s.type === 'name'
     )?.content || ''
     
-    const experience = cvSections.find((s: any) => 
+    const experience = cvSections.find((s: {type: string, content?: string}) => 
       s.type === 'experience' || s.type === 'work_experience'
     )?.content || ''
     
-    const skills = cvSections.find((s: any) => 
+    const skills = cvSections.find((s: {type: string, content?: string}) => 
       s.type === 'skills' || s.type === 'technical_skills'
     )?.content || ''
     
-    const education = cvSections.find((s: any) => 
+    const education = cvSections.find((s: {type: string, content?: string}) => 
       s.type === 'education'
     )?.content || ''
 

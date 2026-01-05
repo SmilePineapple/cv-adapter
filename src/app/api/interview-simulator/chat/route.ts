@@ -207,7 +207,7 @@ If the candidate's response is off-topic or inappropriate, redirect them back to
     // Convert messages to OpenAI format
     const openaiMessages = [
       { role: 'system' as const, content: systemPrompt },
-      ...messages.map((msg: any) => ({
+      ...messages.map((msg: {role: string, content: string}) => ({
         role: msg.role as 'user' | 'assistant',
         content: msg.content
       }))
@@ -239,10 +239,10 @@ If the candidate's response is off-topic or inappropriate, redirect them back to
       message: aiMessage
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Interview chat error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to process message' },
+      { error: (error as Error).message || 'Failed to process message' },
       { status: 500 }
     )
   }

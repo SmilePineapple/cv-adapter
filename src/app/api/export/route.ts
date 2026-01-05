@@ -442,28 +442,24 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
       : { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } // Advanced templates handle their own margins
     
     // Add watermark for free users
-    const pdfOptions: any = {
-      format: 'A4',
+    const basePdfOptions = {
+      format: 'A4' as const,
       printBackground: true,
       margin: margins
     }
 
     // Add footer watermark for free users only
-    if (!isPro) {
-      pdfOptions.displayHeaderFooter = true
-      pdfOptions.footerTemplate = `
+    const pdfOptions = !isPro ? {
+      ...basePdfOptions,
+      displayHeaderFooter: true,
+      footerTemplate: `
         <div style="width: 100%; text-align: center; font-size: 8px; color: #999; padding: 5px 0;">
           <span>Created with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com</span>
         </div>
-      `
-      pdfOptions.headerTemplate = '<div></div>' // Empty header
-      // Adjust bottom margin to accommodate footer
-      if (useOptimizedMargins) {
-        pdfOptions.margin.bottom = '15mm'
-      } else {
-        pdfOptions.margin = { ...pdfOptions.margin, bottom: '15mm' }
-      }
-    }
+      `,
+      headerTemplate: '<div></div>',
+      margin: { ...margins, bottom: '15mm' }
+    } : basePdfOptions
 
     const pdf = await page.pdf(pdfOptions)
     
@@ -485,7 +481,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
   try {
     const sortedSections = sections.sort((a, b) => a.order - b.order)
-    const children: any[] = []
+    const children: Paragraph[] = []
 
     sortedSections.forEach(section => {
       if (section.type === 'name') {
