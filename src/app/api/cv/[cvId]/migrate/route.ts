@@ -105,7 +105,7 @@ export async function POST(
       return mappings[type] || 'custom'
     }
 
-    const sectionsToInsert = parsedSections.map((section: any, index: number) => {
+    const sectionsToInsert = parsedSections.map((section: {type: string, title: string, content: string}, index: number) => {
       const sectionType = mapSectionType(section.type)
       return {
         cv_id: cvId,

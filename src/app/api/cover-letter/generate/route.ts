@@ -222,16 +222,16 @@ Write only the cover letter content, no additional commentary.`
       message: 'Cover letter generated successfully'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Cover letter generation error:', error)
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
+      message: (error as Error).message,
+      stack: (error as Error).stack,
+      name: (error as Error).name
     })
     return NextResponse.json({ 
-      error: error.message || 'Internal server error',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      error: (error as Error).message || 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? (error as Error).stack : undefined
     }, { status: 500 })
   }
 }

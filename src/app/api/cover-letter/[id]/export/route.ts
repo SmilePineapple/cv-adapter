@@ -189,13 +189,13 @@ async function exportAsDocx(coverLetterData: {content: string, company_name?: st
   }
 }
 
-async function exportAsPdf(coverLetterData: any, fileName: string) {
+async function exportAsPdf(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
   // For now, redirect to a PDF generation service or return text
   // This would require additional PDF generation library like puppeteer or jsPDF
   return exportAsText(coverLetterData, fileName)
 }
 
-function exportAsText(coverLetterData: any, fileName: string) {
+function exportAsText(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
   const content = `${coverLetterData.content}
 
 ---

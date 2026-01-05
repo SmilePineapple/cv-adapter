@@ -123,10 +123,10 @@ export async function GET(request: NextRequest) {
       results
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Cron] Error in reminder email job:', error)
     return NextResponse.json({ 
-      error: error.message || 'Internal server error' 
+      error: (error as Error).message || 'Internal server error' 
     }, { status: 500 })
   }
 }

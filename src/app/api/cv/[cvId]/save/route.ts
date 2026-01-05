@@ -6,11 +6,11 @@ interface SaveRequest {
     id: string
     type: string
     title: string
-    content: any
+    content: Record<string, unknown>
     order: number
-    metadata?: any
+    metadata?: Record<string, unknown>
   }>
-  theme_settings: any
+  theme_settings: Record<string, unknown>
 }
 
 export async function POST(

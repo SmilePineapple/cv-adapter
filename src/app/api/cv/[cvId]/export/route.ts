@@ -24,7 +24,9 @@ export async function POST(
     const adminClient = createSupabaseAdminClient()
 
     const body = await request.json()
-    let { format, sections, theme_settings } = body
+    let format = body.format
+    const sections = body.sections
+    const theme_settings = body.theme_settings
 
     // Verify CV ownership first
     const { data: cvData, error: cvError } = await supabase
@@ -41,7 +43,7 @@ export async function POST(
     // Handle different export formats
     if (format === 'txt') {
       // Simple text export
-      const cvText = sections.map((section: any) => {
+      const cvText = sections.map((section: {title: string, content?: {raw_content?: string}}) => {
         return `${section.title.toUpperCase()}\n${'-'.repeat(section.title.length)}\n${section.content?.raw_content || ''}\n\n`
       }).join('')
 
@@ -76,7 +78,7 @@ export async function POST(
           }),
           
           // Sections
-          ...sections.flatMap((section: any) => {
+          ...sections.flatMap((section: {title: string, content?: {raw_content?: string}}) => {
             const sectionParagraphs = []
             
             // Section title

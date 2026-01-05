@@ -24,7 +24,7 @@ import {
   Send,
   Trophy
 } from 'lucide-react'
-import { exportUsersToCSV, exportAnalyticsToCSV, exportRevenueReportToCSV } from '@/lib/csv-export'
+import { exportUsersToCSV } from '@/lib/csv-export'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
@@ -96,6 +96,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     checkAuthAndLoadData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuthAndLoadData = async () => {

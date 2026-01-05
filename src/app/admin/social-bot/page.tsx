@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createSupabaseClient } from '@/lib/supabase'
-import { Calendar, TrendingUp, Send, RefreshCw, Settings, BarChart3, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, AlertCircle, ArrowLeft } from 'lucide-react'
+import { TrendingUp, Send, RefreshCw, Settings, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
@@ -35,7 +35,7 @@ export default function SocialBotDashboard() {
   const [configs, setConfigs] = useState<PlatformConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('twitter')
+  const [_selectedPlatform, _setSelectedPlatform] = useState<string>('twitter')
   const [showScheduled, setShowScheduled] = useState(true)
 
   const supabase = createSupabaseClient()
