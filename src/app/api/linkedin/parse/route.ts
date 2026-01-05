@@ -152,16 +152,22 @@ Extract as much information as possible. If a section is missing, return an empt
       message: 'LinkedIn profile imported successfully!'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[LinkedIn Parse] Error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to parse LinkedIn profile' },
+      { error: (error as Error).message || 'Failed to parse LinkedIn profile' },
       { status: 500 }
     )
   }
 }
 
-function convertToSections(parsedData: any) {
+function convertToSections(parsedData: {
+  personal_info?: {name?: string, title?: string, summary?: string}
+  work_experience?: Array<{job_title?: string, company?: string, dates?: string, description?: string}>
+  education?: Array<{degree?: string, institution?: string, dates?: string, details?: string}>
+  skills?: string[]
+  certifications?: Array<{name?: string, issuer?: string, date?: string}>
+}) {
   const sections = []
 
   // Personal Info
@@ -182,7 +188,7 @@ function convertToSections(parsedData: any) {
     sections.push({
       type: 'work_experience',
       title: 'Work Experience',
-      content: parsedData.work_experience.map((exp: any) => ({
+      content: parsedData.work_experience.map((exp) => ({
         job_title: exp.job_title || '',
         company: exp.company || '',
         dates: exp.dates || '',
@@ -196,7 +202,7 @@ function convertToSections(parsedData: any) {
     sections.push({
       type: 'education',
       title: 'Education',
-      content: parsedData.education.map((edu: any) => ({
+      content: parsedData.education.map((edu) => ({
         degree: edu.degree || '',
         institution: edu.institution || '',
         dates: edu.dates || '',
@@ -219,7 +225,7 @@ function convertToSections(parsedData: any) {
     sections.push({
       type: 'certifications',
       title: 'Certifications',
-      content: parsedData.certifications.map((cert: any) => ({
+      content: parsedData.certifications.map((cert) => ({
         name: cert.name || '',
         issuer: cert.issuer || '',
         date: cert.date || ''

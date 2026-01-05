@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createSupabaseClient } from '@/lib/supabase'
 import { TrendingUp, Send, RefreshCw, Settings, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'

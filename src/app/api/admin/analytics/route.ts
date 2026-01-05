@@ -180,7 +180,6 @@ export async function GET(request: NextRequest) {
         // Legacy one-time purchase
         userPlan = 'pro'
         userStatus = 'active'
-        subscriptionType = 'lifetime'
       } else if (subscription?.status === 'active' && subscription?.plan === 'pro') {
         // Legacy subscription
         userPlan = 'pro'

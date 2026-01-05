@@ -141,10 +141,10 @@ Start the interview now with a warm greeting and first question.`
       initialMessage
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Interview start error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to start interview' },
+      { error: (error as Error).message || 'Failed to start interview' },
       { status: 500 }
     )
   }

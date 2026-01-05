@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         headers: {
           'Authorization': `Bearer ${process.env.PROXYCURL_API_KEY}`
         },
-        // @ts-ignore
+        // @ts-expect-error - fetch params not in standard types
         params: {
           url: linkedinUrl,
           fallback_to_cache: 'on-error',
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
           'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
           'X-RapidAPI-Host': 'linkedin-data-api.p.rapidapi.com'
         },
-        // @ts-ignore
+        // @ts-expect-error - fetch params not in standard types
         params: {
           url: linkedinUrl
         }
@@ -167,16 +167,28 @@ export async function POST(request: NextRequest) {
       { status: 503 }
     )
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[LinkedIn Scrape] Error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to import LinkedIn profile' },
+      { error: (error as Error).message || 'Failed to import LinkedIn profile' },
       { status: 500 }
     )
   }
 }
 
-function convertProxycurlToSections(data: any) {
+function convertProxycurlToSections(data: {
+  full_name?: string
+  headline?: string
+  summary?: string
+  city?: string
+  country?: string
+  email?: string
+  phone_number?: string
+  experiences?: Array<{title?: string, company?: string, starts_at?: {month?: string, year?: string}, ends_at?: {month?: string, year?: string}, description?: string}>
+  education?: Array<{degree_name?: string, field_of_study?: string, school?: string, starts_at?: {year?: string}, ends_at?: {year?: string}, description?: string}>
+  skills?: string[]
+  certifications?: Array<{name?: string, authority?: string, starts_at?: {month?: string, year?: string}}>
+}) {
   const sections = []
 
   // Personal Info
@@ -198,7 +210,7 @@ function convertProxycurlToSections(data: any) {
     sections.push({
       type: 'work_experience',
       title: 'Work Experience',
-      content: data.experiences.map((exp: any) => ({
+      content: data.experiences.map((exp) => ({
         job_title: exp.title || '',
         company: exp.company || '',
         dates: `${exp.starts_at?.month || ''}/${exp.starts_at?.year || ''} - ${exp.ends_at ? `${exp.ends_at.month}/${exp.ends_at.year}` : 'Present'}`,
@@ -212,7 +224,7 @@ function convertProxycurlToSections(data: any) {
     sections.push({
       type: 'education',
       title: 'Education',
-      content: data.education.map((edu: any) => ({
+      content: data.education.map((edu) => ({
         degree: edu.degree_name || edu.field_of_study || '',
         institution: edu.school || '',
         dates: `${edu.starts_at?.year || ''} - ${edu.ends_at?.year || ''}`,
@@ -235,7 +247,7 @@ function convertProxycurlToSections(data: any) {
     sections.push({
       type: 'certifications',
       title: 'Certifications',
-      content: data.certifications.map((cert: any) => ({
+      content: data.certifications.map((cert) => ({
         name: cert.name || '',
         issuer: cert.authority || '',
         date: cert.starts_at ? `${cert.starts_at.month}/${cert.starts_at.year}` : ''

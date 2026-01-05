@@ -75,8 +75,8 @@ export async function POST(request: NextRequest) {
       if (!html || html.length < 100) {
         throw new Error('Received empty or invalid HTML')
       }
-    } catch (fetchError: any) {
-      console.error('[Job Scrape] Fetch error:', fetchError.message)
+    } catch (fetchError: unknown) {
+      console.error('[Job Scrape] Fetch error:', (fetchError as Error).message)
       
       // Fallback: Ask user to paste job description directly
       return NextResponse.json(
@@ -139,10 +139,10 @@ Extract as much information as possible. If a field is missing, return empty str
       message: 'Job posting scraped successfully!'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Job Scrape] Error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to scrape job posting' },
+      { error: (error as Error).message || 'Failed to scrape job posting' },
       { status: 500 }
     )
   }

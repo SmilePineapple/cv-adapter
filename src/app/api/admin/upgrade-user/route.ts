@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
         }, {
           onConflict: 'user_id'
         })
-    } catch (e) {
+    } catch {
       // Subscriptions table doesn't exist, that's okay
       console.log('Subscriptions table not found, using usage_tracking only')
     }
