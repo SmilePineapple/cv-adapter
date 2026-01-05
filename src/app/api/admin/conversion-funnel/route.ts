@@ -3,7 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const supabase = createSupabaseRouteClient()
     

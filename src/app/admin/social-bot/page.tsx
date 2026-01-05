@@ -35,13 +35,13 @@ export default function SocialBotDashboard() {
   const [configs, setConfigs] = useState<PlatformConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
-  const [_selectedPlatform, _setSelectedPlatform] = useState<string>('twitter')
   const [showScheduled, setShowScheduled] = useState(true)
 
-  const supabase = createSupabaseClient()
+  const _supabase = createSupabaseClient()
 
   useEffect(() => {
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showScheduled])
 
   const fetchData = async () => {

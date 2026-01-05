@@ -51,7 +51,8 @@ export async function DELETE(
     }
 
     // Check ownership through the CV
-    if ((sectionData as any).cvs.user_id !== user.id) {
+    const sectionWithCV = sectionData as unknown as {cvs: {user_id: string}}
+    if (sectionWithCV.cvs.user_id !== user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 

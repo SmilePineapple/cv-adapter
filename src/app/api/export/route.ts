@@ -15,7 +15,7 @@ export const runtime = 'nodejs'
 export const maxDuration = 60
 
 // Helper function to safely get string content from section
-const getSectionContent = (content: any): string => {
+const getSectionContent = (content: unknown): string => {
   if (!content) return ''
   
   // If content is already a string, return it
@@ -82,13 +82,13 @@ const getSectionContent = (content: any): string => {
         }
         
         // Fallback: try to extract ALL values (including nested)
-        const extractAllStrings = (obj: any): string[] => {
+        const extractAllStrings = (obj: Record<string, unknown>): string[] => {
           const strings: string[] = []
           for (const value of Object.values(obj)) {
             if (typeof value === 'string' && value.trim()) {
               strings.push(value.trim())
             } else if (typeof value === 'object' && value !== null) {
-              strings.push(...extractAllStrings(value))
+              strings.push(...extractAllStrings(value as Record<string, unknown>))
             }
           }
           return strings
@@ -157,11 +157,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Get original CV sections
-    const originalSections: CVSection[] = (generation as any).cvs.parsed_sections.sections
+    const generationData = generation as unknown as {cvs: {parsed_sections: {sections: CVSection[]}, photo_url?: string | null}}
+    const originalSections: CVSection[] = generationData.cvs.parsed_sections.sections
     const modifiedSections: CVSection[] = generation.output_sections.sections
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
-    const photoUrl = (generation as any).cvs?.photo_url || null
+    const photoUrl = generationData.cvs?.photo_url || null
 
     // CRITICAL FIX: Fetch ALL current sections from cv_sections table
     // This is the source of truth - it reflects user edits and deletions
@@ -360,11 +361,12 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         }
         
         if (typeof contactInfo === 'object' && contactInfo) {
+          const contact = contactInfo as Record<string, unknown>
           normalizedContact = {
-            email: (contactInfo as any).email_address || (contactInfo as any).email || '',
-            phone: (contactInfo as any).phone_number || (contactInfo as any).phone || '',
-            location: (contactInfo as any).address || (contactInfo as any).location || '',
-            website: (contactInfo as any).web || (contactInfo as any).website || ''
+            email: (contact.email_address || contact.email || '') as string,
+            phone: (contact.phone_number || contact.phone || '') as string,
+            location: (contact.address || contact.location || '') as string,
+            website: (contact.web || contact.website || '') as string
           }
         }
         

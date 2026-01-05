@@ -18,6 +18,7 @@ export default function AdminUpgradeUserPage() {
 
   useEffect(() => {
     checkAuth()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuth = async () => {
@@ -73,7 +74,7 @@ export default function AdminUpgradeUserPage() {
         setEmail('')
         setUserId('')
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
