@@ -21,6 +21,7 @@ export default function EmailCampaignPage() {
   useEffect(() => {
     checkAuth()
     fetchUserCount()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuth = async () => {

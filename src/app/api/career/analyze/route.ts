@@ -73,10 +73,10 @@ Please analyze my career path and provide:
       message: 'Career path analyzed successfully'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Career analysis error:', error)
     return NextResponse.json({ 
-      error: error.message || 'Internal server error'
+      error: (error as Error).message || 'Internal server error'
     }, { status: 500 })
   }
 }

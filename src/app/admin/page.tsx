@@ -21,7 +21,6 @@ import {
   Download,
   Filter,
   RefreshCw,
-  UserPlus,
   Send,
   Trophy
 } from 'lucide-react'

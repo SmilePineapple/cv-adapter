@@ -12,9 +12,7 @@ import {
   Activity,
   Clock,
   AlertCircle,
-  CheckCircle,
   ArrowLeft,
-  Download,
   RefreshCw,
   Zap,
   Globe,
@@ -61,10 +59,10 @@ export default function AdvancedAdminDashboard() {
 
   useEffect(() => {
     checkAuthAndLoadData()
-    
-    // Refresh real-time metrics every 30 seconds
+    loadRealTimeMetrics()
     const interval = setInterval(loadRealTimeMetrics, 30000)
     return () => clearInterval(interval)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuthAndLoadData = async () => {

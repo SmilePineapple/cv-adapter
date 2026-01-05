@@ -62,7 +62,7 @@ export async function GET(
   }
 }
 
-async function exportAsDocx(coverLetterData: any, fileName: string) {
+async function exportAsDocx(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
   try {
     // Parse content to handle basic formatting
     const content = coverLetterData.content

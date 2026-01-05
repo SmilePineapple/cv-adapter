@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     // Mark as canceling (will keep access until current_period_end)
     // Try to update with cancel_at_period_end, but handle if column doesn't exist
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
     
@@ -58,11 +58,11 @@ export async function POST(request: NextRequest) {
           }, { status: 500 })
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Update error:', error)
       return NextResponse.json({ 
         error: 'Failed to cancel subscription',
-        details: error.message 
+        details: (error as Error).message 
       }, { status: 500 })
     }
 

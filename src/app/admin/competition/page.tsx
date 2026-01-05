@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
-import { Trophy, Crown, Mail, Check, X, RefreshCw, Award, Users, TrendingUp, Calendar, Sparkles } from 'lucide-react'
+import { Trophy, Crown, Check, RefreshCw, Award, Users, TrendingUp, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import confetti from 'canvas-confetti'
 
@@ -59,6 +59,7 @@ export default function CompetitionAdminPage() {
   useEffect(() => {
     checkAuth()
     fetchCompetitionData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuth = async () => {

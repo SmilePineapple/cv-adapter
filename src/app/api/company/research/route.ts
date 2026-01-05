@@ -168,10 +168,10 @@ Return JSON:
       message: 'Company research completed successfully!'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Company Research] Error:', error)
     return NextResponse.json(
-      { error: error.message || 'Failed to research company' },
+      { error: (error as Error).message || 'Failed to research company' },
       { status: 500 }
     )
   }

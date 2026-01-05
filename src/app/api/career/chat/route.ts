@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     // Build conversation messages
-    const messages: any[] = [
+    const messages: Array<{role: 'system' | 'user' | 'assistant', content: string}> = [
       {
         role: 'system',
         content: `You are an expert career coach and advisor. You provide personalized, actionable career advice.
@@ -66,7 +66,7 @@ Be encouraging, practical, and specific. Use examples when helpful.`
 
     // Add conversation history
     if (conversationHistory && conversationHistory.length > 0) {
-      conversationHistory.forEach((msg: any) => {
+      conversationHistory.forEach((msg: {role: 'system' | 'user' | 'assistant', content: string}) => {
         messages.push({
           role: msg.role,
           content: msg.content
@@ -94,10 +94,10 @@ Be encouraging, practical, and specific. Use examples when helpful.`
       message: 'Response generated successfully'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Career chat error:', error)
     return NextResponse.json({ 
-      error: error.message || 'Internal server error'
+      error: (error as Error).message || 'Internal server error'
     }, { status: 500 })
   }
 }

@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState(false)
-  const [timeRange] = useState<'7d' | '30d' | '90d'>('30d')
+  const [_timeRange] = useState<'7d' | '30d' | '90d'>('30d')
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
   useEffect(() => {

@@ -38,8 +38,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract CV content
-    const cvSections = (generation as any).output_sections.sections
-    const cvText = cvSections.map((s: any) => s.content).join('\n\n')
+    const cvSections = (generation as {output_sections: {sections: Array<{content: string}>}}).output_sections.sections
+    const cvText = cvSections.map((s: {content: string}) => s.content).join('\n\n')
     const jobDescription = generation.job_description
 
     // Create ATS analysis prompt
