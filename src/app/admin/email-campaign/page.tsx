@@ -19,10 +19,12 @@ export default function EmailCampaignPage() {
   const [showPreview, setShowPreview] = useState(false)
   const [excludeProUsers, setExcludeProUsers] = useState(false)
   const [excludedEmails, setExcludedEmails] = useState<string[]>([])
+  const [unsubscribedUsers, setUnsubscribedUsers] = useState<Array<{email: string, unsubscribed_at: string}>>([])
 
   useEffect(() => {
     checkAuth()
     fetchUserCount()
+    fetchUnsubscribedUsers()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -63,6 +65,27 @@ export default function EmailCampaignPage() {
       setUserCount(0)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchUnsubscribedUsers = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      const response = await fetch('/api/admin/unsubscribed-users', {
+        headers: {
+          'Authorization': `Bearer ${session?.access_token}`
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUnsubscribedUsers(data.users || [])
+      } else {
+        console.error('Failed to fetch unsubscribed users')
+      }
+    } catch (error) {
+      console.error('Error fetching unsubscribed users:', error)
     }
   }
 
@@ -197,7 +220,6 @@ export default function EmailCampaignPage() {
     setSubject('🎉 Big News: Lower Prices + Amazing New Features!')
     setExcludeProUsers(true)
     setExcludedEmails([
-      'jakedalerourke@gmail.com',
       'smilepineapple118@gmail.com',
       'imanirenee@hotmail.com',
       'nevinthomas2020@ce.ajce.in',
@@ -461,6 +483,52 @@ export default function EmailCampaignPage() {
             </div>
           </div>
         </div>
+
+        {/* Unsubscribed Users */}
+        {unsubscribedUsers.length > 0 && (
+          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
+            <div className="flex items-start">
+              <AlertCircle className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-semibold text-red-800">
+                    {unsubscribedUsers.length} Unsubscribed User{unsubscribedUsers.length !== 1 ? 's' : ''}
+                  </p>
+                  <button
+                    onClick={() => {
+                      const list = document.getElementById('unsubscribed-list')
+                      if (list) {
+                        list.classList.toggle('hidden')
+                      }
+                    }}
+                    className="text-sm text-red-600 hover:text-red-800 underline"
+                  >
+                    {unsubscribedUsers.length <= 5 ? 'Show/Hide' : 'Toggle List'}
+                  </button>
+                </div>
+                <p className="text-sm text-red-700 mb-3">
+                  These users will be automatically excluded from all future email campaigns.
+                </p>
+                <div id="unsubscribed-list" className={unsubscribedUsers.length <= 5 ? '' : 'hidden'}>
+                  <div className="bg-white rounded border border-red-200 p-3 max-h-48 overflow-y-auto">
+                    <ul className="space-y-2">
+                      {unsubscribedUsers.map((user, idx) => (
+                        <li key={idx} className="text-sm flex items-center justify-between py-1 border-b border-gray-100 last:border-0">
+                          <span className="text-gray-900 font-medium">{user.email}</span>
+                          <span className="text-gray-500 text-xs">
+                            {user.unsubscribed_at !== 'Unknown' 
+                              ? new Date(user.unsubscribed_at).toLocaleDateString()
+                              : 'Unknown date'}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Form */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">

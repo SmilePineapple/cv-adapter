@@ -91,6 +91,8 @@ export async function POST(request: NextRequest) {
         if (!u.email || !u.email_confirmed_at) return false
         // In test mode, don't apply filters - allow admin email through
         if (testMode) return true
+        // Check if user has unsubscribed from emails
+        if (u.user_metadata?.email_unsubscribed === true) return false
         if (excludeProUsers && proUserIds.has(u.id)) return false
         if (normalizedExcludedEmails.includes(u.email.toLowerCase())) return false
         return true
