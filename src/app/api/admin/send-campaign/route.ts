@@ -89,6 +89,8 @@ export async function POST(request: NextRequest) {
     const users = authUsers
       .filter(u => {
         if (!u.email || !u.email_confirmed_at) return false
+        // In test mode, don't apply filters - allow admin email through
+        if (testMode) return true
         if (excludeProUsers && proUserIds.has(u.id)) return false
         if (normalizedExcludedEmails.includes(u.email.toLowerCase())) return false
         return true
