@@ -177,7 +177,8 @@ export async function POST(request: NextRequest) {
     console.log('🤖 AI Response length:', aiResponse.length)
 
     // Parse AI response
-    let { rewrittenSections, diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
+    let { rewrittenSections } = parseAIResponse(aiResponse, originalSections.sections)
+    const { diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
     
     // 🔍 DEBUG: Log parsed sections
     console.log('📋 Parsed sections count:', rewrittenSections.length)

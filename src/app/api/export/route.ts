@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle } from 'docx'
+import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle } from 'docx'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check user's subscription tier for watermark
-    const { data: usage, error: usageError } = await supabase
+    const { data: usage } = await supabase
       .from('usage_tracking')
       .select('subscription_tier')
       .eq('user_id', user.id)
