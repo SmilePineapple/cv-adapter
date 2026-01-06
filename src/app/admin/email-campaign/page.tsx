@@ -17,6 +17,8 @@ export default function EmailCampaignPage() {
   const [htmlContent, setHtmlContent] = useState('')
   const [testMode, setTestMode] = useState(true)
   const [showPreview, setShowPreview] = useState(false)
+  const [excludeProUsers, setExcludeProUsers] = useState(false)
+  const [excludedEmails, setExcludedEmails] = useState<string[]>([])
 
   useEffect(() => {
     checkAuth()
@@ -323,13 +325,41 @@ export default function EmailCampaignPage() {
               </label>
             </div>
 
-            {/* Load Template Button */}
-            <button
-              onClick={loadTemplate}
-              className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-            >
-              Load Update Template
-            </button>
+            {/* Load Template Buttons */}
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={loadTemplate}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+              >
+                Load Update Template
+              </button>
+              <button
+                onClick={loadPricingTemplate}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Load Pricing Template
+              </button>
+            </div>
+
+            {/* Filtering Options */}
+            {(excludeProUsers || excludedEmails.length > 0) && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="font-semibold text-gray-900 mb-2">Active Filters:</p>
+                {excludeProUsers && (
+                  <p className="text-sm text-blue-800">✓ Excluding Pro users (pro_monthly & pro_annual)</p>
+                )}
+                {excludedEmails.length > 0 && (
+                  <div className="text-sm text-blue-800">
+                    <p>✓ Excluding {excludedEmails.length} specific emails:</p>
+                    <ul className="list-disc list-inside ml-4 mt-1">
+                      {excludedEmails.map(email => (
+                        <li key={email}>{email}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Subject */}
             <div>

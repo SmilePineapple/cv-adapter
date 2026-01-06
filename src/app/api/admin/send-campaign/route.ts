@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { subject, htmlContent, testMode = false } = body
+    const { subject, htmlContent, testMode = false, excludeProUsers = false, excludedEmails = [] } = body
 
     if (!subject || !htmlContent) {
       return NextResponse.json(
@@ -67,15 +67,39 @@ export async function POST(request: NextRequest) {
 
     const profilesMap = new Map(profiles?.map(p => [p.id, p.full_name]) || [])
 
-    // Map auth users to our format
+    // Get Pro users if filtering is enabled
+    let proUserIds = new Set<string>()
+    if (excludeProUsers) {
+      const { data: usageData } = await supabase
+        .from('usage_tracking')
+        .select('user_id, subscription_tier')
+
+      proUserIds = new Set(
+        usageData
+          ?.filter(u => u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual')
+          .map(u => u.user_id) || []
+      )
+      console.log(`Found ${proUserIds.size} Pro users to exclude`)
+    }
+
+    // Normalize excluded emails to lowercase for comparison
+    const normalizedExcludedEmails = excludedEmails.map((e: string) => e.toLowerCase())
+
+    // Map auth users to our format with filtering
     const users = authUsers
-      .filter(u => u.email && u.email_confirmed_at) // Only confirmed emails
+      .filter(u => {
+        if (!u.email || !u.email_confirmed_at) return false
+        if (excludeProUsers && proUserIds.has(u.id)) return false
+        if (normalizedExcludedEmails.includes(u.email.toLowerCase())) return false
+        return true
+      })
       .map(u => ({
         email: u.email!,
-        full_name: profilesMap.get(u.id) || null
+        full_name: profilesMap.get(u.id) || null,
+        user_id: u.id
       }))
 
-    console.log(`Filtered to ${users.length} confirmed users`)
+    console.log(`Filtered to ${users.length} confirmed users (excludeProUsers: ${excludeProUsers}, excludedEmails: ${excludedEmails.length})`)
 
     // Test mode: only send to admin
     const recipients = testMode 
