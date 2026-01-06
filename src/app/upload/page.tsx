@@ -7,13 +7,16 @@ import { useDropzone } from 'react-dropzone'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import PhotoUpload from '@/components/PhotoUpload'
+import UploadProgressStepper from '@/components/UploadProgressStepper'
+import ExampleCVs from '@/components/ExampleCVs'
 import { 
   Upload, 
   FileText, 
   CheckCircle, 
   AlertCircle,
   ArrowLeft,
-  X
+  X,
+  Sparkles
 } from 'lucide-react'
 
 export default function UploadPage() {
@@ -102,48 +105,53 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-4">
+      <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4">
             <Link 
               href="/dashboard"
-              className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
+              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors touch-manipulation min-h-[44px]"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
-              Back to Dashboard
+              <span className="hidden sm:inline">Back to Dashboard</span>
+              <span className="sm:hidden">Back</span>
             </Link>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CV</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
+                <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">CV Adapter</span>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Progress Stepper */}
+        <UploadProgressStepper currentStep={1} />
         {!parseResult ? (
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+            <div className="text-center mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Upload Your CV
               </h1>
-              <p className="text-gray-600">
+              <p className="text-sm sm:text-base text-gray-600">
                 Upload your CV in PDF or Word format to get started with AI-powered tailoring
               </p>
             </div>
 
-            {/* Upload Area */}
+            {/* Upload Area - Mobile Optimized */}
             <div
               {...getRootProps()}
               className={`
-                border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all duration-200
+                border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300
+                min-h-[200px] sm:min-h-[280px] flex items-center justify-center
+                touch-manipulation
                 ${isDragActive 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                  ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 scale-105 shadow-lg' 
+                  : 'border-gray-300 hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-purple-50/50 hover:shadow-md'
                 }
                 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
@@ -174,30 +182,79 @@ export default function UploadPage() {
                 </div>
               ) : uploadedFile ? (
                 <div className="space-y-4">
-                  <CheckCircle className="w-12 h-12 text-green-600 mx-auto" />
+                  <CheckCircle className="w-14 h-14 sm:w-16 sm:h-16 text-green-600 mx-auto animate-bounce" />
                   <div>
-                    <p className="text-lg font-medium text-gray-900">{uploadedFile.name}</p>
-                    <p className="text-gray-600">File ready for processing</p>
+                    <p className="text-base sm:text-lg font-medium text-gray-900 break-all px-4">{uploadedFile.name}</p>
+                    <p className="text-sm sm:text-base text-gray-600 mt-2">File ready for processing</p>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <Upload className="w-12 h-12 text-gray-400 mx-auto" />
-                  <div>
-                    <p className="text-lg font-medium text-gray-900">
-                      {isDragActive ? 'Drop your CV here' : 'Drag & drop your CV here'}
-                    </p>
-                    <p className="text-gray-600">or click to browse files</p>
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="relative">
+                    <Upload className="w-14 h-14 sm:w-16 sm:h-16 text-blue-500 mx-auto" />
+                    {isDragActive && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 border-4 border-blue-500 border-dashed rounded-full animate-ping"></div>
+                      </div>
+                    )}
                   </div>
-                  <div className="text-sm text-gray-500">
-                    Supports PDF, DOC, and DOCX files up to 10MB
+                  <div>
+                    <p className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                      {isDragActive ? '📄 Drop your CV here!' : '📤 Drag & drop your CV here'}
+                    </p>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4">or tap to browse files</p>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg">
+                      <FileText className="w-4 h-4 text-blue-600" />
+                      <span className="text-xs sm:text-sm text-blue-700 font-medium">
+                        PDF, DOC, DOCX • Max 10MB
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
+            {/* What Happens Next */}
+            <div className="mt-8 sm:mt-10 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 text-center">
+                ✨ What Happens Next?
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <div className="flex items-start space-x-3 p-3 bg-white rounded-lg">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-blue-600 font-bold text-sm">1</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm text-gray-900">We Parse Your CV</p>
+                    <p className="text-xs text-gray-600 mt-1">Extract all sections automatically</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 p-3 bg-white rounded-lg">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-purple-600 font-bold text-sm">2</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm text-gray-900">Add Job Details</p>
+                    <p className="text-xs text-gray-600 mt-1">Paste the job description</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 p-3 bg-white rounded-lg">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-green-600 font-bold text-sm">3</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm text-gray-900">Get Tailored CV</p>
+                    <p className="text-xs text-gray-600 mt-1">Download in 2 minutes</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Example CVs */}
+            <ExampleCVs />
+
             {/* File Requirements */}
-            <div className="mt-8 grid md:grid-cols-3 gap-6">
+            <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
               <div className="text-center">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <FileText className="w-6 h-6 text-green-600" />

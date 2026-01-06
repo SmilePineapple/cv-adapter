@@ -297,7 +297,23 @@ export async function POST(request: NextRequest) {
 }
 
 function handleHtmlExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
-  const html = generateTemplateHtml(sections, template)
+  let html = generateTemplateHtml(sections, template)
+  
+  // Add watermark for free users
+  if (!isPro) {
+    const watermark = `
+      <div style="width: 100%; text-align: center; padding: 20px; margin-top: 40px; border-top: 2px solid #e5e7eb; background: #f9fafb;">
+        <p style="margin: 0; font-size: 14px; color: #666;">
+          <strong>Created with CV Adapter</strong>
+          <span style="margin: 0 12px; color: #9ca3af;">•</span>
+          <span>Upgrade to Pro (£2.99/month) to remove this watermark</span>
+          <span style="margin: 0 12px; color: #9ca3af;">•</span>
+          <a href="https://mycvbuddy.com" style="color: #3b82f6; text-decoration: none;">mycvbuddy.com</a>
+        </p>
+      </div>
+    `
+    html = html.replace('</body>', watermark + '</body>')
+  }
   
   return new NextResponse(html, {
     headers: {
@@ -453,12 +469,16 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
       ...basePdfOptions,
       displayHeaderFooter: true,
       footerTemplate: `
-        <div style="width: 100%; text-align: center; font-size: 8px; color: #999; padding: 5px 0;">
-          <span>Created with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com</span>
+        <div style="width: 100%; text-align: center; font-size: 10px; color: #666; padding: 8px 0; background: #f9fafb; border-top: 1px solid #e5e7eb;">
+          <span style="font-weight: 600;">Created with CV Adapter</span>
+          <span style="margin: 0 8px; color: #9ca3af;">•</span>
+          <span>Upgrade to Pro (£2.99/month) to remove this watermark</span>
+          <span style="margin: 0 8px; color: #9ca3af;">•</span>
+          <span style="color: #3b82f6;">mycvbuddy.com</span>
         </div>
       `,
       headerTemplate: '<div></div>',
-      margin: { ...margins, bottom: '15mm' }
+      margin: { ...margins, bottom: '20mm' }
     } : basePdfOptions
 
     const pdf = await page.pdf(pdfOptions)
@@ -628,10 +648,30 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
         new Paragraph({
           children: [
             new TextRun({
-              text: 'Created with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com',
-              size: 16, // 8pt
-              color: '999999',
-              italics: true
+              text: 'Created with CV Adapter',
+              size: 20, // 10pt
+              color: '666666',
+              bold: true
+            }),
+            new TextRun({
+              text: ' • ',
+              size: 20,
+              color: '999999'
+            }),
+            new TextRun({
+              text: 'Upgrade to Pro (£2.99/month) to remove this watermark',
+              size: 20,
+              color: '666666'
+            }),
+            new TextRun({
+              text: ' • ',
+              size: 20,
+              color: '999999'
+            }),
+            new TextRun({
+              text: 'mycvbuddy.com',
+              size: 20,
+              color: '3b82f6'
             })
           ],
           alignment: AlignmentType.CENTER,
@@ -697,7 +737,9 @@ function handleTxtExport(sections: CVSection[], jobTitle: string, isPro: boolean
 
   // Add watermark for free users
   if (!isPro) {
-    content += '\n\n---\nCreated with CV Adapter - Upgrade to remove this watermark at mycvbuddy.com'
+    content += '\n\n' + '='.repeat(80) + '\n'
+    content += 'Created with CV Adapter • Upgrade to Pro (£2.99/month) to remove this watermark • mycvbuddy.com'
+    content += '\n' + '='.repeat(80)
   }
 
   return new NextResponse(content, {
