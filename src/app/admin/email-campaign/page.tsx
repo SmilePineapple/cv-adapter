@@ -398,7 +398,9 @@ export default function EmailCampaignPage() {
         body: JSON.stringify({
           subject,
           htmlContent,
-          testMode
+          testMode,
+          excludeProUsers,
+          excludedEmails
         })
       })
 
