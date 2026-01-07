@@ -20,6 +20,8 @@ export default function EmailCampaignPage() {
   const [excludeProUsers, setExcludeProUsers] = useState(false)
   const [excludedEmails, setExcludedEmails] = useState<string[]>([])
   const [unsubscribedUsers, setUnsubscribedUsers] = useState<Array<{email: string, unsubscribed_at: string}>>([])
+  const [activeCampaign, setActiveCampaign] = useState<any>(null)
+  const [campaignProgress, setCampaignProgress] = useState<{sent: number, failed: number, total: number} | null>(null)
 
   useEffect(() => {
     checkAuth()
@@ -379,7 +381,7 @@ export default function EmailCampaignPage() {
 
     const confirmMsg = testMode
       ? 'Send test email to yourself?'
-      : `Send campaign to ${userCount} users? This will take ${Math.ceil(userCount * 5 / 60)} minutes.`
+      : `Send campaign to ${userCount} users? This will be processed in the background automatically.`
 
     if (!confirm(confirmMsg)) {
       return
@@ -389,7 +391,37 @@ export default function EmailCampaignPage() {
       setSending(true)
       const { data: { session } } = await supabase.auth.getSession()
 
-      const response = await fetch('/api/admin/send-campaign', {
+      // Test mode: use old endpoint for immediate send
+      if (testMode) {
+        const response = await fetch('/api/admin/send-campaign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`
+          },
+          body: JSON.stringify({
+            subject,
+            htmlContent,
+            testMode: true,
+            excludeProUsers,
+            excludedEmails
+          })
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          toast.success(data.message)
+          console.log('Test email sent:', data.results)
+        } else {
+          toast.error(data.error || 'Failed to send test email')
+        }
+        setSending(false)
+        return
+      }
+
+      // Production mode: use new queue system
+      const response = await fetch('/api/admin/create-campaign', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -398,7 +430,6 @@ export default function EmailCampaignPage() {
         body: JSON.stringify({
           subject,
           htmlContent,
-          testMode,
           excludeProUsers,
           excludedEmails
         })
@@ -408,17 +439,54 @@ export default function EmailCampaignPage() {
 
       if (response.ok) {
         toast.success(data.message)
-        console.log('Campaign results:', data.results)
+        setActiveCampaign(data.campaign)
+        setCampaignProgress({
+          sent: 0,
+          failed: 0,
+          total: data.campaign.total_recipients
+        })
+        // Start polling for progress
+        startProgressPolling(data.campaign.id, session?.access_token)
       } else {
-        toast.error(data.error || 'Failed to send campaign')
+        toast.error(data.error || 'Failed to create campaign')
+        setSending(false)
       }
 
     } catch (error: unknown) {
       console.error('Error sending campaign:', error)
       toast.error('Failed to send campaign')
-    } finally {
       setSending(false)
     }
+  }
+
+  const startProgressPolling = (campaignId: string, token: string | undefined) => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/admin/campaign-status?campaignId=${campaignId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        const data = await response.json()
+
+        if (data.campaign) {
+          setCampaignProgress({
+            sent: data.campaign.sent_count,
+            failed: data.campaign.failed_count,
+            total: data.campaign.total_recipients
+          })
+
+          if (data.campaign.status === 'completed' || data.campaign.status === 'failed') {
+            clearInterval(pollInterval)
+            setSending(false)
+            toast.success(`Campaign ${data.campaign.status}! Sent: ${data.campaign.sent_count}, Failed: ${data.campaign.failed_count}`)
+          }
+        }
+      } catch (error) {
+        console.error('Error polling campaign status:', error)
+      }
+    }, 3000) // Poll every 3 seconds
   }
 
   if (loading) {
