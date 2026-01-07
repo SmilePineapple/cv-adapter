@@ -221,12 +221,46 @@ export default function EmailCampaignPage() {
   const loadPricingTemplate = () => {
     setSubject('🎉 Big News: Lower Prices + Amazing New Features!')
     setExcludeProUsers(true)
-    setExcludedEmails([
+    
+    // Base exclusion list
+    const baseExclusions = [
       'smilepineapple118@gmail.com',
       'imanirenee@hotmail.com',
       'nevinthomas2020@ce.ajce.in',
       'jake.rourke@btinternet.com'
-    ])
+    ]
+    
+    // Add the 59 users who already received the email (from failed campaign)
+    const alreadySentEmails = [
+      'rachitbarman8@gmail.com', 'irfanaparadath485uk@gmail.com', 'jithinphilip01@gmail.com',
+      'odiahlydia@gmail.com', 'alywaaris5722@gmail.com', 'bilal.sayed0786@gmail.com',
+      'aksharamaheshwaram93@gmail.com', 'aiswaryamnvd@gmail.com', 'shrutisanjay203@gmail.com',
+      'acde96690@gmail.com', 'badking3@mail.ru', 'fofips30@gmail.com',
+      'tomiomole@gmail.com', 'sameer.kv@gmail.com', 'georgeandreipop2002@gmail.com',
+      'surayaakter540@gmail.com', 'khaoula.jemli@gmail.com', 'alsaadi9373h@gmail.com',
+      'hayfaxo@gmail.com', 'nthabisengradebe246@gmail.com', 'akunepicrumenige@gmail.com',
+      'umacharmee@gmail.com', 'anas7eh@gmail.com', 'm.farhankareem@gmail.com',
+      'ladylounge2025@gmail.com', 'safeedac96@gmail.com', 'yousayed010@gmail.com',
+      'rakotomangaseheno@gmail.com', 'awadjustin32@gmail.com', 'msaimshafique4664@gmail.com',
+      'rafsuns793@gmail.com', 'zacariasmd09@gmail.com', 'renad.alraddadi2@gmail.com',
+      'ilie.rus@gmail.com', 'animaterightnow@gmail.com', 'gabrielle.pauzie.pro@gmail.com',
+      'gujarsaurabh69@gmail.com', 'apepoo762@gmail.com', 'aeriguevara05@gmail.com',
+      'marwan.tarek092@icloud.com', 'dipumv@gmail.com', 'eng.marwantariq@gmail.com',
+      'priyankadas0075@gmail.com', 'ravirajsinhs3001@gmail.com', 'goodlak44@gmail.com',
+      'fahadali.bwp0@gmail.com', 'osdareason@gmail.com', 'edmjonespro@gmail.com',
+      'shayanahmed7675@gmail.com', 'aqsoomro_1985@yahoo.com', 'amsp500@gmail.com',
+      'adityowcks26@gmail.com', 'oliviacamejo58@outlook.com', 'nacanaboamade11@gmail.com',
+      'jeanclaudvandame13@gmail.com', 'dalailama9999999@gmail.com', 'deependramishra01@gmail.com',
+      'susannacasarotto05@gmail.com', 'gabrielnevesalves.c@gmail.com'
+    ]
+    
+    // Add unsubscribed users to exclusion list
+    const unsubscribedEmails = unsubscribedUsers.map(u => u.email)
+    
+    // Combine all exclusions and remove duplicates
+    const allExclusions = [...new Set([...baseExclusions, ...alreadySentEmails, ...unsubscribedEmails])]
+    
+    setExcludedEmails(allExclusions)
     setHtmlContent(`<!DOCTYPE html>
 <html>
 <head>
@@ -653,6 +687,36 @@ export default function EmailCampaignPage() {
                     </ul>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Campaign Progress */}
+            {campaignProgress && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-semibold text-gray-900">Campaign In Progress</p>
+                  <Loader2 className="w-5 h-5 text-green-600 animate-spin" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Progress:</span>
+                    <span className="font-medium text-gray-900">
+                      {campaignProgress.sent + campaignProgress.failed} / {campaignProgress.total}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div 
+                      className="bg-green-600 h-2.5 rounded-full transition-all duration-300"
+                      style={{ 
+                        width: `${((campaignProgress.sent + campaignProgress.failed) / campaignProgress.total) * 100}%` 
+                      }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-600">
+                    <span>✓ Sent: {campaignProgress.sent}</span>
+                    <span>✗ Failed: {campaignProgress.failed}</span>
+                  </div>
+                </div>
               </div>
             )}
 
