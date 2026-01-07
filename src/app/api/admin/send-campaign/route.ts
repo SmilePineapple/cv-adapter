@@ -35,27 +35,65 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Fetch all users from auth.users (not profiles)
-    console.log('Fetching users from auth.admin.listUsers()...')
-    const { data: authData, error: usersError } = await supabase.auth.admin.listUsers()
-
-    console.log('Auth data:', authData)
-    console.log('Users error:', usersError)
-
-    if (usersError) {
-      console.error('Error fetching users:', usersError)
-      return NextResponse.json(
-        { error: 'Failed to fetch users: ' + usersError.message },
-        { status: 500 }
-      )
+    // In test mode, just fetch the admin user directly
+    let authUsers: any[] = []
+    
+    if (testMode) {
+      console.log('Test mode: Fetching admin user directly...')
+      const { data: adminAuthData } = await supabase.auth.admin.listUsers()
+      const allUsers = adminAuthData?.users || []
+      const adminUser = allUsers.find(u => u.email === 'jakedalerourke@gmail.com')
+      
+      if (adminUser) {
+        authUsers = [adminUser]
+        console.log('Found admin user for test mode')
+      } else {
+        console.log('Admin user not found, fetching all users to search...')
+        // Fetch all pages to find admin
+        let page = 1
+        let hasMore = true
+        while (hasMore && !adminUser) {
+          const { data: pageData } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+          const users = pageData?.users || []
+          const found = users.find(u => u.email === 'jakedalerourke@gmail.com')
+          if (found) {
+            authUsers = [found]
+            break
+          }
+          hasMore = pageData && pageData.users.length === 1000
+          page++
+        }
+      }
+    } else {
+      // Production mode: fetch all users with pagination
+      console.log('Production mode: Fetching all users...')
+      let page = 1
+      let hasMore = true
+      
+      while (hasMore) {
+        const { data: pageData, error: usersError } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+        
+        if (usersError) {
+          console.error('Error fetching users:', usersError)
+          return NextResponse.json(
+            { error: 'Failed to fetch users: ' + usersError.message },
+            { status: 500 }
+          )
+        }
+        
+        const users = pageData?.users || []
+        authUsers.push(...users)
+        
+        hasMore = users.length === 1000
+        page++
+      }
     }
 
-    const authUsers = authData?.users || []
     console.log(`Found ${authUsers.length} total auth users`)
 
     if (authUsers.length === 0) {
       return NextResponse.json(
-        { error: 'No users found in auth system' },
+        { error: testMode ? 'Admin user not found' : 'No users found in auth system' },
         { status: 404 }
       )
     }
@@ -104,24 +142,18 @@ export async function POST(request: NextRequest) {
       }))
 
     console.log(`Filtered to ${users.length} confirmed users (excludeProUsers: ${excludeProUsers}, excludedEmails: ${excludedEmails.length})`)
-
-    // Test mode: only send to admin
-    const recipients = testMode 
-      ? users.filter(u => u.email === 'jakedalerourke@gmail.com')
-      : users
-
-    console.log(`Sending campaign to ${recipients.length} users (test mode: ${testMode})`)
+    console.log(`Sending campaign to ${users.length} users (test mode: ${testMode})`)
 
     const results = {
-      total: recipients.length,
+      total: users.length,
       sent: 0,
       failed: 0,
       errors: [] as string[]
     }
 
     // Send emails with 5-second delay between each
-    for (let i = 0; i < recipients.length; i++) {
-      const user = recipients[i]
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i]
       
       try {
         // Personalize email
@@ -137,7 +169,7 @@ export async function POST(request: NextRequest) {
         })
 
         results.sent++
-        console.log(`✓ Sent to ${user.email} (${i + 1}/${recipients.length})`)
+        console.log(`✓ Sent to ${user.email} (${i + 1}/${users.length})`)
 
       } catch (error: unknown) {
         results.failed++
@@ -147,7 +179,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Wait 5 seconds before next email (rate limiting)
-      if (i < recipients.length - 1) {
+      if (i < users.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 5000))
       }
     }
