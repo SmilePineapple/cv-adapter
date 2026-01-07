@@ -22,33 +22,59 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
-    // Fetch all users from auth
-    console.log('Fetching users from auth.admin.listUsers()...')
-    const { data: authData, error } = await supabase.auth.admin.listUsers()
-
-    console.log('Auth data:', authData)
-    console.log('Error:', error)
-
-    if (error) {
-      console.error('Error fetching users:', error)
-      return NextResponse.json({ 
-        error: 'Failed to fetch users: ' + error.message 
-      }, { status: 500 })
+    // Fetch ALL users with pagination (not just first 50)
+    console.log('Fetching all users with pagination...')
+    let allUsers: any[] = []
+    let page = 1
+    let hasMore = true
+    
+    while (hasMore) {
+      const { data: pageData, error } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+      
+      if (error) {
+        console.error('Error fetching users:', error)
+        return NextResponse.json({ 
+          error: 'Failed to fetch users: ' + error.message 
+        }, { status: 500 })
+      }
+      
+      const users = pageData?.users || []
+      allUsers.push(...users)
+      
+      hasMore = users.length === 1000
+      page++
     }
 
-    const users = authData?.users || []
-    console.log(`Found ${users.length} total users`)
+    console.log(`Found ${allUsers.length} total users`)
 
-    // Count only confirmed emails
-    const confirmedUsers = users.filter(u => u.email && u.email_confirmed_at)
-    console.log(`Filtered to ${confirmedUsers.length} confirmed users`)
+    // Get Pro users to exclude
+    const { data: usageData } = await supabase
+      .from('usage_tracking')
+      .select('user_id, subscription_tier')
+
+    const proUserIds = new Set(
+      usageData
+        ?.filter(u => u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual')
+        .map(u => u.user_id) || []
+    )
+
+    console.log(`Found ${proUserIds.size} Pro users`)
+
+    // Filter: confirmed emails, not Pro, not unsubscribed
+    const eligibleUsers = allUsers.filter(u => {
+      if (!u.email || !u.email_confirmed_at) return false
+      if (u.user_metadata?.email_unsubscribed === true) return false
+      if (proUserIds.has(u.id)) return false
+      return true
+    })
+
+    console.log(`Filtered to ${eligibleUsers.length} eligible users (excluding Pro & unsubscribed)`)
 
     return NextResponse.json({
-      count: confirmedUsers.length,
-      users: confirmedUsers.map(u => ({
-        email: u.email,
-        confirmed: !!u.email_confirmed_at
-      }))
+      count: eligibleUsers.length,
+      total: allUsers.length,
+      proUsers: proUserIds.size,
+      unsubscribed: allUsers.filter(u => u.user_metadata?.email_unsubscribed === true).length
     })
 
   } catch (error: unknown) {
