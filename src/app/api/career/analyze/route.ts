@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 3. Salary progression expectations
 4. Skills gap analysis with current vs required proficiency levels
 
-Provide practical, realistic advice based on industry standards.`
+Provide practical, realistic advice based on industry standards. Return your response as JSON.`
         },
         {
           role: 'user',
