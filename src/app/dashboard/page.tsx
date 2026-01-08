@@ -43,7 +43,8 @@ import {
   Lock,
   Check,
   MessageSquare,
-  Flame
+  Flame,
+  Target
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import RotatingTipsBar from '@/components/RotatingTipsBar'
@@ -788,6 +789,14 @@ export default function DashboardPage() {
             <TrendingUp className="w-5 h-5" />
             Career Coach
             <span className="absolute -top-2 -right-2 bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+          </Link>
+
+          <Link
+            href="/skills-assessment"
+            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg gap-2"
+          >
+            <Target className="w-5 h-5" />
+            Skills Assessment
           </Link>
 
           <Link

@@ -94,6 +94,7 @@ export default function LandingPage() {
           
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <Link href="#features" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Features</Link>
+            <Link href="/skills-assessment" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Skills Test</Link>
             <Link href="/blog" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Blog</Link>
             <Link href="#pricing" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Pricing</Link>
             <Link href="/pricing-comparison" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Compare Plans</Link>
@@ -1022,6 +1023,7 @@ export default function LandingPage() {
               <h4 className="font-bold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/blog" className="hover:text-white">CV Writing Tips</Link></li>
+                <li><Link href="/skills-assessment" className="hover:text-white">Skills Assessment</Link></li>
                 <li><Link href="/templates" className="hover:text-white">Templates</Link></li>
                 <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
                 <li><Link href="/api-docs" className="hover:text-white">API Docs</Link></li>
