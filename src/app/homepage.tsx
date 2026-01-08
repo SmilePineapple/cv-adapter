@@ -1,10 +1,9 @@
 import Link from 'next/link'
-import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield, Trophy } from 'lucide-react'
+import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield } from 'lucide-react'
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
 import { TrackingInitializer } from '@/components/TrackingInitializer'
-import PublicCompetitionSection from '@/components/PublicCompetitionSection'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
@@ -97,6 +96,7 @@ export default function LandingPage() {
             <Link href="#features" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Features</Link>
             <Link href="/blog" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Blog</Link>
             <Link href="#pricing" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Pricing</Link>
+            <Link href="/pricing-comparison" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Compare Plans</Link>
             <Link href="/auth/login" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Login</Link>
             <Link 
               href="/auth/signup" 
@@ -160,15 +160,72 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          {/* Competition Button */}
-          <div className="mb-8">
-            <a 
-              href="#competition" 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full text-sm font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse"
-            >
-              <Trophy className="w-5 h-5" />
-              🎮 Win Free CV Generations - Play Now!
-            </a>
+          {/* Free vs Pro Quick Comparison */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 max-w-3xl mx-auto mb-8 border-2 border-blue-200 shadow-lg">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Quick Comparison</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Free Column */}
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div className="text-center mb-3">
+                  <span className="inline-block bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-semibold">FREE</span>
+                </div>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>1 CV generation</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>All 12 templates</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>ATS optimization</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>No credit card required</span>
+                  </li>
+                </ul>
+              </div>
+              
+              {/* Pro Column */}
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-4 border-2 border-blue-500 relative">
+                <div className="absolute -top-2 -right-2">
+                  <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-bold">POPULAR</span>
+                </div>
+                <div className="text-center mb-3">
+                  <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">PRO - £2.99/month</span>
+                </div>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Unlimited CV generations</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span><strong>Unlimited cover letters</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>All 12 templates</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span>Priority support</span>
+                  </li>
+                </ul>
+                <div className="mt-3 text-center">
+                  <Link 
+                    href="/pricing-comparison" 
+                    className="text-blue-600 hover:text-blue-700 text-xs font-semibold inline-flex items-center"
+                  >
+                    See full comparison
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Progress Indicator */}
@@ -585,6 +642,17 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
+
+          {/* Link to Detailed Comparison */}
+          <div className="mt-8 text-center">
+            <Link 
+              href="/pricing-comparison" 
+              className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              See detailed feature comparison
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -780,9 +848,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Competition Section */}
-      <PublicCompetitionSection />
 
       {/* FAQ Section */}
       <section id="faq" className="py-20 bg-white">
