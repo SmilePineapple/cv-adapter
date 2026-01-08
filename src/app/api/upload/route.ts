@@ -279,7 +279,7 @@ Return JSON:
 CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include ALL details.`
       }],
       temperature: 0.1, // Low temperature for consistency
-      max_tokens: 3000 // Increased for comprehensive CVs
+      max_tokens: 4000 // Increased to handle larger CVs (10K chars input)
     })
 
     const response = completion.choices[0]?.message?.content

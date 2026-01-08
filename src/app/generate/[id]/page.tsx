@@ -26,6 +26,7 @@ import { LoadingProgress } from '@/components/LoadingProgress'
 import UpgradeModal from '@/components/UpgradeModal'
 import UpgradePromptModal from '@/components/UpgradePromptModal'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
+import { StrategicUpgradePrompt } from '@/components/StrategicUpgradePrompt'
 import JobScraper from '@/components/JobScraper'
 import { analyzeJobPaste } from '@/lib/smart-paste'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
@@ -175,6 +176,174 @@ export default function GeneratePage() {
     toast.success('Section removed')
   }
 
+  const handleGenerateAfterPrompt = async () => {
+    try {
+      // Check usage limit BEFORE making API call
+      if (usageData && usageData.generation_count >= usageData.max_generations) {
+        if (usageData.is_pro) {
+          toast.error('Unexpected error. Please contact support.')
+        } else {
+          // Show enhanced upgrade modal instead of toast
+          setUpgradeModalTrigger('limit_reached')
+          setShowEnhancedUpgradeModal(true)
+        }
+        return
+      }
+
+      setIsGenerating(true)
+      setGenerateProgress(0)
+      setGenerateStep('🔍 Analyzing job requirements...')
+
+      try {
+        // Step 1: Preparing
+        await new Promise(resolve => setTimeout(resolve, 300))
+        setGenerateProgress(10)
+        setGenerateStep('📄 Extracting CV content...')
+        
+        await new Promise(resolve => setTimeout(resolve, 400))
+        setGenerateProgress(20)
+        setGenerateStep('🎯 Matching skills to job description...')
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        setGenerateProgress(30)
+        setGenerateStep('🤖 AI is analyzing your experience...')
+        
+        // Start API call
+        const responsePromise = fetch('/api/rewrite', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cv_id: selectedCvId,
+            job_title: jobTitle,
+            job_description: jobDescription,
+            rewrite_style: rewriteStyle,
+            tone: tone,
+            custom_sections: customSections,
+            output_language: outputLanguage,
+          }),
+        })
+
+        // Step 2: AI Processing
+        await new Promise(resolve => setTimeout(resolve, 600))
+        setGenerateProgress(45)
+        setGenerateStep('✍️ Rewriting work experience...')
+        
+        await new Promise(resolve => setTimeout(resolve, 700))
+        setGenerateProgress(55)
+        setGenerateStep('💼 Tailoring professional summary...')
+        
+        await new Promise(resolve => setTimeout(resolve, 800))
+        setGenerateProgress(65)
+        setGenerateStep('🎓 Optimizing skills section...')
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        setGenerateProgress(70)
+        setGenerateStep('🎯 Running ATS optimization...')
+        
+        await new Promise(resolve => setTimeout(resolve, 700))
+        setGenerateProgress(75)
+        setGenerateStep('🔍 Analyzing keyword density...')
+        
+        await new Promise(resolve => setTimeout(resolve, 600))
+        setGenerateProgress(80)
+        setGenerateStep('📊 Calculating ATS score...')
+        
+        await new Promise(resolve => setTimeout(resolve, 500))
+        setGenerateProgress(85)
+        setGenerateStep('✨ Polishing final content...')
+        
+        await new Promise(resolve => setTimeout(resolve, 400))
+        setGenerateProgress(90)
+        setGenerateStep('🎨 Formatting sections...')
+        
+        // Add rotating messages while waiting for API
+        const formattingMessages = [
+          '✨ Adding final touches...',
+          '🎯 Perfecting the layout...',
+          '💫 Making it shine...',
+          '🔥 Almost there...',
+          '⚡ Finalizing your masterpiece...',
+          '🌟 Polishing to perfection...',
+          '🎨 Applying professional styling...',
+          '✅ Just a few more seconds...'
+        ]
+        
+        let messageIndex = 0
+        const messageInterval = setInterval(() => {
+          setGenerateStep(formattingMessages[messageIndex % formattingMessages.length])
+          messageIndex++
+        }, 2000)
+        
+        // Wait for API response
+        const response = await responsePromise
+        clearInterval(messageInterval)
+        const result = await response.json()
+        
+        setGenerateProgress(95)
+        setGenerateStep('✨ Finalizing your perfect CV...')
+
+        if (!response.ok) {
+          if (result.limit_reached) {
+            setShowUpgradeModal(true)
+            toast.error('Free generation limit reached. Upgrade to Pro for unlimited generations!')
+            return
+          }
+          
+          // Handle authentication errors
+          if (response.status === 401) {
+            toast.error('Your session has expired. Please log in again.')
+            setTimeout(() => {
+              window.location.href = '/auth/login'
+            }, 2000)
+            return
+          }
+          
+          const errorMessage = result.error || result.details || 'Generation failed'
+          console.error('Generation error:', errorMessage, result)
+          toast.error(errorMessage)
+          throw new Error(errorMessage)
+        }
+
+        setGenerateProgress(100)
+        setGenerateStep('Complete!')
+        toast.success('CV tailored successfully!')
+        
+        // Check if user just hit their 2nd generation (show upgrade prompt)
+        if (usageData && !usageData.is_pro) {
+          const newCount = usageData.generation_count + 1
+          if (newCount === 2) {
+            // Show upgrade prompt after 2nd generation
+            setUpgradeTrigger('second_generation')
+            setTimeout(() => {
+              setShowUpgradePrompt(true)
+            }, 1000) // Show after success message
+          } else if (newCount >= usageData.max_generations) {
+            // Show limit reached prompt
+            setUpgradeTrigger('limit_reached')
+            setTimeout(() => {
+              setShowUpgradePrompt(true)
+            }, 1000)
+          }
+        }
+        
+        // Small delay to show completion
+        setTimeout(() => {
+          router.push(`/review/${result.generation_id}`)
+        }, 500)
+        
+      } catch (error: any) {
+        console.error('Generation error:', error)
+        toast.error(error.message || 'Failed to generate tailored CV')
+      } finally {
+        setIsGenerating(false)
+      }
+    } catch (error) {
+      console.error('Error generating CV:', error)
+    }
+  }
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -183,16 +352,7 @@ export default function GeneratePage() {
       return
     }
 
-    // Check usage limit BEFORE making API call
-    if (usageData && usageData.generation_count >= usageData.max_generations) {
-      if (usageData.is_pro) {
-        toast.error('Unexpected error. Please contact support.')
-      } else {
-        // Show enhanced upgrade modal instead of toast
-        setUpgradeModalTrigger('limit_reached')
-        setShowEnhancedUpgradeModal(true)
-      }
-      return
+    handleGenerateAfterPrompt()
     }
 
     setIsGenerating(true)
