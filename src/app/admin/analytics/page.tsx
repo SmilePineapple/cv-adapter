@@ -190,6 +190,13 @@ export default function AnalyticsPage() {
             </div>
 
             <div className="flex items-center gap-3">
+              <Link
+                href="/admin/analytics-enhanced"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors"
+              >
+                <TrendingUp className="w-4 h-4" />
+                Enhanced Analytics
+              </Link>
               <button
                 onClick={loadAnalytics}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"

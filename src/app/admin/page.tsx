@@ -208,11 +208,18 @@ export default function AdminDashboard() {
             </div>
             <div className="flex gap-3">
               <Link
-                href="/admin/dashboard"
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors shadow-lg"
+                href="/admin/analytics"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors shadow-lg"
               >
                 <BarChart3 className="w-4 h-4" />
-                Advanced Analytics
+                Analytics
+              </Link>
+              <Link
+                href="/admin/analytics-enhanced"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg"
+              >
+                <TrendingUp className="w-4 h-4" />
+                Enhanced Analytics
               </Link>
               <Link
                 href="/admin/competition"
