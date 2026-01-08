@@ -13,27 +13,33 @@ export const metadata: Metadata = {
   title: 'Free AI CV & Resume Builder | ATS-Optimized Resume Generator | My CV Buddy',
   description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free AI-powered CV builder and resume maker for job seekers worldwide. Try free, then £2.99/month for unlimited access.',
   keywords: [
-    // UK Terms
+    // UK Terms - High Volume
+    'CV generator UK free', 'free CV builder', 'CV template UK', 'professional CV', 
     'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
+    'CV format', 'CV examples', 'CV template', 'professional CV template',
     'adapt my CV', 'tailor CV to job', 'CV optimizer UK', 'professional CV UK',
     'CV templates UK', 'ATS CV checker', 'curriculum vitae generator',
-    'CV builder free UK', 'online CV maker', 'CV buddy',
+    'CV builder free UK', 'online CV maker', 'CV buddy', 'free CV template',
+    'how to write a CV', 'CV skills', 'CV personal statement',
     
     // US Terms  
     'resume builder USA', 'resume generator', 'AI resume writer', 'resume writing tool',
     'customize resume', 'tailor resume to job', 'resume optimizer', 'professional resume',
     'resume templates US', 'ATS resume checker', 'resume builder free',
+    'free resume builder', 'resume format', 'resume examples',
     
     // Universal
     'ATS optimization', 'applicant tracking system', 'cover letter generator',
     'job-specific CV', 'keyword optimization', 'resume parser', 'free CV builder',
     'AI CV generator', 'job application CV', 'career profile builder',
+    'CV maker', 'resume maker', 'CV creator', 'resume creator',
     
-    // Long-tail
+    // Long-tail - From GSC Data
     'AI tool to adapt CV to job description', 'automatically generate resume for job',
     'create job-specific CV in minutes', 'free CV builder online',
     'AI resume writing service', 'tailor CV to job description free',
-    'how to optimize CV for ATS', 'CV keywords for job application'
+    'how to optimize CV for ATS', 'CV keywords for job application',
+    'what to put on a CV', 'how long should a CV be', 'first job CV'
   ],
   authors: [{ name: 'My CV Buddy' }],
   openGraph: {

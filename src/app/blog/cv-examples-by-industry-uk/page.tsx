@@ -455,6 +455,84 @@ export default function CVExamplesByIndustry() {
             </ul>
           </div>
 
+          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Frequently Asked Questions</h2>
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div className="space-y-6">
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">How do I tailor a CV example to my experience?</h3>
+                <p className="text-gray-700 leading-relaxed">Use the CV example as a template for structure and formatting, but replace all content with your own achievements and experience. Match the tone and style, but ensure all bullet points reflect your actual work. Quantify your achievements with specific numbers and results.</p>
+              </div>
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Should I use a different CV format for different industries?</h3>
+                <p className="text-gray-700 leading-relaxed">Yes, different industries have different expectations. Creative industries (marketing, design) can use more modern layouts with color accents, while conservative industries (finance, law) should stick to traditional black and white formats. However, all CVs should be ATS-friendly regardless of industry.</p>
+              </div>
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">How long should my CV be for UK jobs?</h3>
+                <p className="text-gray-700 leading-relaxed">For most UK professionals, 2 pages is the standard. Graduates and entry-level candidates can use 1 page if they have limited experience. Senior executives with 15+ years of experience may extend to 3 pages, but only if every line adds value.</p>
+              </div>
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">What's the difference between a CV and a resume?</h3>
+                <p className="text-gray-700 leading-relaxed">In the UK, CV (Curriculum Vitae) is the standard term for job applications and is typically 2 pages. In the US, a resume is 1 page and used for most jobs, while a CV is longer and used for academic positions. UK job seekers should always use the term "CV".</p>
+              </div>
+              <div className="pb-0">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Can I use the same CV for every job application?</h3>
+                <p className="text-gray-700 leading-relaxed">No, you should tailor your CV for each application. Use keywords from the job description, reorder bullet points to highlight relevant experience first, and adjust your professional summary to match the role. This increases your chances of passing ATS systems and impressing recruiters by 3x.</p>
+              </div>
+            </div>
+          </div>
+
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "How do I tailor a CV example to my experience?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Use the CV example as a template for structure and formatting, but replace all content with your own achievements and experience. Match the tone and style, but ensure all bullet points reflect your actual work. Quantify your achievements with specific numbers and results."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Should I use a different CV format for different industries?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, different industries have different expectations. Creative industries (marketing, design) can use more modern layouts with color accents, while conservative industries (finance, law) should stick to traditional black and white formats. However, all CVs should be ATS-friendly regardless of industry."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How long should my CV be for UK jobs?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "For most UK professionals, 2 pages is the standard. Graduates and entry-level candidates can use 1 page if they have limited experience. Senior executives with 15+ years of experience may extend to 3 pages, but only if every line adds value."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What's the difference between a CV and a resume?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "In the UK, CV (Curriculum Vitae) is the standard term for job applications and is typically 2 pages. In the US, a resume is 1 page and used for most jobs, while a CV is longer and used for academic positions. UK job seekers should always use the term CV."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can I use the same CV for every job application?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "No, you should tailor your CV for each application. Use keywords from the job description, reorder bullet points to highlight relevant experience first, and adjust your professional summary to match the role. This increases your chances of passing ATS systems and impressing recruiters by 3x."
+                    }
+                  }
+                ]
+              })
+            }}
+          />
+
           <div className="border-t border-gray-200 pt-8 mt-12">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">

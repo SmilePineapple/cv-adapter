@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Award, CheckCircle, Star } from 'lucide-react'
 import type { Metadata } from 'next'
+import { DownloadResource } from '@/components/DownloadResource'
 
 export const metadata: Metadata = {
   title: 'Professional CV: How to Create One That Gets Interviews (2025)',
@@ -431,6 +432,33 @@ export default function ProfessionalCVGuide() {
             </ul>
           </div>
 
+          <DownloadResource 
+            title="Free Professional CV Resources"
+            description="Download our professional CV template and comprehensive writing checklist to create your perfect CV"
+          />
+
+          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Frequently Asked Questions</h2>
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div className="space-y-6">
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">What makes a CV professional?</h3>
+                <p className="text-gray-700 leading-relaxed">A professional CV has clean formatting, quantified achievements, tailored content matching job requirements, ATS optimization with relevant keywords, and zero errors. It focuses on results rather than responsibilities and uses a consistent, easy-to-read layout.</p>
+              </div>
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">How long should a professional CV be?</h3>
+                <p className="text-gray-700 leading-relaxed">For most UK professionals, 2 pages is the standard. Graduates can use 1 page if they have limited experience. Senior executives with 15+ years may extend to 3 pages, but only if every line adds significant value.</p>
+              </div>
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Should I include a photo on my CV?</h3>
+                <p className="text-gray-700 leading-relaxed">No, UK CVs should not include photos unless you're applying for acting, modeling, or similar roles where appearance is relevant. Photos can lead to unconscious bias and are not expected by UK employers.</p>
+              </div>
+              <div className="pb-0">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">What's the best font for a professional CV?</h3>
+                <p className="text-gray-700 leading-relaxed">Professional fonts include Arial, Calibri, Helvetica (modern), Times New Roman, Georgia (traditional), or Lato, Roboto (contemporary). Use 10-12pt for body text and 14-16pt for headings. Stick to one font throughout for consistency.</p>
+              </div>
+            </div>
+          </div>
+
           <div className="border-t border-gray-200 pt-8 mt-12">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
@@ -446,6 +474,50 @@ export default function ProfessionalCVGuide() {
           </div>
         </div>
       </article>
+      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What makes a CV professional?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A professional CV has clean formatting, quantified achievements, tailored content matching job requirements, ATS optimization with relevant keywords, and zero errors. It focuses on results rather than responsibilities and uses a consistent, easy-to-read layout."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How long should a professional CV be?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For most UK professionals, 2 pages is the standard. Graduates can use 1 page if they have limited experience. Senior executives with 15+ years may extend to 3 pages, but only if every line adds significant value."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I include a photo on my CV?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, UK CVs should not include photos unless you're applying for acting, modeling, or similar roles where appearance is relevant. Photos can lead to unconscious bias and are not expected by UK employers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What's the best font for a professional CV?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Professional fonts include Arial, Calibri, Helvetica (modern), Times New Roman, Georgia (traditional), or Lato, Roboto (contemporary). Use 10-12pt for body text and 14-16pt for headings. Stick to one font throughout for consistency."
+                }
+              }
+            ]
+          })
+        }}
+      />
     </div>
   )
 }
