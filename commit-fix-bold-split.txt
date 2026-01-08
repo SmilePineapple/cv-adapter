@@ -1,0 +1,44 @@
+fix: Improve Bold Split template - compact layout and data display
+
+Fixed Issues:
+1. Page Overflow
+   - Changed to fixed A4 size (297mm x 210mm)
+   - Reduced padding and margins
+   - Smaller font sizes (10-12px)
+   - Limited to 1 experience entry
+   - Truncated summary to 200 chars
+   - Added overflow: hidden
+
+2. Data Display
+   - Fixed name showing "Your Name" placeholder
+   - Added proper fallbacks for all fields
+   - Name, location, phone, email now display correctly
+   - Website field conditional rendering
+
+3. White Hobby Icons
+   - Added CSS filter to make icons white
+   - Hobbies extracted from text
+   - Shows up to 3 hobbies with white circles
+
+4. Better Layout
+   - Compact single-page design
+   - Proper section spacing
+   - Improved typography hierarchy
+   - Better visual balance
+
+Remaining Enhancements Needed:
+- Photo upload system (currently placeholder)
+- Actual language proficiency scores (currently random)
+- Skill level extraction from CV text
+- Custom hobby icons (integrate with existing system)
+- Template customization UI
+
+See BOLD-SPLIT-IMPROVEMENTS.md for full details and roadmap.
+
+Files Modified:
+- src/lib/stunning-templates.ts (Bold Split template)
+
+Files Created:
+- BOLD-SPLIT-IMPROVEMENTS.md (improvement roadmap)
+
+Status: Core issues fixed, advanced features documented for future

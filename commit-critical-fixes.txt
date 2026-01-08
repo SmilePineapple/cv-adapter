@@ -1,0 +1,30 @@
+fix: Critical bug fixes for email triggers, language override, and admin dashboard
+
+Fixed 5 critical issues:
+
+1. Email triggers not firing
+   - Fixed first generation email logic (check currentUsage === 0)
+   - Fixed limit reached email logic (check if just hit limit)
+   - Added debug logging for email sends
+
+2. Upgrade modal showing too early
+   - Fixed logic to allow 2 free generations (was blocking at 1)
+   - Now correctly checks currentUsage >= maxGenerations before generation
+
+3. Language override not working
+   - Now uses output_language parameter instead of detected_language
+   - Added targetLanguage variable to respect user's language selection
+   - Fixed AI prompt to use correct target language
+
+4. Admin dashboard not updating
+   - Fixed real-time metrics API to use usage_tracking table instead of non-existent profiles table
+   - Active users query now works correctly
+
+5. Updated error messages
+   - More accurate "limit reached" messaging
+
+Created documentation:
+- CRITICAL-FIXES-OCT-27.md - Complete fix summary
+- WELCOME-EMAIL-SETUP.md - Webhook configuration guide
+
+Note: Welcome email requires Supabase Auth webhook configuration (see WELCOME-EMAIL-SETUP.md)

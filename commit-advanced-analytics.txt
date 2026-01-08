@@ -1,0 +1,78 @@
+feat: Advanced Analytics Dashboard with real-time monitoring
+
+Implemented comprehensive advanced analytics dashboard:
+
+1. Advanced Analytics Dashboard (/admin/dashboard)
+   - Real-time monitoring (5 live metrics)
+   - Conversion funnel visualization
+   - User retention tracking (7-day, 30-day)
+   - Revenue over time chart (30 days)
+   - Geographic distribution map
+   - Feature usage heatmap
+   - Churn rate tracking
+   
+   Real-Time Metrics:
+   - Active users right now (last 5 min)
+   - Generations in last hour
+   - Revenue today
+   - New signups today
+   - Error rate monitoring
+   
+   Auto-refresh every 30 seconds
+
+2. API Endpoints Created:
+   - /api/admin/real-time-metrics - Live metrics
+   - /api/admin/conversion-funnel - Signup to upgrade funnel
+   - /api/admin/retention - 7-day and 30-day retention
+   - /api/admin/revenue-over-time - Daily revenue (30 days)
+   - /api/admin/geo-distribution - Top 10 countries
+   - /api/admin/feature-usage - Feature adoption rates
+   - /api/admin/churn-rate - Monthly churn calculation
+
+3. Conversion Funnel:
+   - Visitors → Signups → First Gen → Second Gen → Upgrades
+   - Visual progress bars with percentages
+   - Color-coded stages
+
+4. Retention & Churn:
+   - 7-day retention rate
+   - 30-day retention rate
+   - Monthly churn rate
+   - Visual indicators (✅ Excellent, ⚠️ Good, ❌ Needs Attention)
+
+5. Feature Usage Heatmap:
+   - CV Generation adoption
+   - Cover Letters usage
+   - Interview Prep usage
+   - Export PDF usage
+   - Percentage of users per feature
+
+6. Geographic Distribution:
+   - Top 10 countries with flags
+   - User count and percentage
+   - Visual progress bars
+   - Based on real analytics data (UK: 51, US: 13, IN: 11)
+
+7. Revenue Over Time:
+   - 30-day revenue chart
+   - Bar chart visualization
+   - Hover for exact amounts
+   - Daily breakdown
+
+8. UI Enhancements:
+   - Prominent "Advanced Analytics" button on main admin page
+   - Gradient blue-to-purple styling
+   - Auto-refresh functionality
+   - Loading states
+   - Error handling
+
+Benefits:
+- Data-driven decision making
+- Identify drop-off points in funnel
+- Track feature adoption
+- Monitor user retention
+- Understand geographic distribution
+- Real-time business monitoring
+- Churn prevention insights
+
+Part 4 of Quick Wins implementation (Advanced Admin Complete)

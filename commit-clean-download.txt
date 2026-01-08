@@ -1,0 +1,22 @@
+feat: Clean download page redesign with horizontal template slider
+
+Implemented user-requested redesign:
+✅ Horizontal template slider at top (scrollable)
+✅ Clean preview section (centered, no clutter)
+✅ Export format selector (simplified)
+✅ Single action section (Download + Edit CV)
+✅ Removed AI Review button
+✅ Removed duplicate Download buttons
+✅ Removed duplicate Dashboard buttons
+✅ Better visual flow
+
+Changes:
+- Template cards now horizontal scrollable row
+- Compact 192px cards with badges
+- Single "Your CV is Ready!" action section
+- Clean, logical top-to-bottom flow
+- Removed 80+ lines of duplicate code
+
+Impact: Much cleaner UX, better flow, no confusion
+
+Status: Build passing, ready to deploy!

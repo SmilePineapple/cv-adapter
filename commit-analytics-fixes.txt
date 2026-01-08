@@ -1,0 +1,11 @@
+fix: Prevent analytics dashboard errors during auth check
+
+Fixed JavaScript errors on analytics-v2 page:
+- Added null checks for toFixed() calls on conversion_rate, avg_usage_per_user, and retention_rate
+- Added isCheckingAuth state to prevent rendering before auth completes
+- Added loading spinner during auth check
+- Prevents "Cannot read properties of null (reading 'toFixed')" errors
+
+This ensures the page doesn't try to render data before:
+1. Auth check completes
+2. Data is loaded from database

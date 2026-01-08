@@ -1,0 +1,33 @@
+fix: Add stunning templates to preview and advanced template checks
+
+Fixed Issues:
+1. Preview not showing new templates on download page
+   - Added stunning templates import
+   - Updated generateTemplateHtml() to handle stunning templates
+   - Proper data mapping for all CV sections
+
+2. Advanced template detection
+   - Updated isAdvancedTemplate() to include all 5 stunning templates
+   - Ensures proper PDF optimization for new templates
+
+3. Hobby icons support
+   - Added 'artistic-header' to hobby icons checks
+   - Shows hobby icons button for templates that support it
+   - Updated info message for artistic-header template
+
+Files Modified:
+- src/app/download/[id]/page.tsx
+  * Import stunning templates
+  * Add preview generation for stunning templates
+  * Update hobby icons checks
+
+- src/lib/pdf-layout-optimizer.ts
+  * Add all 5 stunning templates to isAdvancedTemplate()
+
+Impact:
+- ✅ All 7 templates now show preview correctly
+- ✅ Proper PDF optimization for stunning templates
+- ✅ Hobby icons feature works for artistic-header
+- ✅ No template-specific settings needed (all use standard CV data)
+
+Status: All templates fully functional with preview!

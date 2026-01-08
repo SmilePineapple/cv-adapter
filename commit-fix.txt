@@ -1,0 +1,1 @@
+add: Simple test email endpoint for debugging Resend integration

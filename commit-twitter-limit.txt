@@ -1,0 +1,12 @@
+fix: Enforce Twitter 280 character limit
+
+CRITICAL FIX: Tweets were 332 characters but Twitter limit is 280.
+This caused 403 Forbidden errors.
+
+Changes:
+- Added character limit check for Twitter
+- Smart truncation: removes hashtags first, then content if needed
+- Adds back 1-2 hashtags if there's room
+- Logs warning when truncating
+
+This will allow tweets to post successfully within Twitter's limits.

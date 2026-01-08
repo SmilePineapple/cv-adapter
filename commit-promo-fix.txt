@@ -1,0 +1,8 @@
+fix: Remove br tags from PromoEmail causing React Email render error
+
+Fixed TypeError: b is not a function by:
+- Removing br tags and splitting into separate Text components
+- Removing unused Img import
+- Following same pattern as working email templates
+
+The error was caused by br tags not being properly handled by React Email in production build.

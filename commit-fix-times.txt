@@ -1,0 +1,6 @@
+fix: Add SQL migration to update existing post times from 10 AM to 2 PM
+
+Existing posts were scheduled for 10 AM but cron runs at 2 PM.
+This SQL updates all unposted posts to 2 PM so they match the cron schedule.
+
+User needs to run this SQL in Supabase to fix existing scheduled posts.

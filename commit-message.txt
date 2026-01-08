@@ -1,0 +1,15 @@
+feat: Launch subscription model with custom sections and 50% off promo
+
+Major Features:
+- Add monthly (9.99) and annual (49) subscription plans
+- Implement 12 custom CV sections with AI generation
+- Add progress stepper across generate/review/download pages
+- Update Professional Columns template with balanced layout
+- Add language icons with country flags
+- Implement subscription management with cancel and invoices
+- Update promo banner for 50% off launch offer
+- Remove old one-time purchase references
+- Add CVProgressStepper component
+- Create /api/stripe/invoices endpoint
+- Update homepage and subscription page layouts
+- Add LAUNCH50ANNUAL promo code hint on annual plan

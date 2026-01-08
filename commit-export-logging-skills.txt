@@ -1,0 +1,35 @@
+fix: Add skill scores fetch and detailed export logging
+
+Added comprehensive fixes and debugging for export issues:
+
+1. Skill Scores in Export ✅
+   - Fetch skill_scores from cv_sections table
+   - Include in completeSections array
+   - Log when custom skill scores are used
+   - Skills will now update in exports!
+
+2. Detailed Export Logging ✅
+   - Log all section types being exported
+   - Check if name section exists
+   - Check if contact section exists
+   - Log content for name/contact/education/certifications
+   - Show if sections are empty or missing
+   - Easier to debug "Your Name" issue
+
+Changes:
+- Fetch latestSkillScores from cv_sections
+- Add skill_scores to completeSections if present
+- Enhanced logging for name and contact sections
+- Log critical warnings if sections missing
+
+This will help identify:
+- Why "Your Name" is showing (name section missing/empty?)
+- Why contact info is empty (contact section missing/empty?)
+- Whether skill scores are being fetched
+
+Next Steps:
+1. Deploy and test export
+2. Check Vercel logs for section data
+3. Fix based on what logs reveal
+
+Status: Build passing, ready to deploy with debugging!

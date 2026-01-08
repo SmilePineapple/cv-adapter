@@ -1,0 +1,16 @@
+feat: Post to BOTH personal LinkedIn profile AND company page
+
+Changed LinkedIn posting strategy:
+1. Always post to personal profile (guaranteed to work)
+2. Optionally try to post to company page (if organization_id set)
+3. If company posting fails, continue anyway (personal post succeeds)
+
+This gives maximum reach:
+- Personal profile (your followers)
+- Company page (if permissions allow)
+
+Benefits:
+- Leverages personal follower base
+- Attempts company page posting
+- Doesn't fail if company posting is denied
+- Best of both worlds!

@@ -1,0 +1,36 @@
+feat: Add 8 industry-specific CV templates
+
+Created comprehensive industry-specific templates optimized for different professions:
+
+Templates Added:
+1. Tech & Software - Modern, skills-focused for developers
+2. Healthcare & Medical - Professional, credential-heavy
+3. Finance & Banking - Conservative, numbers-focused
+4. Education & Academic - Academic, publication-focused
+5. Creative & Design - Visual, portfolio-focused
+6. Executive & Leadership - Leadership, achievement-focused
+7. Sales & Marketing - Results-driven, metrics-heavy
+8. Legal & Law - Formal, experience-focused
+
+Features:
+- Industry-optimized layouts and colors
+- ATS-optimized keywords for each industry
+- Profession-specific sections and emphasis
+- Tailored formatting and design language
+- Best-for recommendations for each template
+
+Technical Implementation:
+- src/lib/industry-templates.ts - Template configs and HTML generation
+- Industry-specific color schemes
+- Optimized section ordering
+- Professional typography and spacing
+- Print-optimized CSS
+
+Each template includes:
+- Custom color palette
+- Industry-specific features list
+- ATS keywords for better job matching
+- Recommended job titles
+- Optimized content structure
+
+Ready for integration into export system.

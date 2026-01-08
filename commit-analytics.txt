@@ -1,0 +1,35 @@
+feat: Add comprehensive analytics tracking system
+
+Implemented complete user journey and funnel analysis:
+
+Database Schema (setup-analytics-tracking.sql):
+- analytics_events table for all user events
+- user_sessions for session tracking
+- funnel_stages for conversion funnel
+- user_cohorts for cohort analysis
+- feature_usage for feature adoption
+- Views: conversion_funnel, cohort_retention, feature_adoption_rates, daily_active_users
+- Helper functions: track_funnel_stage, update_feature_usage, initialize_user_cohort
+
+Analytics Utility Enhancements:
+- Added trackFunnelStage() for conversion tracking
+- Added trackFeatureUsage() for feature adoption
+- Added getConversionFunnel() for admin dashboard
+- Added getCohortRetention() for retention analysis
+- Added getFeatureAdoptionRates() for usage stats
+- Added getDailyActiveUsers() for DAU metrics
+
+Integration:
+- Dashboard page view tracking
+- Upload API: first_cv_upload funnel stage
+- Rewrite API: first_generation funnel stage
+- All tracking is async and non-blocking
+
+Documentation:
+- ANALYTICS-IMPLEMENTATION-STATUS.md with complete status and next steps
+
+Next Steps:
+1. Run migrations/setup-analytics-tracking.sql in Supabase
+2. Add export tracking (first_export funnel stage)
+3. Add pricing page tracking (upgrade_viewed)
+4. Build analytics dashboard with visualizations

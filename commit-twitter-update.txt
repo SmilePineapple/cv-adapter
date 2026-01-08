@@ -1,0 +1,8 @@
+fix: Update Twitter account and change posting time to 2 PM
+
+Changes:
+- Updated cron schedule from 12:00 PM to 2:00 PM (14:00)
+- Created SQL migration to update Twitter username to @JPicklejak5299
+- Bot will now post daily at 2 PM instead of noon
+
+User needs to run update-twitter-account.sql in Supabase to update the username.

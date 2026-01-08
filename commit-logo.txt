@@ -1,0 +1,15 @@
+feat: Add CV Adapter logo for LinkedIn and social media
+
+Created simple, professional logo:
+- SVG version in public/logo.svg
+- HTML preview tool (logo-preview.html) to download as PNG
+- Instructions in CREATE-LOGO-PNG.md
+
+Logo design:
+- Indigo background (#4F46E5)
+- White document icon with lines (CV representation)
+- Gold star accent (AI enhancement)
+- 512x512 size (perfect for social media)
+- Clean, minimal, professional style
+
+Use for LinkedIn Developer App, Twitter, Facebook, and other platforms.

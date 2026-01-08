@@ -1,0 +1,10 @@
+feat: Add support for posting to LinkedIn organization pages
+
+Changed LinkedIn posting to support both personal and organization posts.
+If organization_id is set in config, posts to company page.
+Otherwise, posts to personal profile.
+
+Added organization_id column to social_media_config table.
+Set to 109509220 for My CV Buddy company page.
+
+This allows posting to the company page instead of personal feed.

@@ -1,0 +1,41 @@
+fix: Add SQL migration to fix photo upload and skill save errors
+
+Created comprehensive fix for storage and RLS issues:
+
+1. Storage Bucket Creation ✅
+   - Creates cv-assets bucket
+   - 5MB file size limit
+   - Allowed types: JPEG, JPG, PNG, WebP
+   - Public read access
+
+2. Storage Policies ✅
+   - Users can upload to cv-photos/ folder
+   - Public read access
+   - Users can update/delete own photos
+   - Proper authentication checks
+
+3. cv_sections RLS Policies ✅
+   - Fixed 406 errors
+   - Users can SELECT own sections
+   - Users can INSERT own sections
+   - Users can UPDATE own sections
+   - Users can DELETE own sections
+   - All policies check cvs.user_id = auth.uid()
+
+Issues Fixed:
+- ❌ "Bucket not found" error
+- ❌ 406 status on cv_sections
+- ❌ Failed to upload photo
+- ❌ Failed to save skill levels
+
+Files Created:
+- migrations/fix-storage-and-rls.sql (complete migration)
+- FIX-PHOTO-SKILL-ERRORS.md (detailed guide)
+
+Next Steps:
+1. Run migration in Supabase SQL Editor
+2. Test photo upload
+3. Test skill save
+4. Both should work!
+
+Status: Migration ready to run!

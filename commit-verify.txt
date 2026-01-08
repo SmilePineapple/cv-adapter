@@ -1,0 +1,6 @@
+feat: Add Twitter credentials verification endpoint and logging
+
+Added /api/social-bot/verify-twitter endpoint to check if credentials are valid.
+Added detailed logging to debug OAuth authentication issues.
+
+This will help identify if the credentials in Vercel match the ones from Twitter.

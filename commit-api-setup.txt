@@ -1,0 +1,3 @@
+docs: Add social media API setup guide and configuration scripts
+
+Added comprehensive guide for setting up social media APIs and database configuration scripts for Option B (full automation).

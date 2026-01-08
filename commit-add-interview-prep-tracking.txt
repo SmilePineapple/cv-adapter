@@ -1,0 +1,41 @@
+feat: Add interview prep tracking to admin dashboard
+
+Added interview prep tracking to admin analytics:
+
+1. Backend API (src/app/api/admin/analytics/route.ts)
+   - Fetch interview_preps data from database
+   - Count total interview preps across all users
+   - Track interview prep count per user
+   - Include in analytics overview
+   
+   New fields:
+   - totalInterviewPreps: Total count across platform
+   - interview_prep_count: Per-user count in user details
+
+2. Frontend Admin Page (src/app/admin/page.tsx)
+   - Added "Interview" column to users table
+   - Shows count of interview preps per user
+   - Updated TypeScript interface to include interview_prep_count
+   - Positioned between "Letters" and "Joined" columns
+
+Table Columns (in order):
+1. Email
+2. Plan
+3. Total Gens
+4. Lifetime (usage)
+5. CVs
+6. Letters
+7. Interview ← NEW!
+8. Joined
+9. Last Active
+
+Benefits:
+- Admins can now see which users are using interview prep feature
+- Track feature adoption and usage patterns
+- Identify power users of interview prep
+- Better understand user engagement with all features
+
+Database:
+- Uses existing interview_preps table
+- Counts records per user_id
+- No schema changes needed

@@ -1,0 +1,3 @@
+chore: Trigger Vercel deployment with latest commits
+
+Force Vercel to sync with GitHub and deploy commits 4e6b666 through 741fe28

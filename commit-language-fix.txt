@@ -1,0 +1,22 @@
+fix: Improve language detection accuracy to prevent false positives
+
+Implemented Option 1 from IMPROVE-LANGUAGE-DETECTION.md:
+
+1. Increased minimum text length from 50 to 200 characters
+   - Requires more text for accurate detection
+   - Defaults to English for short text
+
+2. Adjusted confidence thresholds
+   - High confidence: 1000+ characters (was 200+)
+   - Medium confidence: 500-1000 characters (was 100-200)
+   - Low confidence: 200-500 characters (was <100)
+
+3. Default to English for low-confidence non-English detections
+   - Prevents false positives (e.g., English CVs detected as Czech)
+   - Only trusts non-English detection if confidence is medium or high
+
+4. Added debug logging
+   - Shows detected language, confidence, and text length
+   - Helps troubleshoot detection issues
+
+This should fix the issue where English CVs were incorrectly detected as Czech.

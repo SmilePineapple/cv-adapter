@@ -1,0 +1,26 @@
+feat: Add user-friendly error handling system
+
+Created comprehensive error handling infrastructure:
+
+1. New Error Library (src/lib/errors.ts)
+   - ERROR_MESSAGES dictionary with user-friendly messages
+   - Covers OpenAI errors (quota, rate limit, invalid key)
+   - Covers Supabase errors (auth, permissions)
+   - Covers usage errors (limits, file size, file type)
+   - formatErrorResponse() for consistent API responses
+   - getUserErrorMessage() for client-side display
+   - getErrorStatusCode() for proper HTTP codes
+
+2. Updated API Routes
+   - /api/rewrite now uses formatErrorResponse()
+   - Better error messages for users
+   - Proper HTTP status codes (401, 403, 429, 500, 503)
+   - Maintains error logging for debugging
+
+Benefits:
+- Users see helpful messages instead of technical errors
+- "AI service temporarily unavailable" vs "insufficient_quota"
+- "Too many requests" vs "rate_limit_exceeded"
+- Better user experience and trust
+
+Part 1 of Quick Wins implementation (Bug Fixes)

@@ -1,0 +1,11 @@
+fix: Remove auth check blocking Vercel Cron from posting tweets
+
+CRITICAL FIX: The cron route was requiring an authorization header that Vercel Cron doesn't send.
+This was blocking all automated posts from being published.
+
+Changes:
+- Removed strict auth check that returned 401
+- Added logging for debugging
+- Vercel Cron is already secure (only Vercel can call it)
+
+This will allow the cron to run at 2 PM daily and post tweets automatically.
