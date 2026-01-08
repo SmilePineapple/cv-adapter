@@ -11,5 +11,6 @@ export async function GET(request: NextRequest) {
   }
 
   // Redirect to dashboard after successful auth
+  // OAuth metadata will be applied client-side in dashboard
   return NextResponse.redirect(new URL('/dashboard', requestUrl.origin))
 }

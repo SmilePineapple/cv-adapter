@@ -3,6 +3,7 @@ import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileT
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
+import { TrackingInitializer } from '@/components/TrackingInitializer'
 import PublicCompetitionSection from '@/components/PublicCompetitionSection'
 
 // Force dynamic rendering to avoid Next.js 15 static generation bug
@@ -80,6 +81,7 @@ export default function LandingPage() {
     <>
       <OAuthHandler />
       <StructuredData />
+      <TrackingInitializer />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">

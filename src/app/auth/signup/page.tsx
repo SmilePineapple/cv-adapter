@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
+import { collectUserMetadata, storeTrackingData } from '@/lib/user-tracking'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -16,17 +17,26 @@ export default function SignupPage() {
   const router = useRouter()
   const supabase = createSupabaseClient()
 
+  // Store tracking data on page load (referrer, UTM params)
+  useEffect(() => {
+    storeTrackingData()
+  }, [])
+
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
+      // Collect user metadata for analytics
+      const metadata = await collectUserMetadata()
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             full_name: fullName,
+            ...metadata, // Include device, browser, referrer, country, UTM params
           },
         },
       })
@@ -66,6 +76,11 @@ export default function SignupPage() {
 
   const handleOAuthSignup = async (provider: 'google') => {
     try {
+      // Store metadata in localStorage for OAuth callback to retrieve
+      // (OAuth redirects lose state, so we persist it)
+      const metadata = await collectUserMetadata()
+      localStorage.setItem('cv_adapter_signup_metadata', JSON.stringify(metadata))
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
