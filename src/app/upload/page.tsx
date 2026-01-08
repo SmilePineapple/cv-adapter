@@ -24,6 +24,7 @@ export default function UploadPage() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [parseResult, setParseResult] = useState<any>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [showVerification, setShowVerification] = useState(false)
   const router = useRouter()
   const supabase = createSupabaseClient()
 
@@ -70,6 +71,7 @@ export default function UploadPage() {
 
       setUploadProgress(100)
       setParseResult(result)
+      setShowVerification(true)
       toast.success('CV uploaded and parsed successfully!')
       
     } catch (error: any) {
@@ -99,9 +101,38 @@ export default function UploadPage() {
     }
   }
 
+  const handleVerificationConfirm = () => {
+    setShowVerification(false)
+    handleContinue()
+  }
+
+  const handleVerificationEdit = async (editedSections: any[]) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        throw new Error('Please log in')
+      }
+
+      // Update CV sections in database
+      const { error } = await supabase
+        .from('cvs')
+        .update({ sections: editedSections })
+        .eq('id', parseResult.cv_id)
+
+      if (error) throw error
+
+      toast.success('CV sections updated successfully!')
+      setParseResult({ ...parseResult, sections: editedSections })
+    } catch (error: any) {
+      console.error('Update error:', error)
+      toast.error(error.message || 'Failed to update CV')
+    }
+  }
+
   const handleReset = () => {
     setUploadedFile(null)
     setParseResult(null)
+    setShowVerification(false)
   }
 
   return (
@@ -131,7 +162,15 @@ export default function UploadPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Progress Stepper */}
         <UploadProgressStepper currentStep={1} />
-        {!parseResult ? (
+        
+        {showVerification && parseResult ? (
+          <CVVerification
+            sections={parseResult.sections || []}
+            fileName={parseResult.file_meta?.name || uploadedFile?.name || 'CV'}
+            onConfirm={handleVerificationConfirm}
+            onEdit={handleVerificationEdit}
+          />
+        ) : !parseResult ? (
           <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">

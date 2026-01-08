@@ -245,7 +245,7 @@ async function parseCVWithAI(text: string, languageCode: string): Promise<Parsed
         content: `Extract ALL sections from this CV. Language: ${languageCode}
 
 CV Text:
-${text.substring(0, 5000)} ${text.length > 5000 ? '...' : ''}
+${text.substring(0, 10000)} ${text.length > 10000 ? '...' : ''}
 
 IMPORTANT: Extract EVERY section you find, including:
 - Name, Contact, Profile/Summary
@@ -279,7 +279,7 @@ Return JSON:
 CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include ALL details.`
       }],
       temperature: 0.1, // Low temperature for consistency
-      max_tokens: 4000 // Increased to handle larger CVs (10K chars input)
+      max_tokens: 5000 // Increased to handle larger CVs (10K chars input)
     })
 
     const response = completion.choices[0]?.message?.content

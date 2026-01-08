@@ -26,9 +26,11 @@ import { LoadingProgress } from '@/components/LoadingProgress'
 import UpgradeModal from '@/components/UpgradeModal'
 import UpgradePromptModal from '@/components/UpgradePromptModal'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
+import SmartUpgradeModal from '@/components/SmartUpgradeModal'
 import JobScraper from '@/components/JobScraper'
 import { analyzeJobPaste } from '@/lib/smart-paste'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
+import { shouldShowUpgradePrompt, trackPromptShown, incrementGenerationCount } from '@/lib/upgrade-tracking'
 
 export default function GeneratePage() {
   const params = useParams()
@@ -59,6 +61,8 @@ export default function GeneratePage() {
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [upgradeTrigger, setUpgradeTrigger] = useState<'limit_reached' | 'second_generation' | 'manual'>('manual')
+  const [showSmartUpgrade, setShowSmartUpgrade] = useState(false)
+  const [smartUpgradeTrigger, setSmartUpgradeTrigger] = useState<'before_generation' | 'after_preview' | 'before_download' | 'after_views' | 'return_visit'>('before_generation')
 
   useEffect(() => {
     fetchCVData()
@@ -183,6 +187,14 @@ export default function GeneratePage() {
       return
     }
 
+    // Check if we should show upgrade prompt BEFORE first generation
+    if (usageData && !usageData.is_pro && shouldShowUpgradePrompt('before_generation')) {
+      setSmartUpgradeTrigger('before_generation')
+      setShowSmartUpgrade(true)
+      trackPromptShown('before_generation')
+      return
+    }
+
     // Check usage limit BEFORE making API call
     if (usageData && usageData.generation_count >= usageData.max_generations) {
       if (usageData.is_pro) {
@@ -194,6 +206,9 @@ export default function GeneratePage() {
       }
       return
     }
+
+    // Track generation
+    incrementGenerationCount()
 
     setIsGenerating(true)
     setGenerateProgress(0)
@@ -738,6 +753,13 @@ export default function GeneratePage() {
         trigger="limit_reached"
         currentUsage={usageData?.generation_count || 1}
         maxGenerations={usageData?.max_generations || 1}
+      />
+
+      {/* Smart Upgrade Modal (strategic timing) */}
+      <SmartUpgradeModal
+        isOpen={showSmartUpgrade}
+        onClose={() => setShowSmartUpgrade(false)}
+        trigger={smartUpgradeTrigger}
       />
 
       {/* Upgrade Prompt Modal (after 2nd generation) */}
