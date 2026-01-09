@@ -47,7 +47,6 @@ import {
   Target
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
-import RotatingTipsBar from '@/components/RotatingTipsBar'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 
 interface CV {
@@ -675,49 +674,67 @@ export default function DashboardPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <FileText className="w-8 h-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total CVs</p>
-                <p className="text-2xl font-bold text-gray-900">{cvs.length}</p>
-              </div>
+        {/* Welcome Hero Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 mb-8 text-white shadow-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.email?.split('@')[0] || 'there'}! 👋</h1>
+              <p className="text-blue-100 text-lg">
+                {generations.length > 0 
+                  ? `You've created ${generations.length} amazing CV${generations.length !== 1 ? 's' : ''}. Ready for your next one?`
+                  : "Let's create your first professional CV together!"}
+              </p>
             </div>
+            {isPro && (
+              <div className="hidden lg:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                <Crown className="w-5 h-5 text-yellow-300" />
+                <span className="font-semibold">Pro Member</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Stats Cards - Improved Design */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <FileText className="w-6 h-6 text-blue-600" />
+              </div>
+              <span className="text-3xl font-bold text-gray-900">{cvs.length}</span>
+            </div>
+            <p className="text-sm font-medium text-gray-600">Total CVs</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Sparkles className="w-8 h-8 text-purple-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Generations</p>
-                <p className="text-2xl font-bold text-gray-900">{generations.length}</p>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-purple-600" />
               </div>
+              <span className="text-3xl font-bold text-gray-900">{generations.length}</span>
             </div>
+            <p className="text-sm font-medium text-gray-600">Generations</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <Mail className="w-8 h-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Cover Letters</p>
-                <p className="text-2xl font-bold text-gray-900">{coverLetters.length}</p>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                <Mail className="w-6 h-6 text-green-600" />
               </div>
+              <span className="text-3xl font-bold text-gray-900">{coverLetters.length}</span>
             </div>
+            <p className="text-sm font-medium text-gray-600">Cover Letters</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <BarChart3 className="w-8 h-8 text-orange-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">This Month</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {currentUsage}/{maxGenerations}
-                </p>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-3">
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <BarChart3 className="w-6 h-6 text-orange-600" />
               </div>
+              <span className="text-3xl font-bold text-gray-900">{currentUsage}/{maxGenerations}</span>
             </div>
-            <div className="mt-4">
+            <p className="text-sm font-medium text-gray-600">This Month</p>
+            <div className="mt-3">
               <div className="bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-orange-600 h-2 rounded-full transition-all duration-300"
@@ -725,62 +742,206 @@ export default function DashboardPage() {
                 ></div>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                {maxGenerations - currentUsage} generations remaining
+                {maxGenerations - currentUsage} remaining
               </p>
             </div>
           </div>
         </div>
 
-        {/* Rotating Tips Bar - Feature Discovery */}
-        <RotatingTipsBar />
-
-        {/* Main Action Buttons - Professional Styling */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {cvs.length > 0 && (
+        {/* Primary Actions - Enhanced CTAs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {cvs.length === 0 ? (
+            <Link
+              href="/upload"
+              className="flex items-center justify-center px-8 py-6 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
+            >
+              <Upload className="w-6 h-6 mr-2" />
+              Upload Your CV
+            </Link>
+          ) : (
             <button
               onClick={(e) => handleGenerateClick(e, cvs[0].id)}
-              className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
+              className="flex items-center justify-center px-8 py-6 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
             >
-              <Zap className="w-5 h-5" />
+              <Zap className="w-6 h-6 mr-2" />
               Generate Tailored CV
             </button>
           )}
 
-          {!isPro && (
-            <Link
-              href="/subscription"
-              className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg gap-2"
-            >
-              <Star className="w-5 h-5" />
-              Upgrade to Pro
-            </Link>
-          )}
-
           <Link
             href="/cover-letter"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2"
+            className="flex items-center justify-center px-8 py-6 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg"
           >
-            <FileText className="w-5 h-5" />
+            <FileText className="w-6 h-6 mr-2" />
             Create Cover Letter
           </Link>
+        </div>
 
+        {/* Quick Access Grid - Organized by Priority */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
-            href="/interview-prep"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg gap-2 relative"
+            href="/upload"
+            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group"
           >
-            <Sparkles className="w-5 h-5" />
-            Interview Prep
-            <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+              <Upload className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Upload CV</h3>
+            <p className="text-sm text-gray-500">Add new document</p>
           </Link>
 
           <Link
-            href="/interview-simulator"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all shadow-lg gap-2 relative"
+            href="/skills-assessment"
+            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group"
           >
-            <MessageSquare className="w-5 h-5" />
-            Interview Simulator
-            <span className="absolute -top-2 -right-2 bg-yellow-400 text-purple-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+              <Target className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Skills Test</h3>
+            <p className="text-sm text-gray-500">Assess abilities</p>
           </Link>
+
+          <Link
+            href={isPro ? "/interview-prep" : "/subscription"}
+            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group relative"
+          >
+            {!isPro && (
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                PRO
+              </div>
+            )}
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+              <Sparkles className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Interview Prep</h3>
+            <p className="text-sm text-gray-500">Practice questions</p>
+          </Link>
+
+          <Link
+            href={isPro ? "/career-coach" : "/subscription"}
+            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group relative"
+          >
+            {!isPro && (
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                PRO
+              </div>
+            )}
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+              <TrendingUp className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <h3 className="font-semibold text-gray-900 mb-1">Career Coach</h3>
+            <p className="text-sm text-gray-500">Get guidance</p>
+          </Link>
+        </div>
+
+        {/* Pro Upgrade Section - Compelling & Clear */}
+        {!isPro && (
+          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-2xl p-8 mb-8 text-white shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                  <Crown className="w-6 h-6 text-yellow-300" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">Unlock Your Full Potential</h2>
+                  <p className="text-blue-100">Join 1,000+ professionals using CV Adapter Pro</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 my-6">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Unlimited CV Generations</p>
+                      <p className="text-sm text-blue-100">Create as many CVs as you need</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">AI Interview Prep</p>
+                      <p className="text-sm text-blue-100">Company research & practice questions</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Personal Career Coach</p>
+                      <p className="text-sm text-blue-100">AI-powered career guidance</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Advanced Templates</p>
+                      <p className="text-sm text-blue-100">Premium designs & customization</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Priority Support</p>
+                      <p className="text-sm text-blue-100">Get help when you need it</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Skills Assessments</p>
+                      <p className="text-sm text-blue-100">Test & improve your abilities</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <Link
+                  href="/subscription"
+                  className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto"
+                >
+                  <Crown className="w-5 h-5" />
+                  Upgrade to Pro - £2.99/month
+                </Link>
+                <Link
+                  href="/subscription"
+                  className="text-white hover:text-blue-100 font-medium underline"
+                >
+                  See all features →
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Usage Tracker - Subtle Display for Pro Users */}
+        {usage && isPro && (
+          <div className="mb-8">
+            <UsageTracker
+              currentUsage={currentUsage}
+              maxGenerations={maxGenerations}
+              isPro={isPro}
+              onUpgradeClick={() => setShowUpgradeModal(true)}
+            />
+          </div>
+        )}
 
           <Link
             href="/career-coach"
