@@ -10,6 +10,9 @@ import { formatErrorResponse } from '@/lib/errors'
 import { rateLimiters } from '@/lib/rate-limit-simple'
 import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
 
+// Increase timeout for AI generation (takes ~40 seconds)
+export const maxDuration = 60
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 })
