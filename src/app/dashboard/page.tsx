@@ -44,7 +44,8 @@ import {
   Check,
   MessageSquare,
   Flame,
-  Target
+  Target,
+  RefreshCw
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
@@ -143,6 +144,7 @@ export default function DashboardPage() {
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [isAdmin, setIsAdmin] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [isResettingGenerations, setIsResettingGenerations] = useState(false)
 
   // Filter functions
   const filteredCvs = cvs.filter(cv => 
@@ -522,6 +524,67 @@ export default function DashboardPage() {
     }
   }
 
+  const handleDeleteInterviewPrep = async (prepId: string) => {
+    if (!confirm('Are you sure you want to delete this interview prep? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('interview_preps')
+        .delete()
+        .eq('id', prepId)
+
+      if (error) {
+        toast.error('Failed to delete interview prep')
+      } else {
+        toast.success('Interview prep deleted successfully')
+        setInterviewPreps(interviewPreps.filter(prep => prep.id !== prepId))
+      }
+    } catch (error) {
+      toast.error('Failed to delete interview prep')
+    }
+  }
+
+  const handleResetGenerations = async () => {
+    if (!confirm('Reset your generation count to 0? This will allow you to test the free tier limits again.')) {
+      return
+    }
+
+    setIsResettingGenerations(true)
+    try {
+      const response = await fetch('/api/admin/reset-generations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: user.id }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to reset generations')
+      }
+
+      toast.success('Generation count reset to 0!')
+      
+      // Refresh usage data
+      const { data: usageData } = await supabase
+        .from('usage_tracking')
+        .select('generation_count, lifetime_generation_count, plan_type, max_lifetime_generations, current_month')
+        .eq('user_id', user.id)
+        .single()
+
+      if (usageData) {
+        setUsage(usageData)
+      }
+    } catch (error) {
+      console.error('Reset error:', error)
+      toast.error('Failed to reset generations')
+    } finally {
+      setIsResettingGenerations(false)
+    }
+  }
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
@@ -685,12 +748,25 @@ export default function DashboardPage() {
                   : "Let's create your first professional CV together!"}
               </p>
             </div>
-            {isPro && (
-              <div className="hidden lg:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                <Crown className="w-5 h-5 text-yellow-300" />
-                <span className="font-semibold">Pro Member</span>
-              </div>
-            )}
+            <div className="flex items-center gap-3">
+              {isPro && (
+                <div className="hidden lg:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                  <Crown className="w-5 h-5 text-yellow-300" />
+                  <span className="font-semibold">Pro Member</span>
+                </div>
+              )}
+              {user?.email === 'jake.rourke@btinternet.com' && (
+                <button
+                  onClick={handleResetGenerations}
+                  disabled={isResettingGenerations}
+                  className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Reset generation count for testing"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isResettingGenerations ? 'animate-spin' : ''}`} />
+                  <span className="font-semibold text-sm">Reset Gens</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
