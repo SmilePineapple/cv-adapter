@@ -595,7 +595,7 @@ export default function LandingPage() {
                 href="/auth/signup" 
                 className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors block"
               >
-                Start Free Trial
+                Get Started
               </Link>
             </div>
 
@@ -639,7 +639,7 @@ export default function LandingPage() {
                 href="/auth/signup" 
                 className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors block"
               >
-                Start Free Trial
+                Get Started
               </Link>
             </div>
           </div>
@@ -670,7 +670,7 @@ export default function LandingPage() {
             href="/auth/signup" 
             className="inline-flex items-center bg-white text-blue-600 px-10 py-5 rounded-xl text-lg font-bold hover:bg-gray-100 transition-all shadow-xl"
           >
-            Start Free Trial Now
+            Get Started Now
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
           <p className="mt-4 text-sm text-blue-100">

@@ -274,7 +274,7 @@ export default function CVWritingTipsPage() {
               href="/auth/signup"
               className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
             >
-              Start Free Trial
+              Get Started
             </Link>
             <Link 
               href="/templates"

@@ -211,7 +211,7 @@ export default function AIGeneratorGuidePage() {
                 href="/auth/signup"
                 className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition inline-block"
               >
-                Start Free Trial
+                Get Started
               </Link>
               <Link 
                 href="/upload"

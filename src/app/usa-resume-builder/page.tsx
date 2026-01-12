@@ -264,7 +264,7 @@ export default function USAResumeBuilder() {
               href="/auth/signup"
               className="block w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:shadow-xl transition-all"
             >
-              Start Free Trial (1 Generation)
+              Get Started (1 Free Generation)
             </Link>
             <p className="text-gray-500 text-sm mt-4">
               Try 1 free generation before upgrading

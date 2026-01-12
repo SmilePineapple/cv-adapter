@@ -66,18 +66,6 @@ export default function EnhancedUpgradeModal({ isOpen, onClose, trigger = 'manua
             <X className="w-5 h-5 text-gray-500" />
           </button>
 
-          {/* Limited Time Offer Banner */}
-          {showOffer && (
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <Clock className="w-5 h-5" />
-                <span className="font-semibold">
-                  Limited Time Offer: Get 20 bonus generations if you upgrade in the next {formatTime(timeLeft)}!
-                </span>
-              </div>
-            </div>
-          )}
-
           {/* Header */}
           <div className="text-center pt-8 px-6">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full mb-4">

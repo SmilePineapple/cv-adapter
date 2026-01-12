@@ -89,7 +89,7 @@ export function StrategicUpgradePrompt({ trigger, onClose, onUpgrade }: Strategi
       ],
       cta: "Get First Month for £1",
       secondaryCta: "Maybe Later",
-      highlight: "Limited time offer - Save 67%"
+      highlight: "Save 67%"
     },
     multiple_views: {
       icon: <Sparkles className="w-12 h-12 text-indigo-500" />,
