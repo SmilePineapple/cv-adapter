@@ -553,16 +553,25 @@ export default function DashboardPage() {
 
     setIsResettingGenerations(true)
     try {
+      // Get session token for authorization
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        toast.error('Not authenticated')
+        return
+      }
+
       const response = await fetch('/api/admin/reset-generations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ userId: user.id }),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to reset generations')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to reset generations')
       }
 
       toast.success('Generation count reset to 0!')
