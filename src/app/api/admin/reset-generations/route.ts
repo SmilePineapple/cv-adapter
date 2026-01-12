@@ -7,6 +7,7 @@ const supabase = createClient(
 )
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
+const TEST_ACCOUNT = 'jake.rourke@btinternet.com'
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,8 +19,8 @@ export async function POST(request: NextRequest) {
     const token = authHeader.replace('Bearer ', '')
     const { data: { user }, error: authError } = await supabase.auth.getUser(token)
 
-    if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
-      return NextResponse.json({ error: 'Unauthorized - Admin access only' }, { status: 403 })
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
@@ -29,7 +30,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
     }
 
-    console.log('[RESET] Admin', user.email, 'resetting generations for userId:', userId)
+    // Allow admins to reset any user, or test account to reset themselves
+    const isAdmin = ADMIN_EMAILS.includes(user.email || '')
+    const isTestAccountResettingSelf = user.email === TEST_ACCOUNT && userId === user.id
+
+    if (!isAdmin && !isTestAccountResettingSelf) {
+      return NextResponse.json({ error: 'Unauthorized - Admin access only' }, { status: 403 })
+    }
+
+    console.log('[RESET]', user.email, 'resetting generations for userId:', userId)
 
     // Reset generation counts in usage_tracking
     const { error: updateError } = await supabase
