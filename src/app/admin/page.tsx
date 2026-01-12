@@ -91,6 +91,7 @@ export default function AdminDashboard() {
   const [filterActivity, setFilterActivity] = useState<'all' | 'active' | 'inactive'>('all')
   const [filterValue, setFilterValue] = useState<'all' | 'high' | 'low'>('all')
   const [showFilters, setShowFilters] = useState(false)
+  const [resettingUserId, setResettingUserId] = useState<string | null>(null)
   const supabase = createSupabaseClient()
   const router = useRouter()
 
@@ -139,6 +140,45 @@ export default function AdminDashboard() {
       console.error(error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleResetGenerations = async (userId: string, userEmail: string) => {
+    if (!confirm(`Reset generation counts for ${userEmail}? This will set their generation_count and lifetime_generation_count to 0.`)) {
+      return
+    }
+
+    setResettingUserId(userId)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        toast.error('Not authenticated')
+        return
+      }
+
+      const response = await fetch('/api/admin/reset-generations', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to reset generations')
+      }
+
+      toast.success(`Successfully reset generations for ${userEmail}`)
+      await loadAnalytics()
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to reset generations')
+      console.error(error)
+    } finally {
+      setResettingUserId(null)
     }
   }
 
@@ -570,6 +610,7 @@ export default function AdminDashboard() {
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Interview</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Joined</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Last Active</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -605,6 +646,26 @@ export default function AdminDashboard() {
                     <td className="py-3 px-4 text-sm text-gray-600">{formatDate(user.created_at)}</td>
                     <td className="py-3 px-4 text-sm text-gray-600">
                       {user.last_activity ? formatDateTime(user.last_activity) : 'Never'}
+                    </td>
+                    <td className="py-3 px-4">
+                      <button
+                        onClick={() => handleResetGenerations(user.id, user.email)}
+                        disabled={resettingUserId === user.id}
+                        className="px-3 py-1.5 bg-orange-600 text-white text-xs rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                        title="Reset generation counts to 0"
+                      >
+                        {resettingUserId === user.id ? (
+                          <>
+                            <div className="w-3 h-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                            Resetting...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="w-3 h-3" />
+                            Reset Gens
+                          </>
+                        )}
+                      </button>
                     </td>
                   </tr>
                 ))}
