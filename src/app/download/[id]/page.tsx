@@ -314,7 +314,7 @@ export default function DownloadPage() {
 
       const { data: generation, error } = await supabase
         .from('generations')
-        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(parsed_sections, photo_url)')
+        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(photo_url)')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
