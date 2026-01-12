@@ -239,6 +239,73 @@ export default function AssessmentResultsPage() {
               </div>
             </div>
 
+            {/* Questions & Answers Review */}
+            {questions.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                  <h2 className="text-2xl font-bold text-gray-900">Question Review</h2>
+                </div>
+                <div className="space-y-6">
+                  {questions.map((question) => {
+                    const userAnswer = answers.find(a => a.question_id === question.id)
+                    
+                    return (
+                      <div key={question.id} className="border-b border-gray-200 pb-6 last:border-0">
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                            userAnswer?.is_correct
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}>
+                            {question.question_number}
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-gray-900 font-medium mb-3">{question.question_text}</p>
+                            <div className="space-y-2">
+                              {question.options.map((option: string, optIdx: number) => {
+                                const isUserAnswer = userAnswer?.selected_option === optIdx
+                                const isCorrectAnswer = question.correct_option_index === optIdx
+                                
+                                return (
+                                  <div
+                                    key={optIdx}
+                                    className={`p-3 rounded-lg border-2 ${
+                                      isUserAnswer
+                                        ? userAnswer.is_correct
+                                          ? 'bg-green-50 border-green-500'
+                                          : 'bg-red-50 border-red-500'
+                                        : isCorrectAnswer
+                                        ? 'bg-green-50 border-green-300'
+                                        : 'bg-gray-50 border-gray-200'
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm text-gray-700">{option}</span>
+                                      {isUserAnswer && (
+                                        <span className={`text-xs font-semibold ${
+                                          userAnswer.is_correct ? 'text-green-600' : 'text-red-600'
+                                        }`}>
+                                          {userAnswer.is_correct ? '✓ Your Answer' : '✗ Your Answer'}
+                                        </span>
+                                      )}
+                                      {!userAnswer?.is_correct && isCorrectAnswer && (
+                                        <span className="text-xs text-green-600 font-semibold">✓ Correct Answer</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Strengths & Weaknesses */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Strengths */}
