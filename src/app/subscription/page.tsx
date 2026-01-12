@@ -61,6 +61,8 @@ export default function SubscriptionPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [isLoadingInvoices, setIsLoadingInvoices] = useState(false)
   const [showCancelDialog, setShowCancelDialog] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -186,7 +188,7 @@ export default function SubscriptionPage() {
       const data = await response.json()
       
       if (response.ok && data.success) {
-        toast.success('Subscription cancelled successfully. You\'ll have access until the end of your billing period.')
+        toast.success(data.message || 'Subscription cancelled successfully.')
         setShowCancelDialog(false)
         // Refresh purchase/usage data
         await fetchPurchaseAndUsage(user.id)
@@ -198,6 +200,40 @@ export default function SubscriptionPage() {
       toast.error(error.message || 'Failed to cancel subscription')
     } finally {
       setIsCancelling(false)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    if (!user) return
+    
+    setIsDeleting(true)
+    try {
+      const response = await fetch('/api/delete-account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: user.id }),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok && data.success) {
+        toast.success('Account deleted successfully. Redirecting...')
+        setShowDeleteDialog(false)
+        // Sign out and redirect to home
+        await supabase.auth.signOut()
+        setTimeout(() => {
+          router.push('/')
+        }, 1500)
+      } else {
+        throw new Error(data.message || data.error || 'Failed to delete account')
+      }
+    } catch (error: any) {
+      console.error('Delete account error:', error)
+      toast.error(error.message || 'Failed to delete account')
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -685,6 +721,98 @@ export default function SubscriptionPage() {
             </div>
           </div>
         </div>
+
+        {/* Danger Zone - Account Deletion */}
+        <div className="mt-12 bg-white rounded-xl shadow p-8 border-2 border-red-200">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Danger Zone</h2>
+          <p className="text-gray-600 mb-6">
+            Once you delete your account, there is no going back. This will permanently delete your account, all your CVs, generations, cover letters, and all associated data.
+          </p>
+          <button
+            onClick={() => setShowDeleteDialog(true)}
+            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
+          >
+            Delete Account
+          </button>
+        </div>
+
+        {/* Cancel Subscription Dialog */}
+        {showCancelDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Cancel Subscription?</h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to cancel your subscription? You'll be downgraded to the free tier.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowCancelDialog(false)}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Keep Subscription
+                </button>
+                <button
+                  onClick={handleCancelSubscription}
+                  disabled={isCancelling}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+                >
+                  {isCancelling ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Cancelling...
+                    </>
+                  ) : (
+                    'Yes, Cancel'
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Account Dialog */}
+        {showDeleteDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-red-600 mb-4">Delete Account Permanently?</h3>
+              <p className="text-gray-600 mb-4">
+                This action <strong>cannot be undone</strong>. This will permanently delete:
+              </p>
+              <ul className="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Your account and profile</li>
+                <li>All uploaded CVs</li>
+                <li>All CV generations</li>
+                <li>All cover letters</li>
+                <li>All interview prep data</li>
+                <li>All subscription data</li>
+              </ul>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteDialog(false)}
+                  disabled={isDeleting}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center justify-center font-semibold"
+                >
+                  {isDeleting ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Deleting...
+                    </>
+                  ) : (
+                    'Delete Forever'
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

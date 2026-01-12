@@ -54,11 +54,36 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Handle manually upgraded users (no Stripe subscription)
     if (!usageData.stripe_subscription_id) {
-      return NextResponse.json({ 
-        error: 'No Stripe subscription ID found',
-        message: 'Please contact support to cancel your subscription.'
-      }, { status: 400 })
+      // Downgrade to free tier immediately for manually upgraded users
+      const { error: updateError } = await supabase
+        .from('usage_tracking')
+        .update({
+          subscription_tier: 'free',
+          plan_type: 'free',
+          max_lifetime_generations: 1,
+          subscription_status: 'cancelled',
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId)
+
+      if (updateError) {
+        console.error('Error downgrading user:', updateError)
+        return NextResponse.json({ 
+          error: 'Failed to cancel subscription',
+          message: 'Please contact support at jakedalerourke@gmail.com'
+        }, { status: 500 })
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Subscription cancelled successfully. You have been downgraded to the free tier.',
+        subscription: {
+          status: 'cancelled',
+          tier: 'free'
+        }
+      })
     }
 
     // Cancel the subscription in Stripe (at period end)

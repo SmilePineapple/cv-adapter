@@ -782,18 +782,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Access Grid - Organized by Priority */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Link
-            href="/upload"
-            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group"
-          >
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-              <Upload className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Upload CV</h3>
-            <p className="text-sm text-gray-500">Add new document</p>
-          </Link>
-
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <Link
             href="/skills-assessment"
             className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group"
