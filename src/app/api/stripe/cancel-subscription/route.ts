@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
       }, { status: 503 })
     }
 
-    // Get the user's subscription info from usage_tracking
+    // Get the user's plan info from usage_tracking
     const { data: usageData, error: usageError } = await supabase
       .from('usage_tracking')
-      .select('subscription_tier, stripe_subscription_id, plan_type')
+      .select('plan_type')
       .eq('user_id', userId)
       .single()
 
@@ -53,11 +53,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user is actually on a paid subscription
-    const isPro = usageData.subscription_tier === 'pro_monthly' || 
-                  usageData.subscription_tier === 'pro_annual' ||
-                  usageData.plan_type === 'pro'
+    const isPro = usageData.plan_type === 'pro'
     
-    console.log('[CANCEL] isPro check:', isPro, 'tier:', usageData.subscription_tier, 'plan_type:', usageData.plan_type)
+    console.log('[CANCEL] isPro check:', isPro, 'plan_type:', usageData.plan_type)
     
     if (!isPro) {
       console.log('[CANCEL] Error: User not on Pro plan')
@@ -67,18 +65,26 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Check if user has a Stripe subscription
+    const { data: subscriptionData, error: subError } = await supabase
+      .from('subscriptions')
+      .select('stripe_subscription_id')
+      .eq('user_id', userId)
+      .maybeSingle()
+
+    console.log('[CANCEL] Subscription data:', JSON.stringify(subscriptionData))
+    console.log('[CANCEL] Subscription error:', subError)
+
     // Handle manually upgraded users (no Stripe subscription)
-    if (!usageData.stripe_subscription_id) {
-      console.log('[CANCEL] Manual user detected - no stripe_subscription_id, downgrading to free tier')
+    if (!subscriptionData || !subscriptionData.stripe_subscription_id) {
+      console.log('[CANCEL] Manual user detected - no Stripe subscription, downgrading to free tier')
       
       // Downgrade to free tier immediately for manually upgraded users
       const { error: updateError } = await supabase
         .from('usage_tracking')
         .update({
-          subscription_tier: 'free',
           plan_type: 'free',
           max_lifetime_generations: 1,
-          subscription_status: 'cancelled',
           updated_at: new Date().toISOString()
         })
         .eq('user_id', userId)
@@ -106,17 +112,17 @@ export async function POST(request: NextRequest) {
 
     // Cancel the subscription in Stripe (at period end)
     const canceledSubscription = await stripe.subscriptions.update(
-      usageData.stripe_subscription_id,
+      subscriptionData.stripe_subscription_id,
       {
         cancel_at_period_end: true,
       }
     )
 
-    // Update the subscription status in usage_tracking
+    // Update the subscription status in subscriptions table
     const { error: updateError } = await supabase
-      .from('usage_tracking')
+      .from('subscriptions')
       .update({
-        subscription_status: 'canceling',
+        status: 'canceled',
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
