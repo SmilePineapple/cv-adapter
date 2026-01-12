@@ -61,8 +61,8 @@ export default function TestModalPage() {
           <h2 className="text-xl font-semibold mb-4">What to Check</h2>
           <ul className="space-y-2 text-gray-700">
             <li>✅ Modal displays correctly</li>
-            <li>✅ Pricing shows £9.99/month</li>
-            <li>✅ Annual plan shows £49/year (save 59%)</li>
+            <li>✅ Pricing shows £2.99/month</li>
+            <li>✅ Annual plan shows £29.99/year</li>
             <li>✅ Unlimited generations (∞ symbol)</li>
             <li>✅ Comparison table shows correct features</li>
             <li>✅ Different messaging for each trigger</li>

@@ -136,10 +136,10 @@ export default function EnhancedUpgradeModal({ isOpen, onClose, trigger = 'manua
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Annual Pro</h3>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-bold text-gray-900">£49</span>
+                  <span className="text-4xl font-bold text-gray-900">£29.99</span>
                   <span className="text-gray-600">/year</span>
                 </div>
-                <p className="text-sm text-green-600 font-semibold mt-2">Just £4.08/month</p>
+                <p className="text-sm text-green-600 font-semibold mt-2">Just £2.50/month</p>
               </div>
               <Link
                 href="/subscription?plan=annual"
