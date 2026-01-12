@@ -749,32 +749,36 @@ export default function DashboardPage() {
         </div>
 
         {/* Primary Actions - Enhanced CTAs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {cvs.length === 0 ? (
-            <Link
-              href="/upload"
-              className="flex items-center justify-center px-8 py-6 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
-            >
-              <Upload className="w-6 h-6 mr-2" />
-              Upload Your CV
-            </Link>
-          ) : (
+        <div className="space-y-4 mb-8">
+          {/* Hero Action - Generate CV (Full Width, Standalone) */}
+          {cvs.length > 0 && (
             <button
               onClick={(e) => handleGenerateClick(e, cvs[0].id)}
-              className="flex items-center justify-center px-8 py-6 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
+              className="w-full flex items-center justify-center px-8 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-xl gap-3"
             >
-              <Zap className="w-6 h-6 mr-2" />
-              Generate Tailored CV
+              <Zap className="w-6 h-6" />
+              Generate your New CV
             </button>
           )}
 
-          <Link
-            href="/cover-letter"
-            className="flex items-center justify-center px-8 py-6 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg"
-          >
-            <FileText className="w-6 h-6 mr-2" />
-            Create Cover Letter
-          </Link>
+          {/* Secondary Actions - Upload CV & Cover Letter (Same Row) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link
+              href="/upload"
+              className="flex items-center justify-center px-6 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-all shadow-md gap-2"
+            >
+              <Upload className="w-5 h-5" />
+              Upload CV
+            </Link>
+
+            <Link
+              href="/cover-letter"
+              className="flex items-center justify-center px-6 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-all shadow-md gap-2"
+            >
+              <FileText className="w-5 h-5" />
+              Cover Letter
+            </Link>
+          </div>
         </div>
 
         {/* Quick Access Grid - Organized by Priority */}
@@ -933,45 +937,6 @@ export default function DashboardPage() {
 
         {/* Usage Tracker - Subtle Display for Pro Users */}
         {usage && isPro && (
-          <div className="mb-8">
-            <UsageTracker
-              currentUsage={currentUsage}
-              maxGenerations={maxGenerations}
-              isPro={isPro}
-              onUpgradeClick={() => setShowUpgradeModal(true)}
-            />
-          </div>
-        )}
-
-          <Link
-            href="/career-coach"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg gap-2 relative"
-          >
-            <TrendingUp className="w-5 h-5" />
-            Career Coach
-            <span className="absolute -top-2 -right-2 bg-yellow-400 text-indigo-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
-          </Link>
-
-          <Link
-            href="/skills-assessment"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg gap-2"
-          >
-            <Target className="w-5 h-5" />
-            Skills Assessment
-          </Link>
-
-          <Link
-            href="/roast-cv"
-            className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all shadow-lg gap-2 relative"
-          >
-            <Flame className="w-5 h-5" />
-            Roast Your CV
-            <span className="absolute -top-2 -right-2 bg-yellow-400 text-orange-900 text-xs font-bold px-2 py-1 rounded-full">PRO</span>
-          </Link>
-        </div>
-
-        {/* Usage Tracker - Prominent Display */}
-        {usage && (
           <div className="mb-8">
             <UsageTracker
               currentUsage={currentUsage}
