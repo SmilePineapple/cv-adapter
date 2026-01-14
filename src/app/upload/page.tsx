@@ -96,8 +96,37 @@ export default function UploadPage() {
     }
   }, [supabase])
 
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[UPLOAD] File input change event triggered')
+    const files = e.target.files
+    if (!files || files.length === 0) {
+      console.log('[UPLOAD] No files in input')
+      return
+    }
+    console.log('[UPLOAD] Files from input:', files)
+    await onDrop(Array.from(files))
+  }, [onDrop])
+
+  const onDropRejected = useCallback((fileRejections: any[]) => {
+    console.log('[UPLOAD] Files rejected:', fileRejections)
+    fileRejections.forEach((rejection) => {
+      const { file, errors } = rejection
+      console.log('[UPLOAD] Rejected file:', file.name, 'Errors:', errors)
+      errors.forEach((error: any) => {
+        if (error.code === 'file-too-large') {
+          toast.error(`File ${file.name} is too large. Maximum size is 10MB.`)
+        } else if (error.code === 'file-invalid-type') {
+          toast.error(`File ${file.name} is not a valid type. Please upload PDF, DOC, or DOCX.`)
+        } else {
+          toast.error(`Error with ${file.name}: ${error.message}`)
+        }
+      })
+    })
+  }, [])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected,
     accept: {
       'application/pdf': ['.pdf'],
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
@@ -105,7 +134,10 @@ export default function UploadPage() {
     },
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024, // 10MB
-    disabled: isUploading || !!parseResult
+    disabled: isUploading || !!parseResult,
+    noClick: false,
+    noKeyboard: false,
+    multiple: false
   })
 
   const handleContinue = () => {
@@ -208,7 +240,10 @@ export default function UploadPage() {
                 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
-              <input {...getInputProps()} />
+              <input 
+                {...getInputProps()} 
+                onChange={handleFileChange}
+              />
               
               {isUploading ? (
                 <div className="space-y-4">
