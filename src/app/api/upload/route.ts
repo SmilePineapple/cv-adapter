@@ -14,6 +14,16 @@ const openai = new OpenAI({
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
+// Configure body size limit for file uploads (10MB)
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
+// Set max body size to 10MB
+export const maxDuration = 60
+
 // Use service role key for server-side operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -69,15 +79,21 @@ export async function POST(request: NextRequest) {
     const userId = user.id
     console.log('Authenticated user ID:', userId)
 
-    const formData = await request.formData()
-    const file = formData.get('file') as File
+    // Get request body with storage path
+    const body = await request.json()
+    const { storagePath, fileName, fileSize, fileType } = body
     
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    if (!storagePath) {
+      return NextResponse.json({ error: 'No storage path provided' }, { status: 400 })
     }
 
+    console.log('Storage path:', storagePath)
+    console.log('File name:', fileName)
+    console.log('File size:', fileSize)
+    console.log('File type:', fileType)
+
     // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
+    if (fileSize > MAX_FILE_SIZE) {
       return NextResponse.json({ 
         error: 'File too large. Maximum size is 10MB.' 
       }, { status: 400 })
@@ -90,24 +106,37 @@ export async function POST(request: NextRequest) {
       'application/msword'
     ]
     
-    if (!allowedTypes.includes(file.type)) {
+    if (!allowedTypes.includes(fileType)) {
       return NextResponse.json({ 
         error: 'Invalid file type. Please upload a PDF or Word document.' 
       }, { status: 400 })
     }
 
+    // Download file from Supabase Storage
+    console.log('Downloading file from storage...')
+    const { data: fileData, error: downloadError } = await supabaseAdmin.storage
+      .from('cv-assets')
+      .download(storagePath)
+
+    if (downloadError || !fileData) {
+      console.error('Storage download error:', downloadError)
+      return NextResponse.json({ 
+        error: 'Failed to download file from storage: ' + downloadError?.message 
+      }, { status: 500 })
+    }
+
     // Parse file content
-    console.log('Starting file parsing, type:', file.type)
-    const buffer = await file.arrayBuffer()
+    console.log('Starting file parsing, type:', fileType)
+    const buffer = await fileData.arrayBuffer()
     let extractedText = ''
     let parseSuccess = true
 
     try {
-      if (file.type === 'application/pdf') {
+      if (fileType === 'application/pdf') {
         console.log('Parsing PDF file')
         const pdfData = await pdfParse(Buffer.from(buffer))
         extractedText = pdfData.text
-      } else if (file.type.includes('word') || file.type.includes('document')) {
+      } else if (fileType.includes('word') || fileType.includes('document')) {
         console.log('Parsing Word document')
         const result = await mammoth.extractRawText({ buffer: Buffer.from(buffer) })
         extractedText = result.value
@@ -137,9 +166,9 @@ export async function POST(request: NextRequest) {
 
     // Create file metadata
     const fileMetadata: FileMetadata = {
-      name: file.name,
-      ext: file.name.split('.').pop() || '',
-      size: file.size,
+      name: fileName,
+      ext: fileName.split('.').pop() || '',
+      size: fileSize,
       upload_date: new Date().toISOString()
     }
 
@@ -167,7 +196,7 @@ export async function POST(request: NextRequest) {
 
     // Track analytics event
     try {
-      await trackCVUpload(languageResult.code, file.name)
+      await trackCVUpload(languageResult.code, fileName)
       // Track funnel stage - first CV upload
       await trackFunnelStage('first_cv_upload')
     } catch (analyticsError) {
