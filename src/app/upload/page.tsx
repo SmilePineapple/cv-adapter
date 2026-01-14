@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import PhotoUpload from '@/components/PhotoUpload'
 import UploadProgressStepper from '@/components/UploadProgressStepper'
 import ExampleCVs from '@/components/ExampleCVs'
+import CVVerification from '@/components/CVVerification'
 import { 
   Upload, 
   FileText, 
@@ -29,9 +30,14 @@ export default function UploadPage() {
   const supabase = createSupabaseClient()
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    console.log('[UPLOAD] onDrop called with files:', acceptedFiles)
     const file = acceptedFiles[0]
-    if (!file) return
+    if (!file) {
+      console.log('[UPLOAD] No file selected')
+      return
+    }
 
+    console.log('[UPLOAD] File selected:', file.name, file.type, file.size)
     setUploadedFile(file)
     setIsUploading(true)
     setUploadProgress(0)
@@ -47,11 +53,15 @@ export default function UploadPage() {
       setUploadProgress(40)
       toast.info('Uploading file...')
 
+      console.log('[UPLOAD] Getting session...')
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
+        console.error('[UPLOAD] No session found')
         throw new Error('Please log in to upload files')
       }
+      console.log('[UPLOAD] Session found, user ID:', session.user.id)
 
+      console.log('[UPLOAD] Sending request to /api/upload...')
       const response = await fetch('/api/upload', {
         method: 'POST',
         headers: {
@@ -63,7 +73,9 @@ export default function UploadPage() {
       setUploadProgress(70)
       toast.info('Parsing CV content...')
 
+      console.log('[UPLOAD] Response status:', response.status)
       const result = await response.json()
+      console.log('[UPLOAD] Response result:', result)
 
       if (!response.ok) {
         throw new Error(result.error || 'Upload failed')
@@ -75,13 +87,14 @@ export default function UploadPage() {
       toast.success('CV uploaded and parsed successfully!')
       
     } catch (error: any) {
-      console.error('Upload error:', error)
+      console.error('[UPLOAD] Upload error:', error)
+      console.error('[UPLOAD] Error stack:', error.stack)
       toast.error(error.message || 'Failed to upload CV')
       setUploadedFile(null)
     } finally {
       setIsUploading(false)
     }
-  }, [])
+  }, [supabase])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
