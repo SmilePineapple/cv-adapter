@@ -136,6 +136,26 @@ export async function POST(request: NextRequest) {
         else if (session.mode === 'payment') {
           console.log('[Webhook] Processing one-time payment for user:', userId)
 
+          // Create purchase record for tracking
+          const { error: purchaseError } = await supabase
+            .from('purchases')
+            .insert({
+              user_id: userId,
+              stripe_customer_id: customerId,
+              payment_intent_id: session.payment_intent as string,
+              amount_paid: session.amount_total || 0,
+              currency: session.currency || 'gbp',
+              status: 'completed',
+              plan: 'pro_lifetime',
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            })
+
+          if (purchaseError) {
+            console.error('[Webhook] Purchase record creation error:', purchaseError)
+            // Don't fail the upgrade if purchase record fails
+          }
+
           // For one-time payments, give lifetime access
           // Use pro_annual for subscription_tier (constraint allows: free, pro_monthly, pro_annual)
           // Set plan_type to 'pro' (this is what the dashboard checks)

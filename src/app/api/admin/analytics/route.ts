@@ -87,6 +87,13 @@ export async function GET(request: NextRequest) {
         .map(s => s.user_id)
     )
     
+    // Get users who made completed purchases (one-time payments)
+    const completedPurchaseUserIds = new Set(
+      purchases
+        .filter(p => p.status === 'completed' && p.amount_paid && p.amount_paid > 0)
+        .map(p => p.user_id)
+    )
+    
     // Count ALL Pro users (including free Pro, manual upgrades, testing)
     const totalProUsersCount = usageTracking.filter(u => 
       u.subscription_tier === 'pro_monthly' || 
@@ -94,11 +101,15 @@ export async function GET(request: NextRequest) {
       u.plan_type === 'pro'
     ).length
     
-    // Count PAYING Pro users only (must have active Stripe subscription)
-    const payingProUsersCount = usageTracking.filter(u => 
-      (u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual') &&
-      activeSubscriptionUserIds.has(u.user_id)
-    ).length
+    // Count PAYING Pro users (active subscription OR completed purchase)
+    const payingProUsersCount = usageTracking.filter(u => {
+      const isPro = u.subscription_tier === 'pro_monthly' || 
+                    u.subscription_tier === 'pro_annual' ||
+                    u.plan_type === 'pro'
+      const hasPaid = activeSubscriptionUserIds.has(u.user_id) || 
+                      completedPurchaseUserIds.has(u.user_id)
+      return isPro && hasPaid
+    }).length
     
     const proUsers = totalProUsersCount  // Total Pro users (for display)
     const payingProUsers = payingProUsersCount  // Paying customers (for revenue)
