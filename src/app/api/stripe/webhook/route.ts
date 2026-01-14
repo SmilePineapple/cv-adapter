@@ -42,98 +42,145 @@ export async function POST(request: NextRequest) {
 
         console.log('[Webhook] Checkout completed:', { customerId, subscriptionId, mode: session.mode })
 
-        // Only process subscription mode
-        if (session.mode !== 'subscription') {
-          console.log('[Webhook] Not a subscription, skipping')
-          break
-        }
-        
         // Extract user_id from metadata
         const userId = session.metadata?.user_id || session.client_reference_id
-        const planType = session.metadata?.plan_type || 'monthly'
 
         if (!userId) {
           console.error('[Webhook] No user_id found in session metadata')
           break
         }
 
-        if (!subscriptionId) {
-          console.error('[Webhook] No subscription ID found in session')
-          break
-        }
+        // Handle subscription mode
+        if (session.mode === 'subscription') {
+          const planType = session.metadata?.plan_type || 'monthly'
 
-        console.log('[Webhook] Processing subscription for user:', userId, 'Plan:', planType)
-
-        // Get subscription details - expand to ensure we have all data
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-          expand: ['latest_invoice', 'customer']
-        })
-        
-        // Access subscription properties safely
-        const subData = subscription as any
-        
-        console.log('[Webhook] Retrieved subscription:', {
-          id: subscription.id,
-          status: subscription.status,
-          current_period_end: subData.current_period_end,
-          current_period_start: subData.current_period_start
-        })
-        
-        // Validate current_period_end exists
-        if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
-          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
-          throw new Error('Invalid subscription: missing or invalid current_period_end')
-        }
-        
-        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
-        
-        // Validate the date is valid
-        if (isNaN(currentPeriodEnd.getTime())) {
-          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
-          throw new Error('Invalid subscription: invalid current_period_end timestamp')
-        }
-
-        console.log('[Webhook] Subscription period end:', currentPeriodEnd.toISOString())
-
-        // Upgrade user to pro with subscription tier
-        const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
-        
-        const { error: upgradeError } = await supabase
-          .from('usage_tracking')
-          .update({
-            subscription_tier: subscriptionTier,
-            subscription_start_date: new Date().toISOString(),
-            subscription_end_date: currentPeriodEnd.toISOString(),
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_id', userId)
-
-        if (upgradeError) {
-          console.error('[Webhook] User upgrade error:', upgradeError)
-          throw upgradeError
-        }
-
-        // Track analytics event
-        try {
-          await trackPaymentCompleted(session.amount_total || 0, subscriptionTier)
-        } catch (analyticsError) {
-          console.error('[Webhook] Analytics tracking failed:', analyticsError)
-        }
-
-        // Send upgrade confirmation email
-        try {
-          const { data: userData } = await supabase.auth.admin.getUserById(userId)
-          if (userData?.user?.email) {
-            const userName = userData.user.user_metadata?.full_name || userData.user.email.split('@')[0] || 'there'
-            await sendUpgradeConfirmationEmail(userData.user.email, userName)
-            console.log('[Webhook] Upgrade confirmation email sent to:', userData.user.email)
+          if (!subscriptionId) {
+            console.error('[Webhook] No subscription ID found in session')
+            break
           }
-        } catch (emailError) {
-          console.error('[Webhook] Failed to send upgrade confirmation email:', emailError)
-          // Don't fail the webhook if email fails
-        }
 
-        console.log('[Webhook] User upgraded to Pro successfully:', subscriptionTier)
+          console.log('[Webhook] Processing subscription for user:', userId, 'Plan:', planType)
+
+          // Get subscription details - expand to ensure we have all data
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+            expand: ['latest_invoice', 'customer']
+          })
+          
+          // Access subscription properties safely
+          const subData = subscription as any
+          
+          console.log('[Webhook] Retrieved subscription:', {
+            id: subscription.id,
+            status: subscription.status,
+            current_period_end: subData.current_period_end,
+            current_period_start: subData.current_period_start
+          })
+          
+          // Validate current_period_end exists
+          if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
+            console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
+            throw new Error('Invalid subscription: missing or invalid current_period_end')
+          }
+          
+          const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+          
+          // Validate the date is valid
+          if (isNaN(currentPeriodEnd.getTime())) {
+            console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
+            throw new Error('Invalid subscription: invalid current_period_end timestamp')
+          }
+
+          console.log('[Webhook] Subscription period end:', currentPeriodEnd.toISOString())
+
+          // Upgrade user to pro with subscription tier
+          const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
+          
+          const { error: upgradeError } = await supabase
+            .from('usage_tracking')
+            .update({
+              subscription_tier: subscriptionTier,
+              subscription_start_date: new Date().toISOString(),
+              subscription_end_date: currentPeriodEnd.toISOString(),
+              updated_at: new Date().toISOString()
+            })
+            .eq('user_id', userId)
+
+          if (upgradeError) {
+            console.error('[Webhook] User upgrade error:', upgradeError)
+            throw upgradeError
+          }
+
+          // Track analytics event
+          try {
+            await trackPaymentCompleted(session.amount_total || 0, subscriptionTier)
+          } catch (analyticsError) {
+            console.error('[Webhook] Analytics tracking failed:', analyticsError)
+          }
+
+          // Send upgrade confirmation email
+          try {
+            const { data: userData } = await supabase.auth.admin.getUserById(userId)
+            if (userData?.user?.email) {
+              const userName = userData.user.user_metadata?.full_name || userData.user.email.split('@')[0] || 'there'
+              await sendUpgradeConfirmationEmail(userData.user.email, userName)
+              console.log('[Webhook] Upgrade confirmation email sent to:', userData.user.email)
+            }
+          } catch (emailError) {
+            console.error('[Webhook] Failed to send upgrade confirmation email:', emailError)
+            // Don't fail the webhook if email fails
+          }
+
+          console.log('[Webhook] User upgraded to Pro successfully:', subscriptionTier)
+        } 
+        // Handle one-time payment mode (lifetime access)
+        else if (session.mode === 'payment') {
+          console.log('[Webhook] Processing one-time payment for user:', userId)
+
+          // For one-time payments, give lifetime access
+          // Use pro_annual for subscription_tier (constraint allows: free, pro_monthly, pro_annual)
+          // Set plan_type to 'pro' (this is what the dashboard checks)
+          const { error: upgradeError } = await supabase
+            .from('usage_tracking')
+            .update({
+              plan_type: 'pro', // Dashboard checks this field
+              subscription_tier: 'pro_annual', // Use annual tier for lifetime (closest match)
+              subscription_start_date: new Date().toISOString(),
+              subscription_end_date: null, // Lifetime = no end date
+              max_lifetime_generations: 999999, // Unlimited generations
+              updated_at: new Date().toISOString()
+            })
+            .eq('user_id', userId)
+
+          if (upgradeError) {
+            console.error('[Webhook] User upgrade error:', upgradeError)
+            throw upgradeError
+          }
+
+          // Track analytics event
+          try {
+            await trackPaymentCompleted(session.amount_total || 0, 'pro_lifetime')
+          } catch (analyticsError) {
+            console.error('[Webhook] Analytics tracking failed:', analyticsError)
+          }
+
+          // Send upgrade confirmation email
+          try {
+            const { data: userData } = await supabase.auth.admin.getUserById(userId)
+            if (userData?.user?.email) {
+              const userName = userData.user.user_metadata?.full_name || userData.user.email.split('@')[0] || 'there'
+              await sendUpgradeConfirmationEmail(userData.user.email, userName)
+              console.log('[Webhook] Upgrade confirmation email sent to:', userData.user.email)
+            }
+          } catch (emailError) {
+            console.error('[Webhook] Failed to send upgrade confirmation email:', emailError)
+            // Don't fail the webhook if email fails
+          }
+
+          console.log('[Webhook] User upgraded to Pro Lifetime successfully')
+        } else {
+          console.log('[Webhook] Unknown checkout mode:', session.mode)
+        }
+        
         break
       }
 
