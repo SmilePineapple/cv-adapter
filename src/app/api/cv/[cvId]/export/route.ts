@@ -2,6 +2,62 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient, createSupabaseAdminClient } from '@/lib/supabase-server'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx'
 
+// Helper function to safely extract content from section
+const getSectionContent = (section: any): string => {
+  if (!section) return ''
+  
+  const content = section.content?.raw_content || section.content || ''
+  
+  // If content is an array (like experience), format it properly
+  if (Array.isArray(content)) {
+    return content.map((item) => {
+      // Work Experience format
+      if (item.company && item.job_title) {
+        const parts = [
+          `${item.job_title} at ${item.company}`,
+          item.dates || item.duration || '',
+          item.location || '',
+          item.responsibilities || item.description || ''
+        ].filter(Boolean)
+        return parts.join('\n')
+      }
+      
+      // Education format
+      if (item.degree || item.institution) {
+        const parts = [
+          item.degree || '',
+          item.institution || '',
+          item.graduation_date || item.dates || '',
+          item.details || ''
+        ].filter(Boolean)
+        return parts.join('\n')
+      }
+      
+      // Skills/certifications format
+      if (item.name || item.title) {
+        return `${item.name || item.title}${item.level ? ` - ${item.level}` : ''}`
+      }
+      
+      // Fallback: try to extract meaningful text
+      if (typeof item === 'object') {
+        const values = Object.values(item).filter(v => v && typeof v === 'string')
+        return values.join(' • ')
+      }
+      
+      return String(item)
+    }).join('\n\n')
+  }
+  
+  // If content is an object, try to extract text
+  if (typeof content === 'object' && content !== null) {
+    const values = Object.values(content).filter(v => v && typeof v === 'string')
+    return values.join('\n')
+  }
+  
+  // Return as string
+  return String(content || '')
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ cvId: string }> }
@@ -43,8 +99,9 @@ export async function POST(
     // Handle different export formats
     if (format === 'txt') {
       // Simple text export
-      const cvText = sections.map((section: {title: string, content?: {raw_content?: string}}) => {
-        return `${section.title.toUpperCase()}\n${'-'.repeat(section.title.length)}\n${section.content?.raw_content || ''}\n\n`
+      const cvText = sections.map((section: any) => {
+        const content = getSectionContent(section)
+        return `${section.title.toUpperCase()}\n${'-'.repeat(section.title.length)}\n${content}\n\n`
       }).join('')
 
       const fullCV = `${cvData.file_meta?.name || 'CV'}\n${'='.repeat(50)}\n\n${cvText}`
@@ -78,7 +135,7 @@ export async function POST(
           }),
           
           // Sections
-          ...sections.flatMap((section: {title: string, content?: {raw_content?: string}}) => {
+          ...sections.flatMap((section: any) => {
             const sectionParagraphs = []
             
             // Section title
@@ -104,40 +161,49 @@ export async function POST(
               })
             )
             
-            // Section content
-            const content = section.content?.raw_content || ''
+            // Section content - use helper to extract properly
+            const content = getSectionContent(section)
             if (content) {
               // Split content by lines and create paragraphs
               const lines = content.split('\n').filter((line: string) => line.trim())
               lines.forEach((line: string) => {
                 // Handle markdown formatting
-                const runs = []
-                let currentText = line
+                const runs: TextRun[] = []
                 
-                // Process bold text
-                currentText = currentText.replace(/\*\*(.*?)\*\*/g, (match: string, text: string) => {
-                  runs.push(new TextRun({ text, bold: true }))
-                  return '|||BOLD|||'
+                // Split by markdown patterns and create runs
+                const parts = line.split(/(\*\*.*?\*\*|\*.*?\*|__.*?__)/g)
+                
+                parts.forEach((part: string) => {
+                  if (!part) return
+                  
+                  // Bold
+                  if (part.startsWith('**') && part.endsWith('**')) {
+                    runs.push(new TextRun({ 
+                      text: part.slice(2, -2), 
+                      bold: true 
+                    }))
+                  }
+                  // Italic
+                  else if (part.startsWith('*') && part.endsWith('*') && !part.startsWith('**')) {
+                    runs.push(new TextRun({ 
+                      text: part.slice(1, -1), 
+                      italics: true 
+                    }))
+                  }
+                  // Underline
+                  else if (part.startsWith('__') && part.endsWith('__')) {
+                    runs.push(new TextRun({ 
+                      text: part.slice(2, -2), 
+                      underline: {} 
+                    }))
+                  }
+                  // Regular text
+                  else {
+                    runs.push(new TextRun({ text: part }))
+                  }
                 })
                 
-                // Process italic text
-                currentText = currentText.replace(/\*(.*?)\*/g, (match: string, text: string) => {
-                  runs.push(new TextRun({ text, italics: true }))
-                  return '|||ITALIC|||'
-                })
-                
-                // Process underline text
-                currentText = currentText.replace(/__(.*?)__/g, (match: string, text: string) => {
-                  runs.push(new TextRun({ text, underline: {} }))
-                  return '|||UNDERLINE|||'
-                })
-                
-                // Add remaining text
-                if (currentText && !currentText.includes('|||')) {
-                  runs.unshift(new TextRun({ text: currentText }))
-                }
-                
-                // If no special formatting, just add the line as text
+                // If no runs were created, add the line as plain text
                 if (runs.length === 0) {
                   runs.push(new TextRun({ text: line }))
                 }
@@ -160,7 +226,7 @@ export async function POST(
     // Generate DOCX buffer
     const buffer = await Packer.toBuffer(doc)
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': `attachment; filename="${cvData.file_meta?.name || 'CV'}.docx"`,
