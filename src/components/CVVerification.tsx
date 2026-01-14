@@ -102,7 +102,10 @@ export default function CVVerification({ sections, fileName, onConfirm, onEdit }
       <div className="space-y-3 mb-6 max-h-[500px] overflow-y-auto">
         {editedSections.map((section, index) => {
           const isExpanded = expandedSections.has(section.type)
-          const preview = section.content.substring(0, 100)
+          const contentStr = typeof section.content === 'string' 
+            ? section.content 
+            : JSON.stringify(section.content, null, 2)
+          const preview = contentStr.substring(0, 100)
           
           return (
             <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -132,14 +135,14 @@ export default function CVVerification({ sections, fileName, onConfirm, onEdit }
                 <div className="p-4 bg-gray-50 border-t border-gray-200">
                   {isEditing ? (
                     <textarea
-                      value={section.content}
+                      value={contentStr}
                       onChange={(e) => handleContentChange(index, e.target.value)}
                       className="w-full min-h-[150px] p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Section content..."
                     />
                   ) : (
                     <div className="text-sm text-gray-700 whitespace-pre-wrap">
-                      {section.content}
+                      {contentStr}
                     </div>
                   )}
                 </div>
