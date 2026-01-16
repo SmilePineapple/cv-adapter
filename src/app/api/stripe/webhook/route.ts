@@ -66,31 +66,63 @@ export async function POST(request: NextRequest) {
             expand: ['latest_invoice', 'customer']
           })
           
-          // Access subscription properties safely
-          const subData = subscription as any
-          
           console.log('[Webhook] Retrieved subscription:', {
             id: subscription.id,
             status: subscription.status,
-            current_period_end: subData.current_period_end,
-            current_period_start: subData.current_period_start
+            current_period_end: subscription.current_period_end,
+            current_period_start: subscription.current_period_start,
+            billing_cycle_anchor: subscription.billing_cycle_anchor
           })
           
-          // Validate current_period_end exists
-          if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
-            console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
-            throw new Error('Invalid subscription: missing or invalid current_period_end')
-          }
+          // Calculate current_period_end with fallback logic
+          let currentPeriodEnd: Date
           
-          const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+          if (subscription.current_period_end && typeof subscription.current_period_end === 'number') {
+            // Use current_period_end if available
+            currentPeriodEnd = new Date(subscription.current_period_end * 1000)
+            console.log('[Webhook] Using subscription.current_period_end:', currentPeriodEnd.toISOString())
+          } else if (subscription.current_period_start && typeof subscription.current_period_start === 'number') {
+            // Fallback: Calculate from current_period_start + billing interval
+            const startDate = new Date(subscription.current_period_start * 1000)
+            const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
+            const intervalCount = subscription.items.data[0]?.price?.recurring?.interval_count || 1
+            
+            if (interval === 'month') {
+              currentPeriodEnd = new Date(startDate)
+              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + intervalCount)
+            } else if (interval === 'year') {
+              currentPeriodEnd = new Date(startDate)
+              currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + intervalCount)
+            } else {
+              // Default to 1 month
+              currentPeriodEnd = new Date(startDate)
+              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+            }
+            
+            console.log('[Webhook] Calculated period end from start date:', currentPeriodEnd.toISOString())
+          } else {
+            // Last resort: Use current date + billing interval
+            currentPeriodEnd = new Date()
+            const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
+            
+            if (interval === 'month') {
+              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+            } else if (interval === 'year') {
+              currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1)
+            } else {
+              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+            }
+            
+            console.log('[Webhook] Using fallback period end (now + interval):', currentPeriodEnd.toISOString())
+          }
           
           // Validate the date is valid
           if (isNaN(currentPeriodEnd.getTime())) {
-            console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
-            throw new Error('Invalid subscription: invalid current_period_end timestamp')
+            console.error('[Webhook] Invalid period end date calculated')
+            throw new Error('Invalid subscription: could not determine valid period end date')
           }
 
-          console.log('[Webhook] Subscription period end:', currentPeriodEnd.toISOString())
+          console.log('[Webhook] Final subscription period end:', currentPeriodEnd.toISOString())
 
           // Upgrade user to pro with subscription tier
           const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
