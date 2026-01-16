@@ -164,29 +164,42 @@ export async function POST(request: NextRequest) {
     const cvId = generation.cv_id
     const photoUrl = generationData.cvs?.photo_url || null
 
-    // CRITICAL FIX: Fetch ALL current sections from cv_sections table
-    // This is the source of truth - it reflects user edits and deletions
-    const { data: currentSections } = await supabase
-      .from('cv_sections')
-      .select('section_type, title, content, order_index, hobby_icons')
-      .eq('cv_id', cvId)
-      .order('order_index')
-
-    // If cv_sections has data, use it as the primary source (user has edited the CV)
-    // Otherwise fall back to generation output_sections
+    // CRITICAL FIX: Use generation output_sections as primary source for tailored CVs
+    // This contains the AI-tailored content. Only use cv_sections if user has explicitly
+    // edited the CV in the editor (which updates a timestamp we can check)
     let completeSections: CVSection[] = []
     
-    if (currentSections && currentSections.length > 0) {
-      console.log('✅ Using edited sections from cv_sections table:', currentSections.length, 'sections')
-      completeSections = currentSections.map(section => ({
+    // Check if cv_sections has been recently updated (user edited after generation)
+    const { data: currentSections } = await supabase
+      .from('cv_sections')
+      .select('section_type, title, content, order_index, hobby_icons, updated_at')
+      .eq('cv_id', cvId)
+      .order('order_index')
+    
+    // Get generation created_at timestamp
+    const { data: genTimestamp } = await supabase
+      .from('generations')
+      .select('created_at')
+      .eq('id', generation_id)
+      .single()
+    
+    // If cv_sections exist AND were updated AFTER generation, use them (user made edits)
+    // Otherwise use generation output_sections (the tailored content)
+    const hasUserEdits = currentSections && currentSections.length > 0 && 
+                         currentSections.some(s => s.updated_at && genTimestamp && 
+                         new Date(s.updated_at) > new Date(genTimestamp.created_at))
+    
+    if (hasUserEdits) {
+      console.log('✅ Using edited sections from cv_sections (user made edits after generation)')
+      completeSections = currentSections!.map(section => ({
         type: section.section_type,
         content: section.hobby_icons && section.hobby_icons.length > 0 
-          ? section.hobby_icons  // Use hobby_icons if available
+          ? section.hobby_icons
           : section.content,
         order: section.order_index
       }))
     } else {
-      console.log('⚠️ No cv_sections found, using generation output_sections')
+      console.log('✅ Using generation output_sections (tailored content)')
       completeSections = [...modifiedSections]
     }
     
