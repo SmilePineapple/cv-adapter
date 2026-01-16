@@ -144,6 +144,28 @@ export async function POST(request: NextRequest) {
             throw upgradeError
           }
 
+          // CRITICAL: Create subscription record for dashboard MRR calculation
+          const { error: subscriptionError } = await supabase
+            .from('subscriptions')
+            .upsert({
+              user_id: userId,
+              stripe_customer_id: customerId,
+              stripe_subscription_id: subscriptionId,
+              status: 'active',
+              current_period_end: currentPeriodEnd.toISOString(),
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'user_id'
+            })
+
+          if (subscriptionError) {
+            console.error('[Webhook] Subscription record creation error:', subscriptionError)
+            // Don't fail the upgrade if subscription record fails, but log it
+          } else {
+            console.log('[Webhook] Subscription record created:', subscriptionId)
+          }
+
           // Track analytics event
           try {
             await trackPaymentCompleted(session.amount_total || 0, subscriptionTier)
@@ -297,6 +319,27 @@ export async function POST(request: NextRequest) {
         if (upgradeError) {
           console.error('[Webhook] User upgrade error:', upgradeError)
           throw upgradeError
+        }
+
+        // Create subscription record for dashboard MRR calculation
+        const { error: subscriptionError } = await supabase
+          .from('subscriptions')
+          .upsert({
+            user_id: userId,
+            stripe_customer_id: customerId,
+            stripe_subscription_id: subscription.id,
+            status: 'active',
+            current_period_end: currentPeriodEnd.toISOString(),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'user_id'
+          })
+
+        if (subscriptionError) {
+          console.error('[Webhook] Subscription record creation error:', subscriptionError)
+        } else {
+          console.log('[Webhook] Subscription record created:', subscription.id)
         }
 
         console.log('[Webhook] User upgraded via subscription.created:', userId)
