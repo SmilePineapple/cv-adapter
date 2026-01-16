@@ -424,6 +424,133 @@ export async function POST(request: NextRequest) {
         break
       }
 
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice
+        const invoiceData = invoice as any
+        const customerId = invoice.customer as string
+        const subscriptionId = typeof invoiceData.subscription === 'string' ? invoiceData.subscription : invoiceData.subscription?.id
+
+        console.log('[Webhook] Invoice payment failed:', {
+          invoiceId: invoice.id,
+          customerId,
+          subscriptionId,
+          attemptCount: invoice.attempt_count,
+          amountDue: invoice.amount_due
+        })
+
+        // Get customer to find user_id
+        const customer = await stripe.customers.retrieve(customerId)
+        
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
+          break
+        }
+
+        let userId = customer.metadata?.supabase_user_id
+
+        // Fallback: try to find user via subscriptions table
+        if (!userId) {
+          const { data: subRecords } = await supabase
+            .from('subscriptions')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (subRecords && subRecords.length > 0) {
+            userId = subRecords[0].user_id
+          }
+        }
+
+        // Fallback: try to find user via purchases table
+        if (!userId) {
+          const { data: purchases } = await supabase
+            .from('purchases')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (purchases && purchases.length > 0) {
+            userId = purchases[0].user_id
+          }
+        }
+
+        if (!userId) {
+          console.error('[Webhook] No user found for failed payment customer:', customerId)
+          break
+        }
+
+        // Get user email for logging
+        const { data: userData } = await supabase.auth.admin.getUserById(userId)
+        const userEmail = userData?.user?.email || 'unknown'
+
+        console.log('[Webhook] Downgrading user due to payment failure:', {
+          userId,
+          email: userEmail,
+          attemptCount: invoice.attempt_count
+        })
+
+        // Downgrade user to free tier immediately
+        const { error: downgradeError } = await supabase
+          .from('usage_tracking')
+          .update({
+            plan_type: 'free',
+            subscription_tier: 'free',
+            subscription_end_date: new Date().toISOString(),
+            max_lifetime_generations: 3, // Reset to free tier limit
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        if (downgradeError) {
+          console.error('[Webhook] Failed to downgrade user:', downgradeError)
+          throw downgradeError
+        }
+
+        // Update subscription status in subscriptions table
+        await supabase
+          .from('subscriptions')
+          .update({
+            status: 'payment_failed',
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        console.log('[Webhook] User downgraded to free due to payment failure:', userEmail)
+        
+        // TODO: Send email notification to user about failed payment and downgrade
+        break
+      }
+
+      case 'invoice.payment_action_required': {
+        const invoice = event.data.object as Stripe.Invoice
+        const customerId = invoice.customer as string
+
+        console.log('[Webhook] Invoice payment action required:', {
+          invoiceId: invoice.id,
+          customerId,
+          status: invoice.status
+        })
+
+        // Get customer to find user_id
+        const customer = await stripe.customers.retrieve(customerId)
+        
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
+          break
+        }
+
+        const userId = customer.metadata?.supabase_user_id
+
+        if (userId) {
+          const { data: userData } = await supabase.auth.admin.getUserById(userId)
+          console.log('[Webhook] Payment action required for user:', userData?.user?.email)
+          
+          // TODO: Send email notification to user about payment action required
+        }
+        
+        break
+      }
+
       default:
         console.log(`Unhandled event type: ${event.type}`)
     }
