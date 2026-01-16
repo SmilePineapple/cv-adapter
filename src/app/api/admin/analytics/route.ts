@@ -152,13 +152,13 @@ export async function GET(request: NextRequest) {
     // Then query Stripe API for actual amounts
     
     // Get paying Pro users from usage_tracking (excluding admins)
-    const payingProUsers = usageTracking.filter(u => {
+    const activePayingProUsers = usageTracking.filter(u => {
       const hasSubscriptionTier = u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual'
       const hasPaidStatus = activeSubscriptionUserIds.has(u.user_id) || completedPurchaseUserIds.has(u.user_id)
       return hasSubscriptionTier && hasPaidStatus && !adminUserIds.has(u.user_id)
     })
     
-    console.log('[Analytics] Paying Pro users (non-admin):', payingProUsers.length)
+    console.log('[Analytics] Paying Pro users (non-admin):', activePayingProUsers.length)
     
     // Query Stripe API for actual subscription amounts
     let totalMRR = 0
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
     try {
       const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY!)
       
-      for (const user of payingProUsers) {
+      for (const user of activePayingProUsers) {
         try {
           // Find subscription in subscriptions table
           const subRecord = subscriptions.find(s => s.user_id === user.user_id && s.stripe_subscription_id)
@@ -218,8 +218,8 @@ export async function GET(request: NextRequest) {
     } catch (err) {
       console.error('[Analytics] Failed to initialize Stripe:', err)
       // Fallback to tier-based calculation
-      monthlyProCount = payingProUsers.filter(u => u.subscription_tier === 'pro_monthly').length
-      annualProCount = payingProUsers.filter(u => u.subscription_tier === 'pro_annual').length
+      monthlyProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_monthly').length
+      annualProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_annual').length
       totalMRR = (monthlyProCount * 2.99) + (annualProCount * (29.99 / 12))
     }
     
