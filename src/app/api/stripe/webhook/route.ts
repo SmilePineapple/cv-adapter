@@ -130,9 +130,11 @@ export async function POST(request: NextRequest) {
           const { error: upgradeError } = await supabase
             .from('usage_tracking')
             .update({
+              plan_type: 'pro', // CRITICAL: Set plan_type to 'pro' for auto-upgrade
               subscription_tier: subscriptionTier,
               subscription_start_date: new Date().toISOString(),
               subscription_end_date: currentPeriodEnd.toISOString(),
+              max_lifetime_generations: 999999, // Unlimited generations for Pro
               updated_at: new Date().toISOString()
             })
             .eq('user_id', userId)
