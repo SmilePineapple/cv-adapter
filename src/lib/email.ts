@@ -7,7 +7,8 @@ import PromoEmail from '@/emails/PromoEmail'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <noreply@mycvbuddy.com>'
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <support@mycvbuddy.com>'
+const REPLY_TO = 'support@mycvbuddy.com'
 
 /**
  * Send 3-day reminder email to users who haven't generated a CV yet
@@ -17,6 +18,7 @@ export async function send3DayReminderEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: "Don't forget your free CV generation! 🚀",
       headers: {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
@@ -226,6 +228,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'Welcome to CV Buddy - Your AI-Powered CV Assistant 🎉',
       html: htmlContent,
     })
@@ -316,6 +319,7 @@ export async function sendFirstGenerationEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'Great job on your first CV! 🚀',
       headers: {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
@@ -420,6 +424,7 @@ export async function sendLimitReachedEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'You\'ve used your free generation - Upgrade to Pro for £2.99/month! 🚀',
       headers: {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
@@ -455,6 +460,7 @@ export async function sendReEngagementEmail(
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'We miss you! Come back and use your free CV generation 👋',
       headers: {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
@@ -484,6 +490,7 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'Welcome to CV Buddy Pro! 🎉',
       headers: {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
@@ -527,6 +534,7 @@ export async function sendPromoEmail(email: string, name: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: '⏰ Only 4 Days Left - 50% Off CV Buddy Pro!',
       html: `
         <!DOCTYPE html>
@@ -644,6 +652,7 @@ export async function sendTestEmail(email: string) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
+      replyTo: REPLY_TO,
       subject: 'Test Email from CV Buddy',
       html: '<h1>Test Email</h1><p>If you received this, email sending is working!</p>',
     })

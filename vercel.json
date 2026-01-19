@@ -9,6 +9,10 @@
     {
       "path": "/api/cron/send-reminder-emails",
       "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/social-bot/cron",
+      "schedule": "0 * * * *"
     }
   ],
   "redirects": [
