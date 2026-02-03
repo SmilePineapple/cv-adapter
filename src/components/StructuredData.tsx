@@ -7,18 +7,18 @@ export function StructuredData() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What's the difference between a CV and a resume?",
+        "name": "Is My CV Buddy really free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A CV (Curriculum Vitae) is typically longer and used in the UK, Europe, and academia. A resume is shorter (1-2 pages) and common in the US. My CV Buddy works with both formats."
+          "text": "Yes! My CV Buddy offers 2 free CV generations with no credit card required. For unlimited access to CV generation, cover letters, and interview prep, upgrade to Pro for £9.99/month."
         }
       },
       {
         "@type": "Question",
-        "name": "Is My CV Buddy free to use?",
+        "name": "How do I create a CV for free in the UK?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! We offer 2 free CV generations. For unlimited access, upgrade to Pro for £5 one-time payment."
+          "text": "Simply upload your existing CV or create one from scratch, paste a job description, and our AI will generate an ATS-optimized CV tailored to the role. No credit card required for your first 2 CVs."
         }
       },
       {
@@ -26,7 +26,7 @@ export function StructuredData() {
         "name": "Will my CV pass ATS systems?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! My CV Buddy creates ATS-optimized CVs with clean formatting, proper keyword placement, and standard section headers that applicant tracking systems can parse."
+          "text": "Yes! My CV Buddy creates ATS-optimized CVs with clean formatting, proper keyword placement, and standard section headers that applicant tracking systems can parse. Our AI matches keywords from the job description to maximize your ATS score."
         }
       },
       {
@@ -34,7 +34,39 @@ export function StructuredData() {
         "name": "How does AI CV tailoring work?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Upload your CV, paste a job description, and our AI analyzes both to identify key requirements, match relevant experience, and optimize keywords for ATS systems."
+          "text": "Upload your CV, paste a job description, and our AI analyzes both to identify key requirements, match relevant experience, and optimize keywords for ATS systems. The process takes just 2 minutes and creates a job-specific CV."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between a CV and a resume?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A CV (Curriculum Vitae) is typically longer and used in the UK, Europe, and academia. A resume is shorter (1-2 pages) and common in the US. My CV Buddy works with both formats and optimizes for your target country."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I download my CV as a PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! You can export your CV in multiple formats including PDF, DOCX (Word), TXT, and HTML. All formats are ATS-friendly and professionally formatted."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to generate a CV?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our AI generates a tailored, ATS-optimized CV in approximately 30-60 seconds. You can then review, edit, and download it immediately."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer CV templates?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! We offer 10+ professional CV templates optimized for UK and US job markets. All templates are ATS-friendly and can be customized to match your industry."
         }
       }
     ]

@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic'
 
 // SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
-  title: 'Free AI CV & Resume Builder | ATS-Optimized Resume Generator | My CV Buddy',
-  description: 'Create professional CVs and resumes with AI in seconds. Upload your CV or resume, paste any job description, get ATS-optimized results instantly. Free AI-powered CV builder and resume maker for job seekers worldwide. Try free, then £2.99/month for unlimited access.',
+  title: 'Free CV Builder UK | AI Resume Maker & Generator | My CV Buddy',
+  description: 'Free CV builder UK trusted by professionals. Create ATS-optimized CVs in 2 minutes with AI. Upload your CV, paste job description, get tailored results instantly. Professional CV templates, cover letters & interview prep. No credit card required. Perfect for UK & US job seekers.',
   keywords: [
     // UK Terms - High Volume
     'CV generator UK free', 'free CV builder', 'CV template UK', 'professional CV', 
@@ -43,16 +43,16 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'My CV Buddy' }],
   openGraph: {
-    title: 'AI CV & Resume Builder | Free ATS-Optimized CV Generator',
-    description: 'Create ATS-optimized CVs & resumes with AI. Tailor your job application in seconds. Free for UK & US job seekers.',
+    title: 'Free CV Builder UK | AI Resume Maker & Generator',
+    description: 'Free CV builder UK. Create ATS-optimized CVs in 2 minutes with AI. Upload CV, paste job, get tailored results. No credit card required.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'My CV Buddy',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI CV & Resume Builder | Free',
-    description: 'Tailor your CV to any job with AI. ATS-optimized resumes in seconds.',
+    title: 'Free CV Builder UK | AI Resume Maker',
+    description: 'Free CV builder UK. Create ATS-optimized CVs in 2 minutes with AI. No credit card required.',
   },
   robots: {
     index: true,

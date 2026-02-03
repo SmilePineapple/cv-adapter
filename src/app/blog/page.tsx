@@ -3,11 +3,40 @@ import { ArrowLeft, BookOpen, Calendar, Clock, ArrowRight, TrendingUp, Target, L
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Blog - CV Writing Tips & Career Advice | My CV Buddy',
-  description: 'Expert advice on CV writing, ATS optimization, job search strategies, and career development. Learn how to create a winning CV that gets you interviews.',
+  title: 'CV Writing Blog - Expert Tips & Guides UK 2025 | My CV Buddy',
+  description: 'Expert CV writing tips, ATS optimization guides, and job search strategies for UK job seekers. Compare CV builders, learn best practices, and create a winning CV that gets interviews.',
+  keywords: [
+    'CV writing tips',
+    'CV builder comparison',
+    'ATS optimization',
+    'CV templates UK',
+    'job search tips',
+    'career advice UK',
+    'best CV builders',
+    'how to write a CV',
+    'CV examples'
+  ],
 }
 
 const blogPosts = [
+  {
+    slug: 'best-free-cv-builders-uk-2025',
+    title: 'Best Free CV Builders UK 2025: Top 10 Compared',
+    excerpt: 'Expert comparison of the best free CV builders in the UK. Compare Canva, Resume.io, CV Buddy, and more. Find the perfect free CV maker with ATS optimization.',
+    date: 'January 15, 2025',
+    readTime: '18 min read',
+    category: 'Comparison',
+    featured: true,
+  },
+  {
+    slug: 'cv-buddy-vs-canva',
+    title: 'CV Buddy vs Canva: Which CV Builder is Better? (2025)',
+    excerpt: 'Detailed comparison of CV Buddy vs Canva for CV creation. Compare ATS compatibility (95% vs 45%), features, pricing, and templates.',
+    date: 'January 15, 2025',
+    readTime: '12 min read',
+    category: 'Comparison',
+    featured: false,
+  },
   {
     slug: 'cv-template-uk-2025',
     title: 'CV Template UK: 10 Free Professional Templates (2025)',
@@ -15,7 +44,7 @@ const blogPosts = [
     date: 'January 8, 2025',
     readTime: '12 min read',
     category: 'CV Templates',
-    featured: true,
+    featured: false,
   },
   {
     slug: 'career-change-cv-guide-uk',

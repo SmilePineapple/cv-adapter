@@ -83,14 +83,18 @@ export async function GET(request: NextRequest) {
     const monthlyGenerations: { [key: string]: number } = {}
     const monthlyRevenue: { [key: string]: number } = {}
     
-    // Initialize last 12 months
-    for (let i = 11; i >= 0; i--) {
-      const date = new Date()
-      date.setMonth(date.getMonth() - i)
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+    // App started October 1, 2025 - only show data from then onwards
+    const appStartDate = new Date('2025-10-01')
+    const currentDate = new Date()
+    
+    // Initialize months from October 2025 to current month
+    let tempDate = new Date(appStartDate)
+    while (tempDate <= currentDate) {
+      const monthKey = `${tempDate.getFullYear()}-${String(tempDate.getMonth() + 1).padStart(2, '0')}`
       monthlyUserGrowth[monthKey] = { total: 0, free: 0, pro: 0, new: 0 }
       monthlyGenerations[monthKey] = 0
       monthlyRevenue[monthKey] = 0
+      tempDate.setMonth(tempDate.getMonth() + 1)
     }
 
     // Calculate cumulative users per month and new signups

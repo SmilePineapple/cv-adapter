@@ -201,7 +201,7 @@ export default function EnhancedAnalyticsPage() {
                 <Calendar className="w-6 h-6 text-blue-600" />
                 Month-by-Month User Growth
               </h3>
-              <p className="text-sm text-gray-600 mt-1">Last 12 months - Total, Free, and Pro users</p>
+              <p className="text-sm text-gray-600 mt-1">Since October 2025 (app launch) - Total, Free, and Pro users</p>
             </div>
             <div className={`px-4 py-2 rounded-full text-sm font-medium ${parseFloat(monthOverMonthGrowth) >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
               {parseFloat(monthOverMonthGrowth) >= 0 ? '+' : ''}{monthOverMonthGrowth}% MoM
