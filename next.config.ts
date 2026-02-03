@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   
+  // Configure body size limit for API routes (10MB for file uploads)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+  
   // Webpack configuration to fix pdf-parse issue on Vercel
   webpack: (config, { isServer }) => {
     if (isServer) {

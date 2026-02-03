@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
+const ADMIN_EMAILS = [
+  'jakedalerourke@gmail.com',
+  'smilepineapple118@gmail.com',
+  'jake.rourke@btinternet.com'
+]
 
 export async function GET(request: NextRequest) {
   try {
@@ -87,18 +91,37 @@ export async function GET(request: NextRequest) {
         .map(s => s.user_id)
     )
     
-    // Count ALL Pro users (including free Pro, manual upgrades, testing)
-    const totalProUsersCount = usageTracking.filter(u => 
-      u.subscription_tier === 'pro_monthly' || 
-      u.subscription_tier === 'pro_annual' ||
-      u.plan_type === 'pro'
-    ).length
+    // Get users who made completed purchases (one-time payments)
+    const completedPurchaseUserIds = new Set(
+      purchases
+        .filter(p => p.status === 'completed' && p.amount_paid && p.amount_paid > 0)
+        .map(p => p.user_id)
+    )
     
-    // Count PAYING Pro users only (must have active Stripe subscription)
-    const payingProUsersCount = usageTracking.filter(u => 
-      (u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual') &&
-      activeSubscriptionUserIds.has(u.user_id)
-    ).length
+    // Get admin user IDs to exclude from Pro counts
+    const adminUserIds = new Set(
+      users
+        .filter(u => ADMIN_EMAILS.includes(u.email || ''))
+        .map(u => u.id)
+    )
+    
+    // Count ALL Pro users (excluding admins)
+    const totalProUsersCount = usageTracking.filter(u => {
+      const isPro = u.subscription_tier === 'pro_monthly' || 
+                    u.subscription_tier === 'pro_annual' ||
+                    u.plan_type === 'pro'
+      return isPro && !adminUserIds.has(u.user_id)
+    }).length
+    
+    // Count PAYING Pro users (active subscription OR completed purchase, excluding admins)
+    const payingProUsersCount = usageTracking.filter(u => {
+      const isPro = u.subscription_tier === 'pro_monthly' || 
+                    u.subscription_tier === 'pro_annual' ||
+                    u.plan_type === 'pro'
+      const hasPaid = activeSubscriptionUserIds.has(u.user_id) || 
+                      completedPurchaseUserIds.has(u.user_id)
+      return isPro && hasPaid && !adminUserIds.has(u.user_id)
+    }).length
     
     const proUsers = totalProUsersCount  // Total Pro users (for display)
     const payingProUsers = payingProUsersCount  // Paying customers (for revenue)
@@ -125,21 +148,85 @@ export async function GET(request: NextRequest) {
     const activeUsers = activeUserIds.size
 
     // Revenue calculation for MONTHLY SUBSCRIPTION MODEL
-    // Monthly Pro: £2.99/month, Annual Pro: £29.99/year
-    // NOTE: activeSubscriptionUserIds already defined above
+    // Use usage_tracking.subscription_tier to identify paying users (excluding admins)
+    // Then query Stripe API for actual amounts
     
-    // Count PAYING Pro users only (must have active Stripe subscription)
-    const monthlyProCount = usageTracking.filter(u => 
-      u.subscription_tier === 'pro_monthly' && activeSubscriptionUserIds.has(u.user_id)
-    ).length
-    const annualProCount = usageTracking.filter(u => 
-      u.subscription_tier === 'pro_annual' && activeSubscriptionUserIds.has(u.user_id)
-    ).length
+    // Get paying Pro users from usage_tracking (excluding admins)
+    const activePayingProUsers = usageTracking.filter(u => {
+      const hasSubscriptionTier = u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual'
+      const hasPaidStatus = activeSubscriptionUserIds.has(u.user_id) || completedPurchaseUserIds.has(u.user_id)
+      return hasSubscriptionTier && hasPaidStatus && !adminUserIds.has(u.user_id)
+    })
     
-    // Calculate Monthly Recurring Revenue (MRR) - only from PAYING customers
-    const monthlyMRR = monthlyProCount * 2.99
-    const annualMRR = annualProCount * (29.99 / 12) // Annual £29.99/year = £2.50/month
-    const totalMRR = monthlyMRR + annualMRR
+    console.log('[Analytics] Paying Pro users (non-admin):', activePayingProUsers.length)
+    
+    // Query Stripe API for actual subscription amounts
+    let totalMRR = 0
+    let monthlyProCount = 0
+    let annualProCount = 0
+    
+    try {
+      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY!)
+      
+      for (const user of activePayingProUsers) {
+        try {
+          // Find subscription in subscriptions table
+          const subRecord = subscriptions.find(s => s.user_id === user.user_id && s.stripe_subscription_id)
+          
+          if (subRecord?.stripe_subscription_id) {
+            const stripeSub = await stripe.subscriptions.retrieve(subRecord.stripe_subscription_id)
+            
+            if (stripeSub.status === 'active' && stripeSub.items?.data?.[0]?.price) {
+              const price = stripeSub.items.data[0].price
+              const amount = price.unit_amount || 0 // in cents
+              const interval = price.recurring?.interval || 'month'
+              
+              // Convert to monthly MRR
+              if (interval === 'month') {
+                totalMRR += amount / 100 // Convert cents to pounds
+                monthlyProCount++
+                console.log(`[Analytics] Monthly sub: £${amount / 100}`)
+              } else if (interval === 'year') {
+                totalMRR += (amount / 100) / 12 // Annual to monthly
+                annualProCount++
+                console.log(`[Analytics] Annual sub: £${amount / 100}/year`)
+              }
+            }
+          } else {
+            // Fallback: Use subscription_tier to estimate
+            console.log(`[Analytics] No Stripe ID for user ${user.user_id}, using tier: ${user.subscription_tier}`)
+            if (user.subscription_tier === 'pro_monthly') {
+              totalMRR += 2.99 // Default monthly
+              monthlyProCount++
+            } else if (user.subscription_tier === 'pro_annual') {
+              totalMRR += 29.99 / 12 // Default annual
+              annualProCount++
+            }
+          }
+        } catch (err) {
+          console.error(`[Analytics] Failed to retrieve Stripe data for user ${user.user_id}:`, err)
+          // Fallback to tier-based pricing
+          if (user.subscription_tier === 'pro_monthly') {
+            totalMRR += 2.99
+            monthlyProCount++
+          } else if (user.subscription_tier === 'pro_annual') {
+            totalMRR += 29.99 / 12
+            annualProCount++
+          }
+        }
+      }
+    } catch (err) {
+      console.error('[Analytics] Failed to initialize Stripe:', err)
+      // Fallback to tier-based calculation
+      monthlyProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_monthly').length
+      annualProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_annual').length
+      totalMRR = (monthlyProCount * 2.99) + (annualProCount * (29.99 / 12))
+    }
+    
+    console.log('[Analytics] Total MRR:', totalMRR, 'Monthly:', monthlyProCount, 'Annual:', annualProCount)
+    
+    const monthlyMRR = totalMRR // Already calculated above
+    const annualMRR = 0 // Already included in totalMRR
     
     // Calculate projected annual revenue (ARR)
     const projectedARR = totalMRR * 12

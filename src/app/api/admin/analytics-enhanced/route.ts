@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
     // Fetch all analytics data
     const [
       profilesResult,
+      purchasesResult,
       subscriptionsResult,
       usageResult,
       generationsResult,
@@ -56,6 +57,7 @@ export async function GET(request: NextRequest) {
       coverLettersResult
     ] = await Promise.all([
       supabase.from('profiles').select('*'),
+      supabase.from('purchases').select('*'),
       supabase.from('subscriptions').select('*'),
       supabase.from('usage_tracking').select('*'),
       supabase.from('generations').select('id, user_id, created_at, job_title'),
@@ -65,6 +67,7 @@ export async function GET(request: NextRequest) {
 
     const users = allUsers
     const profiles = profilesResult.data || []
+    const purchases = purchasesResult.data || []
     const subscriptions = subscriptionsResult.data || []
     const usageTracking = usageResult.data || []
     const generations = generationsResult.data || []
@@ -76,6 +79,13 @@ export async function GET(request: NextRequest) {
       subscriptions
         .filter(s => s.status === 'active' && s.stripe_subscription_id)
         .map(s => s.user_id)
+    )
+    
+    // Get users who made completed purchases (one-time payments)
+    const completedPurchaseUserIds = new Set(
+      purchases
+        .filter(p => p.status === 'completed' && p.amount_paid && p.amount_paid > 0)
+        .map(p => p.user_id)
     )
 
     // MONTH-BY-MONTH USER GROWTH
@@ -101,7 +111,11 @@ export async function GET(request: NextRequest) {
     users.forEach(user => {
       const userDate = new Date(user.created_at)
       const usage = usageTracking.find(u => u.user_id === user.id)
-      const isPro = (usage?.subscription_tier === 'pro_monthly' || usage?.subscription_tier === 'pro_annual') && activeSubscriptionUserIds.has(user.id)
+      const isProUser = usage?.subscription_tier === 'pro_monthly' || 
+                        usage?.subscription_tier === 'pro_annual' ||
+                        usage?.plan_type === 'pro'
+      const hasPaid = activeSubscriptionUserIds.has(user.id) || completedPurchaseUserIds.has(user.id)
+      const isPro = isProUser && hasPaid
       
       // For each month, count cumulative users
       Object.keys(monthlyUserGrowth).forEach(monthKey => {
@@ -206,10 +220,14 @@ export async function GET(request: NextRequest) {
     // CONVERSION FUNNEL
     const usersWhoUploaded = new Set(cvs.map(cv => cv.user_id)).size
     const usersWhoGenerated = new Set(generations.map(g => g.user_id)).size
-    const payingUsers = usageTracking.filter(u => 
-      (u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual') &&
-      activeSubscriptionUserIds.has(u.user_id)
-    ).length
+    const payingUsers = usageTracking.filter(u => {
+      const isProUser = u.subscription_tier === 'pro_monthly' || 
+                        u.subscription_tier === 'pro_annual' ||
+                        u.plan_type === 'pro'
+      const hasPaid = activeSubscriptionUserIds.has(u.user_id) || 
+                      completedPurchaseUserIds.has(u.user_id)
+      return isProUser && hasPaid
+    }).length
 
     const conversionFunnel = {
       signups: users.length,

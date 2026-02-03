@@ -329,33 +329,40 @@ export default function DownloadPage() {
       const photoUrl = (generation as any).cvs?.photo_url || null
       setCurrentPhotoUrl(photoUrl)
 
-      // CRITICAL FIX: Fetch ALL current sections from cv_sections table
-      // This is the source of truth - it reflects user edits and deletions
+      // CRITICAL FIX: Use generation output_sections as primary source for tailored CVs
+      // This contains the AI-tailored content. Only use cv_sections if user has explicitly
+      // edited the CV in the editor AFTER generation
       let finalSections: CVSection[] = []
       
       if (generation.cv_id) {
+        // Check if cv_sections has been updated after generation
         const { data: currentSections } = await supabase
           .from('cv_sections')
-          .select('section_type, title, content, order_index, hobby_icons')
+          .select('section_type, title, content, order_index, hobby_icons, updated_at')
           .eq('cv_id', generation.cv_id)
           .order('order_index')
 
-        if (currentSections && currentSections.length > 0) {
-          console.log('✅ Download Preview: Using edited sections from cv_sections:', currentSections.length, 'sections')
-          finalSections = currentSections.map(section => ({
+        // Check if user made edits after generation
+        const hasUserEdits = currentSections && currentSections.length > 0 && 
+                             currentSections.some(s => s.updated_at && 
+                             new Date(s.updated_at) > new Date(generation.created_at))
+
+        if (hasUserEdits) {
+          console.log('✅ Download Preview: Using edited sections from cv_sections (user made edits)')
+          finalSections = currentSections!.map(section => ({
             type: section.section_type,
             content: section.hobby_icons && section.hobby_icons.length > 0 
-              ? section.hobby_icons  // Use hobby_icons if available
+              ? section.hobby_icons
               : section.content,
             order: section.order_index
           }))
         } else {
-          console.log('⚠️ Download Preview: No cv_sections found, using generation output_sections')
+          console.log('✅ Download Preview: Using generation output_sections (tailored content)')
           finalSections = generation.output_sections?.sections || []
         }
       } else {
         // Orphaned generation - use output_sections
-        console.log('⚠️ Download Preview: Orphaned generation, using output_sections')
+        console.log('✅ Download Preview: Orphaned generation, using output_sections')
         finalSections = generation.output_sections?.sections || []
       }
       

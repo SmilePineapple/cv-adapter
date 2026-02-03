@@ -1,8 +1,18 @@
 {
+  "functions": {
+    "src/app/api/upload/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  },
   "crons": [
     {
       "path": "/api/cron/send-reminder-emails",
       "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/social-bot/cron",
+      "schedule": "0 14 * * *"
     }
   ],
   "redirects": [

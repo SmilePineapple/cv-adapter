@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import PhotoUpload from '@/components/PhotoUpload'
 import UploadProgressStepper from '@/components/UploadProgressStepper'
 import ExampleCVs from '@/components/ExampleCVs'
+import CVVerification from '@/components/CVVerification'
 import { 
   Upload, 
   FileText, 
@@ -29,41 +30,75 @@ export default function UploadPage() {
   const supabase = createSupabaseClient()
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    console.log('[UPLOAD] onDrop called with files:', acceptedFiles)
     const file = acceptedFiles[0]
-    if (!file) return
+    if (!file) {
+      console.log('[UPLOAD] No file selected')
+      return
+    }
 
+    console.log('[UPLOAD] File selected:', file.name, file.type, file.size)
     setUploadedFile(file)
     setIsUploading(true)
     setUploadProgress(0)
 
     try {
-      // Simulate progress steps
-      setUploadProgress(20)
-      toast.info('Preparing file...')
-
-      const formData = new FormData()
-      formData.append('file', file)
-
-      setUploadProgress(40)
-      toast.info('Uploading file...')
-
+      // Get session first
+      console.log('[UPLOAD] Getting session...')
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
+        console.error('[UPLOAD] No session found')
         throw new Error('Please log in to upload files')
       }
+      console.log('[UPLOAD] Session found, user ID:', session.user.id)
 
+      // Upload file to Supabase Storage first
+      setUploadProgress(20)
+      toast.info('Uploading file to storage...')
+
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${session.user.id}-${Date.now()}.${fileExt}`
+      const filePath = `cv-uploads/${fileName}`
+
+      console.log('[UPLOAD] Uploading to Supabase Storage:', filePath)
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('cv-assets')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        })
+
+      if (uploadError) {
+        console.error('[UPLOAD] Storage upload error:', uploadError)
+        throw new Error('Failed to upload file: ' + uploadError.message)
+      }
+
+      console.log('[UPLOAD] File uploaded to storage:', uploadData.path)
+      setUploadProgress(50)
+      toast.info('Processing CV...')
+
+      // Now call API with storage path
+      console.log('[UPLOAD] Sending request to /api/upload...')
       const response = await fetch('/api/upload', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${session.access_token}`
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
         },
-        body: formData,
+        body: JSON.stringify({
+          storagePath: uploadData.path,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type
+        }),
       })
 
       setUploadProgress(70)
       toast.info('Parsing CV content...')
 
+      console.log('[UPLOAD] Response status:', response.status)
       const result = await response.json()
+      console.log('[UPLOAD] Response result:', result)
 
       if (!response.ok) {
         throw new Error(result.error || 'Upload failed')
@@ -75,16 +110,46 @@ export default function UploadPage() {
       toast.success('CV uploaded and parsed successfully!')
       
     } catch (error: any) {
-      console.error('Upload error:', error)
+      console.error('[UPLOAD] Upload error:', error)
+      console.error('[UPLOAD] Error stack:', error.stack)
       toast.error(error.message || 'Failed to upload CV')
       setUploadedFile(null)
     } finally {
       setIsUploading(false)
     }
+  }, [supabase])
+
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('[UPLOAD] File input change event triggered')
+    const files = e.target.files
+    if (!files || files.length === 0) {
+      console.log('[UPLOAD] No files in input')
+      return
+    }
+    console.log('[UPLOAD] Files from input:', files)
+    await onDrop(Array.from(files))
+  }, [onDrop])
+
+  const onDropRejected = useCallback((fileRejections: any[]) => {
+    console.log('[UPLOAD] Files rejected:', fileRejections)
+    fileRejections.forEach((rejection) => {
+      const { file, errors } = rejection
+      console.log('[UPLOAD] Rejected file:', file.name, 'Errors:', errors)
+      errors.forEach((error: any) => {
+        if (error.code === 'file-too-large') {
+          toast.error(`File ${file.name} is too large. Maximum size is 10MB.`)
+        } else if (error.code === 'file-invalid-type') {
+          toast.error(`File ${file.name} is not a valid type. Please upload PDF, DOC, or DOCX.`)
+        } else {
+          toast.error(`Error with ${file.name}: ${error.message}`)
+        }
+      })
+    })
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected,
     accept: {
       'application/pdf': ['.pdf'],
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
@@ -92,7 +157,10 @@ export default function UploadPage() {
     },
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024, // 10MB
-    disabled: isUploading || !!parseResult
+    disabled: isUploading || !!parseResult,
+    noClick: false,
+    noKeyboard: false,
+    multiple: false
   })
 
   const handleContinue = () => {
@@ -195,7 +263,10 @@ export default function UploadPage() {
                 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
-              <input {...getInputProps()} />
+              <input 
+                {...getInputProps()} 
+                onChange={handleFileChange}
+              />
               
               {isUploading ? (
                 <div className="space-y-4">
