@@ -850,6 +850,146 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Expert Resources Section - SEO Internal Links */}
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Expert CV Writing Resources
+              </h2>
+              <p className="text-lg text-gray-600">
+                Learn from our comprehensive guides to create the perfect CV
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Link 
+                href="/blog/best-free-cv-builders-uk-2025"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-blue-100 p-2 rounded-lg">
+                    <Award className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Popular</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Best Free CV Builders UK 2025
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Compare top CV builders with ATS scores. My CV Buddy: 95% vs Canva: 45%
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog/ats-friendly-cv-builder"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-green-100 p-2 rounded-lg">
+                    <Target className="w-6 h-6 text-green-600" />
+                  </div>
+                  <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full">Essential</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  ATS-Friendly CV Builder Guide
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Why 75% of CVs get rejected by ATS and how to beat the system
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog/cv-buddy-vs-canva"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-purple-100 p-2 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  CV Buddy vs Canva Comparison
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Detailed comparison: ATS compatibility, features, and pricing
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Read Comparison <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog/free-cv-builder-no-sign-up"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-orange-100 p-2 rounded-lg">
+                    <Shield className="w-6 h-6 text-orange-600" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Free CV Builder No Sign Up?
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  The truth about "no signup" CV builders and best alternatives
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Learn More <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog/how-to-beat-ats-systems"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-red-100 p-2 rounded-lg">
+                    <Zap className="w-6 h-6 text-red-600" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  How to Beat ATS Systems
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Complete guide to getting past applicant tracking systems
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/blog"
+                className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow text-white group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-white/20 p-2 rounded-lg">
+                    <FileText className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold mb-2">
+                  View All CV Writing Guides
+                </h3>
+                <p className="text-sm text-blue-100 mb-3">
+                  20+ expert articles on CV writing, ATS optimization, and job search
+                </p>
+                <div className="flex items-center text-white text-sm font-semibold">
+                  Browse All <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section id="faq" className="py-20 bg-white">
         <div className="container mx-auto px-4">

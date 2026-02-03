@@ -67,6 +67,27 @@ interface EnhancedAnalytics {
   }
   topJobTitles: Array<{ title: string; count: number }>
   dailyActiveUsers: { [key: string]: number }
+  churnMetrics: {
+    churnRate: string
+    churnedUsers: number
+    atRiskUsers: number
+  }
+  lifetimeValue: {
+    avgLTV: string
+    totalLTV: string
+    topUserLTV: string
+  }
+  engagementScore: {
+    averageScore: number
+    highEngagement: number
+    mediumEngagement: number
+    lowEngagement: number
+  }
+  growthTrends: {
+    weekOverWeek: string
+    monthOverMonth: string
+    projectedNextMonth: number
+  }
 }
 
 export default function EnhancedAnalyticsPage() {
@@ -540,10 +561,114 @@ export default function EnhancedAnalyticsPage() {
           </div>
         </div>
 
+        {/* Advanced Metrics */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Churn Metrics */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-6">
+              <TrendingDown className="w-5 h-5 text-red-600" />
+              Churn Analysis
+            </h3>
+            <div className="space-y-4">
+              <div className="text-center py-4 bg-red-50 rounded-lg">
+                <div className="text-3xl font-bold text-red-600">{analytics.churnMetrics?.churnRate || '0%'}</div>
+                <div className="text-xs text-red-700 mt-1">Churn Rate (30d)</div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{analytics.churnMetrics?.churnedUsers || 0}</div>
+                  <div className="text-xs text-gray-600 mt-1">Churned Users</div>
+                </div>
+                <div className="bg-orange-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-orange-600">{analytics.churnMetrics?.atRiskUsers || 0}</div>
+                  <div className="text-xs text-orange-700 mt-1">At Risk</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Lifetime Value */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-6">
+              <DollarSign className="w-5 h-5 text-green-600" />
+              Lifetime Value
+            </h3>
+            <div className="space-y-4">
+              <div className="text-center py-4 bg-green-50 rounded-lg">
+                <div className="text-3xl font-bold text-green-600">£{analytics.lifetimeValue?.avgLTV || '0.00'}</div>
+                <div className="text-xs text-green-700 mt-1">Avg LTV per User</div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">£{analytics.lifetimeValue?.totalLTV || '0'}</div>
+                  <div className="text-xs text-gray-600 mt-1">Total LTV</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-blue-600">£{analytics.lifetimeValue?.topUserLTV || '0'}</div>
+                  <div className="text-xs text-blue-700 mt-1">Top User</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Engagement Score */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-6">
+              <Zap className="w-5 h-5 text-yellow-600" />
+              Engagement Score
+            </h3>
+            <div className="space-y-4">
+              <div className="text-center py-4 bg-yellow-50 rounded-lg">
+                <div className="text-3xl font-bold text-yellow-600">{analytics.engagementScore?.averageScore || 0}/100</div>
+                <div className="text-xs text-yellow-700 mt-1">Average Score</div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">High Engagement</span>
+                  <span className="font-bold text-green-600">{analytics.engagementScore?.highEngagement || 0}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Medium Engagement</span>
+                  <span className="font-bold text-yellow-600">{analytics.engagementScore?.mediumEngagement || 0}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Low Engagement</span>
+                  <span className="font-bold text-red-600">{analytics.engagementScore?.lowEngagement || 0}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Growth Trends */}
+        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6" />
+            Growth Trends & Projections
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-sm text-white/80 mb-2">Week over Week</div>
+              <div className="text-3xl font-bold">{analytics.growthTrends?.weekOverWeek || '0%'}</div>
+              <div className="text-xs text-white/70 mt-1">7-day growth rate</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-sm text-white/80 mb-2">Month over Month</div>
+              <div className="text-3xl font-bold">{analytics.growthTrends?.monthOverMonth || '0%'}</div>
+              <div className="text-xs text-white/70 mt-1">30-day growth rate</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <div className="text-sm text-white/80 mb-2">Projected Next Month</div>
+              <div className="text-3xl font-bold">{analytics.growthTrends?.projectedNextMonth || 0}</div>
+              <div className="text-xs text-white/70 mt-1">Expected new users</div>
+            </div>
+          </div>
+        </div>
+
         {/* Key Insights */}
         <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg p-8 text-white">
           <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6" />
+            <Award className="w-6 h-6" />
             Key Insights & Recommendations
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
