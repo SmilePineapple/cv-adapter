@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Interview Prep - AI Interview Practice & Tips | CV Adapter',
   description: 'Prepare for job interviews with AI-powered practice. Get personalized interview questions, tips, and feedback based on your CV and target role. Free interview preparation tool.',
   alternates: {
-    canonical: '/interview-prep',
+    canonical: 'https://www.mycvbuddy.com/interview-prep',
   },
   openGraph: {
     title: 'Interview Prep - AI Interview Practice | CV Adapter',

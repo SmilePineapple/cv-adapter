@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Roast My CV - AI CV Roasting & Feedback | CV Adapter',
   description: 'Get brutally honest AI feedback on your CV. Our AI roasts your CV with humor while providing actionable improvement tips. Pro feature with 10 roasts per month.',
   alternates: {
-    canonical: '/roast-cv',
+    canonical: 'https://www.mycvbuddy.com/roast-cv',
   },
   openGraph: {
     title: 'Roast My CV - AI CV Roasting | CV Adapter',

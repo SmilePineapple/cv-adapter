@@ -284,18 +284,52 @@ export async function POST(request: NextRequest) {
         // Access subscription properties safely
         const subData = subscription as any
 
-        // Validate current_period_end exists
-        if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
-          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
-          break
-        }
+        // Calculate current_period_end with fallback logic (same as checkout.session.completed)
+        let currentPeriodEnd: Date
         
-        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+        if (subData.current_period_end && typeof subData.current_period_end === 'number') {
+          // Use current_period_end if available
+          currentPeriodEnd = new Date(subData.current_period_end * 1000)
+          console.log('[Webhook] Using subscription.current_period_end:', currentPeriodEnd.toISOString())
+        } else if (subData.current_period_start && typeof subData.current_period_start === 'number') {
+          // Fallback: Calculate from current_period_start + billing interval
+          const startDate = new Date(subData.current_period_start * 1000)
+          const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
+          const intervalCount = subscription.items.data[0]?.price?.recurring?.interval_count || 1
+          
+          if (interval === 'month') {
+            currentPeriodEnd = new Date(startDate)
+            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + intervalCount)
+          } else if (interval === 'year') {
+            currentPeriodEnd = new Date(startDate)
+            currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + intervalCount)
+          } else {
+            // Default to 1 month
+            currentPeriodEnd = new Date(startDate)
+            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+          }
+          
+          console.log('[Webhook] Calculated period end from start date:', currentPeriodEnd.toISOString())
+        } else {
+          // Last resort: Use current date + billing interval
+          currentPeriodEnd = new Date()
+          const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
+          
+          if (interval === 'month') {
+            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+          } else if (interval === 'year') {
+            currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1)
+          } else {
+            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
+          }
+          
+          console.log('[Webhook] Using fallback period end (now + interval):', currentPeriodEnd.toISOString())
+        }
         
         // Validate the date is valid
         if (isNaN(currentPeriodEnd.getTime())) {
-          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
-          break
+          console.error('[Webhook] Invalid period end date calculated')
+          throw new Error('Invalid subscription: could not determine valid period end date')
         }
 
         // Determine plan type from subscription interval
@@ -305,13 +339,15 @@ export async function POST(request: NextRequest) {
 
         console.log('[Webhook] Upgrading user to:', subscriptionTier)
 
-        // Upgrade user to pro
+        // Upgrade user to pro - CRITICAL: Include plan_type and max_lifetime_generations
         const { error: upgradeError } = await supabase
           .from('usage_tracking')
           .update({
+            plan_type: 'pro', // CRITICAL: Set plan_type to 'pro' for auto-upgrade
             subscription_tier: subscriptionTier,
             subscription_start_date: new Date().toISOString(),
             subscription_end_date: currentPeriodEnd.toISOString(),
+            max_lifetime_generations: 999999, // Unlimited generations for Pro
             updated_at: new Date().toISOString()
           })
           .eq('user_id', userId)

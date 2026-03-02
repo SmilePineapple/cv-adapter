@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Privacy Policy - How We Protect Your Data | CV Adapter',
   description: 'CV Adapter privacy policy. Learn how we collect, use, and protect your personal data and CV information. GDPR compliant. Your data security is our priority.',
   alternates: {
-    canonical: '/privacy',
+    canonical: 'https://www.mycvbuddy.com/privacy',
   },
   openGraph: {
     title: 'Privacy Policy | CV Adapter',

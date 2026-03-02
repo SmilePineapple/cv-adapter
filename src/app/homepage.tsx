@@ -66,11 +66,11 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://mycvbuddy.com',
+    canonical: 'https://www.mycvbuddy.com/',
     languages: {
-      'en-GB': 'https://mycvbuddy.co.uk',
-      'en-US': 'https://mycvbuddy.com',
-      'x-default': 'https://mycvbuddy.com',
+      'en-GB': 'https://www.mycvbuddy.co.uk',
+      'en-US': 'https://www.mycvbuddy.com',
+      'x-default': 'https://www.mycvbuddy.com',
     },
   },
 }

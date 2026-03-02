@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: 'Help Center - CV Adapter Support & FAQs',
   description: 'Get help with CV Adapter. Find answers to common questions about creating CVs, uploading documents, using AI features, and troubleshooting. 24/7 support available.',
   alternates: {
-    canonical: '/help',
+    canonical: 'https://www.mycvbuddy.com/help',
   },
   openGraph: {
     title: 'Help Center - CV Adapter Support',

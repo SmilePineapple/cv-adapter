@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   creator: "CV Adapter",
   publisher: "CV Adapter",
   alternates: {
-    canonical: '/',
+    canonical: 'https://www.mycvbuddy.com/',
   },
   openGraph: {
     type: 'website',
