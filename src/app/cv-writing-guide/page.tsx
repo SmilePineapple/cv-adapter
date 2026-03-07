@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { CheckCircle, ArrowRight, FileText, Target, Sparkles, Award, TrendingUp, Users } from 'lucide-react'
+import { CVWritingGuideSchema } from '@/components/CVWritingGuideSchema'
 
 export const metadata: Metadata = {
   title: 'CV Writing Guide 2026: Complete Step-by-Step Tutorial | My CV Buddy',
@@ -53,7 +54,9 @@ export const metadata: Metadata = {
 
 export default function CVWritingGuidePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <>
+      <CVWritingGuideSchema />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
@@ -519,5 +522,6 @@ export default function CVWritingGuidePage() {
         </div>
       </footer>
     </div>
+    </>
   )
 }
