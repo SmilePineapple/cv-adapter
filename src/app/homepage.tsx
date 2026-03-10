@@ -947,22 +947,65 @@ export default function LandingPage() {
               </Link>
 
               <Link 
-                href="/blog/how-to-beat-ats-systems"
+                href="/ats-optimization-guide"
                 className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="bg-red-100 p-2 rounded-lg">
                     <Zap className="w-6 h-6 text-red-600" />
                   </div>
+                  <span className="text-xs bg-red-600 text-white px-2 py-1 rounded-full">New</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  How to Beat ATS Systems
+                  ATS Optimization Guide 2026
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
-                  Complete guide to getting past applicant tracking systems
+                  Complete deep dive: beat ATS systems with proven strategies
                 </p>
                 <div className="flex items-center text-blue-600 text-sm font-semibold">
                   Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/cv-writing-guide"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-indigo-100 p-2 rounded-lg">
+                    <FileText className="w-6 h-6 text-indigo-600" />
+                  </div>
+                  <span className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">New</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  CV Writing Guide 2026
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Step-by-step tutorial: write a winning CV that gets interviews
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+
+              <Link 
+                href="/cv-examples"
+                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="bg-teal-100 p-2 rounded-lg">
+                    <Award className="w-6 h-6 text-teal-600" />
+                  </div>
+                  <span className="text-xs bg-teal-600 text-white px-2 py-1 rounded-full">New</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  CV Examples by Industry
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  15+ professional CV examples for different UK industries
+                </p>
+                <div className="flex items-center text-blue-600 text-sm font-semibold">
+                  View Examples <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
 

@@ -216,6 +216,30 @@ export default function TemplatesPage() {
               </ul>
             </div>
           </div>
+
+          {/* Helpful Resources */}
+          <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">📚 CV Writing Resources</h3>
+            <p className="text-gray-600 mb-4">Learn how to create a professional CV with our comprehensive guides:</p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link href="/cv-writing-guide" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
+                <p className="text-blue-600 hover:text-blue-700 font-semibold">CV Writing Guide 2026 →</p>
+                <p className="text-sm text-gray-600 mt-1">Complete step-by-step tutorial</p>
+              </Link>
+              <Link href="/ats-optimization-guide" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
+                <p className="text-blue-600 hover:text-blue-700 font-semibold">ATS Optimization →</p>
+                <p className="text-sm text-gray-600 mt-1">Beat applicant tracking systems</p>
+              </Link>
+              <Link href="/cv-examples" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
+                <p className="text-blue-600 hover:text-blue-700 font-semibold">CV Examples →</p>
+                <p className="text-sm text-gray-600 mt-1">15+ industry-specific examples</p>
+              </Link>
+              <Link href="/interview-prep" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
+                <p className="text-blue-600 hover:text-blue-700 font-semibold">Interview Prep →</p>
+                <p className="text-sm text-gray-600 mt-1">50+ questions and tips</p>
+              </Link>
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -27,6 +27,40 @@ const nextConfig: NextConfig = {
     return config;
   },
   
+  // 301 Redirects - Consolidate duplicate content to new comprehensive guides
+  async redirects() {
+    return [
+      // Redirect old blog posts to new comprehensive guides
+      {
+        source: '/blog/how-to-beat-ats-systems',
+        destination: '/ats-optimization-guide',
+        permanent: true, // 301 redirect
+      },
+      {
+        source: '/blog/cv-examples-by-industry-uk',
+        destination: '/cv-examples',
+        permanent: true,
+      },
+      {
+        source: '/blog/cv-writing-tips',
+        destination: '/cv-writing-guide',
+        permanent: true,
+      },
+      // Ensure non-www redirects to www for consistency
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'mycvbuddy.com',
+          },
+        ],
+        destination: 'https://www.mycvbuddy.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
+  
   // Allow cross-origin requests from local network
   async headers() {
     return [

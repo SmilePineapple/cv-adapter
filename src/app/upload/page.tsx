@@ -482,6 +482,25 @@ export default function UploadPage() {
                 Upload Different CV
               </button>
             </div>
+
+            {/* Helpful Resources */}
+            <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <h3 className="font-semibold text-gray-900 mb-3">📚 Helpful Resources</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <Link href="/cv-writing-guide" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                  → CV Writing Guide 2026
+                </Link>
+                <Link href="/ats-optimization-guide" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                  → ATS Optimization Guide
+                </Link>
+                <Link href="/cv-examples" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                  → CV Examples by Industry
+                </Link>
+                <Link href="/interview-prep" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                  → Interview Preparation Guide
+                </Link>
+              </div>
+            </div>
           </div>
         )}
       </div>
