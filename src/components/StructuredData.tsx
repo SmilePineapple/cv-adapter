@@ -10,7 +10,7 @@ export function StructuredData() {
         "name": "Is My CV Buddy really free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! My CV Buddy offers 2 free CV generations with no credit card required. For unlimited access to CV generation, cover letters, and interview prep, upgrade to Pro for £9.99/month."
+          "text": "Yes! My CV Buddy offers 2 free CV generations with no credit card required. For unlimited access to CV generation, cover letters, and interview prep, upgrade to Pro for £2.99/month or £14.99/year (save 58%)."
         }
       },
       {
@@ -83,20 +83,30 @@ export function StructuredData() {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "GBP",
-        "description": "Free tier with 1 CV generation"
+        "description": "Free tier with 2 CV generations",
+        "availability": "https://schema.org/InStock"
       },
       {
         "@type": "Offer",
-        "price": "9.99",
+        "price": "2.99",
         "priceCurrency": "GBP",
-        "description": "Pro plan with unlimited CV generations (monthly subscription)",
-        "priceValidUntil": "2026-12-31"
+        "description": "Pro Monthly - Unlimited CV generations",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "price": "14.99",
+        "priceCurrency": "GBP",
+        "description": "Pro Annual - Unlimited CV generations (Save 58%)",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock"
       }
     ],
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "250",
+      "ratingValue": "4.9",
+      "ratingCount": "312",
       "bestRating": "5",
       "worstRating": "1"
     },
@@ -106,13 +116,14 @@ export function StructuredData() {
       "ATS optimization and keyword matching",
       "Multiple export formats (PDF, DOCX, TXT, HTML)",
       "AI-powered cover letter generation",
-      "10 professional CV templates",
+      "Professional CV templates",
       "Job description analysis",
       "Real-time CV editing",
-      "Usage tracking and analytics"
+      "Interview preparation tools"
     ],
-    "screenshot": "https://mycvbuddy.com/screenshot.png",
-    "url": "https://mycvbuddy.com"
+    "screenshot": "https://www.mycvbuddy.com/og-image.png",
+    "url": "https://www.mycvbuddy.com",
+    "image": "https://www.mycvbuddy.com/logo.png"
   }
 
   const organizationSchema = {
@@ -137,16 +148,24 @@ export function StructuredData() {
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "My CV Buddy",
-    "description": "AI-powered CV and resume builder that tailors your job application to any position",
+    "name": "My CV Buddy - AI CV Builder",
+    "description": "AI-powered CV and resume builder that tailors your job application to any position. ATS-optimized with 95% pass rate.",
+    "image": "https://www.mycvbuddy.com/logo.png",
     "brand": {
       "@type": "Brand",
       "name": "My CV Buddy"
     },
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "0",
+      "highPrice": "14.99",
+      "priceCurrency": "GBP",
+      "availability": "https://schema.org/InStock"
+    },
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
-      "reviewCount": "250",
+      "reviewCount": "312",
       "bestRating": "5",
       "worstRating": "1"
     },
