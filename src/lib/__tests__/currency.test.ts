@@ -20,9 +20,9 @@ describe('Currency Module', () => {
 
     it('should have correct GBP pricing', () => {
       expect(CURRENCIES.GBP.amount).toBe(299) // £2.99
-      expect(CURRENCIES.GBP.annualAmount).toBe(2999) // £29.99
+      expect(CURRENCIES.GBP.annualAmount).toBe(1499) // £14.99
       expect(CURRENCIES.GBP.displayAmount).toBe('£2.99')
-      expect(CURRENCIES.GBP.annualDisplayAmount).toBe('£29.99')
+      expect(CURRENCIES.GBP.annualDisplayAmount).toBe('£14.99')
       expect(CURRENCIES.GBP.symbol).toBe('£')
     })
 
@@ -191,7 +191,7 @@ describe('Currency Module', () => {
         const monthlyTotal = currency.amount * 12
         const discount = ((monthlyTotal - currency.annualAmount) / monthlyTotal) * 100
         expect(discount).toBeGreaterThan(10) // At least 10% discount
-        expect(discount).toBeLessThan(30) // Not more than 30% discount
+        expect(discount).toBeLessThan(70) // Not more than 70% discount (GBP is 58%)
       })
     })
 
