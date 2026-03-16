@@ -45,6 +45,16 @@ export async function GET(request: NextRequest) {
       access_token_secret: config.access_token_secret
     }
 
+    // Debug: Log credential lengths (not actual values)
+    console.log('[Twitter Test] Credential check:', {
+      api_key_length: twitterConfig.api_key?.length,
+      api_secret_length: twitterConfig.api_secret?.length,
+      access_token_length: twitterConfig.access_token?.length,
+      access_token_secret_length: twitterConfig.access_token_secret?.length,
+      api_key_preview: twitterConfig.api_key?.substring(0, 10) + '...',
+      access_token_preview: twitterConfig.access_token?.substring(0, 25) + '...'
+    })
+
     if (action === 'verify') {
       // Verify credentials
       const result = await verifyTwitterCredentials(twitterConfig)
