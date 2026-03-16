@@ -12,7 +12,7 @@
     },
     {
       "path": "/api/social-bot/cron",
-      "schedule": "0 * * * *"
+      "schedule": "0 12 * * *"
     }
   ],
   "redirects": [
