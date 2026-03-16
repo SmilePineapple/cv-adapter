@@ -20,10 +20,10 @@ export const CURRENCIES: Record<string, CurrencyConfig> = {
     symbol: '£',
     amount: 299, // £2.99/month
     displayAmount: '£2.99',
-    annualAmount: 2999, // £29.99/year
-    annualDisplayAmount: '£29.99',
-    annualMonthlyEquivalent: '£2.50/month',
-    annualSavings: 'Save £6/year',
+    annualAmount: 1499, // £14.99/year
+    annualDisplayAmount: '£14.99',
+    annualMonthlyEquivalent: '£1.25/month',
+    annualSavings: 'Save £21/year',
     name: 'British Pound'
   },
   USD: {

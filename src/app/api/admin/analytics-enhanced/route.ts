@@ -152,8 +152,8 @@ export async function GET(request: NextRequest) {
     // Calculate monthly revenue (MRR snapshot per month)
     Object.keys(monthlyRevenue).forEach(monthKey => {
       const proUsersInMonth = monthlyUserGrowth[monthKey].pro
-      // Estimate: assume average of £2.75/month (mix of monthly £2.99 and annual £2.50)
-      monthlyRevenue[monthKey] = proUsersInMonth * 2.75
+      // Estimate: assume average of £2.12/month (mix of monthly £2.99 and annual £1.25)
+      monthlyRevenue[monthKey] = proUsersInMonth * 2.12
     })
 
     // GEOGRAPHIC DATA - Extract from user metadata or profiles
