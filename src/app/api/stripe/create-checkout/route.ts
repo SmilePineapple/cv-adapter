@@ -93,18 +93,18 @@ export async function POST(request: NextRequest) {
         inr: 24900,   // ₹249/month
       }
 
-      // Annual pricing by currency (save ~17%)
+      // Annual pricing by currency (save ~58%)
       const annualPricing: Record<string, number> = {
-        gbp: 2999,    // £29.99/year (£2.50/month)
-        usd: 3999,    // $39.99/year ($3.33/month)
-        eur: 3499,    // €34.99/year (€2.92/month)
-        cad: 4499,    // C$44.99/year (C$3.75/month)
-        aud: 4999,    // A$49.99/year (A$4.17/month)
-        inr: 249900,  // ₹2,499/year (₹208/month)
+        gbp: 1499,    // £14.99/year (£1.25/month)
+        usd: 1999,    // $19.99/year ($1.67/month)
+        eur: 1749,    // €17.49/year (€1.46/month)
+        cad: 2249,    // C$22.49/year (C$1.87/month)
+        aud: 2499,    // A$24.99/year (A$2.08/month)
+        inr: 124900,  // ₹1,249/year (₹104/month)
       }
 
       const pricing = plan === 'annual' ? annualPricing : monthlyPricing
-      const amount = pricing[currency.toLowerCase()] || (plan === 'annual' ? 2999 : 299)
+      const amount = pricing[currency.toLowerCase()] || (plan === 'annual' ? 1499 : 299)
       const interval = plan === 'annual' ? 'year' : 'month'
 
       sessionParams.line_items = [
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
             product_data: {
               name: `CV Adapter Pro - ${plan === 'annual' ? 'Annual' : 'Monthly'} Plan`,
               description: plan === 'annual' 
-                ? 'Unlimited CV generations - Billed annually (Save 17%)'
+                ? 'Unlimited CV generations - Billed annually (Save 58%)'
                 : 'Unlimited CV generations - Billed monthly',
             },
             unit_amount: amount,
