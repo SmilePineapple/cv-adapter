@@ -174,9 +174,10 @@ export async function GET(request: NextRequest) {
         const endDate = new Date()
         const monthTotals = new Map<string, { amountMinor: number; currencies: Set<string> }>()
 
+        // Query invoices instead of charges (subscriptions create invoices, not charges)
         let startingAfter: string | undefined = undefined
         while (true) {
-          const chargesPage: any = await stripe.charges.list({
+          const invoicesPage: any = await stripe.invoices.list({
             limit: 100,
             created: {
               gte: Math.floor(startDate.getTime() / 1000),
@@ -185,24 +186,23 @@ export async function GET(request: NextRequest) {
             ...(startingAfter ? { starting_after: startingAfter } : {}),
           })
 
-          for (const ch of chargesPage.data) {
-            if (!ch.paid) continue
-            if (ch.status !== 'succeeded') continue
+          for (const inv of invoicesPage.data) {
+            if (inv.status !== 'paid') continue
 
-            const netAmountMinor = Math.max(0, (ch.amount || 0) - (ch.amount_refunded || 0))
+            const netAmountMinor = Math.max(0, (inv.amount_paid || 0))
             if (netAmountMinor <= 0) continue
 
-            const created = new Date((ch.created || 0) * 1000)
+            const created = new Date((inv.created || 0) * 1000)
             const key = `${created.getUTCFullYear()}-${String(created.getUTCMonth() + 1).padStart(2, '0')}`
 
             const current = monthTotals.get(key) || { amountMinor: 0, currencies: new Set<string>() }
             current.amountMinor += netAmountMinor
-            if (ch.currency) current.currencies.add(String(ch.currency).toLowerCase())
+            if (inv.currency) current.currencies.add(String(inv.currency).toLowerCase())
             monthTotals.set(key, current)
           }
 
-          if (!chargesPage.has_more) break
-          startingAfter = chargesPage.data[chargesPage.data.length - 1]?.id
+          if (!invoicesPage.has_more) break
+          startingAfter = invoicesPage.data[invoicesPage.data.length - 1]?.id
           if (!startingAfter) break
         }
 
