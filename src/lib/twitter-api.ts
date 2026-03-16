@@ -96,13 +96,13 @@ export async function postTweet(
   config: TwitterConfig
 ): Promise<{ success: boolean; tweetId?: string; tweetUrl?: string; error?: string }> {
   try {
-    console.log('Posting tweet with config:', {
+    console.log('[Twitter POST] Starting tweet post with config:', {
       api_key: config.api_key?.substring(0, 10) + '...',
       api_key_length: config.api_key?.length,
-      access_token: config.access_token?.substring(0, 10) + '...',
+      access_token: config.access_token?.substring(0, 25) + '...',
       access_token_length: config.access_token?.length,
-      hasSecret: !!config.api_secret,
-      hasTokenSecret: !!config.access_token_secret,
+      api_secret_length: config.api_secret?.length,
+      token_secret_length: config.access_token_secret?.length,
       content_length: content.length
     })
     
@@ -113,12 +113,15 @@ export async function postTweet(
     // URL encode the status
     const params = { status: content }
 
-    console.log('Generating OAuth signature for:', { method, url, hasParams: true })
+    console.log('[Twitter POST] Generating OAuth signature for:', { method, url, params })
 
     // Generate OAuth header with status parameter
     const authHeader = generateOAuthHeader(method, url, config, params)
     
-    console.log('OAuth header generated, length:', authHeader.length)
+    console.log('[Twitter POST] OAuth header generated:', {
+      headerLength: authHeader.length,
+      headerPreview: authHeader.substring(0, 100) + '...'
+    })
 
     // Post tweet using form data
     const response = await fetch(url, {
@@ -138,14 +141,17 @@ export async function postTweet(
       } catch {
         errorData = { error: errorText }
       }
-      console.error('Twitter API error response:', {
+      console.error('[Twitter POST] API error response:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorData
+        error: errorData,
+        requestUrl: url,
+        requestMethod: method,
+        bodyParams: params
       })
       return {
         success: false,
-        error: errorData.detail || errorData.title || errorData.error || errorText || 'Failed to post tweet'
+        error: JSON.stringify(errorData)
       }
     }
 
