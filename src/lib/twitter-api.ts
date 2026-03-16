@@ -22,11 +22,13 @@ function generateOAuthSignature(
   consumerSecret: string,
   tokenSecret: string
 ): string {
-  // Sort parameters
-  const sortedParams = Object.keys(params)
-    .sort()
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-    .join('&')
+  // Sort parameters and encode using URLSearchParams format (spaces as +, not %20)
+  // This must match the body encoding exactly for OAuth signature to be valid
+  const urlParams = new URLSearchParams()
+  Object.keys(params).sort().forEach(key => {
+    urlParams.append(key, params[key])
+  })
+  const sortedParams = urlParams.toString()
 
   // Create signature base string
   const signatureBaseString = [
