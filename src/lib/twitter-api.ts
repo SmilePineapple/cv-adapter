@@ -210,13 +210,14 @@ export async function getTweetMetrics(
 }
 
 /**
- * Verify Twitter credentials
+ * Verify Twitter credentials using v1.1 API
  */
 export async function verifyTwitterCredentials(
   config: TwitterConfig
 ): Promise<{ success: boolean; username?: string; error?: string }> {
   try {
-    const url = 'https://api.twitter.com/2/users/me'
+    // Use v1.1 API which works with Free tier (no Project required)
+    const url = 'https://api.twitter.com/1.1/account/verify_credentials.json'
     const method = 'GET'
 
     const authHeader = generateOAuthHeader(method, url, config)
@@ -229,17 +230,23 @@ export async function verifyTwitterCredentials(
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
+      const errorText = await response.text()
+      let errorData
+      try {
+        errorData = JSON.parse(errorText)
+      } catch {
+        errorData = { error: errorText }
+      }
       return {
         success: false,
-        error: errorData.detail || 'Failed to verify credentials'
+        error: JSON.stringify(errorData)
       }
     }
 
     const data = await response.json()
     return {
       success: true,
-      username: data.data?.username
+      username: data.screen_name
     }
 
   } catch (error) {
