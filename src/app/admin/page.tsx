@@ -16,7 +16,6 @@ import {
   Calendar,
   BarChart3,
   UserCheck,
-  Zap,
   Twitter,
   Download,
   Filter,

@@ -297,7 +297,7 @@ export async function GET(request: NextRequest) {
       const purchase = purchases.find(p => p.user_id === user.id && p.status === 'completed')
       const subscription = subscriptions.find(s => s.user_id === user.id)
       const usage = usageTracking.find(u => u.user_id === user.id)
-      const userGenerations = generations.filter(g => g.user_id === user.id)
+      // const userGenerations = generations.filter(g => g.user_id === user.id)
       const userCVs = cvs.filter(c => c.user_id === user.id)
       const userCoverLetters = coverLetters.filter(c => c.user_id === user.id)
       const userInterviewPreps = interviewPreps.filter(i => i.user_id === user.id)
@@ -315,7 +315,6 @@ export async function GET(request: NextRequest) {
       } else if (usage?.subscription_tier === 'pro_annual') {
         userPlan = 'pro'
         userStatus = 'active'
-        subscriptionType = 'annual'
       } else if (purchase) {
         // Legacy one-time purchase
         userPlan = 'pro'

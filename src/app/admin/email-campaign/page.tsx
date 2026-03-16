@@ -20,7 +20,7 @@ export default function EmailCampaignPage() {
   const [excludeProUsers, setExcludeProUsers] = useState(false)
   const [excludedEmails, setExcludedEmails] = useState<string[]>([])
   const [unsubscribedUsers, setUnsubscribedUsers] = useState<Array<{email: string, unsubscribed_at: string}>>([])
-  const [activeCampaign, setActiveCampaign] = useState<any>(null)
+  // const [activeCampaign, setActiveCampaign] = useState<any>(null)
   const [campaignProgress, setCampaignProgress] = useState<{sent: number, failed: number, total: number} | null>(null)
 
   useEffect(() => {

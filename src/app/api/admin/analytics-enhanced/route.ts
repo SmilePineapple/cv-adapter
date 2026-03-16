@@ -66,13 +66,13 @@ export async function GET(request: NextRequest) {
     ])
 
     const users = allUsers
-    const profiles = profilesResult.data || []
+    // const profiles = profilesResult.data || []
     const purchases = purchasesResult.data || []
     const subscriptions = subscriptionsResult.data || []
     const usageTracking = usageResult.data || []
     const generations = generationsResult.data || []
     const cvs = cvsResult.data || []
-    const coverLetters = coverLettersResult.data || []
+    // const coverLetters = coverLettersResult.data || []
 
     // Get active Stripe subscriptions
     const activeSubscriptionUserIds = new Set(
@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
       // For each month, count cumulative users
       Object.keys(monthlyUserGrowth).forEach(monthKey => {
         const [year, month] = monthKey.split('-').map(Number)
-        const monthDate = new Date(year, month - 1, 1)
+        // const monthDate = new Date(year, month - 1, 1)
         
         // If user was created before or during this month
         if (userDate <= new Date(year, month, 0)) {
@@ -265,7 +265,7 @@ export async function GET(request: NextRequest) {
       if (genDate > thirtyDaysAgo) {
         const dateKey = genDate.toISOString().split('T')[0]
         if (dailyActiveUsers[dateKey] !== undefined) {
-          const userId = gen.user_id
+          // const userId = gen.user_id
           // Count unique users per day (simplified - in production use Set)
           dailyActiveUsers[dateKey]++
         }
