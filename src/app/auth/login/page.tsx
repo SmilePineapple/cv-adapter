@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -12,11 +12,23 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [supabase, setSupabase] = useState<ReturnType<typeof createSupabaseClient> | null>(null)
   const router = useRouter()
-  const supabase = createSupabaseClient()
+
+  useEffect(() => {
+    try {
+      setSupabase(createSupabaseClient())
+    } catch (e) {
+      console.error('Failed to initialize Supabase client:', e)
+    }
+  }, [])
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!supabase) {
+      toast.error('Authentication service not available')
+      return
+    }
     setIsLoading(true)
 
     try {
@@ -39,6 +51,10 @@ export default function LoginPage() {
   }
 
   const handleOAuthLogin = async (provider: 'google') => {
+    if (!supabase) {
+      toast.error('Authentication service not available')
+      return
+    }
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
