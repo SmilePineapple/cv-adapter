@@ -133,13 +133,23 @@ export async function postTweet(
     })
 
     // Post tweet using form data
+    const bodyString = new URLSearchParams(params).toString()
+    
+    console.log('[Twitter POST] Request details:', {
+      url,
+      method,
+      bodyLength: bodyString.length,
+      bodyPreview: bodyString.substring(0, 100) + '...',
+      authHeaderPreview: authHeader.substring(0, 150) + '...'
+    })
+    
     const response = await fetch(url, {
       method,
       headers: {
         'Authorization': authHeader,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: new URLSearchParams(params).toString()
+      body: bodyString
     })
 
     if (!response.ok) {

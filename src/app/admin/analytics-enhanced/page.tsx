@@ -6,7 +6,6 @@ import { createSupabaseClient } from '@/lib/supabase'
 import {
   BarChart3,
   TrendingUp,
-  Users,
   Globe,
   MousePointer,
   Search,
