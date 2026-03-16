@@ -53,6 +53,7 @@ interface AnalyticsData {
     monthlyProRevenue?: number
     annualProRevenue?: number
   }
+  monthlyRevenueByMonth?: Array<{ month: string; revenue: number; currency: string }>
   charts: {
     generationsByDay: { [key: string]: number }
     signupsByDay: { [key: string]: number }
@@ -92,6 +93,7 @@ export default function AdminDashboard() {
   const [filterValue, setFilterValue] = useState<'all' | 'high' | 'low'>('all')
   const [showFilters, setShowFilters] = useState(false)
   const [resettingUserId, setResettingUserId] = useState<string | null>(null)
+  const [showAllRevenueMonths, setShowAllRevenueMonths] = useState(false)
   const supabase = createSupabaseClient()
   const router = useRouter()
 
@@ -303,6 +305,37 @@ export default function AdminDashboard() {
               </Link>
             </div>
           </div>
+
+          {analytics.monthlyRevenueByMonth && analytics.monthlyRevenueByMonth.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-white/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm font-semibold opacity-95">Revenue by Month (Stripe)</div>
+                <button
+                  type="button"
+                  onClick={() => setShowAllRevenueMonths(v => !v)}
+                  className="text-xs bg-white/15 hover:bg-white/25 transition-colors px-3 py-1.5 rounded-full"
+                >
+                  {showAllRevenueMonths ? 'Show last 3 months' : 'Show all months'}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {(showAllRevenueMonths
+                  ? analytics.monthlyRevenueByMonth
+                  : analytics.monthlyRevenueByMonth.slice(-3)
+                ).map((m) => (
+                  <div key={m.month} className="bg-white/10 rounded-lg p-4">
+                    <div className="text-xs opacity-80 mb-1">{m.month}</div>
+                    <div className="text-2xl font-bold">
+                      {m.currency === 'gbp' ? '£' : ''}{m.revenue.toFixed(2)}
+                      {m.currency !== 'gbp' && m.currency !== 'mixed' ? ` ${m.currency.toUpperCase()}` : ''}
+                      {m.currency === 'mixed' ? ' (mixed)' : ''}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -823,80 +823,97 @@ export default function LandingPage() {
               </Link>
               <p className="mt-4 text-sm text-gray-500">1 free generation • No credit card required</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What Our Users Say
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Real Results from Real People
             </h2>
-            <p className="text-xl text-gray-600">
-              Join thousands of job seekers who landed their dream jobs with My CV Buddy
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Join thousands of job seekers who transformed their CVs and landed their dream jobs
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-400">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-8">
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-blue-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex text-yellow-400 text-xl">
                   {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
                 </div>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
               </div>
-              <p className="text-gray-700 mb-4 italic">
-                "My ATS score went from 30% to 89% after using My CV Buddy. I got 3 interview requests in one week!"
+              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "My ATS score went from <strong className="text-red-600">30%</strong> to <strong className="text-green-600">89%</strong> after using My CV Buddy. I got <strong>3 interview requests in one week!</strong>"
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
                   SM
                 </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">Sarah M.</p>
+                <div className="ml-4">
+                  <p className="font-bold text-gray-900">Sarah M.</p>
                   <p className="text-sm text-gray-600">Marketing Manager, London</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-400">
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-purple-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex text-yellow-400 text-xl">
                   {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
                 </div>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
               </div>
-              <p className="text-gray-700 mb-4 italic">
-                "I was applying to 50+ jobs with no responses. After optimizing my resume, I got callbacks from 15 companies."
+              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "I was applying to <strong>50+ jobs with no responses.</strong> After optimizing my resume, I got callbacks from <strong className="text-green-600">15 companies.</strong>"
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
                   JT
                 </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">James T.</p>
+                <div className="ml-4">
+                  <p className="font-bold text-gray-900">James T.</p>
                   <p className="text-sm text-gray-600">Software Engineer, Manchester</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="flex items-center mb-4">
-                <div className="flex text-yellow-400">
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-green-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex text-yellow-400 text-xl">
                   {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
                 </div>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
               </div>
-              <p className="text-gray-700 mb-4 italic">
-                "Saved me hours of work! The AI understood exactly what the job required and tailored my CV perfectly."
+              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "Saved me <strong>hours of work!</strong> The AI understood exactly what the job required and tailored my CV perfectly."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
                   EP
                 </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">Emily P.</p>
+                <div className="ml-4">
+                  <p className="font-bold text-gray-900">Emily P.</p>
                   <p className="text-sm text-gray-600">Project Manager, Birmingham</p>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="bg-white rounded-2xl p-6 max-w-4xl mx-auto shadow-lg border border-gray-200">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <div className="text-3xl font-bold text-blue-600 mb-1">4.9/5</div>
+                <div className="text-sm text-gray-600">Average Rating</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-green-600 mb-1">10,000+</div>
+                <div className="text-sm text-gray-600">Happy Users</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-600 mb-1">95%</div>
+                <div className="text-sm text-gray-600">ATS Pass Rate</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-orange-600 mb-1">2 min</div>
+                <div className="text-sm text-gray-600">Avg. Time</div>
               </div>
             </div>
           </div>

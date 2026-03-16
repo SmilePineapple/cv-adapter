@@ -428,8 +428,12 @@ export default function DownloadPage() {
       }
       
       // Get skill scores if available
-      const skillScoresSection = sections.find(s => s.type === 'skill_scores')
-      const skillScores = skillScoresSection?.content || null
+      const skillScoresSection = sections.find(s => (s as any).type === 'skill_scores')
+      const rawSkillScores = skillScoresSection?.content || null
+
+      const skillScores = Array.isArray(rawSkillScores)
+        ? rawSkillScores
+        : null
       
       // Prepare data for stunning templates
       const templateData = {
@@ -443,7 +447,7 @@ export default function DownloadPage() {
         education: getSectionContent(sections.find(s => s.type === 'education')?.content),
         skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
         skillScores: skillScores,
-        languages: getSectionContent(sections.find(s => s.type === 'languages')?.content),
+        languages: getSectionContent(sections.find(s => (s as any).type === 'languages')?.content),
         hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
         photoUrl: currentPhotoUrl || undefined,

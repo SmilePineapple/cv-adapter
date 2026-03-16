@@ -20,7 +20,18 @@ import {
 } from 'lucide-react'
 import { getCurrencyFromLocale, type CurrencyConfig, CURRENCIES } from '@/lib/currency'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+let stripePromise: ReturnType<typeof loadStripe> | null = null
+
+function getStripePromise() {
+  if (stripePromise) return stripePromise
+  const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  if (!key) {
+    console.error('[Stripe] Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+    return null
+  }
+  stripePromise = loadStripe(key)
+  return stripePromise
+}
 
 interface PurchaseInfo {
   status: string | null
@@ -262,7 +273,12 @@ export default function SubscriptionPage() {
 
       const { sessionId } = result
 
-      const stripe = await stripePromise
+      const stripeLoader = getStripePromise()
+      if (!stripeLoader) {
+        throw new Error('Stripe is not configured')
+      }
+
+      const stripe = await stripeLoader
       if (!stripe) {
         throw new Error('Stripe failed to load')
       }

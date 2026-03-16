@@ -164,9 +164,62 @@ export async function GET(request: NextRequest) {
     let totalMRR = 0
     let monthlyProCount = 0
     let annualProCount = 0
+    let monthlyRevenueByMonth: Array<{ month: string; revenue: number; currency: string }> = []
     
     try {
-      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY!)
+      const stripe: any = require('stripe')(process.env.STRIPE_SECRET_KEY!)
+
+      try {
+        const startDate = new Date('2025-10-01T00:00:00.000Z')
+        const endDate = new Date()
+        const monthTotals = new Map<string, { amountMinor: number; currencies: Set<string> }>()
+
+        let startingAfter: string | undefined = undefined
+        while (true) {
+          const chargesPage: any = await stripe.charges.list({
+            limit: 100,
+            created: {
+              gte: Math.floor(startDate.getTime() / 1000),
+              lte: Math.floor(endDate.getTime() / 1000),
+            },
+            ...(startingAfter ? { starting_after: startingAfter } : {}),
+          })
+
+          for (const ch of chargesPage.data) {
+            if (!ch.paid) continue
+            if (ch.status !== 'succeeded') continue
+
+            const netAmountMinor = Math.max(0, (ch.amount || 0) - (ch.amount_refunded || 0))
+            if (netAmountMinor <= 0) continue
+
+            const created = new Date((ch.created || 0) * 1000)
+            const key = `${created.getUTCFullYear()}-${String(created.getUTCMonth() + 1).padStart(2, '0')}`
+
+            const current = monthTotals.get(key) || { amountMinor: 0, currencies: new Set<string>() }
+            current.amountMinor += netAmountMinor
+            if (ch.currency) current.currencies.add(String(ch.currency).toLowerCase())
+            monthTotals.set(key, current)
+          }
+
+          if (!chargesPage.has_more) break
+          startingAfter = chargesPage.data[chargesPage.data.length - 1]?.id
+          if (!startingAfter) break
+        }
+
+        monthlyRevenueByMonth = Array.from(monthTotals.entries())
+          .map(([month, v]) => {
+            const currencies = Array.from(v.currencies)
+            const currency = currencies.length === 1 ? currencies[0] : 'mixed'
+            return {
+              month,
+              revenue: v.amountMinor / 100,
+              currency,
+            }
+          })
+          .sort((a, b) => a.month.localeCompare(b.month))
+      } catch (err) {
+        console.error('[Analytics] Failed to compute monthly revenue breakdown from Stripe charges:', err)
+      }
       
       for (const user of activePayingProUsers) {
         try {
@@ -377,7 +430,8 @@ export async function GET(request: NextRequest) {
         signupsByDay
       },
       users: userDetails,
-      topUsers
+      topUsers,
+      monthlyRevenueByMonth
     })
 
   } catch (error) {

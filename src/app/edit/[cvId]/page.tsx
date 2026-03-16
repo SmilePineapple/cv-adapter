@@ -1401,11 +1401,6 @@ export default function CVEditorPage() {
                     <div className="bg-gray-50 rounded-lg p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <h4 className="text-sm font-medium text-gray-900">AI Generation Options</h4>
-                        {userPlan === 'free' && (
-                          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded">
-                            {aiUsageCount}/10 used
-                          </span>
-                        )}
                       </div>
                       
                       <div className="grid grid-cols-2 gap-2">

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
-import { postTweet } from '@/lib/twitter-api-v2'
+import { postTweet } from '@/lib/twitter-api'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -34,6 +34,13 @@ export async function GET(request: NextRequest) {
       errors: [] as string[]
     }
 
+    // Reset daily counts first so we don't skip posts forever if a cron runs after midnight
+    try {
+      await supabase.rpc('reset_daily_post_counts')
+    } catch (resetError) {
+      console.warn('reset_daily_post_counts failed (continuing):', resetError)
+    }
+
     // Get posts scheduled for now or earlier that haven't been posted
     const { data: scheduledPosts, error: fetchError } = await supabase
       .from('social_media_posts')
@@ -41,7 +48,7 @@ export async function GET(request: NextRequest) {
       .eq('posted', false)
       .lte('scheduled_for', now.toISOString())
       .order('scheduled_for', { ascending: true })
-      .limit(10) // Process max 10 posts per run
+      .limit(50) // Process more per run to drain backlog
 
     if (fetchError) {
       console.error('Error fetching scheduled posts:', fetchError)
@@ -137,9 +144,6 @@ export async function GET(request: NextRequest) {
         results.errors.push(`${post.platform}: ${error}`)
       }
     }
-
-    // Reset daily counts if needed
-    await supabase.rpc('reset_daily_post_counts')
 
     return NextResponse.json({
       success: true,

@@ -96,6 +96,15 @@ export async function GET(request: NextRequest) {
       const email = user.email
       const name = user.user_metadata?.name || user.email?.split('@')[0] || 'there'
 
+      if (!email) {
+        results.push({
+          email: null,
+          success: false,
+          error: 'Missing email'
+        })
+        continue
+      }
+
       console.log(`[Cron] Sending reminder email to ${email}`)
 
       const result = await send3DayReminderEmail(email, name)

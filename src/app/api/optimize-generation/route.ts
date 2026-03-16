@@ -46,7 +46,7 @@ JOB DESCRIPTION:
 ${jobDescription}
 
 CURRENT CV SECTIONS:
-${sections.map(s => `${s.type.toUpperCase()}:\n${typeof s.content === 'string' ? s.content : JSON.stringify(s.content)}`).join('\n\n')}
+${sections.map((s: any) => `${s.type.toUpperCase()}:\n${typeof s.content === 'string' ? s.content : JSON.stringify(s.content)}`).join('\n\n')}
 
 OPTIMIZATION TASKS:
 1. **ATS OPTIMIZATION**

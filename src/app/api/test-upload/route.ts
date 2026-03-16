@@ -3,6 +3,14 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     console.log('Test upload API called')
+
+    const contentType = request.headers.get('content-type') || ''
+    if (!contentType.toLowerCase().includes('multipart/form-data')) {
+      return NextResponse.json(
+        { error: 'Expected multipart/form-data' },
+        { status: 400 }
+      )
+    }
     
     const formData = await request.formData()
     const file = formData.get('file') as File

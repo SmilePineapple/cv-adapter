@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { Resend, type ListAttachmentsResponseSuccess } from 'resend'
+import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       payload,
       headers: { id, timestamp, signature },
       webhookSecret: process.env.RESEND_WEBHOOK_SECRET!,
-    })
+    }) as any
 
     // Only process email.received events
     if (result.type !== 'email.received') {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Get the incoming email's content
-    const { data: email, error: emailError } = await resend.emails.receiving.get(
+    const { data: email, error: emailError } = await (resend as any).emails.receiving.get(
       result.data.email_id
     )
 
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     // Download and encode any attachments
     const { data: attachmentsData, error: attachmentsError } = 
-      await resend.emails.receiving.attachments.list({
+      await (resend as any).emails.receiving.attachments.list({
         emailId: result.data.email_id,
       })
 
@@ -58,9 +58,7 @@ export async function POST(req: NextRequest) {
       throw new Error(`Failed to fetch attachments: ${attachmentsError.message}`)
     }
 
-    const attachments = attachmentsData?.data as ListAttachmentsResponseSuccess['data'] & {
-      content: string
-    }[]
+    const attachments = (attachmentsData?.data || []) as any[]
 
     if (attachments && attachments.length > 0) {
       // Download the attachments and encode them in base64

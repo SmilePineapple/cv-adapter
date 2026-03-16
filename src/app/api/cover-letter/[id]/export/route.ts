@@ -62,7 +62,15 @@ export async function GET(
   }
 }
 
-async function exportAsDocx(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
+async function exportAsDocx(
+  coverLetterData: {
+    content: string
+    company_name: string
+    job_title: string
+    hiring_manager_name?: string
+  },
+  fileName: string
+) {
   try {
     // Parse content to handle basic formatting
     const content = coverLetterData.content
@@ -176,7 +184,7 @@ async function exportAsDocx(coverLetterData: {content: string, company_name?: st
     // Generate buffer
     const buffer = await Packer.toBuffer(doc)
 
-    return new NextResponse(buffer, {
+    return new NextResponse(buffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': `attachment; filename="${fileName}.docx"`
@@ -189,13 +197,29 @@ async function exportAsDocx(coverLetterData: {content: string, company_name?: st
   }
 }
 
-async function exportAsPdf(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
+async function exportAsPdf(
+  coverLetterData: {
+    content: string
+    company_name: string
+    job_title: string
+    hiring_manager_name?: string
+  },
+  fileName: string
+) {
   // For now, redirect to a PDF generation service or return text
   // This would require additional PDF generation library like puppeteer or jsPDF
   return exportAsText(coverLetterData, fileName)
 }
 
-function exportAsText(coverLetterData: {content: string, company_name?: string, position_title?: string, hiring_manager_name?: string}, fileName: string) {
+function exportAsText(
+  coverLetterData: {
+    content: string
+    company_name: string
+    job_title: string
+    hiring_manager_name?: string
+  },
+  fileName: string
+) {
   const content = `${coverLetterData.content}
 
 ---

@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
           console.log('[Webhook] Processing subscription for user:', userId, 'Plan:', planType)
 
           // Get subscription details - expand to ensure we have all data
-          const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+          const subscription: any = await stripe.subscriptions.retrieve(subscriptionId, {
             expand: ['latest_invoice', 'customer']
           })
           

@@ -29,6 +29,8 @@ export default function AssessmentResultsPage() {
 
   const [result, setResult] = useState<AssessmentResult | null>(null)
   const [assessment, setAssessment] = useState<any>(null)
+  const [questions, setQuestions] = useState<any[]>([])
+  const [answers, setAnswers] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
 
@@ -62,8 +64,23 @@ export default function AssessmentResultsPage() {
 
       if (assessmentError) throw assessmentError
 
+      // Fetch questions and answers (optional UI)
+      const [{ data: questionsData }, { data: answersData }] = await Promise.all([
+        supabase
+          .from('skill_assessment_questions')
+          .select('*')
+          .eq('assessment_id', assessmentId)
+          .order('question_number'),
+        supabase
+          .from('skill_assessment_answers')
+          .select('*')
+          .eq('assessment_id', assessmentId)
+      ])
+
       setResult(resultData)
       setAssessment(assessmentData)
+      setQuestions(questionsData || [])
+      setAnswers(answersData || [])
 
     } catch (error: any) {
       console.error('Error fetching results:', error)

@@ -13,7 +13,13 @@ export function OAuthMetadataHandler() {
     const applyOAuthMetadata = async () => {
       try {
         // Check if there's stored metadata from OAuth signup
-        const storedMetadata = localStorage.getItem('cv_adapter_signup_metadata')
+        let storedMetadata: string | null = null
+        try {
+          storedMetadata = localStorage.getItem('cv_adapter_signup_metadata')
+        } catch (storageError) {
+          console.warn('[OAuthMetadataHandler] localStorage unavailable:', storageError)
+          return
+        }
         
         if (!storedMetadata) return
         
@@ -28,7 +34,11 @@ export function OAuthMetadataHandler() {
         // Check if metadata has already been applied
         if (user.user_metadata?.country) {
           // Metadata already exists, clear localStorage
-          localStorage.removeItem('cv_adapter_signup_metadata')
+          try {
+            localStorage.removeItem('cv_adapter_signup_metadata')
+          } catch (storageError) {
+            console.warn('[OAuthMetadataHandler] Failed to clear localStorage:', storageError)
+          }
           return
         }
         
@@ -41,7 +51,11 @@ export function OAuthMetadataHandler() {
           console.error('Failed to update user metadata:', error)
         } else {
           // Clear stored metadata after successful update
-          localStorage.removeItem('cv_adapter_signup_metadata')
+          try {
+            localStorage.removeItem('cv_adapter_signup_metadata')
+          } catch (storageError) {
+            console.warn('[OAuthMetadataHandler] Failed to clear localStorage:', storageError)
+          }
           console.log('User metadata updated successfully')
         }
       } catch (error) {

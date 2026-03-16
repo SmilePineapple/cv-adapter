@@ -23,7 +23,19 @@ export function getUpgradeTracking(): UpgradeTracking {
     }
   }
 
-  const stored = localStorage.getItem(STORAGE_KEY)
+  let stored: string | null = null
+  try {
+    stored = localStorage.getItem(STORAGE_KEY)
+  } catch {
+    return {
+      pageViews: 0,
+      lastVisit: new Date().toISOString(),
+      visitCount: 0,
+      generationCount: 0,
+      promptsShown: [],
+      promptsDismissed: []
+    }
+  }
   if (!stored) {
     const initial: UpgradeTracking = {
       pageViews: 0,
@@ -33,7 +45,11 @@ export function getUpgradeTracking(): UpgradeTracking {
       promptsShown: [],
       promptsDismissed: []
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(initial))
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initial))
+    } catch {
+      // ignore
+    }
     return initial
   }
 
@@ -45,7 +61,11 @@ export function updateUpgradeTracking(updates: Partial<UpgradeTracking>) {
 
   const current = getUpgradeTracking()
   const updated = { ...current, ...updates }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  } catch {
+    // ignore
+  }
 }
 
 export function incrementPageViews() {
@@ -131,5 +151,9 @@ export function shouldShowUpgradePrompt(trigger: string): boolean {
 
 export function resetUpgradeTracking() {
   if (typeof window === 'undefined') return
-  localStorage.removeItem(STORAGE_KEY)
+  try {
+    localStorage.removeItem(STORAGE_KEY)
+  } catch {
+    // ignore
+  }
 }
