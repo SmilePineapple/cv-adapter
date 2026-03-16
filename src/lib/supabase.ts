@@ -10,4 +10,6 @@ export const supabase = supabaseUrl && supabaseAnonKey
   : null
 
 // Client component client (for use in client components)
-export const createSupabaseClient = () => createClientComponentClient()
+export const createSupabaseClient = () => {
+  return createClientComponentClient()
+}

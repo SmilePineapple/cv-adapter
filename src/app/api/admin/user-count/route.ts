@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch ALL users with pagination (not just first 50)
     console.log('Fetching all users with pagination...')
-    let allUsers: any[] = []
+    const allUsers: any[] = []
     let page = 1
     let hasMore = true
     

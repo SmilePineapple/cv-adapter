@@ -7,7 +7,6 @@ import { createSupabaseClient } from '@/lib/supabase'
 export function OAuthHandler() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const supabase = createSupabaseClient()
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
@@ -21,6 +20,15 @@ export function OAuthHandler() {
     
     if ((accessToken || code) && !isProcessing) {
       setIsProcessing(true)
+
+      let supabase: ReturnType<typeof createSupabaseClient>
+      try {
+        supabase = createSupabaseClient()
+      } catch (e) {
+        console.error('OAuth supabase init error:', e)
+        router.replace('/auth/login')
+        return
+      }
       
       if (accessToken && refreshToken) {
         // Implicit flow - set session directly
@@ -59,7 +67,7 @@ export function OAuthHandler() {
         })
       }
     }
-  }, [searchParams, router, supabase, isProcessing])
+  }, [searchParams, router, isProcessing])
 
   return null // This component doesn't render anything
 }

@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
     const currentDate = new Date()
     
     // Initialize months from October 2025 to current month
-    let tempDate = new Date(appStartDate)
+    const tempDate = new Date(appStartDate)
     while (tempDate <= currentDate) {
       const monthKey = `${tempDate.getFullYear()}-${String(tempDate.getMonth() + 1).padStart(2, '0')}`
       monthlyUserGrowth[monthKey] = { total: 0, free: 0, pro: 0, new: 0 }

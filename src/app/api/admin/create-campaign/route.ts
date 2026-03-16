@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     console.log('Creating campaign with filters:', { excludeProUsers, excludedEmails: excludedEmails.length })
 
     // Fetch ALL users with pagination
-    let allUsers: any[] = []
+    const allUsers: any[] = []
     let page = 1
     let hasMore = true
     
