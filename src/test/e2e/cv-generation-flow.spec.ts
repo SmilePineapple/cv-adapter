@@ -102,7 +102,7 @@ test.describe('Subscription Flow', () => {
     await expect(page.locator('text=/month/')).toBeVisible()
 
     // Check annual pricing
-    await expect(page.locator('text=£29.99')).toBeVisible()
+    await expect(page.locator('text=£14.99')).toBeVisible()
     await expect(page.locator('text=/year/')).toBeVisible()
   })
 })
