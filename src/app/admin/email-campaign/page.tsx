@@ -473,7 +473,7 @@ export default function EmailCampaignPage() {
 
       if (response.ok) {
         toast.success(data.message)
-        setActiveCampaign(data.campaign)
+        // setActiveCampaign(data.campaign)
         setCampaignProgress({
           sent: 0,
           failed: 0,
