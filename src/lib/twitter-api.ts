@@ -38,6 +38,15 @@ function generateOAuthSignature(
   // Create signing key
   const signingKey = `${encodeURIComponent(consumerSecret)}&${encodeURIComponent(tokenSecret)}`
 
+  console.log('[OAuth Signature Debug]', {
+    method,
+    url,
+    paramCount: Object.keys(params).length,
+    sortedParamsPreview: sortedParams.substring(0, 200) + '...',
+    signatureBasePreview: signatureBaseString.substring(0, 200) + '...',
+    signingKeyLength: signingKey.length
+  })
+
   // Generate signature
   const signature = crypto
     .createHmac('sha1', signingKey)
