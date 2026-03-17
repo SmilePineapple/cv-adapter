@@ -11,6 +11,7 @@ import { rateLimiters } from '@/lib/rate-limit-simple'
 import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
 
 // Increase timeout for AI generation (takes ~40 seconds)
+// Note: Vercel Pro allows up to 300s, but we keep it at 60s to fail fast
 export const maxDuration = 60
 
 const openai = new OpenAI({

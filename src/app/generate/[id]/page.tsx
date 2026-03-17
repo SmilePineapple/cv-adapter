@@ -299,12 +299,18 @@ export default function GeneratePage() {
       // Wait for API response
       const response = await responsePromise
       clearInterval(messageInterval)
-      const result = await response.json()
       
-      setGenerateProgress(95)
-      setGenerateStep('✨ Finalizing your perfect CV...')
-
+      // Check response status BEFORE parsing JSON
       if (!response.ok) {
+        // Handle timeout (504) or other errors
+        if (response.status === 504) {
+          toast.error('Generation took too long and timed out. Please try again with a shorter job description.')
+          throw new Error('Request timeout - please try again')
+        }
+        
+        // Try to parse error as JSON, fallback to text
+        const result = await response.json().catch(() => ({ error: 'Generation failed' }))
+        
         if (result.limit_reached) {
           setShowUpgradeModal(true)
           toast.error('Free generation limit reached. Upgrade to Pro for unlimited generations!')
@@ -325,6 +331,11 @@ export default function GeneratePage() {
         toast.error(errorMessage)
         throw new Error(errorMessage)
       }
+      
+      const result = await response.json()
+      
+      setGenerateProgress(95)
+      setGenerateStep('✨ Finalizing your perfect CV...')
 
       setGenerateProgress(100)
       setGenerateStep('Complete!')
