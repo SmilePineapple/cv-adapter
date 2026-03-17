@@ -3,7 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 
 // Manual subscription cancellation for testing (no Stripe required)
 // This marks the subscription as "canceling" but keeps access until period_end
-export async function POST(request: NextRequest) {
+export async function POST(/* request: NextRequest */) {
   try {
     const supabase = createSupabaseRouteClient()
     

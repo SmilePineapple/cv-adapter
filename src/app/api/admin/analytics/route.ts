@@ -311,7 +311,7 @@ export async function GET(request: NextRequest) {
       if (usage?.subscription_tier === 'pro_monthly') {
         userPlan = 'pro'
         userStatus = 'active'
-        subscriptionType = 'monthly'
+        // subscriptionType = 'monthly'
       } else if (usage?.subscription_tier === 'pro_annual') {
         userPlan = 'pro'
         userStatus = 'active'

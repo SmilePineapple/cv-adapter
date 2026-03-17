@@ -13,7 +13,7 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   try {
-    const { company_name, company_website, job_description } = await request.json()
+    const { company_name, /* company_website, */ job_description } = await request.json()
 
     // Validate inputs
     if (!company_name || !job_description) {

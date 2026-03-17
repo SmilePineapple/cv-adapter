@@ -42,7 +42,7 @@ function isInterviewRelated(message: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    const { company_name, company_website, job_description, messages } = await request.json()
+    const { company_name, /* company_website, */ job_description, messages } = await request.json()
 
     // Validate inputs
     if (!company_name || !job_description || !messages || !Array.isArray(messages)) {

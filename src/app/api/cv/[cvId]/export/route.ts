@@ -77,7 +77,7 @@ export async function POST(
     }
     
     // Use admin client for database operations
-    const adminClient = createSupabaseAdminClient()
+    // const adminClient = createSupabaseAdminClient()
 
     const body = await request.json()
     let format = body.format

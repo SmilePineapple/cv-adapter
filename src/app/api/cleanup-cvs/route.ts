@@ -11,7 +11,7 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(/* request: NextRequest */) {
   try {
     const userId = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
     

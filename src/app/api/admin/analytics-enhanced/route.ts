@@ -48,13 +48,13 @@ export async function GET(request: NextRequest) {
 
     // Fetch all analytics data
     const [
-      profilesResult,
+      /* profilesResult, */
       purchasesResult,
       subscriptionsResult,
       usageResult,
       generationsResult,
       cvsResult,
-      coverLettersResult
+      /* coverLettersResult */
     ] = await Promise.all([
       supabase.from('profiles').select('*'),
       supabase.from('purchases').select('*'),
