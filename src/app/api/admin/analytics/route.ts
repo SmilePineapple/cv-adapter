@@ -306,7 +306,7 @@ export async function GET(request: NextRequest) {
       // Determine plan: check usage_tracking.subscription_tier (source of truth for subscription model)
       let userPlan = 'free'
       let userStatus = 'none'
-      let subscriptionType = null
+      // const subscriptionType = null
       
       if (usage?.subscription_tier === 'pro_monthly') {
         userPlan = 'pro'
