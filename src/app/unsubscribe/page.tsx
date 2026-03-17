@@ -20,9 +20,8 @@ export default function UnsubscribePage() {
         body: JSON.stringify({ email })
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Unknown error' }))
         console.error('Unsubscribe error:', data.error)
       }
 

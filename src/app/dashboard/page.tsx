@@ -425,13 +425,14 @@ export default function DashboardPage() {
         body: JSON.stringify({ cv_id: cvId })
       })
 
-      const result = await response.json()
-
       if (!response.ok) {
+        const result = await response.json().catch(() => ({ error: 'Failed to rate CV' }))
         toast.error(result.error || 'Failed to rate CV')
         setRatingModalOpen(false)
         return
       }
+
+      const result = await response.json()
 
       setCvRating(result.rating)
     } catch (error) {
@@ -570,7 +571,7 @@ export default function DashboardPage() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
+        const errorData = await response.json().catch(() => ({ error: 'Failed to reset generations' }))
         throw new Error(errorData.error || 'Failed to reset generations')
       }
 

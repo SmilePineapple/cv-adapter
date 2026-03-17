@@ -43,11 +43,12 @@ export default function TakeAssessmentPage() {
         }
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to fetch assessment' }))
         throw new Error(data.error || 'Failed to fetch assessment')
       }
+
+      const data = await response.json()
 
       setAssessment(data.assessment)
       setQuestions(data.questions)
@@ -141,7 +142,7 @@ export default function TakeAssessmentPage() {
         return
       }
 
-      const response = await fetch('/api/skills-assessment/complete', {
+      const response = await fetch('/api/skills-assessment/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,11 +153,12 @@ export default function TakeAssessmentPage() {
         })
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to submit assessment' }))
         throw new Error(data.error || 'Failed to submit assessment')
       }
+
+      const data = await response.json()
 
       toast.success('Assessment completed!')
       router.push(`/skills-assessment/results/${assessmentId}`)

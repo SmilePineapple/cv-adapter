@@ -425,12 +425,13 @@ export default function ReviewPage() {
         }),
       })
 
-      const result = await response.json()
-
       if (!response.ok) {
+        const result = await response.json().catch(() => ({ error: 'Failed to review CV' }))
         toast.error(result.error || 'Failed to review CV')
         return
       }
+
+      const result = await response.json()
 
       setAiReview(result.review)
       setShowReview(true)
@@ -477,12 +478,13 @@ export default function ReviewPage() {
         }),
       })
 
-      const result = await response.json()
-
       if (!response.ok) {
+        const result = await response.json().catch(() => ({ error: 'Failed to apply improvements' }))
         toast.error(result.error || 'Failed to apply improvements')
         return
       }
+
+      const result = await response.json()
 
       // Store improved sections for comparison view
       setImprovedSections(result.sections)

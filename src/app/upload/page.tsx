@@ -97,12 +97,15 @@ export default function UploadPage() {
       toast.info('Parsing CV content...')
 
       console.log('[UPLOAD] Response status:', response.status)
-      const result = await response.json()
-      console.log('[UPLOAD] Response result:', result)
-
+      
       if (!response.ok) {
+        const result = await response.json().catch(() => ({ error: 'Upload failed' }))
+        console.log('[UPLOAD] Error result:', result)
         throw new Error(result.error || 'Upload failed')
       }
+      
+      const result = await response.json()
+      console.log('[UPLOAD] Response result:', result)
 
       setUploadProgress(100)
       setParseResult(result)

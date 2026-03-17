@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js'
 import { createServerComponentClient, createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
 // Server component client (for use in server components)
 export const createSupabaseServerClient = () => {
@@ -18,8 +18,19 @@ export const createSupabaseRouteClient = () => {
 // Admin client (server-side only, with service role key)
 export const createSupabaseAdminClient = () => {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!serviceRoleKey) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for admin operations')
+  if (!serviceRoleKey || !supabaseUrl) {
+    // During build time, env vars might not be available
+    // Return a dummy client that will fail at runtime if actually used
+    if (process.env.NODE_ENV === 'production' && !serviceRoleKey) {
+      throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for admin operations')
+    }
+    // During build, return a placeholder
+    return createClient(supabaseUrl || 'https://placeholder.supabase.co', serviceRoleKey || 'placeholder', {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
   }
   
   return createClient(supabaseUrl, serviceRoleKey, {

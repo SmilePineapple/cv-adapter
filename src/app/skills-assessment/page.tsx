@@ -72,11 +72,12 @@ export default function SkillsAssessmentPage() {
         })
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to generate assessment' }))
         throw new Error(data.error || 'Failed to generate assessment')
       }
+
+      const data = await response.json()
 
       toast.success('Assessment generated successfully!')
       router.push(`/skills-assessment/take/${data.assessment_id}`)

@@ -170,6 +170,11 @@ export default function SubscriptionPage() {
     setIsLoadingInvoices(true)
     try {
       const response = await fetch(`/api/stripe/invoices?userId=${user.id}`)
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch invoices')
+      }
+      
       const data = await response.json()
       
       if (data.success && data.invoices) {
@@ -196,9 +201,14 @@ export default function SubscriptionPage() {
         body: JSON.stringify({ userId: user.id }),
       })
       
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to cancel subscription' }))
+        throw new Error(data.message || data.error || 'Failed to cancel subscription')
+      }
+      
       const data = await response.json()
       
-      if (response.ok && data.success) {
+      if (data.success) {
         toast.success(data.message || 'Subscription cancelled successfully.')
         setShowCancelDialog(false)
         // Refresh purchase/usage data
@@ -227,9 +237,14 @@ export default function SubscriptionPage() {
         body: JSON.stringify({ userId: user.id }),
       })
       
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to delete account' }))
+        throw new Error(data.message || data.error || 'Failed to delete account')
+      }
+      
       const data = await response.json()
       
-      if (response.ok && data.success) {
+      if (data.success) {
         toast.success('Account deleted successfully. Redirecting...')
         setShowDeleteDialog(false)
         // Sign out and redirect to home
@@ -265,10 +280,15 @@ export default function SubscriptionPage() {
         }),
       })
 
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({ error: 'Failed to create checkout session' }))
+        throw new Error(result.error || 'Failed to create checkout session')
+      }
+
       const result = await response.json()
 
-      if (!response.ok || result.error) {
-        throw new Error(result.error || 'Failed to create checkout session')
+      if (result.error) {
+        throw new Error(result.error)
       }
 
       const { sessionId } = result
