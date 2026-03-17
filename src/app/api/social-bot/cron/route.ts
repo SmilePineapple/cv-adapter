@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
 import { postTweet } from '@/lib/twitter-api'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 /**
  * Cron Job API Route: Post scheduled content
@@ -18,6 +13,7 @@ const supabase = createClient(
  * Security: Verify cron secret to prevent unauthorized access
  */
 export async function GET(request: NextRequest) {
+  const supabase = createSupabaseAdminClient()
   try {
     // Verify this is from Vercel Cron (optional - Vercel Cron is already secure)
     const authHeader = request.headers.get('authorization')

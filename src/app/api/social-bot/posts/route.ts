@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 
 /**
  * Get social media posts
@@ -12,6 +7,7 @@ const supabase = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
     const searchParams = request.nextUrl.searchParams
     const posted = searchParams.get('posted') === 'true'
     const limit = parseInt(searchParams.get('limit') || '50')

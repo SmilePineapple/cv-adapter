@@ -1,10 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 
 /**
  * Get social media platform configurations
@@ -12,6 +7,7 @@ const supabase = createClient(
  */
 export async function GET() {
   try {
+    const supabase = createSupabaseAdminClient()
     const { data: configs, error } = await supabase
       .from('social_media_config')
       .select('*')

@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -42,6 +37,7 @@ function isInterviewRelated(message: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
     const { company_name, /* company_website, */ job_description, messages } = await request.json()
 
     // Validate inputs

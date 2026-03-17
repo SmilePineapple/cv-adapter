@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import { generateWeeklyContent, Platform } from '@/lib/social-media-bot'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 /**
  * API Route: Generate weekly social media content
@@ -18,6 +13,7 @@ const supabase = createClient(
  */
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
     const { platform, startDate } = await request.json()
 
     if (!platform) {
@@ -98,6 +94,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
     const searchParams = request.nextUrl.searchParams
     const platform = searchParams.get('platform')
     const posted = searchParams.get('posted') === 'true'

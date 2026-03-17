@@ -1,15 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 
 const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
 
@@ -18,6 +8,8 @@ const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
+    
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
 

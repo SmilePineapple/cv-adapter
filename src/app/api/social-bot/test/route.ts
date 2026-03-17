@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import { postTweet, verifyTwitterCredentials } from '@/lib/twitter-api'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 /**
  * Test API Route: Test Twitter posting
@@ -14,6 +9,7 @@ const supabase = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createSupabaseAdminClient()
     const searchParams = request.nextUrl.searchParams
     const action = searchParams.get('action') || 'verify'
 
