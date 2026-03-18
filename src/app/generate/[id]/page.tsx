@@ -374,59 +374,59 @@ export default function GeneratePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Progress Stepper */}
       <CVProgressStepper currentStep="generate" />
       
       {/* Header */}
-      <header className="bg-white border-b">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-4">
             <Link 
               href="/dashboard"
-              className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
+              className="flex items-center text-gray-400 hover:text-white mr-4 transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Dashboard
             </Link>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CV</span>
+              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-blue-400 font-bold text-sm">CV</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+              <span className="text-xl font-black text-white">CV Adapter</span>
             </div>
           </div>
         </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl font-black text-white mb-2">
               Tailor Your CV with AI
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               Enter the job details and let AI optimize your CV for maximum impact
             </p>
           </div>
 
           {/* CV Selector */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-8">
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FileText className="w-6 h-6 text-blue-600" />
+                <FileText className="w-6 h-6 text-blue-400" />
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-black text-white">
                     Selected CV: {cvData?.file_meta?.name}
                   </p>
-                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                  <p className="text-sm text-gray-400 flex items-center gap-2">
                     {cvData?.parsed_sections?.sections?.length || 0} sections • Uploaded {cvData?.created_at ? new Date(cvData.created_at).toLocaleDateString() : ''}
                     {detectedLanguage && detectedLanguage !== 'en' && (
                       <span className="inline-flex items-center gap-1">
@@ -439,14 +439,14 @@ export default function GeneratePage() {
               
               {allCvs.length > 1 && (
                 <div className="flex items-center space-x-2">
-                  <label className="text-sm font-medium text-gray-700">Switch CV:</label>
+                  <label className="text-sm font-bold text-white">Switch CV:</label>
                   <select
                     value={selectedCvId}
                     onChange={(e) => setSelectedCvId(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-white/40 text-sm"
                   >
                     {allCvs.map((cv) => (
-                      <option key={cv.id} value={cv.id}>
+                      <option key={cv.id} value={cv.id} className="bg-black">
                         {cv.file_meta?.name} ({new Date(cv.created_at).toLocaleDateString()})
                       </option>
                     ))}
@@ -458,16 +458,16 @@ export default function GeneratePage() {
 
           {/* Language Selector */}
           {detectedLanguage && (
-            <div className="bg-purple-50 rounded-lg p-4 mb-8">
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 mb-8">
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3">
-                  <Globe className="w-6 h-6 text-purple-600 mt-0.5" />
+                  <Globe className="w-6 h-6 text-purple-400 mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900 mb-1">
+                    <p className="font-black text-white mb-1">
                       Output Language
                     </p>
-                    <p className="text-sm text-gray-600 mb-3">
-                      We detected your CV is in <strong>{LANGUAGE_NAMES[detectedLanguage as keyof typeof LANGUAGE_NAMES] || detectedLanguage}</strong>. 
+                    <p className="text-sm text-gray-400 mb-3">
+                      We detected your CV is in <strong className="text-white">{LANGUAGE_NAMES[detectedLanguage as keyof typeof LANGUAGE_NAMES] || detectedLanguage}</strong>. 
                       The AI will generate content in the same language, or you can override it below.
                     </p>
                     <LanguageSelector 
@@ -491,17 +491,17 @@ export default function GeneratePage() {
           <form onSubmit={handleGenerate} className="space-y-6">
             {/* Job Title */}
             <div>
-              <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="jobTitle" className="block text-sm font-bold text-white mb-2">
                 Job Title *
               </label>
               <div className="relative">
-                <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                 <input
                   id="jobTitle"
                   type="text"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-colors"
                   placeholder="e.g. Senior Software Engineer"
                   required
                 />
@@ -510,7 +510,7 @@ export default function GeneratePage() {
 
             {/* Job Description */}
             <div>
-              <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="jobDescription" className="block text-sm font-bold text-white mb-2">
                 Job Description *
               </label>
               <textarea
@@ -543,11 +543,11 @@ export default function GeneratePage() {
                   }
                 }}
                 rows={8}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-colors"
                 placeholder="Paste the full job description here. Include requirements, responsibilities, and qualifications for best results."
                 required
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-400 mt-1">
                 Tip: Include the full job posting for better keyword matching and ATS optimization
               </p>
             </div>
@@ -555,7 +555,7 @@ export default function GeneratePage() {
             {/* Generation Options */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="rewriteStyle" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="rewriteStyle" className="block text-sm font-bold text-white mb-2">
                   <Settings className="inline w-4 h-4 mr-1" />
                   Rewrite Style
                 </label>
@@ -563,13 +563,13 @@ export default function GeneratePage() {
                   id="rewriteStyle"
                   value={rewriteStyle}
                   onChange={(e) => setRewriteStyle(e.target.value as RewriteStyle)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
                 >
-                  <option value="conservative">Conservative - Minimal changes</option>
-                  <option value="balanced">Balanced - Moderate optimization</option>
-                  <option value="bold">Bold - Maximum alignment</option>
+                  <option value="conservative" className="bg-black">Conservative - Minimal changes</option>
+                  <option value="balanced" className="bg-black">Balanced - Moderate optimization</option>
+                  <option value="bold" className="bg-black">Bold - Maximum alignment</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   {rewriteStyle === 'conservative' && 'Keeps most original content, adds key terms'}
                   {rewriteStyle === 'balanced' && 'Good balance of optimization and authenticity'}
                   {rewriteStyle === 'bold' && 'Significant changes for strong job alignment'}
@@ -577,7 +577,7 @@ export default function GeneratePage() {
               </div>
 
               <div>
-                <label htmlFor="tone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="tone" className="block text-sm font-bold text-white mb-2">
                   <Zap className="inline w-4 h-4 mr-1" />
                   Tone
                 </label>
@@ -585,29 +585,29 @@ export default function GeneratePage() {
                   id="tone"
                   value={tone}
                   onChange={(e) => setTone(e.target.value as ToneType)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
                 >
-                  <option value="professional">Professional - Formal business language</option>
-                  <option value="friendly">Friendly - Warm yet professional</option>
-                  <option value="creative">Creative - Dynamic and engaging</option>
-                  <option value="technical">Technical - Precise technical language</option>
+                  <option value="professional" className="bg-black">Professional - Formal business language</option>
+                  <option value="friendly" className="bg-black">Friendly - Warm yet professional</option>
+                  <option value="creative" className="bg-black">Creative - Dynamic and engaging</option>
+                  <option value="technical" className="bg-black">Technical - Precise technical language</option>
                 </select>
               </div>
             </div>
 
             {/* Custom Sections */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-bold text-white mb-3">
                 <Plus className="inline w-4 h-4 mr-1" />
                 Custom Sections
               </label>
-              <p className="text-sm text-gray-500 mb-3">
+              <p className="text-sm text-gray-400 mb-3">
                 Add additional sections to make your CV stand out. AI will generate relevant content based on your background.
               </p>
               
               {/* Section Examples */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <p className="text-xs font-medium text-blue-900 mb-2">💡 Popular section ideas:</p>
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-4">
+                <p className="text-xs font-black text-blue-400 mb-2">💡 Popular section ideas:</p>
                 <div className="flex flex-wrap gap-2">
                   {['Volunteer Work', 'Publications', 'Awards & Honors', 'Certifications', 'Projects', 'Languages', 'Professional Memberships', 'Speaking Engagements', 'Patents', 'Research', 'Teaching Experience', 'Community Involvement'].map((example) => (
                     <button
@@ -620,7 +620,7 @@ export default function GeneratePage() {
                           toast.error('Section already added')
                         }
                       }}
-                      className="text-xs px-2 py-1 bg-white text-blue-700 border border-blue-300 rounded hover:bg-blue-100 transition-colors"
+                      className="text-xs px-2 py-1 bg-white/10 text-blue-400 border border-blue-500/30 rounded hover:bg-white/20 transition-colors"
                       type="button"
                     >
                       + {example}
@@ -635,12 +635,12 @@ export default function GeneratePage() {
                   {customSections.map((section, index) => (
                     <div
                       key={index}
-                      className="flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
+                      className="flex items-center bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm border border-blue-500/30"
                     >
                       <span>{section}</span>
                       <button
                         onClick={() => removeCustomSection(section)}
-                        className="ml-2 hover:text-blue-900"
+                        className="ml-2 hover:text-blue-300"
                         type="button"
                       >
                         <X className="w-3 h-3" />
@@ -658,12 +658,12 @@ export default function GeneratePage() {
                     value={newSectionName}
                     onChange={(e) => setNewSectionName(e.target.value)}
                     placeholder="e.g., Volunteer Work"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40"
                     onKeyPress={(e) => e.key === 'Enter' && addCustomSection()}
                   />
                   <button
                     onClick={addCustomSection}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-bold"
                     type="button"
                   >
                     Add
@@ -673,7 +673,7 @@ export default function GeneratePage() {
                       setShowAddSection(false)
                       setNewSectionName('')
                     }}
-                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="px-4 py-2 text-gray-400 border border-white/20 rounded-xl hover:bg-white/5"
                     type="button"
                   >
                     Cancel
@@ -682,7 +682,7 @@ export default function GeneratePage() {
               ) : (
                 <button
                   onClick={() => setShowAddSection(true)}
-                  className="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                  className="flex items-center px-4 py-2 text-blue-400 border border-blue-500/30 rounded-xl hover:bg-blue-500/10 transition-colors"
                   type="button"
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -691,7 +691,7 @@ export default function GeneratePage() {
               )}
               
               {customSections.length > 0 && (
-                <p className="text-xs text-amber-600 mt-2">
+                <p className="text-xs text-amber-400 mt-2">
                   <Sparkles className="inline w-3 h-3 mr-1" />
                   Custom sections will use AI generation tokens
                 </p>
@@ -703,7 +703,7 @@ export default function GeneratePage() {
               <button
                 type="submit"
                 disabled={isGenerating || !jobTitle.trim() || !jobDescription.trim()}
-                className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg shadow-lg"
               >
                 {isGenerating ? (
                   <>

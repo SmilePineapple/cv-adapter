@@ -203,22 +203,22 @@ const blogPosts = [
 
 export default function BlogIndexPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
           <div className="flex items-center space-x-3 mb-4">
-            <BookOpen className="w-10 h-10 text-blue-600" />
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">CV Writing Blog</h1>
+            <BookOpen className="w-10 h-10 text-blue-400" />
+            <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">CV Writing Blog</h1>
           </div>
-          <p className="text-xl text-gray-600">Expert advice on CV writing, ATS optimization, and job search strategies</p>
+          <p className="text-xl text-gray-400">Expert advice on CV writing, ATS optimization, and job search strategies</p>
         </div>
       </header>
 
@@ -231,27 +231,33 @@ export default function BlogIndexPage() {
             href={`/blog/${post.slug}`}
             className="block mb-12 group"
           >
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-8 md:p-12 hover:shadow-2xl transition-shadow">
-              <div className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm font-semibold mb-4">
-                ⭐ Featured Post
+            <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all relative overflow-hidden">
+              <div className="absolute inset-0">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full filter blur-3xl"></div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 group-hover:underline">{post.title}</h2>
-              <p className="text-xl text-blue-100 mb-6">
-                {post.excerpt}
-              </p>
-              <div className="flex items-center space-x-6 text-blue-100">
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span className="text-sm">{post.date}</span>
+              <div className="relative z-10">
+                <div className="inline-block bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-black mb-4">
+                  ⭐ Featured Post
                 </div>
-                <div className="flex items-center">
-                  <Clock className="w-4 h-4 mr-2" />
-                  <span className="text-sm">{post.readTime}</span>
+                <h2 className="text-4xl md:text-5xl font-black mb-4 group-hover:text-gray-300 transition-colors tracking-tight">{post.title}</h2>
+                <p className="text-xl text-gray-300 mb-6">
+                  {post.excerpt}
+                </p>
+                <div className="flex items-center space-x-6 text-gray-400">
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span className="text-sm">{post.date}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="w-4 h-4 mr-2" />
+                    <span className="text-sm">{post.readTime}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-6 inline-flex items-center text-white font-semibold group-hover:gap-3 transition-all">
-                Read Full Article
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <div className="mt-6 inline-flex items-center text-white font-black group-hover:gap-3 transition-all">
+                  Read Full Article
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
           </Link>
@@ -259,7 +265,7 @@ export default function BlogIndexPage() {
 
         {/* All Blog Posts */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Articles</h2>
+          <h2 className="text-3xl font-black text-white mb-6">Latest Articles</h2>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -267,18 +273,18 @@ export default function BlogIndexPage() {
             <Link 
               key={post.slug}
               href={post.date === 'Coming Soon' ? '#' : `/blog/${post.slug}`}
-              className={`block bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden ${
+              className={`block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 transition-all overflow-hidden ${
                 post.date === 'Coming Soon' ? 'opacity-60 cursor-not-allowed' : 'group'
               }`}
             >
               <div className="p-6">
-                <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
+                <div className="inline-block bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-black mb-4">
                   {post.category}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-black text-white mb-3 group-hover:text-gray-300 transition-colors">
                   {post.title}
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-400 mb-4">
                   {post.excerpt}
                 </p>
                 <div className="flex items-center justify-between text-sm text-gray-500">
@@ -292,13 +298,13 @@ export default function BlogIndexPage() {
                   </div>
                 </div>
                 {post.date !== 'Coming Soon' && (
-                  <div className="mt-4 inline-flex items-center text-blue-600 font-semibold group-hover:gap-2 transition-all">
+                  <div className="mt-4 inline-flex items-center text-blue-400 font-black group-hover:gap-2 transition-all">
                     Read More
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
                 )}
                 {post.date === 'Coming Soon' && (
-                  <div className="mt-4 text-gray-400 font-semibold">
+                  <div className="mt-4 text-gray-600 font-bold">
                     Coming Soon
                   </div>
                 )}
@@ -307,55 +313,61 @@ export default function BlogIndexPage() {
           ))}
         </div>
         {/* Quick Tips Section */}
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-            <Lightbulb className="w-6 h-6 text-yellow-500 mr-3" />
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-12">
+          <h2 className="text-3xl font-black text-white mb-6 flex items-center">
+            <Lightbulb className="w-6 h-6 text-yellow-400 mr-3" />
             Quick CV Tips
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8 text-blue-600" />
+              <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="w-8 h-8 text-blue-400" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Tailor Every CV</h3>
-              <p className="text-sm text-gray-600">Customize for each job application</p>
+              <h3 className="font-black text-white mb-2">Tailor Every CV</h3>
+              <p className="text-sm text-gray-400">Customize for each job application</p>
             </div>
             <div className="text-center">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-green-600" />
+              <div className="bg-green-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Use Numbers</h3>
-              <p className="text-sm text-gray-600">Quantify your achievements</p>
+              <h3 className="font-black text-white mb-2">Use Numbers</h3>
+              <p className="text-sm text-gray-400">Quantify your achievements</p>
             </div>
             <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-8 h-8 text-purple-600" />
+              <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-8 h-8 text-purple-400" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Beat ATS</h3>
-              <p className="text-sm text-gray-600">Optimize for tracking systems</p>
+              <h3 className="font-black text-white mb-2">Beat ATS</h3>
+              <p className="text-sm text-gray-400">Optimize for tracking systems</p>
             </div>
           </div>
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Create Your Perfect CV?</h2>
-          <p className="text-xl mb-8 text-blue-100">
-            Let AI do the heavy lifting. CV Adapter tailors your CV to any job in seconds.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <Link 
-              href="/auth/signup"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
-            >
-              Get Started
-            </Link>
-            <Link 
-              href="/templates"
-              className="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition"
-            >
-              View Templates
-            </Link>
+        <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-white/10 rounded-3xl p-12 text-center relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+          </div>
+          <div className="relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Ready to Create Your Perfect CV?</h2>
+            <p className="text-xl mb-8 text-gray-300">
+              Let AI do the heavy lifting. My CV Buddy tailors your CV to any job in seconds.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link 
+                href="/auth/signup"
+                className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg"
+              >
+                Get Started
+              </Link>
+              <Link 
+                href="/templates"
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-black hover:bg-white/20 transition-all"
+              >
+                View Templates
+              </Link>
+            </div>
           </div>
         </div>
       </main>

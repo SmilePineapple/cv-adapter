@@ -177,7 +177,7 @@ export default function TakeAssessmentPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading assessment...</p>
+          <p className="text-gray-400">Loading assessment...</p>
         </div>
       </div>
     )
@@ -187,8 +187,8 @@ export default function TakeAssessmentPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Assessment not found</p>
-          <Link href="/skills-assessment" className="text-blue-600 hover:text-blue-700">
+          <p className="text-gray-400 mb-4">Assessment not found</p>
+          <Link href="/skills-assessment" className="text-blue-400 hover:text-blue-700">
             Back to Skills Assessment
           </Link>
         </div>
@@ -217,13 +217,13 @@ export default function TakeAssessmentPage() {
             <div className="flex items-center gap-4">
               <Link 
                 href="/skills-assessment"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-400 hover:text-white transition-colors transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Exit
               </Link>
               <div className="h-6 w-px bg-gray-300" />
-              <h1 className="text-lg font-semibold text-gray-900">
+              <h1 className="text-xl font-black text-white">
                 {assessment.job_role}
               </h1>
             </div>
@@ -253,7 +253,7 @@ export default function TakeAssessmentPage() {
           <button
             onClick={handlePrevious}
             disabled={currentQuestionIndex === 0}
-            className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:border-gray-400 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-6 py-3 border-2 border-white/20 text-gray-300 rounded-lg font-semibold hover:border-gray-400 hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <ArrowLeft className="w-5 h-5" />
             Previous
@@ -292,18 +292,18 @@ export default function TakeAssessmentPage() {
       {/* Confirm Submit Modal */}
       {showConfirmSubmit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl max-w-md w-full p-6">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-yellow-600" />
+                <CheckCircle className="w-8 h-8 text-yellow-400" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-3xl font-black text-white mb-2">
                 Ready to Submit?
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-400">
                 You've answered {answeredCount} out of {questions.length} questions.
                 {answeredCount < questions.length && (
-                  <span className="block mt-2 text-orange-600 font-medium">
+                  <span className="block mt-2 text-orange-400 font-medium">
                     {questions.length - answeredCount} question(s) remain unanswered.
                   </span>
                 )}
@@ -320,7 +320,7 @@ export default function TakeAssessmentPage() {
               </button>
               <button
                 onClick={() => setShowConfirmSubmit(false)}
-                className="w-full bg-white border-2 border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                className="w-full bg-white/5 backdrop-blur-md border border-white/10 border-2 border-white/20 text-gray-300 py-3 px-6 rounded-lg font-semibold hover:bg-white/5 transition-colors"
               >
                 Continue Assessment
               </button>

@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 
 export default function CVExamplesByIndustry() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-black text-white">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -44,7 +44,7 @@ export default function CVExamplesByIndustry() {
       </header>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 mb-8 rounded-r-lg">
             <p className="text-lg text-gray-800 font-medium mb-0">
@@ -53,8 +53,8 @@ export default function CVExamplesByIndustry() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Why CV Examples Matter</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Why CV Examples Matter</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Seeing real CV examples helps you understand industry-specific expectations, formatting standards, and how to present your experience effectively. Each industry has different priorities - what works for a marketing CV won't work for an engineering CV.
           </p>
 
@@ -65,11 +65,11 @@ export default function CVExamplesByIndustry() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">15 CV Examples by Industry</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">15 CV Examples by Industry</h2>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Marketing Manager CV Example</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">1. Marketing Manager CV Example</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-purple-500">
-            <p className="text-gray-700 mb-4"><strong>Industry:</strong> Marketing & Advertising</p>
+            <p className="text-gray-300 mb-4"><strong>Industry:</strong> Marketing & Advertising</p>
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">SARAH JOHNSON</p>
               <p className="mb-4">London, UK | 07700 900123 | sarah.johnson@email.com | linkedin.com/in/sarahjohnson</p>
@@ -104,9 +104,9 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Software Developer CV Example</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">2. Software Developer CV Example</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-blue-500">
-            <p className="text-gray-700 mb-4"><strong>Industry:</strong> Technology & Software</p>
+            <p className="text-gray-300 mb-4"><strong>Industry:</strong> Technology & Software</p>
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">JAMES CHEN</p>
               <p className="mb-4">Manchester, UK | james.chen@email.com | github.com/jameschen | Portfolio: jameschen.dev</p>
@@ -141,9 +141,9 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Registered Nurse CV Example</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">3. Registered Nurse CV Example</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-pink-500">
-            <p className="text-gray-700 mb-4"><strong>Industry:</strong> Healthcare (NHS)</p>
+            <p className="text-gray-300 mb-4"><strong>Industry:</strong> Healthcare (NHS)</p>
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">EMILY PATEL</p>
               <p className="mb-4">Birmingham, UK | NMC PIN: 12A3456E | emily.patel@nhs.net</p>
@@ -180,9 +180,9 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Accountant CV Example</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">4. Accountant CV Example</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
-            <p className="text-gray-700 mb-4"><strong>Industry:</strong> Finance & Accounting</p>
+            <p className="text-gray-300 mb-4"><strong>Industry:</strong> Finance & Accounting</p>
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">DAVID WILLIAMS</p>
               <p className="mb-4">Leeds, UK | ACCA Qualified | david.williams@email.com</p>
@@ -211,9 +211,9 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">5. Primary School Teacher CV Example</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">5. Primary School Teacher CV Example</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-yellow-500">
-            <p className="text-gray-700 mb-4"><strong>Industry:</strong> Education</p>
+            <p className="text-gray-300 mb-4"><strong>Industry:</strong> Education</p>
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">LUCY THOMPSON</p>
               <p className="mb-4">Bristol, UK | QTS Number: 1234567 | lucy.thompson@email.com</p>
@@ -237,8 +237,8 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">6. Sales Executive CV Example</h3>
-          <p className="text-gray-700 mb-4"><strong>Industry:</strong> Sales & Business Development</p>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">6. Sales Executive CV Example</h3>
+          <p className="text-gray-300 mb-4"><strong>Industry:</strong> Sales & Business Development</p>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-red-500">
             <div className="bg-gray-50 rounded p-4 mb-4 font-mono text-sm">
               <p className="font-bold mb-2">MICHAEL BROWN</p>
@@ -263,105 +263,105 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">7-15. Additional Industry Examples</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">7-15. Additional Industry Examples</h3>
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">7. Project Manager</h4>
-              <p className="text-gray-600 text-sm mb-3">PMP certified, Agile/Waterfall, £5M+ projects, 98% on-time delivery</p>
-              <p className="text-gray-500 text-xs">Key: Certifications, methodologies, budget sizes, delivery metrics</p>
+              <p className="text-gray-400 text-sm mb-3">PMP certified, Agile/Waterfall, £5M+ projects, 98% on-time delivery</p>
+              <p className="text-gray-400 text-xs">Key: Certifications, methodologies, budget sizes, delivery metrics</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">8. HR Business Partner</h4>
-              <p className="text-gray-600 text-sm mb-3">CIPD Level 7, talent acquisition, 85% retention, scaled 50→300 employees</p>
-              <p className="text-gray-500 text-xs">Key: CIPD qualification, retention rates, scaling experience</p>
+              <p className="text-gray-400 text-sm mb-3">CIPD Level 7, talent acquisition, 85% retention, scaled 50→300 employees</p>
+              <p className="text-gray-400 text-xs">Key: CIPD qualification, retention rates, scaling experience</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">9. Data Analyst</h4>
-              <p className="text-gray-600 text-sm mb-3">SQL, Python, Tableau, Power BI, saved £300K through insights</p>
-              <p className="text-gray-500 text-xs">Key: Technical tools, quantified business impact</p>
+              <p className="text-gray-400 text-sm mb-3">SQL, Python, Tableau, Power BI, saved £300K through insights</p>
+              <p className="text-gray-400 text-xs">Key: Technical tools, quantified business impact</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">10. Graphic Designer</h4>
-              <p className="text-gray-600 text-sm mb-3">Adobe Creative Suite, Figma, award-winning campaigns, 150% engagement</p>
-              <p className="text-gray-500 text-xs">Key: Design tools, portfolio link, measurable results</p>
+              <p className="text-gray-400 text-sm mb-3">Adobe Creative Suite, Figma, award-winning campaigns, 150% engagement</p>
+              <p className="text-gray-400 text-xs">Key: Design tools, portfolio link, measurable results</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">11. Operations Manager</h4>
-              <p className="text-gray-600 text-sm mb-3">Lean Six Sigma Black Belt, reduced costs 30%, improved delivery 40%</p>
-              <p className="text-gray-500 text-xs">Key: Process improvement certifications, efficiency metrics</p>
+              <p className="text-gray-400 text-sm mb-3">Lean Six Sigma Black Belt, reduced costs 30%, improved delivery 40%</p>
+              <p className="text-gray-400 text-xs">Key: Process improvement certifications, efficiency metrics</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">12. Customer Service Manager</h4>
-              <p className="text-gray-600 text-sm mb-3">Led 30-person team, improved CSAT 72%→91%, reduced AHT 25%</p>
-              <p className="text-gray-500 text-xs">Key: Team size, satisfaction scores, efficiency improvements</p>
+              <p className="text-gray-400 text-sm mb-3">Led 30-person team, improved CSAT 72%→91%, reduced AHT 25%</p>
+              <p className="text-gray-400 text-xs">Key: Team size, satisfaction scores, efficiency improvements</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">13. Civil Engineer</h4>
-              <p className="text-gray-600 text-sm mb-3">CEng MICE, £50M infrastructure projects, BIM, AutoCAD, award-winning</p>
-              <p className="text-gray-500 text-xs">Key: Chartered status, project values, technical software</p>
+              <p className="text-gray-400 text-sm mb-3">CEng MICE, £50M infrastructure projects, BIM, AutoCAD, award-winning</p>
+              <p className="text-gray-400 text-xs">Key: Chartered status, project values, technical software</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">14. Legal Secretary</h4>
-              <p className="text-gray-600 text-sm mb-3">Commercial law, 100+ wpm typing, case management systems, client liaison</p>
-              <p className="text-gray-500 text-xs">Key: Legal area, typing speed, systems knowledge</p>
+              <p className="text-gray-400 text-sm mb-3">Commercial law, 100+ wpm typing, case management systems, client liaison</p>
+              <p className="text-gray-400 text-xs">Key: Legal area, typing speed, systems knowledge</p>
             </div>
             
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-2">15. Retail Manager</h4>
-              <p className="text-gray-600 text-sm mb-3">£2M store, 25 staff, increased sales 35%, reduced shrinkage 50%</p>
-              <p className="text-gray-500 text-xs">Key: Store size/revenue, team size, sales & loss prevention</p>
+              <p className="text-gray-400 text-sm mb-3">£2M store, 25 staff, increased sales 35%, reduced shrinkage 50%</p>
+              <p className="text-gray-400 text-xs">Key: Store size/revenue, team size, sales & loss prevention</p>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common Elements in Winning CVs</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Common Elements in Winning CVs</h2>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Quantified Achievements</p>
-                  <p className="text-gray-600 text-sm">Every example includes numbers: percentages, revenue, team sizes, metrics</p>
+                  <p className="text-white font-semibold">Quantified Achievements</p>
+                  <p className="text-gray-400 text-sm">Every example includes numbers: percentages, revenue, team sizes, metrics</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Industry Keywords</p>
-                  <p className="text-gray-600 text-sm">Each CV uses terminology specific to that industry (ATS-friendly)</p>
+                  <p className="text-white font-semibold">Industry Keywords</p>
+                  <p className="text-gray-400 text-sm">Each CV uses terminology specific to that industry (ATS-friendly)</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Professional Summary</p>
-                  <p className="text-gray-600 text-sm">Strong opening paragraph highlighting key strengths and experience</p>
+                  <p className="text-white font-semibold">Professional Summary</p>
+                  <p className="text-gray-400 text-sm">Strong opening paragraph highlighting key strengths and experience</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Relevant Qualifications</p>
-                  <p className="text-gray-600 text-sm">Industry-specific certifications prominently displayed (ACCA, NMC, QTS, etc.)</p>
+                  <p className="text-white font-semibold">Relevant Qualifications</p>
+                  <p className="text-gray-400 text-sm">Industry-specific certifications prominently displayed (ACCA, NMC, QTS, etc.)</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Action Verbs</p>
-                  <p className="text-gray-600 text-sm">Led, Managed, Achieved, Implemented, Increased, Reduced</p>
+                  <p className="text-white font-semibold">Action Verbs</p>
+                  <p className="text-gray-400 text-sm">Led, Managed, Achieved, Implemented, Increased, Reduced</p>
                 </div>
               </li>
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">How to Adapt These Examples</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">How to Adapt These Examples</h2>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="space-y-4">
               <div className="flex items-start">
@@ -370,7 +370,7 @@ export default function CVExamplesByIndustry() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Choose Your Industry Example</h3>
-                  <p className="text-gray-600">Find the example closest to your target role and study the structure</p>
+                  <p className="text-gray-400">Find the example closest to your target role and study the structure</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -379,7 +379,7 @@ export default function CVExamplesByIndustry() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Match the Keywords</h3>
-                  <p className="text-gray-600">Use similar industry terminology and technical skills in your CV</p>
+                  <p className="text-gray-400">Use similar industry terminology and technical skills in your CV</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -388,7 +388,7 @@ export default function CVExamplesByIndustry() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Quantify Your Achievements</h3>
-                  <p className="text-gray-600">Add numbers to your bullet points: percentages, revenue, team sizes</p>
+                  <p className="text-gray-400">Add numbers to your bullet points: percentages, revenue, team sizes</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -397,14 +397,14 @@ export default function CVExamplesByIndustry() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Tailor to Each Job</h3>
-                  <p className="text-gray-600">Customize your CV for each application using keywords from the job description</p>
+                  <p className="text-gray-400">Customize your CV for each application using keywords from the job description</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Generate Your Industry-Specific CV with AI</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Generate Your Industry-Specific CV with AI</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             While these examples provide great templates, creating a tailored CV for your specific experience and target role can be time-consuming. <strong>My CV Buddy</strong> uses AI to generate industry-specific CVs in seconds.
           </p>
           
@@ -429,54 +429,54 @@ export default function CVExamplesByIndustry() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Key Takeaways</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Key Takeaways</h2>
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Study CV examples from <strong>your specific industry</strong></span>
+                <span className="text-gray-300">Study CV examples from <strong>your specific industry</strong></span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Use <strong>industry-specific keywords</strong> and terminology</span>
+                <span className="text-gray-300">Use <strong>industry-specific keywords</strong> and terminology</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Always <strong>quantify achievements</strong> with numbers</span>
+                <span className="text-gray-300">Always <strong>quantify achievements</strong> with numbers</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Include <strong>relevant qualifications</strong> prominently</span>
+                <span className="text-gray-300">Include <strong>relevant qualifications</strong> prominently</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Tailor your CV</strong> for each application</span>
+                <span className="text-gray-300"><strong>Tailor your CV</strong> for each application</span>
               </li>
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Frequently Asked Questions</h2>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="space-y-6">
               <div className="border-b border-gray-200 pb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">How do I tailor a CV example to my experience?</h3>
-                <p className="text-gray-700 leading-relaxed">Use the CV example as a template for structure and formatting, but replace all content with your own achievements and experience. Match the tone and style, but ensure all bullet points reflect your actual work. Quantify your achievements with specific numbers and results.</p>
+                <h3 className="text-2xl font-black text-white mb-3">How do I tailor a CV example to my experience?</h3>
+                <p className="text-gray-300 leading-relaxed">Use the CV example as a template for structure and formatting, but replace all content with your own achievements and experience. Match the tone and style, but ensure all bullet points reflect your actual work. Quantify your achievements with specific numbers and results.</p>
               </div>
               <div className="border-b border-gray-200 pb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Should I use a different CV format for different industries?</h3>
-                <p className="text-gray-700 leading-relaxed">Yes, different industries have different expectations. Creative industries (marketing, design) can use more modern layouts with color accents, while conservative industries (finance, law) should stick to traditional black and white formats. However, all CVs should be ATS-friendly regardless of industry.</p>
+                <h3 className="text-2xl font-black text-white mb-3">Should I use a different CV format for different industries?</h3>
+                <p className="text-gray-300 leading-relaxed">Yes, different industries have different expectations. Creative industries (marketing, design) can use more modern layouts with color accents, while conservative industries (finance, law) should stick to traditional black and white formats. However, all CVs should be ATS-friendly regardless of industry.</p>
               </div>
               <div className="border-b border-gray-200 pb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">How long should my CV be for UK jobs?</h3>
-                <p className="text-gray-700 leading-relaxed">For most UK professionals, 2 pages is the standard. Graduates and entry-level candidates can use 1 page if they have limited experience. Senior executives with 15+ years of experience may extend to 3 pages, but only if every line adds value.</p>
+                <h3 className="text-2xl font-black text-white mb-3">How long should my CV be for UK jobs?</h3>
+                <p className="text-gray-300 leading-relaxed">For most UK professionals, 2 pages is the standard. Graduates and entry-level candidates can use 1 page if they have limited experience. Senior executives with 15+ years of experience may extend to 3 pages, but only if every line adds value.</p>
               </div>
               <div className="border-b border-gray-200 pb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">What's the difference between a CV and a resume?</h3>
-                <p className="text-gray-700 leading-relaxed">In the UK, CV (Curriculum Vitae) is the standard term for job applications and is typically 2 pages. In the US, a resume is 1 page and used for most jobs, while a CV is longer and used for academic positions. UK job seekers should always use the term "CV".</p>
+                <h3 className="text-2xl font-black text-white mb-3">What's the difference between a CV and a resume?</h3>
+                <p className="text-gray-300 leading-relaxed">In the UK, CV (Curriculum Vitae) is the standard term for job applications and is typically 2 pages. In the US, a resume is 1 page and used for most jobs, while a CV is longer and used for academic positions. UK job seekers should always use the term "CV".</p>
               </div>
               <div className="pb-0">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Can I use the same CV for every job application?</h3>
-                <p className="text-gray-700 leading-relaxed">No, you should tailor your CV for each application. Use keywords from the job description, reorder bullet points to highlight relevant experience first, and adjust your professional summary to match the role. This increases your chances of passing ATS systems and impressing recruiters by 3x.</p>
+                <h3 className="text-2xl font-black text-white mb-3">Can I use the same CV for every job application?</h3>
+                <p className="text-gray-300 leading-relaxed">No, you should tailor your CV for each application. Use keywords from the job description, reorder bullet points to highlight relevant experience first, and adjust your professional summary to match the role. This increases your chances of passing ATS systems and impressing recruiters by 3x.</p>
               </div>
             </div>
           </div>
@@ -534,15 +534,15 @@ export default function CVExamplesByIndustry() {
           />
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <Link href="/blog/cv-template-uk-2025" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Template UK: 10 Free Templates</h4>
-                <p className="text-gray-600 text-sm">Professional CV templates for UK job applications</p>
+                <p className="text-gray-400 text-sm">Professional CV templates for UK job applications</p>
               </Link>
               <Link href="/blog/cv-personal-statement-examples" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Personal Statement Examples</h4>
-                <p className="text-gray-600 text-sm">15 examples of winning personal statements</p>
+                <p className="text-gray-400 text-sm">15 examples of winning personal statements</p>
               </Link>
             </div>
           </div>

@@ -293,21 +293,21 @@ export default function CareerCoachPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
       </div>
     )
   }
 
   if (!isPro) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-8 text-center">
           <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Sparkles className="w-8 h-8 text-purple-600" />
+            <Sparkles className="w-8 h-8 text-purple-400" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Pro Feature</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="text-3xl font-black text-white mb-2">Pro Feature</h1>
+          <p className="text-white mb-6">
             Career Coach is available to Pro users. Upgrade now to unlock AI-powered career guidance!
           </p>
           <button
@@ -322,13 +322,13 @@ export default function CareerCoachPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
             onClick={() => router.push('/dashboard')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
+            className="flex items-center gap-2 text-white hover:text-white transition-colors mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
             Back to Dashboard
@@ -339,23 +339,23 @@ export default function CareerCoachPage() {
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">AI Career Coach</h1>
-              <p className="text-gray-600">Your personal career development assistant</p>
+              <h1 className="text-3xl font-black text-white">AI Career Coach</h1>
+              <p className="text-white">Your personal career development assistant</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-6">
             <button
               onClick={() => setActiveTab('path')}
               className={`py-4 px-2 border-b-2 font-medium transition-colors ${
                 activeTab === 'path'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'border-purple-600 text-purple-400'
+                  : 'border-transparent text-white hover:text-white'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -367,8 +367,8 @@ export default function CareerCoachPage() {
               onClick={() => setActiveTab('skills')}
               className={`py-4 px-2 border-b-2 font-medium transition-colors ${
                 activeTab === 'skills'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'border-purple-600 text-purple-400'
+                  : 'border-transparent text-white hover:text-white'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -380,8 +380,8 @@ export default function CareerCoachPage() {
               onClick={() => setActiveTab('chat')}
               className={`py-4 px-2 border-b-2 font-medium transition-colors ${
                 activeTab === 'chat'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'border-purple-600 text-purple-400'
+                  : 'border-transparent text-white hover:text-white'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -393,8 +393,8 @@ export default function CareerCoachPage() {
               onClick={() => setActiveTab('goals')}
               className={`py-4 px-2 border-b-2 font-medium transition-colors ${
                 activeTab === 'goals'
-                  ? 'border-purple-600 text-purple-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'border-purple-600 text-purple-400'
+                  : 'border-transparent text-white hover:text-white'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -411,9 +411,9 @@ export default function CareerCoachPage() {
         {/* Career Path Tab */}
         {activeTab === 'path' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Career Path Analysis</h2>
-              <p className="text-gray-600 mb-6">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+              <h2 className="text-2xl font-black text-white mb-4">Career Path Analysis</h2>
+              <p className="text-white mb-6">
                 Discover your potential career trajectory and see where your skills can take you.
               </p>
               
@@ -438,9 +438,9 @@ export default function CareerCoachPage() {
 
             {careerPath && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-purple-600" />
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-purple-400" />
                     Next Career Steps
                   </h3>
                   <div className="space-y-3">
@@ -450,26 +450,26 @@ export default function CareerCoachPage() {
                           {index + 1}
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{role}</p>
+                          <p className="font-bold text-white">{role}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-sm p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-blue-600" />
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-blue-400" />
                     Timeline & Salary
                   </h3>
                   <div className="space-y-4">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Estimated Timeline</p>
-                      <p className="text-lg font-semibold text-gray-900">{careerPath.timeline}</p>
+                      <p className="text-sm text-white mb-1">Estimated Timeline</p>
+                      <p className="text-xl font-black text-white">{careerPath.timeline}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Salary Progression</p>
-                      <p className="text-lg font-semibold text-gray-900">{careerPath.salaryProgression}</p>
+                      <p className="text-sm text-white mb-1">Salary Progression</p>
+                      <p className="text-xl font-black text-white">{careerPath.salaryProgression}</p>
                     </div>
                   </div>
                 </div>
@@ -481,15 +481,15 @@ export default function CareerCoachPage() {
         {/* Skills Gap Tab */}
         {activeTab === 'skills' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Skills Gap Analysis</h2>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+              <h2 className="text-2xl font-black text-white mb-4">Skills Gap Analysis</h2>
               
               {skillsGap.length > 0 ? (
                 <div className="space-y-4">
                   {skillsGap.map((skill, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                    <div key={index} className="border border-white/10 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold text-gray-900">{skill.skill}</h3>
+                        <h3 className="font-black text-white">{skill.skill}</h3>
                         <span className={`px-2 py-1 text-xs font-bold rounded-full ${
                           skill.priority === 'high' ? 'bg-red-100 text-red-700' :
                           skill.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
@@ -500,7 +500,7 @@ export default function CareerCoachPage() {
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="flex-1">
-                          <div className="flex justify-between text-sm text-gray-600 mb-1">
+                          <div className="flex justify-between text-sm text-white mb-1">
                             <span>Current: {skill.current}%</span>
                             <span>Required: {skill.required}%</span>
                           </div>
@@ -517,8 +517,8 @@ export default function CareerCoachPage() {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-600">Analyze your career path first to see skills gap analysis</p>
+                  <BookOpen className="w-12 h-12 text-white mx-auto mb-3" />
+                  <p className="text-white">Analyze your career path first to see skills gap analysis</p>
                 </div>
               )}
             </div>
@@ -527,20 +527,20 @@ export default function CareerCoachPage() {
 
         {/* AI Chat Tab */}
         {activeTab === 'chat' && (
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col" style={{ height: '600px' }}>
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <Bot className="w-6 h-6 text-purple-600" />
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-sm overflow-hidden flex flex-col" style={{ height: '600px' }}>
+            <div className="p-6 border-b border-white/10">
+              <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                <Bot className="w-6 h-6 text-purple-400" />
                 AI Career Advisor
               </h2>
-              <p className="text-sm text-gray-600 mt-1">Ask me anything about your career!</p>
+              <p className="text-sm text-white mt-1">Ask me anything about your career!</p>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {chatMessages.length === 0 ? (
                 <div className="text-center py-12">
-                  <Lightbulb className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-600 mb-4">Start a conversation with your AI Career Coach</p>
+                  <Lightbulb className="w-12 h-12 text-white mx-auto mb-3" />
+                  <p className="text-white mb-4">Start a conversation with your AI Career Coach</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
                     {[
                       "How can I improve my CV?",
@@ -570,7 +570,7 @@ export default function CareerCoachPage() {
                       <div className={`max-w-[70%] p-4 rounded-lg ${
                         msg.role === 'user' 
                           ? 'bg-purple-600 text-white' 
-                          : 'bg-gray-100 text-gray-900'
+                          : 'bg-white/10 text-white'
                       }`}>
                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                       </div>
@@ -586,7 +586,7 @@ export default function CareerCoachPage() {
               )}
             </div>
 
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-white/10">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -594,7 +594,7 @@ export default function CareerCoachPage() {
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendChatMessage()}
                   placeholder="Ask your career question..."
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   disabled={isChatting}
                 />
                 <button
@@ -616,12 +616,12 @@ export default function CareerCoachPage() {
         {/* Goals Tab */}
         {activeTab === 'goals' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Career Goals</h2>
+                <h2 className="text-2xl font-black text-white">Career Goals</h2>
                 <button
                   onClick={() => setShowAddGoal(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-black font-semibold rounded-full font-black hover:bg-purple-700 transition-colors"
                 >
                   <Target className="w-5 h-5" />
                   Add Goal
@@ -630,45 +630,45 @@ export default function CareerCoachPage() {
 
               {showAddGoal && (
                 <div className="mb-6 p-4 border border-purple-200 rounded-lg bg-purple-50">
-                  <h3 className="font-semibold text-gray-900 mb-4">New Career Goal</h3>
+                  <h3 className="font-black text-white mb-4">New Career Goal</h3>
                   <div className="space-y-3">
                     <input
                       type="text"
                       placeholder="Goal title (e.g., 'Become Senior Developer')"
                       value={newGoal.title}
                       onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
                     />
                     <textarea
                       placeholder="Description"
                       value={newGoal.description}
                       onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
                       rows={3}
                     />
                     <input
                       type="date"
                       value={newGoal.targetDate}
                       onChange={(e) => setNewGoal({ ...newGoal, targetDate: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
                     />
                     <textarea
                       placeholder="Milestones (one per line)"
                       value={newGoal.milestones}
                       onChange={(e) => setNewGoal({ ...newGoal, milestones: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-4 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
                       rows={3}
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={addGoal}
-                        className="px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700"
+                        className="px-4 py-2 bg-white text-black font-semibold rounded-full font-black hover:bg-purple-700"
                       >
                         Save Goal
                       </button>
                       <button
                         onClick={() => setShowAddGoal(false)}
-                        className="px-4 py-2 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300"
+                        className="px-4 py-2 bg-gray-200 text-white font-semibold rounded-lg hover:bg-gray-300"
                       >
                         Cancel
                       </button>
@@ -679,16 +679,16 @@ export default function CareerCoachPage() {
 
               <div className="space-y-4">
                 {goals.map((goal) => (
-                  <div key={goal.id} className="border border-gray-200 rounded-lg p-4">
+                  <div key={goal.id} className="border border-white/10 rounded-lg p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                        <h3 className="font-black text-white flex items-center gap-2">
                           {goal.title}
-                          {goal.completed && <CheckCircle className="w-5 h-5 text-green-600" />}
+                          {goal.completed && <CheckCircle className="w-5 h-5 text-green-400" />}
                         </h3>
-                        <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
+                        <p className="text-sm text-white mt-1">{goal.description}</p>
                         {goal.targetDate && (
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-white mt-1">
                             Target: {new Date(goal.targetDate).toLocaleDateString()}
                           </p>
                         )}
@@ -696,7 +696,7 @@ export default function CareerCoachPage() {
                     </div>
                     
                     <div className="mb-3">
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
+                      <div className="flex justify-between text-sm text-white mb-1">
                         <span>Progress</span>
                         <span>{goal.progress}%</span>
                       </div>
@@ -710,11 +710,11 @@ export default function CareerCoachPage() {
 
                     {goal.milestones && goal.milestones.length > 0 && (
                       <div className="mt-3">
-                        <p className="text-sm font-medium text-gray-700 mb-2">Milestones:</p>
+                        <p className="text-sm font-medium text-white mb-2">Milestones:</p>
                         <ul className="space-y-1">
                           {goal.milestones.map((milestone, index) => (
-                            <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
-                              <span className="text-purple-600">•</span>
+                            <li key={index} className="text-sm text-white flex items-start gap-2">
+                              <span className="text-purple-400">•</span>
                               {milestone}
                             </li>
                           ))}
@@ -737,8 +737,8 @@ export default function CareerCoachPage() {
 
                 {goals.length === 0 && !showAddGoal && (
                   <div className="text-center py-12">
-                    <Target className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                    <p className="text-gray-600">No goals yet. Add your first career goal to get started!</p>
+                    <Target className="w-12 h-12 text-white mx-auto mb-3" />
+                    <p className="text-white">No goals yet. Add your first career goal to get started!</p>
                   </div>
                 )}
               </div>

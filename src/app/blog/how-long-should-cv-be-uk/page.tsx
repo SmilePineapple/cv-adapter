@@ -19,13 +19,13 @@ export const metadata: Metadata = {
 
 export default function HowLongShouldCVBe() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -46,18 +46,18 @@ export default function HowLongShouldCVBe() {
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           
           {/* Quick Answer Box */}
           <div className="bg-gradient-to-r from-green-50 to-blue-50 border-l-4 border-green-600 p-6 mb-8 rounded-r-lg">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Quick Answer:</h3>
+            <h3 className="text-2xl font-black text-white mb-3">Quick Answer:</h3>
             <p className="text-lg text-gray-800 mb-0">
               <strong>In the UK, your CV should typically be 2 pages (A4).</strong> Graduates and entry-level candidates can use 1-2 pages, while senior professionals may extend to 3 pages if necessary. Academic CVs can be longer (3+ pages).
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">The Standard UK CV Length</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">The Standard UK CV Length</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Unlike US resumes (which are strictly 1 page), UK CVs are generally <strong>2 pages long</strong>. This gives you enough space to detail your work experience, education, and skills without overwhelming recruiters.
           </p>
 
@@ -68,13 +68,13 @@ export default function HowLongShouldCVBe() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">CV Length by Experience Level</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">CV Length by Experience Level</h2>
 
           <div className="space-y-6 mb-8">
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Graduate / Entry-Level (0-3 years experience)</h3>
-              <p className="text-gray-700 mb-3"><strong>Recommended length: 1-2 pages</strong></p>
-              <p className="text-gray-600 mb-3">
+              <h3 className="text-2xl font-black text-white mb-3">Graduate / Entry-Level (0-3 years experience)</h3>
+              <p className="text-gray-300 mb-3"><strong>Recommended length: 1-2 pages</strong></p>
+              <p className="text-gray-400 mb-3">
                 If you're a recent graduate or have limited work experience, aim for 1 page. You can extend to 2 pages if you have relevant internships, projects, or university achievements to showcase.
               </p>
               <div className="bg-green-50 rounded p-4">
@@ -90,9 +90,9 @@ export default function HowLongShouldCVBe() {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Mid-Level Professional (3-10 years experience)</h3>
-              <p className="text-gray-700 mb-3"><strong>Recommended length: 2 pages</strong></p>
-              <p className="text-gray-600 mb-3">
+              <h3 className="text-2xl font-black text-white mb-3">Mid-Level Professional (3-10 years experience)</h3>
+              <p className="text-gray-300 mb-3"><strong>Recommended length: 2 pages</strong></p>
+              <p className="text-gray-400 mb-3">
                 This is the sweet spot for most UK professionals. Two pages allow you to detail your career progression, key achievements, and relevant skills without being too verbose.
               </p>
               <div className="bg-blue-50 rounded p-4">
@@ -108,9 +108,9 @@ export default function HowLongShouldCVBe() {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Senior / Executive (10+ years experience)</h3>
-              <p className="text-gray-700 mb-3"><strong>Recommended length: 2-3 pages</strong></p>
-              <p className="text-gray-600 mb-3">
+              <h3 className="text-2xl font-black text-white mb-3">Senior / Executive (10+ years experience)</h3>
+              <p className="text-gray-300 mb-3"><strong>Recommended length: 2-3 pages</strong></p>
+              <p className="text-gray-400 mb-3">
                 Senior professionals can extend to 3 pages if necessary to showcase extensive leadership experience and strategic achievements. However, keep it concise - quality over quantity.
               </p>
               <div className="bg-purple-50 rounded p-4">
@@ -126,9 +126,9 @@ export default function HowLongShouldCVBe() {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Academic / Research (PhD, Postdoc, Lecturer)</h3>
-              <p className="text-gray-700 mb-3"><strong>Recommended length: 3-6 pages (or more)</strong></p>
-              <p className="text-gray-600 mb-3">
+              <h3 className="text-2xl font-black text-white mb-3">Academic / Research (PhD, Postdoc, Lecturer)</h3>
+              <p className="text-gray-300 mb-3"><strong>Recommended length: 3-6 pages (or more)</strong></p>
+              <p className="text-gray-400 mb-3">
                 Academic CVs are the exception to the 2-page rule. They can be much longer as they need to include publications, research projects, grants, teaching experience, and conference presentations.
               </p>
               <div className="bg-orange-50 rounded p-4">
@@ -145,7 +145,7 @@ export default function HowLongShouldCVBe() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">When to Use 1 Page vs 2 Pages</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">When to Use 1 Page vs 2 Pages</h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -177,7 +177,7 @@ export default function HowLongShouldCVBe() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common CV Length Mistakes</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Common CV Length Mistakes</h2>
 
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
             <h3 className="text-red-900 font-semibold mb-4 flex items-center">
@@ -208,8 +208,8 @@ export default function HowLongShouldCVBe() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">How to Reduce CV Length</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">How to Reduce CV Length</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             If your CV is too long, try these strategies:
           </p>
 
@@ -221,7 +221,7 @@ export default function HowLongShouldCVBe() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Remove Older Roles</h3>
-                  <p className="text-gray-600">Jobs from 15+ years ago can be summarized in one line or removed entirely unless highly relevant.</p>
+                  <p className="text-gray-400">Jobs from 15+ years ago can be summarized in one line or removed entirely unless highly relevant.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -230,7 +230,7 @@ export default function HowLongShouldCVBe() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Cut Irrelevant Information</h3>
-                  <p className="text-gray-600">Remove hobbies, references, and skills that aren't relevant to the target role.</p>
+                  <p className="text-gray-400">Remove hobbies, references, and skills that aren't relevant to the target role.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -239,7 +239,7 @@ export default function HowLongShouldCVBe() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Use Bullet Points</h3>
-                  <p className="text-gray-600">Replace paragraphs with concise bullet points. Aim for 3-5 bullets per role.</p>
+                  <p className="text-gray-400">Replace paragraphs with concise bullet points. Aim for 3-5 bullets per role.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -248,7 +248,7 @@ export default function HowLongShouldCVBe() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Simplify Education</h3>
-                  <p className="text-gray-600">If you have 5+ years experience, just list degree, institution, and grade. No need for modules or dissertation details.</p>
+                  <p className="text-gray-400">If you have 5+ years experience, just list degree, institution, and grade. No need for modules or dissertation details.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -257,17 +257,17 @@ export default function HowLongShouldCVBe() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-2">Optimize Formatting</h3>
-                  <p className="text-gray-600">Reduce margins slightly (2cm instead of 2.5cm), use 11pt font, and minimize white space.</p>
+                  <p className="text-gray-400">Reduce margins slightly (2cm instead of 2.5cm), use 11pt font, and minimize white space.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">UK vs USA: CV Length Differences</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">UK vs USA: CV Length Differences</h2>
           
           <div className="overflow-x-auto mb-8">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-              <thead className="bg-gray-50">
+              <thead className="bg-white/5">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 border-b">Aspect</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 border-b">UK CV</th>
@@ -304,11 +304,11 @@ export default function HowLongShouldCVBe() {
             </table>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Does CV Length Affect ATS?</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Does CV Length Affect ATS?</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             <strong>Good news:</strong> Applicant Tracking Systems (ATS) don't penalize longer CVs. They scan for keywords and relevant information regardless of length.
           </p>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             However, <strong>human recruiters</strong> do care about length. A concise, well-structured 2-page CV is easier to scan and more likely to hold their attention than a rambling 4-page document.
           </p>
 
@@ -319,8 +319,8 @@ export default function HowLongShouldCVBe() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Let AI Optimize Your CV Length</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Let AI Optimize Your CV Length</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Struggling to fit your experience into 2 pages? <strong>My CV Buddy</strong> uses AI to automatically optimize your CV length while keeping all relevant information.
           </p>
           
@@ -345,47 +345,47 @@ export default function HowLongShouldCVBe() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Key Takeaways</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Key Takeaways</h2>
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Standard UK CV length is 2 pages</strong> for most professionals</span>
+                <span className="text-gray-300"><strong>Standard UK CV length is 2 pages</strong> for most professionals</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Graduates can use 1-2 pages</strong> depending on experience</span>
+                <span className="text-gray-300"><strong>Graduates can use 1-2 pages</strong> depending on experience</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Senior professionals may extend to 3 pages</strong> if necessary</span>
+                <span className="text-gray-300"><strong>Senior professionals may extend to 3 pages</strong> if necessary</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Academic CVs can be 3+ pages</strong> with full publication lists</span>
+                <span className="text-gray-300"><strong>Academic CVs can be 3+ pages</strong> with full publication lists</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Quality beats quantity</strong> - focus on relevant achievements</span>
+                <span className="text-gray-300"><strong>Quality beats quantity</strong> - focus on relevant achievements</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Tailor your CV</strong> for each application to maximize impact</span>
+                <span className="text-gray-300"><strong>Tailor your CV</strong> for each application to maximize impact</span>
               </li>
             </ul>
           </div>
 
           {/* Related Articles */}
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <Link href="/blog/cv-template-uk-2025" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Template UK: 10 Free Templates</h4>
-                <p className="text-gray-600 text-sm">Professional CV templates for UK job applications</p>
+                <p className="text-gray-400 text-sm">Professional CV templates for UK job applications</p>
               </Link>
               <Link href="/blog/cv-writing-tips" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Writing Tips & Best Practices</h4>
-                <p className="text-gray-600 text-sm">Expert advice to create a winning CV</p>
+                <p className="text-gray-400 text-sm">Expert advice to create a winning CV</p>
               </Link>
             </div>
           </div>

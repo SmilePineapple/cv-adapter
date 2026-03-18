@@ -36,22 +36,22 @@ export default function CVBuddyVsCanva() {
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-8 sm:p-12">
             <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
                 <span>January 15, 2025</span>
                 <span>•</span>
                 <span>12 min read</span>
                 <span>•</span>
-                <span className="text-blue-600 font-medium">Comparison</span>
+                <span className="text-blue-400 font-black">Comparison</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
                 CV Buddy vs Canva: Which CV Builder is Better in 2025?
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-xl text-gray-300 leading-relaxed">
                 Choosing between CV Buddy and Canva for your CV? We tested both platforms extensively. Here's our honest comparison of features, ATS compatibility, and value for UK job seekers.
               </p>
             </div>
 
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-invert prose-lg max-w-none">
               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
                 <div className="flex items-start">
                   <AlertTriangle className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-1" />
@@ -67,15 +67,15 @@ export default function CVBuddyVsCanva() {
 
               <h2>Quick Comparison Table</h2>
               <div className="overflow-x-auto -mx-4 sm:mx-0 mb-8">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-white/10">
+                  <thead className="bg-white/5">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Feature</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">CV Buddy</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Canva</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Feature</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">CV Buddy</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Canva</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white/5 divide-y divide-white/10">
                     <tr>
                       <td className="px-4 py-4 font-medium text-gray-900">ATS Compatibility</td>
                       <td className="px-4 py-4">
@@ -89,7 +89,7 @@ export default function CVBuddyVsCanva() {
                         </span>
                       </td>
                     </tr>
-                    <tr className="bg-gray-50">
+                    <tr className="bg-white/5">
                       <td className="px-4 py-4 font-medium text-gray-900">AI CV Tailoring</td>
                       <td className="px-4 py-4 text-green-600 font-semibold">✓ Yes</td>
                       <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
@@ -99,7 +99,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4">2 full CVs, no watermark</td>
                       <td className="px-4 py-4">Limited features, watermark</td>
                     </tr>
-                    <tr className="bg-gray-50">
+                    <tr className="bg-white/5">
                       <td className="px-4 py-4 font-medium text-gray-900">Pro Price</td>
                       <td className="px-4 py-4">£9.99/month</td>
                       <td className="px-4 py-4">£10.99/month</td>
@@ -109,7 +109,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4 text-green-600 font-semibold">✓ Yes</td>
                       <td className="px-4 py-4 text-red-600 font-semibold">✗ No (Global)</td>
                     </tr>
-                    <tr className="bg-gray-50">
+                    <tr className="bg-white/5">
                       <td className="px-4 py-4 font-medium text-gray-900">Design Templates</td>
                       <td className="px-4 py-4">10+ ATS-friendly</td>
                       <td className="px-4 py-4">1000+ creative</td>
@@ -119,7 +119,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4">PDF, DOCX, TXT, HTML</td>
                       <td className="px-4 py-4">PDF, PNG, JPG</td>
                     </tr>
-                    <tr className="bg-gray-50">
+                    <tr className="bg-white/5">
                       <td className="px-4 py-4 font-medium text-gray-900">Cover Letters</td>
                       <td className="px-4 py-4 text-green-600 font-semibold">✓ AI-generated</td>
                       <td className="px-4 py-4 text-yellow-600 font-semibold">~ Manual only</td>
@@ -231,7 +231,7 @@ export default function CVBuddyVsCanva() {
               <h2>Pricing Comparison</h2>
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="p-6 bg-white border border-gray-200 rounded-xl">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">CV Buddy Pricing</h3>
+                  <h3 className="text-2xl font-black text-white mb-4">CV Buddy Pricing</h3>
                   <div className="space-y-3">
                     <div>
                       <div className="font-semibold text-gray-900">Free</div>
@@ -245,7 +245,7 @@ export default function CVBuddyVsCanva() {
                 </div>
 
                 <div className="p-6 bg-white border border-gray-200 rounded-xl">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Canva Pricing</h3>
+                  <h3 className="text-2xl font-black text-white mb-4">Canva Pricing</h3>
                   <div className="space-y-3">
                     <div>
                       <div className="font-semibold text-gray-900">Free</div>

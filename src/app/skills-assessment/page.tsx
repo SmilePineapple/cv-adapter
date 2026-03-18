@@ -98,7 +98,7 @@ export default function SkillsAssessmentPage() {
           <div className="flex items-center justify-between py-4">
             <Link 
               href="/dashboard"
-              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              className="flex items-center text-gray-400 hover:text-white transition-colors transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Dashboard
@@ -122,10 +122,10 @@ export default function SkillsAssessmentPage() {
             <Target className="w-4 h-4" />
             AI-Powered Skills Testing
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Test Your Skills & Identify Gaps
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-white max-w-2xl mx-auto">
             Get personalized skill assessments tailored to your target role. Receive detailed feedback, gap analysis, and learning recommendations.
           </p>
         </div>
@@ -134,34 +134,34 @@ export default function SkillsAssessmentPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-              <Target className="w-5 h-5 text-blue-600" />
+              <Target className="w-5 h-5 text-blue-400" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Role-Specific</h3>
-            <p className="text-sm text-gray-600">Questions tailored to your target job</p>
+            <h3 className="font-black text-white mb-1">Role-Specific</h3>
+            <p className="text-sm text-white">Questions tailored to your target job</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
-              <TrendingUp className="w-5 h-5 text-purple-600" />
+              <TrendingUp className="w-5 h-5 text-purple-400" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Gap Analysis</h3>
-            <p className="text-sm text-gray-600">Identify areas for improvement</p>
+            <h3 className="font-black text-white mb-1">Gap Analysis</h3>
+            <p className="text-sm text-white">Identify areas for improvement</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
-              <Award className="w-5 h-5 text-green-600" />
+              <Award className="w-5 h-5 text-green-400" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Instant Feedback</h3>
-            <p className="text-sm text-gray-600">Detailed explanations for each question</p>
+            <h3 className="font-black text-white mb-1">Instant Feedback</h3>
+            <p className="text-sm text-white">Detailed explanations for each question</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
-              <Zap className="w-5 h-5 text-orange-600" />
+              <Zap className="w-5 h-5 text-orange-400" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Learning Path</h3>
-            <p className="text-sm text-gray-600">Personalized resource recommendations</p>
+            <h3 className="font-black text-white mb-1">Learning Path</h3>
+            <p className="text-sm text-white">Personalized resource recommendations</p>
           </div>
         </div>
 
@@ -170,7 +170,7 @@ export default function SkillsAssessmentPage() {
           <form onSubmit={handleGenerate} className="space-y-6">
             {/* Job Role */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-white mb-2">
                 Target Job Role *
               </label>
               <input
@@ -178,34 +178,34 @@ export default function SkillsAssessmentPage() {
                 value={jobRole}
                 onChange={(e) => setJobRole(e.target.value)}
                 placeholder="e.g., Software Engineer, Data Analyst, Product Manager"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-white mt-1">
                 The role you're preparing for or want to assess
               </p>
             </div>
 
             {/* Job Description (Optional) */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-white mb-2">
                 Job Description (Optional)
               </label>
               <textarea
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Paste the job description to get more targeted questions..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 rows={4}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-white mt-1">
                 Adding a job description makes questions more specific
               </p>
             </div>
 
             {/* Difficulty Level */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
+              <label className="block text-sm font-semibold text-white mb-3">
                 Difficulty Level
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -218,7 +218,7 @@ export default function SkillsAssessmentPage() {
                       px-4 py-3 rounded-lg border-2 font-medium capitalize transition-all
                       ${difficultyLevel === level 
                         ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                        : 'border-gray-200 text-gray-700 hover:border-blue-300'
+                        : 'border-white/10 text-white hover:border-blue-300'
                       }
                     `}
                   >
@@ -230,10 +230,10 @@ export default function SkillsAssessmentPage() {
 
             {/* Number of Questions */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-white mb-2">
                 Number of Questions: {totalQuestions}
                 {!isPro && totalQuestions > 5 && (
-                  <span className="ml-2 text-xs text-orange-600 font-normal">
+                  <span className="ml-2 text-xs text-orange-400 font-normal">
                     (Free users limited to 5)
                   </span>
                 )}
@@ -246,7 +246,7 @@ export default function SkillsAssessmentPage() {
                 onChange={(e) => setTotalQuestions(parseInt(e.target.value))}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-white mt-1">
                 <span>5 questions</span>
                 <span>{isPro ? '20 questions' : '5 questions (Pro: up to 20)'}</span>
               </div>
@@ -275,7 +275,7 @@ export default function SkillsAssessmentPage() {
               <div className="text-center">
                 <Link 
                   href="/subscription"
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-sm text-blue-400 hover:text-blue-700 font-medium"
                 >
                   Upgrade to Pro for unlimited questions and advanced features →
                 </Link>
@@ -286,7 +286,7 @@ export default function SkillsAssessmentPage() {
 
         {/* How It Works */}
         <div className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 sm:p-8 border border-blue-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-3xl font-black text-white mb-6 text-center">
             How It Works
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -294,32 +294,32 @@ export default function SkillsAssessmentPage() {
               <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">
                 1
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Enter Details</h3>
-              <p className="text-sm text-gray-600">Specify your target role and preferences</p>
+              <h3 className="font-black text-white mb-2">Enter Details</h3>
+              <p className="text-sm text-white">Specify your target role and preferences</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">
                 2
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Take Test</h3>
-              <p className="text-sm text-gray-600">Answer AI-generated questions</p>
+              <h3 className="font-black text-white mb-2">Take Test</h3>
+              <p className="text-sm text-white">Answer AI-generated questions</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">
                 3
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Get Results</h3>
-              <p className="text-sm text-gray-600">Instant scoring and feedback</p>
+              <h3 className="font-black text-white mb-2">Get Results</h3>
+              <p className="text-sm text-white">Instant scoring and feedback</p>
             </div>
 
             <div className="text-center">
               <div className="w-12 h-12 bg-orange-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">
                 4
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Improve</h3>
-              <p className="text-sm text-gray-600">Follow personalized learning path</p>
+              <h3 className="font-black text-white mb-2">Improve</h3>
+              <p className="text-sm text-white">Follow personalized learning path</p>
             </div>
           </div>
         </div>

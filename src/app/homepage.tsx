@@ -1,78 +1,23 @@
 import Link from 'next/link'
-import { ArrowRight, Upload, Zap, Download, CheckCircle, Sparkles, Target, FileText, Award, Clock, Shield } from 'lucide-react'
+import { ArrowRight, Upload, Zap, Download, CheckCircle, Star } from 'lucide-react'
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
 import { TrackingInitializer } from '@/components/TrackingInitializer'
 
-// Force dynamic rendering to avoid Next.js 15 static generation bug
 export const dynamic = 'force-dynamic'
 
-// SEO Metadata - Optimized for mycvbuddy.com & mycvbuddy.co.uk
 export const metadata: Metadata = {
   title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes | My CV Buddy',
-  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Upload your CV, paste any job description, get a perfectly tailored CV that beats ATS systems. Free to try - no credit card needed. Used by professionals across UK & USA.',
-  keywords: [
-    // UK Terms - High Volume
-    'CV generator UK free', 'free CV builder', 'CV template UK', 'professional CV', 
-    'CV builder UK', 'CV generator', 'AI CV writer', 'CV writing tool', 
-    'CV format', 'CV examples', 'CV template', 'professional CV template',
-    'adapt my CV', 'tailor CV to job', 'CV optimizer UK', 'professional CV UK',
-    'CV templates UK', 'ATS CV checker', 'curriculum vitae generator',
-    'CV builder free UK', 'online CV maker', 'CV buddy', 'free CV template',
-    'how to write a CV', 'CV skills', 'CV personal statement',
-    
-    // US Terms  
-    'resume builder USA', 'resume generator', 'AI resume writer', 'resume writing tool',
-    'customize resume', 'tailor resume to job', 'resume optimizer', 'professional resume',
-    'resume templates US', 'ATS resume checker', 'resume builder free',
-    'free resume builder', 'resume format', 'resume examples',
-    
-    // Universal
-    'ATS optimization', 'applicant tracking system', 'cover letter generator',
-    'job-specific CV', 'keyword optimization', 'resume parser', 'free CV builder',
-    'AI CV generator', 'job application CV', 'career profile builder',
-    'CV maker', 'resume maker', 'CV creator', 'resume creator',
-    
-    // Long-tail - From GSC Data
-    'AI tool to adapt CV to job description', 'automatically generate resume for job',
-    'create job-specific CV in minutes', 'free CV builder online',
-    'AI resume writing service', 'tailor CV to job description free',
-    'how to optimize CV for ATS', 'CV keywords for job application',
-    'what to put on a CV', 'how long should a CV be', 'first job CV'
-  ],
-  authors: [{ name: 'My CV Buddy' }],
+  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Upload your CV, paste any job description, get a perfectly tailored CV that beats ATS systems. Free to try - no credit card needed.',
+  keywords: ['CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder'],
   openGraph: {
     title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly. Free to try.',
+    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'My CV Buddy',
     url: 'https://www.mycvbuddy.com',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload CV, paste job, get tailored results instantly. Free to try.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  alternates: {
-    canonical: 'https://www.mycvbuddy.com/',
-    languages: {
-      'en-GB': 'https://www.mycvbuddy.co.uk',
-      'en-US': 'https://www.mycvbuddy.com',
-      'x-default': 'https://www.mycvbuddy.com',
-    },
   },
 }
 
@@ -82,1227 +27,310 @@ export default function LandingPage() {
       <OAuthHandler />
       <StructuredData />
       <TrackingInitializer />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs sm:text-sm">CV</span>
-            </div>
-            <span className="text-lg sm:text-xl font-bold text-gray-900">CV Adapter</span>
-          </div>
-          
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link href="#features" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Features</Link>
-            <Link href="/skills-assessment" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Skills Test</Link>
-            <Link href="/blog" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Blog</Link>
-            <Link href="#pricing" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Pricing</Link>
-            <Link href="/pricing-comparison" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Compare Plans</Link>
-            <Link href="/auth/login" className="text-gray-600 hover:text-gray-900 text-sm lg:text-base">Login</Link>
-            <Link 
-              href="/auth/signup" 
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm lg:text-base"
-            >
-              Get Started
-            </Link>
-          </nav>
-          
-          {/* Mobile Menu Button */}
-          <Link 
-            href="/auth/signup" 
-            className="md:hidden bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-          >
-            Sign Up
-          </Link>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute top-0 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-0 left-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-        </div>
-        
-        <div className="container mx-auto text-center max-w-5xl">
-          {/* Trust Badge */}
-          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-4 sm:mb-6">
-            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 mr-1.5 sm:mr-2 flex-shrink-0" />
-            <span className="text-xs sm:text-sm font-medium text-green-900">✨ 10,000+ CVs generated • 95% ATS pass rate</span>
-          </div>
-          
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
-            Get Your Dream Job with an{' '}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ATS-Optimized CV</span>
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-3 sm:mb-4 max-w-3xl mx-auto leading-relaxed px-4">
-            <strong>75% of CVs never reach human eyes.</strong> Don't let yours be one of them.
-          </p>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
-            Our AI tailors your CV to any job description in 2 minutes. <strong>Try free</strong> • No credit card required • Then £2.99/month or £14.99/year
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
-            <Link 
-              href="/auth/signup" 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 sm:px-8 md:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl active:scale-95 sm:transform sm:hover:scale-105 flex items-center justify-center gap-2 min-h-[56px] touch-manipulation"
-            >
-              <Zap className="w-5 h-5 flex-shrink-0" />
-              <span className="whitespace-nowrap">Create Your CV Now - Free</span>
-            </Link>
-            <Link 
-              href="#demo" 
-              className="border-2 border-gray-300 text-gray-700 px-6 sm:px-8 md:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 min-h-[56px] touch-manipulation"
-            >
-              <FileText className="w-5 h-5 flex-shrink-0" />
-              <span className="whitespace-nowrap">See How It Works</span>
-            </Link>
-          </div>
-
-          {/* Free vs Pro Quick Comparison */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-6 max-w-3xl mx-auto mb-8 border-2 border-blue-200 shadow-lg">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Quick Comparison</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              {/* Free Column */}
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="text-center mb-3">
-                  <span className="inline-block bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-semibold">FREE</span>
+      
+      <div className="min-h-screen bg-black text-white">
+        {/* Minimalist Header */}
+        <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-20">
+              <Link href="/" className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-black text-lg">CV</span>
                 </div>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>1 CV generation</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>All 12 templates</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>ATS optimization</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>No credit card required</span>
-                  </li>
-                </ul>
-              </div>
+                <span className="text-2xl font-black tracking-tight">My CV Buddy</span>
+              </Link>
               
-              {/* Pro Column */}
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-4 border-2 border-blue-500 relative">
-                <div className="absolute -top-2 -right-2">
-                  <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-bold">POPULAR</span>
-                </div>
-                <div className="text-center mb-3">
-                  <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">PRO - £2.99/month</span>
-                </div>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Unlimited CV generations</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span><strong>Unlimited cover letters</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>All 12 templates</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Priority support</span>
-                  </li>
-                </ul>
-                <div className="mt-3 text-center">
-                  <Link 
-                    href="/pricing-comparison" 
-                    className="text-blue-600 hover:text-blue-700 text-xs font-semibold inline-flex items-center"
-                  >
-                    See full comparison
-                    <ArrowRight className="w-3 h-3 ml-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Progress Indicator */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 max-w-2xl mx-auto mb-8 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-semibold text-gray-700">Your journey to a better CV:</span>
-              <span className="text-xs text-gray-500">Takes 2 minutes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">1</div>
-                <div className="text-xs font-medium text-gray-700">Upload</div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-gray-400" />
-              <div className="flex-1 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">2</div>
-                <div className="text-xs font-medium text-gray-700">Paste Job</div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-gray-400" />
-              <div className="flex-1 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">3</div>
-                <div className="text-xs font-medium text-gray-700">Download</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Social Proof */}
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 max-w-3xl mx-auto border border-green-200">
-            <div className="grid md:grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-3xl font-bold text-green-600 mb-1">10,000+</div>
-                <div className="text-sm text-gray-600">CVs generated this month</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-600 mb-1">95%</div>
-                <div className="text-sm text-gray-600">ATS pass rate</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-purple-600 mb-1">2 min</div>
-                <div className="text-sm text-gray-600">Average time to create</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works - Enhanced with Visual Details */}
-      <section id="demo" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              How It Works - Simple as 1, 2, 3
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Transform your CV in just 2 minutes. No design skills needed. No manual editing required.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-            <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Upload className="w-10 h-10 text-white" />
-              </div>
-              <div className="text-center mb-4">
-                <span className="inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">STEP 1</span>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">Upload Your CV</h3>
-              </div>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Drag & drop your existing CV in PDF or Word format. Our AI instantly extracts all sections - work experience, education, skills, and more.
-              </p>
-              <div className="bg-white p-3 rounded-lg border border-blue-200">
-                <p className="text-sm text-gray-600">
-                  <strong className="text-blue-600">✓</strong> Supports PDF & DOCX<br/>
-                  <strong className="text-blue-600">✓</strong> Auto-extracts all sections<br/>
-                  <strong className="text-blue-600">✓</strong> Preserves your content
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl border-2 border-purple-100 hover:border-purple-300 transition-all hover:shadow-lg">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Zap className="w-10 h-10 text-white" />
-              </div>
-              <div className="text-center mb-4">
-                <span className="inline-block bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">STEP 2</span>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">Paste Job Description</h3>
-              </div>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Copy the job posting you're applying for. Our AI analyzes requirements and matches your experience to what employers want.
-              </p>
-              <div className="bg-white p-3 rounded-lg border border-purple-200">
-                <p className="text-sm text-gray-600">
-                  <strong className="text-purple-600">✓</strong> AI keyword matching<br/>
-                  <strong className="text-purple-600">✓</strong> ATS optimization<br/>
-                  <strong className="text-purple-600">✓</strong> Highlight relevant skills
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border-2 border-green-100 hover:border-green-300 transition-all hover:shadow-lg">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Download className="w-10 h-10 text-white" />
-              </div>
-              <div className="text-center mb-4">
-                <span className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">STEP 3</span>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">Download & Apply</h3>
-              </div>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Get your perfectly tailored CV with changes highlighted. Choose from 12 ATS-friendly templates. Download as PDF, DOCX, or TXT.
-              </p>
-              <div className="bg-white p-3 rounded-lg border border-green-200">
-                <p className="text-sm text-gray-600">
-                  <strong className="text-green-600">✓</strong> 12 professional templates<br/>
-                  <strong className="text-green-600">✓</strong> Multiple export formats<br/>
-                  <strong className="text-green-600">✓</strong> See what changed
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Video/Demo CTA */}
-          <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-2xl border border-blue-200 max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">See It In Action</h3>
-            <p className="text-gray-600 mb-6">
-              Watch how Sarah transformed her CV and landed 3 interviews in one week
-            </p>
-            <Link 
-              href="/auth/signup" 
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
-            >
-              <Sparkles className="w-5 h-5" />
-              Try It Free Now
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <p className="text-sm text-gray-500 mt-3">No credit card required • 2 free CV generations</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold mb-2">10,000+</div>
-              <div className="text-blue-100">CVs Generated</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">95%</div>
-              <div className="text-blue-100">ATS Pass Rate</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">2 mins</div>
-              <div className="text-blue-100">Average Time</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">4.9/5</div>
-              <div className="text-blue-100">User Rating</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why Choose My CV Buddy?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We're not just another CV builder. We're your personal AI career assistant, helping you create job-winning CVs and resumes that get past ATS systems and impress recruiters.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Designed for Job Seekers</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Whether you're a recent graduate, career changer, or experienced professional, My CV Buddy adapts to your needs. Our AI understands different industries, job levels, and career paths, ensuring your CV speaks the language recruiters want to hear.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                <strong>Perfect for:</strong> UK job seekers, US resume writers, international applicants, career changers, graduates, professionals seeking promotions, and anyone applying to multiple positions.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">⚡ Save Hours of Work</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Stop spending hours tailoring your CV for each application. Our AI does the heavy lifting in seconds, analyzing job descriptions, matching your experience, and optimizing keywords automatically. What used to take 2-3 hours now takes 2 minutes.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                <strong>Time saved:</strong> Average users save 15+ hours per job search, allowing you to apply to more positions and focus on interview preparation instead of CV formatting.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">🔒 Your Data is Safe</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                We take privacy seriously. Your CV data is encrypted, never shared with third parties, and you maintain full control. Delete your data anytime with one click. GDPR compliant, SOC 2 certified, and trusted by thousands of professionals worldwide.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                <strong>Security features:</strong> Bank-level encryption, secure authentication, automatic data retention policies, and compliance with UK and EU data protection laws.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">💰 Affordable Pricing</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Unlike expensive CV writing services that charge £100-500 per CV, My CV Buddy costs just £2.99/month for unlimited generations. That's unlimited tailoring for dozens of job applications.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                <strong>Value comparison:</strong> Professional CV writers: £150-300 per CV. CV writing services: £50-100 per revision. My CV Buddy: £2.99/month for unlimited CVs. The choice is clear.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Industries Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Trusted Across All Industries
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our AI understands industry-specific terminology, requirements, and best practices. Whether you're in tech, healthcare, finance, or creative fields, we've got you covered.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {[
-              { name: "Technology & IT", icon: "💻", desc: "Software engineers, developers, data scientists, IT managers" },
-              { name: "Healthcare", icon: "🏥", desc: "Nurses, doctors, medical professionals, healthcare administrators" },
-              { name: "Finance & Banking", icon: "💼", desc: "Accountants, financial analysts, investment bankers, auditors" },
-              { name: "Marketing & Sales", icon: "📊", desc: "Digital marketers, sales managers, brand strategists, SEO specialists" },
-              { name: "Education", icon: "📚", desc: "Teachers, professors, administrators, education consultants" },
-              { name: "Engineering", icon: "⚙️", desc: "Mechanical, electrical, civil, chemical engineers" },
-              { name: "Creative & Design", icon: "🎨", desc: "Graphic designers, UX/UI designers, content creators, copywriters" },
-              { name: "Legal", icon: "⚖️", desc: "Lawyers, paralegals, legal assistants, compliance officers" },
-              { name: "Human Resources", icon: "👥", desc: "HR managers, recruiters, talent acquisition, people ops" },
-              { name: "Hospitality", icon: "🏨", desc: "Hotel managers, chefs, event planners, tourism professionals" },
-              { name: "Construction", icon: "🏗️", desc: "Project managers, architects, site supervisors, contractors" },
-              { name: "Retail & E-commerce", icon: "🛍️", desc: "Store managers, buyers, merchandisers, e-commerce specialists" }
-            ].map((industry, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-                <div className="text-4xl mb-3">{industry.icon}</div>
-                <h3 className="font-bold text-gray-900 mb-2">{industry.name}</h3>
-                <p className="text-sm text-gray-600">{industry.desc}</p>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">
-              Don't see your industry? <strong>My CV Buddy works for all professions.</strong> Our AI adapts to any field, role, or career level.
-            </p>
-            <Link 
-              href="/auth/signup"
-              className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Try It Free Now
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section id="features" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to Land Your Dream Job
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Powerful AI-driven features designed to help you stand out from the competition
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                icon: Target,
-                title: "ATS Optimization",
-                description: "Beat applicant tracking systems with AI-powered keyword optimization and formatting that recruiters love."
-              },
-              {
-                icon: FileText,
-                title: "10 Professional Templates",
-                description: "Modern, classic, creative, and industry-specific templates. All ATS-friendly and beautifully designed."
-              },
-              {
-                icon: Zap,
-                title: "Instant CV Tailoring",
-                description: "AI analyzes job descriptions and adapts your experience to match requirements in seconds."
-              },
-              {
-                icon: Award,
-                title: "Cover Letter Generator",
-                description: "Generate personalized cover letters that complement your CV using the same job details."
-              },
-              {
-                icon: Download,
-                title: "Multiple Export Formats",
-                description: "Download as PDF, Word, HTML, or TXT. Perfect formatting preserved across all formats."
-              },
-              {
-                icon: Shield,
-                title: "Secure & Private",
-                description: "Bank-level encryption. Your data is never shared. GDPR compliant with automatic data retention."
-              }
-            ].map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <div key={index} className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Loved by Job Seekers Worldwide
-            </h2>
-            <p className="text-xl text-gray-600">
-              See how CV Adapter helped others land their dream jobs
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                name: "Sarah Johnson",
-                role: "Software Engineer",
-                content: "Got 3 interviews in the first week after using CV Adapter. The ATS optimization really works!",
-                rating: 5
-              },
-              {
-                name: "Michael Chen",
-                role: "Marketing Manager",
-                content: "Saved me hours of work. The AI perfectly adapted my CV for each application. Highly recommend!",
-                rating: 5
-              },
-              {
-                name: "Emma Williams",
-                role: "Product Designer",
-                content: "The templates are beautiful and professional. Finally landed my dream job at a top tech company!",
-                rating: 5
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                <div className="flex mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-yellow-400">★</span>
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">&quot;{testimonial.content}&quot;</p>
-                <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                <div className="text-sm text-gray-600">{testimonial.role}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-xl text-gray-600 mb-12">
-            Start free, upgrade when you need more
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Monthly Plan */}
-            <div className="bg-white p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-300 transition-all">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Monthly</h3>
-              <div className="text-4xl font-bold text-blue-600 mb-4">
-                £2.99<span className="text-lg text-gray-600">/month</span>
-              </div>
-              <ul className="text-left space-y-3 mb-6">
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited CV generations</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited cover letters</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>All 12 professional templates</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Priority support</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Cancel anytime</span>
-                </li>
-              </ul>
-              <Link 
-                href="/auth/signup" 
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors block"
-              >
-                Get Started
-              </Link>
-            </div>
-
-            {/* Annual Plan */}
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-500 relative hover:border-blue-600 transition-all">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                  Save £6/year
-                </span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Annual</h3>
-              <div className="text-4xl font-bold text-blue-600 mb-1">
-                £14.99<span className="text-lg text-gray-600">/year</span>
-              </div>
-              <div className="text-sm text-gray-600 mb-4">
-                Just £1.25/month
-              </div>
-              <ul className="text-left space-y-3 mb-6">
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited CV generations</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited cover letters</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>All 12 professional templates</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Priority support</span>
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Cancel anytime</span>
-                </li>
-              </ul>
-              <Link 
-                href="/auth/signup" 
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors block"
-              >
-                Get Started
+              <nav className="hidden md:flex items-center space-x-8">
+                <Link href="#pricing" className="text-gray-400 hover:text-white font-medium transition-colors">Pricing</Link>
+                <Link href="/auth/login" className="text-gray-400 hover:text-white font-medium transition-colors">Login</Link>
+                <Link href="/auth/signup" className="bg-white text-black px-6 py-3 rounded-full hover:bg-gray-100 transition-all font-bold">
+                  Start Free
+                </Link>
+              </nav>
+              
+              <Link href="/auth/signup" className="md:hidden bg-white text-black px-5 py-2.5 rounded-full font-bold text-sm">
+                Start Free
               </Link>
             </div>
           </div>
+        </header>
 
-          {/* Link to Detailed Comparison */}
-          <div className="mt-8 text-center">
-            <Link 
-              href="/pricing-comparison" 
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
-            >
-              See detailed feature comparison
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Land Your Dream Job?
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto text-blue-100">
-            Join thousands of successful job seekers who transformed their CVs with AI
-          </p>
-          <Link 
-            href="/auth/signup" 
-            className="inline-flex items-center bg-white text-blue-600 px-10 py-5 rounded-xl text-lg font-bold hover:bg-gray-100 transition-all shadow-xl"
-          >
-            Get Started Now
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Link>
-          <p className="mt-4 text-sm text-blue-100">
-            No credit card required • Try free • £2.99/month or £14.99/year
-          </p>
-        </div>
-      </section>
-
-      {/* Common CV Mistakes Section */}
-      <section className="py-20 bg-gradient-to-br from-red-50 to-orange-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Avoid These Common CV Mistakes
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Don't let these errors cost you your dream job. My CV Buddy automatically fixes these issues and ensures your CV is error-free and ATS-optimized.
-            </p>
+        {/* Hero Section - Bold & Minimalist */}
+        <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden pt-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20"></div>
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full filter blur-3xl animate-blob"></div>
+            <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500/30 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                title: "❌ Generic, One-Size-Fits-All CVs",
-                problem: "Sending the same CV to every job application is the #1 reason for rejection.",
-                solution: "My CV Buddy tailors your CV to each specific job description, matching keywords and highlighting relevant experience automatically."
-              },
-              {
-                title: "❌ Poor ATS Optimization",
-                problem: "75% of CVs are rejected by Applicant Tracking Systems before a human ever sees them.",
-                solution: "Our AI ensures proper formatting, keyword placement, and ATS-friendly structure so your CV passes automated screening."
-              },
-              {
-                title: "❌ Missing Keywords",
-                problem: "Not including exact keywords from the job description means your CV won't match the requirements.",
-                solution: "We analyze job postings and automatically integrate relevant keywords naturally throughout your CV."
-              },
-              {
-                title: "❌ Weak Achievement Statements",
-                problem: "Vague descriptions like 'responsible for managing team' don't demonstrate impact or value.",
-                solution: "Our AI helps you quantify achievements with metrics, percentages, and concrete results that impress recruiters."
-              },
-              {
-                title: "❌ Poor Formatting & Design",
-                problem: "Complex layouts, tables, graphics, and unusual fonts break ATS parsers and look unprofessional.",
-                solution: "Choose from 10 professionally designed, ATS-friendly templates that look great and work with all systems."
-              },
-              {
-                title: "❌ Spelling & Grammar Errors",
-                problem: "Even small typos can disqualify you. Recruiters see errors as lack of attention to detail.",
-                solution: "Our AI checks for errors and ensures professional, polished language throughout your CV."
-              },
-              {
-                title: "❌ Too Long or Too Short",
-                problem: "CVs that are too lengthy (3+ pages) or too brief (less than 1 page) get rejected.",
-                solution: "We optimize content length, keeping only relevant information that matches the job requirements."
-              },
-              {
-                title: "❌ Outdated Information",
-                problem: "Including irrelevant old jobs, outdated skills, or ancient education details wastes valuable space.",
-                solution: "Our AI prioritizes recent, relevant experience and removes outdated information automatically."
-              },
-              {
-                title: "❌ No Customization for Industry",
-                problem: "Using generic language instead of industry-specific terminology makes you seem unqualified.",
-                solution: "My CV Buddy understands industry jargon and adapts your CV to match the language recruiters expect."
-              }
-            ].map((mistake, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">{mistake.title}</h3>
-                <div className="mb-4">
-                  <p className="text-sm font-semibold text-red-700 mb-2">The Problem:</p>
-                  <p className="text-sm text-gray-600">{mistake.problem}</p>
+          <div className="container mx-auto text-center max-w-6xl relative z-10">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-5 py-2 mb-8">
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                ))}
+              </div>
+              <span className="text-sm font-semibold">10,000+ users</span>
+            </div>
+            
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
+              Your CV.
+              <br />
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Optimized.</span>
+              <br />
+              In 2 Minutes.
+            </h1>
+            
+            <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-12 max-w-3xl mx-auto font-light">
+              AI-powered CV tailoring that beats ATS systems.
+              <br className="hidden sm:block" />
+              <span className="text-white font-semibold">95% pass rate.</span> No fluff.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+              <Link 
+                href="/auth/signup" 
+                className="group bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center justify-center gap-3"
+              >
+                <span>Start Free</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>No credit card</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Free trial</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>2 min setup</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <ArrowRight className="w-6 h-6 text-white/50 rotate-90" />
+          </div>
+        </section>
+
+        {/* How It Works - Ultra Minimalist */}
+        <section className="py-32 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-black mb-6 tracking-tight">
+                Three Steps.
+                <br />
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">That's It.</span>
+              </h2>
+            </div>
+            
+            <div className="max-w-4xl mx-auto space-y-16">
+              <div className="flex items-start gap-8">
+                <div className="flex-shrink-0 w-20 h-20 bg-black text-white rounded-2xl flex items-center justify-center">
+                  <span className="text-3xl font-black">1</span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-green-700 mb-2">Our Solution:</p>
-                  <p className="text-sm text-gray-600">{mistake.solution}</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Upload</h3>
+                  <p className="text-xl text-gray-600">Drop your CV. PDF or Word. Done.</p>
                 </div>
               </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <div className="bg-white rounded-xl p-8 max-w-3xl mx-auto shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Let AI Fix Your CV Mistakes Automatically
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Stop worrying about CV errors. My CV Buddy identifies and fixes these common mistakes automatically, ensuring your CV is professional, ATS-optimized, and tailored to each job you apply for.
-              </p>
-              <Link 
-                href="/auth/signup"
-                className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Fix My CV Now - Free
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-              <p className="mt-4 text-sm text-gray-500">1 free generation • No credit card required</p>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Real Results from Real People
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Join thousands of job seekers who transformed their CVs and landed their dream jobs
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-8">
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-blue-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex text-yellow-400 text-xl">
-                  {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
+              
+              <div className="flex items-start gap-8">
+                <div className="flex-shrink-0 w-20 h-20 bg-black text-white rounded-2xl flex items-center justify-center">
+                  <span className="text-3xl font-black">2</span>
                 </div>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
-              </div>
-              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "My ATS score went from <strong className="text-red-600">30%</strong> to <strong className="text-green-600">89%</strong> after using My CV Buddy. I got <strong>3 interview requests in one week!</strong>"
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                  SM
-                </div>
-                <div className="ml-4">
-                  <p className="font-bold text-gray-900">Sarah M.</p>
-                  <p className="text-sm text-gray-600">Marketing Manager, London</p>
+                <div>
+                  <h3 className="text-3xl font-black text-black mb-3">Paste Job</h3>
+                  <p className="text-xl text-gray-600">Copy the job description. AI does the rest.</p>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-purple-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex text-yellow-400 text-xl">
-                  {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
+              
+              <div className="flex items-start gap-8">
+                <div className="flex-shrink-0 w-20 h-20 bg-black text-white rounded-2xl flex items-center justify-center">
+                  <span className="text-3xl font-black">3</span>
                 </div>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
-              </div>
-              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "I was applying to <strong>50+ jobs with no responses.</strong> After optimizing my resume, I got callbacks from <strong className="text-green-600">15 companies.</strong>"
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                  JT
-                </div>
-                <div className="ml-4">
-                  <p className="font-bold text-gray-900">James T.</p>
-                  <p className="text-sm text-gray-600">Software Engineer, Manchester</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow border-2 border-green-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex text-yellow-400 text-xl">
-                  {'★★★★★'.split('').map((star, i) => <span key={i}>{star}</span>)}
-                </div>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">VERIFIED</span>
-              </div>
-              <p className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "Saved me <strong>hours of work!</strong> The AI understood exactly what the job required and tailored my CV perfectly."
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                  EP
-                </div>
-                <div className="ml-4">
-                  <p className="font-bold text-gray-900">Emily P.</p>
-                  <p className="text-sm text-gray-600">Project Manager, Birmingham</p>
+                <div>
+                  <h3 className="text-3xl font-black text-black mb-3">Download</h3>
+                  <p className="text-xl text-gray-600">Get your optimized CV. Apply with confidence.</p>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Trust Badges */}
-          <div className="bg-white rounded-2xl p-6 max-w-4xl mx-auto shadow-lg border border-gray-200">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <div className="text-3xl font-bold text-blue-600 mb-1">4.9/5</div>
-                <div className="text-sm text-gray-600">Average Rating</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-green-600 mb-1">10,000+</div>
-                <div className="text-sm text-gray-600">Happy Users</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-purple-600 mb-1">95%</div>
-                <div className="text-sm text-gray-600">ATS Pass Rate</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-orange-600 mb-1">2 min</div>
-                <div className="text-sm text-gray-600">Avg. Time</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Expert Resources Section - SEO Internal Links */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Expert CV Writing Resources
+        {/* Social Proof - Bold Stats */}
+        <section className="py-32 bg-black text-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight">
+                The Numbers
+                <br />
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Don't Lie.</span>
               </h2>
-              <p className="text-lg text-gray-600">
-                Learn from our comprehensive guides to create the perfect CV
-              </p>
             </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link 
-                href="/blog/best-free-cv-builders-uk-2025"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <Award className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Popular</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Best Free CV Builders UK 2025
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Compare top CV builders with ATS scores. My CV Buddy: 95% vs Canva: 45%
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/blog/ats-friendly-cv-builder"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-green-100 p-2 rounded-lg">
-                    <Target className="w-6 h-6 text-green-600" />
-                  </div>
-                  <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full">Essential</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  ATS-Friendly CV Builder Guide
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Why 75% of CVs get rejected by ATS and how to beat the system
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/blog/cv-buddy-vs-canva"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-purple-100 p-2 rounded-lg">
-                    <Sparkles className="w-6 h-6 text-purple-600" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  CV Buddy vs Canva Comparison
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Detailed comparison: ATS compatibility, features, and pricing
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Read Comparison <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/blog/free-cv-builder-no-sign-up"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-orange-100 p-2 rounded-lg">
-                    <Shield className="w-6 h-6 text-orange-600" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Free CV Builder No Sign Up?
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  The truth about "no signup" CV builders and best alternatives
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Learn More <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/ats-optimization-guide"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-red-100 p-2 rounded-lg">
-                    <Zap className="w-6 h-6 text-red-600" />
-                  </div>
-                  <span className="text-xs bg-red-600 text-white px-2 py-1 rounded-full">New</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  ATS Optimization Guide 2026
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Complete deep dive: beat ATS systems with proven strategies
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/cv-writing-guide"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-indigo-100 p-2 rounded-lg">
-                    <FileText className="w-6 h-6 text-indigo-600" />
-                  </div>
-                  <span className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">New</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  CV Writing Guide 2026
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Step-by-step tutorial: write a winning CV that gets interviews
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  Read Guide <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/cv-examples"
-                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-200 group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-teal-100 p-2 rounded-lg">
-                    <Award className="w-6 h-6 text-teal-600" />
-                  </div>
-                  <span className="text-xs bg-teal-600 text-white px-2 py-1 rounded-full">New</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  CV Examples by Industry
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  15+ professional CV examples for different UK industries
-                </p>
-                <div className="flex items-center text-blue-600 text-sm font-semibold">
-                  View Examples <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link 
-                href="/blog"
-                className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow text-white group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="bg-white/20 p-2 rounded-lg">
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold mb-2">
-                  View All CV Writing Guides
-                </h3>
-                <p className="text-sm text-blue-100 mb-3">
-                  20+ expert articles on CV writing, ATS optimization, and job search
-                </p>
-                <div className="flex items-center text-white text-sm font-semibold">
-                  Browse All <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
-              <p className="text-xl text-gray-600">Everything you need to know about My CV Buddy</p>
-            </div>
-
-            <div className="space-y-4">
-              {/* FAQ Item 1 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>What's the difference between a CV and a resume?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  A CV (Curriculum Vitae) is typically longer and used in the UK, Europe, and academia. 
-                  A resume is shorter (1-2 pages) and common in the US. My CV Buddy works with both formats 
-                  and helps you create the right document for your target market, whether you're applying 
-                  for jobs in the UK, US, or internationally.
-                </p>
-              </details>
-
-              {/* FAQ Item 2 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>How does AI CV tailoring work?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Upload your CV, paste a job description, and our AI analyzes both documents. 
-                  It identifies key requirements, matches relevant experience, optimizes keywords 
-                  for ATS systems, and generates a tailored version that highlights your most 
-                  relevant qualifications for that specific role. The process takes just seconds!
-                </p>
-              </details>
-
-              {/* FAQ Item 3 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>Is My CV Buddy free to use?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! We offer 2 free CV generations to try the service. This includes AI tailoring, 
-                  multiple export formats (PDF, DOCX, TXT), and access to all templates. For unlimited 
-                  generations and premium features, upgrade to Pro for just £5 one-time payment (100 lifetime generations).
-                </p>
-              </details>
-
-              {/* FAQ Item 4 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>Will my CV pass ATS systems?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! My CV Buddy is specifically designed to create ATS-optimized CVs. 
-                  We use clean formatting, proper keyword placement, and standard section headers 
-                  that applicant tracking systems can easily parse. Our AI also ensures your CV 
-                  includes relevant keywords from the job description, maximizing your chances of 
-                  passing the initial screening.
-                </p>
-              </details>
-
-              {/* FAQ Item 5 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>What file formats can I upload and download?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  <strong>Upload:</strong> PDF (.pdf) and Word documents (.doc, .docx) up to 10MB. 
-                  <strong> Download:</strong> PDF, DOCX, TXT, and HTML formats. All exports maintain 
-                  professional formatting and are ATS-compatible, ensuring your CV looks great and 
-                  works with any application system.
-                </p>
-              </details>
-
-              {/* FAQ Item 6 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>Can I create cover letters too?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Absolutely! My CV Buddy includes an AI-powered cover letter generator. 
-                  Select a CV, enter job details (company name, position, hiring manager), 
-                  choose your tone (professional, friendly, enthusiastic, or formal) and length, 
-                  and we'll create a personalized cover letter that complements your CV perfectly.
-                </p>
-              </details>
-
-              {/* FAQ Item 7 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>Is my data secure and private?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Yes! We use industry-standard encryption, secure authentication, and follow 
-                  GDPR guidelines. Your data is encrypted in transit and at rest. We never share 
-                  your personal information with third parties for marketing purposes, and you can 
-                  delete your account and all data at any time from your settings.
-                </p>
-              </details>
-
-              {/* FAQ Item 8 */}
-              <details className="bg-gray-50 rounded-lg p-6 group">
-                <summary className="font-semibold text-lg cursor-pointer list-none flex justify-between items-center">
-                  <span>How do I optimize my CV for a specific job?</span>
-                  <span className="text-2xl group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  It's simple: 1) Upload your existing CV, 2) Paste the job description from the posting, 
-                  3) Click "Generate". Our AI will analyze the job requirements and tailor your CV to match. 
-                  It highlights relevant experience, adds missing keywords, restructures content to emphasize 
-                  your most applicable qualifications, and ensures ATS compatibility. You can then edit and 
-                  download your tailored CV in your preferred format.
-                </p>
-              </details>
-            </div>
-
-            {/* CTA in FAQ */}
-            <div className="mt-12 text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
-              <h3 className="text-2xl font-bold mb-4">Ready to create your perfect CV?</h3>
-              <p className="text-gray-600 mb-6">Join thousands of job seekers who landed their dream jobs</p>
-              <Link
-                href="/auth/signup"
-                className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Get Started Free
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CV</span>
-                </div>
-                <span className="text-xl font-bold">CV Adapter</span>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+              <div className="text-center">
+                <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">95%</div>
+                <div className="text-lg text-gray-400">ATS Pass Rate</div>
               </div>
-              <p className="text-gray-400 text-sm">
-                AI-powered CV tailoring and resume optimization for job seekers worldwide.
-              </p>
+              <div className="text-center">
+                <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">10K+</div>
+                <div className="text-lg text-gray-400">Users</div>
+              </div>
+              <div className="text-center">
+                <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">2min</div>
+                <div className="text-lg text-gray-400">Setup Time</div>
+              </div>
+              <div className="text-center">
+                <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">4.9</div>
+                <div className="text-lg text-gray-400">Rating</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials - Minimalist */}
+        <section className="py-32 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-20">
+                <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-black mb-6 tracking-tight">
+                  Real People.
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Real Results.</span>
+                </h2>
+              </div>
+              
+              <div className="space-y-12">
+                <div className="border-l-4 border-blue-600 pl-8">
+                  <p className="text-2xl text-gray-800 mb-4 font-medium">&quot;3 interviews in one week. This thing actually works.&quot;</p>
+                  <div className="text-gray-600">— Sarah J., Software Engineer</div>
+                </div>
+                
+                <div className="border-l-4 border-purple-600 pl-8">
+                  <p className="text-2xl text-gray-800 mb-4 font-medium">&quot;Saved me hours. The AI is scary good.&quot;</p>
+                  <div className="text-gray-600">— Michael C., Marketing Manager</div>
+                </div>
+                
+                <div className="border-l-4 border-pink-600 pl-8">
+                  <p className="text-2xl text-gray-800 mb-4 font-medium">&quot;Got my dream job. Worth every penny.&quot;</p>
+                  <div className="text-gray-600">— Emma W., Product Designer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing - Dramatic & Simple */}
+        <section id="pricing" className="py-32 bg-black text-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight">
+                One Price.
+                <br />
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Unlimited CVs.</span>
+              </h2>
             </div>
             
-            {/* Product */}
-            <div>
-              <h4 className="font-bold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="#features" className="hover:text-white">Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-white">Pricing</Link></li>
-                <li><Link href="/auth/signup" className="hover:text-white">Sign Up</Link></li>
-                <li><Link href="/auth/login" className="hover:text-white">Login</Link></li>
-              </ul>
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-12 text-center">
+                <div className="mb-8">
+                  <div className="text-7xl sm:text-8xl font-black mb-4">£2.99</div>
+                  <div className="text-2xl text-gray-400">per month</div>
+                </div>
+                
+                <div className="space-y-4 mb-10 text-left max-w-md mx-auto">
+                  <div className="flex items-center gap-3 text-lg">
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                    <span>Unlimited CV generations</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-lg">
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                    <span>Unlimited cover letters</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-lg">
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                    <span>12 professional templates</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-lg">
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                    <span>Cancel anytime</span>
+                  </div>
+                </div>
+                
+                <Link 
+                  href="/auth/signup" 
+                  className="block w-full bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl"
+                >
+                  Start Free Trial
+                </Link>
+                
+                <p className="text-gray-400 mt-6">No credit card required</p>
+              </div>
             </div>
-            
-            {/* Resources */}
-            <div>
-              <h4 className="font-bold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/blog" className="hover:text-white">CV Writing Tips</Link></li>
-                <li><Link href="/skills-assessment" className="hover:text-white">Skills Assessment</Link></li>
-                <li><Link href="/templates" className="hover:text-white">Templates</Link></li>
-                <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
-                <li><Link href="/api-docs" className="hover:text-white">API Docs</Link></li>
-              </ul>
-            </div>
-            
-            {/* Legal */}
-            <div>
-              <h4 className="font-bold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
-                <li><Link href="/gdpr" className="hover:text-white">GDPR</Link></li>
-              </ul>
-            </div>
+          </div>
+        </section>
+
+        {/* Final CTA - Dramatic */}
+        <section className="py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full filter blur-3xl animate-blob"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; {new Date().getFullYear()} CV Adapter. All rights reserved.</p>
-            <p className="mt-2">
-              Helping job seekers create ATS-optimized resumes and cover letters with AI technology.
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black mb-8 tracking-tight">
+              Stop Wasting Time.
+              <br />
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Start Getting Interviews.</span>
+            </h2>
+            
+            <p className="text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+              Join 10,000+ job seekers who transformed their CVs with AI.
             </p>
+            
+            <Link 
+              href="/auth/signup" 
+              className="inline-flex items-center gap-3 bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl hover:scale-105"
+            >
+              <span>Start Free Trial</span>
+              <ArrowRight className="w-6 h-6" />
+            </Link>
+            
+            <p className="text-gray-400 mt-6">No credit card • 2 minutes setup • Cancel anytime</p>
           </div>
-        </div>
-      </footer>
+        </section>
+
+        {/* Footer - Minimal */}
+        <footer className="py-12 bg-black text-gray-400 border-t border-white/10">
+          <div className="container mx-auto px-4 text-center">
+            <div className="mb-8">
+              <Link href="/" className="inline-flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-black text-lg">CV</span>
+                </div>
+                <span className="text-xl font-black text-white">My CV Buddy</span>
+              </Link>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+              <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
+              <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+              <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+            </div>
+            
+            <p className="text-sm">&copy; {new Date().getFullYear()} My CV Buddy. All rights reserved.</p>
+          </div>
+        </footer>
       </div>
     </>
   )

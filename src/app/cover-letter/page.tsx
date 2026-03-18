@@ -173,14 +173,14 @@ export default function CreateCoverLetterPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Upgrade Banner for Free Users */}
       {showUpgradePrompt && !isPro && (
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -193,7 +193,7 @@ export default function CreateCoverLetterPage() {
               </div>
               <Link
                 href="/subscription"
-                className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+                className="bg-white text-purple-400 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
               >
                 Upgrade to Pro
               </Link>
@@ -209,15 +209,15 @@ export default function CreateCoverLetterPage() {
             <div className="flex items-center space-x-4">
               <Link
                 href="/dashboard"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-400 hover:text-white transition-colors transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Back to Dashboard
               </Link>
               <div className="h-6 w-px bg-gray-300"></div>
               <div className="flex items-center">
-                <Mail className="w-6 h-6 text-blue-600 mr-2" />
-                <h1 className="text-xl font-semibold text-gray-900">Create Cover Letter</h1>
+                <Mail className="w-6 h-6 text-blue-400 mr-2" />
+                <h1 className="text-xl font-semibold text-white">Create Cover Letter</h1>
               </div>
             </div>
           </div>
@@ -226,15 +226,15 @@ export default function CreateCoverLetterPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {cvs.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">No CVs Available</h2>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow p-12 text-center">
+            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h2 className="text-xl font-black text-white mb-2">No CVs Available</h2>
+            <p className="text-white mb-6">
               You need to upload a CV first before creating a cover letter.
             </p>
             <Link
               href="/upload"
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-white text-black rounded-full font-black hover:bg-blue-700 transition-colors"
             >
               <Upload className="w-5 h-5 mr-2" />
               Upload CV
@@ -243,19 +243,19 @@ export default function CreateCoverLetterPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Form */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">Cover Letter Details</h2>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow p-6">
+              <h2 className="text-xl font-black text-white mb-6">Cover Letter Details</h2>
               
               <div className="space-y-6">
                 {/* CV Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Select CV
                   </label>
                   <select
                     value={selectedCvId}
                     onChange={(e) => setSelectedCvId(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     {cvs.map((cv) => (
                       <option key={cv.id} value={cv.id}>
@@ -267,7 +267,7 @@ export default function CreateCoverLetterPage() {
 
                 {/* Job Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Job Title *
                   </label>
                   <input
@@ -275,13 +275,13 @@ export default function CreateCoverLetterPage() {
                     value={formData.jobTitle}
                     onChange={(e) => handleInputChange('jobTitle', e.target.value)}
                     placeholder="e.g., Senior Software Engineer"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Company Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Company Name *
                   </label>
                   <input
@@ -289,13 +289,13 @@ export default function CreateCoverLetterPage() {
                     value={formData.companyName}
                     onChange={(e) => handleInputChange('companyName', e.target.value)}
                     placeholder="e.g., Google"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Hiring Manager Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Hiring Manager Name (Optional)
                   </label>
                   <input
@@ -303,13 +303,13 @@ export default function CreateCoverLetterPage() {
                     value={formData.hiringManagerName}
                     onChange={(e) => handleInputChange('hiringManagerName', e.target.value)}
                     placeholder="e.g., John Smith"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Job Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Job Description (Optional)
                   </label>
                   <textarea
@@ -317,19 +317,19 @@ export default function CreateCoverLetterPage() {
                     onChange={(e) => handleInputChange('jobDescription', e.target.value)}
                     placeholder="Paste the job description here for better personalization..."
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 {/* Length */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Length
                   </label>
                   <select
                     value={formData.length}
                     onChange={(e) => handleInputChange('length', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="short">Short (1 paragraph)</option>
                     <option value="long">Long (2-3 paragraphs)</option>
@@ -338,13 +338,13 @@ export default function CreateCoverLetterPage() {
 
                 {/* Tone */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-black text-white mb-2">
                     Tone
                   </label>
                   <select
                     value={formData.tone}
                     onChange={(e) => handleInputChange('tone', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="professional">Professional</option>
                     <option value="friendly">Friendly</option>
@@ -357,7 +357,7 @@ export default function CreateCoverLetterPage() {
                 <button
                   onClick={handleGenerateCoverLetter}
                   disabled={isGenerating || !selectedCvId || !formData.jobTitle || !formData.companyName}
-                  className="w-full flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                  className="w-full flex items-center justify-center px-6 py-3 bg-white text-black rounded-full font-black hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                 >
                   {isGenerating ? (
                     <>
@@ -376,53 +376,53 @@ export default function CreateCoverLetterPage() {
 
             {/* Preview/Tips */}
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">Tips for Better Results</h2>
+              <h2 className="text-xl font-black text-white mb-6">Tips for Better Results</h2>
               
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Building2 className="w-4 h-4 text-blue-600" />
+                    <Building2 className="w-4 h-4 text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Research the Company</h3>
-                    <p className="text-sm text-gray-600">Include specific details about the company to make your cover letter more personalized.</p>
+                    <h3 className="font-bold text-white">Research the Company</h3>
+                    <p className="text-sm text-white">Include specific details about the company to make your cover letter more personalized.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3">
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-4 h-4 text-green-600" />
+                    <FileText className="w-4 h-4 text-green-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Include Job Description</h3>
-                    <p className="text-sm text-gray-600">Paste the job description for AI to tailor your cover letter to specific requirements.</p>
+                    <h3 className="font-bold text-white">Include Job Description</h3>
+                    <p className="text-sm text-white">Paste the job description for AI to tailor your cover letter to specific requirements.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3">
                   <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <User className="w-4 h-4 text-purple-600" />
+                    <User className="w-4 h-4 text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Hiring Manager Name</h3>
-                    <p className="text-sm text-gray-600">If you know the hiring manager's name, include it for a more personal touch.</p>
+                    <h3 className="font-bold text-white">Hiring Manager Name</h3>
+                    <p className="text-sm text-white">If you know the hiring manager's name, include it for a more personal touch.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3">
                   <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-4 h-4 text-orange-600" />
+                    <Clock className="w-4 h-4 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Choose the Right Length</h3>
-                    <p className="text-sm text-gray-600">Short for quick applications, long for detailed positions requiring more explanation.</p>
+                    <h3 className="font-bold text-white">Choose the Right Length</h3>
+                    <p className="text-sm text-white">Short for quick applications, long for detailed positions requiring more explanation.</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-center">
-                  <Zap className="w-5 h-5 text-blue-600 mr-2" />
+                  <Zap className="w-5 h-5 text-blue-400 mr-2" />
                   <h3 className="font-medium text-blue-900">AI-Powered Generation</h3>
                 </div>
                 <p className="text-sm text-blue-700 mt-1">

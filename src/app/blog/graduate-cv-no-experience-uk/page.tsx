@@ -47,17 +47,17 @@ export default function GraduateCVNoExperience() {
 
         {/* Featured Image Placeholder */}
         <div className="w-full h-64 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl mb-8 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">🎓 Graduate CV Guide</p>
+          <p className="text-gray-400 text-lg">🎓 Graduate CV Guide</p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           <p className="text-xl text-gray-700 leading-relaxed mb-6">
             Just graduated from university and staring at a blank CV? You're not alone. <strong>78% of UK graduates</strong> 
             struggle with the same question: <em>"How do I write a CV when I have no work experience?"</em>
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Here's the truth: You have more to offer than you think. Your degree, projects, societies, part-time jobs, 
             and volunteering all count as valuable experience. This guide will show you exactly how to turn your 
             university years into a compelling graduate CV that gets interviews.
@@ -72,8 +72,8 @@ export default function GraduateCVNoExperience() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">The Graduate CV Structure (No Experience Required)</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">The Graduate CV Structure (No Experience Required)</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Here's the winning structure for a graduate CV with limited work experience:
           </p>
 
@@ -91,10 +91,10 @@ export default function GraduateCVNoExperience() {
             </ol>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Section-by-Section Breakdown</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Section-by-Section Breakdown</h2>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">1. Personal Statement (Your Elevator Pitch)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Your personal statement is crucial when you lack experience. It should include:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -138,7 +138,7 @@ export default function GraduateCVNoExperience() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">2. Education (Your Strongest Asset)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             As a graduate, your education section should be detailed and prominent. Include:
           </p>
 
@@ -176,7 +176,7 @@ export default function GraduateCVNoExperience() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Skills Section (Show What You Can Do)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Organize your skills into clear categories:
           </p>
 
@@ -206,7 +206,7 @@ export default function GraduateCVNoExperience() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">4. Experience (Reframe Everything You've Done)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Even if you've only worked in retail or hospitality, you've developed valuable skills. The key is reframing:
           </p>
 
@@ -228,7 +228,7 @@ export default function GraduateCVNoExperience() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">5. Projects (Your Secret Weapon)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Projects demonstrate initiative and practical skills. Include:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -249,7 +249,7 @@ export default function GraduateCVNoExperience() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">6. Extracurricular Activities (Show You're Well-Rounded)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Employers love candidates who are engaged and proactive. Include:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -259,8 +259,8 @@ export default function GraduateCVNoExperience() {
             <li><strong>Student ambassador roles:</strong> Communication and representation skills</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">What to Do If You Have ZERO Experience</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">What to Do If You Have ZERO Experience</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             If you genuinely have no work experience, internships, or volunteering, here's what to do <strong>right now</strong>:
           </p>
 
@@ -298,7 +298,7 @@ export default function GraduateCVNoExperience() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Common Graduate CV Mistakes</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Common Graduate CV Mistakes</h2>
           
           <div className="space-y-4 mb-8">
             <div className="bg-red-50 border-l-4 border-red-600 p-4">
@@ -342,32 +342,32 @@ export default function GraduateCVNoExperience() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Graduate CV Template (Copy & Customize)</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Graduate CV Template (Copy & Customize)</h2>
           
           <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 mb-8 font-mono text-sm">
-            <p className="text-gray-900 font-bold mb-4">[YOUR NAME]</p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-white font-bold mb-4">[YOUR NAME]</p>
+            <p className="text-gray-300 mb-4">
               [Phone] | [Email] | [LinkedIn URL] | [City, UK]
             </p>
-            <p className="text-gray-900 font-bold mb-2">PERSONAL STATEMENT</p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-white font-bold mb-2">PERSONAL STATEMENT</p>
+            <p className="text-gray-300 mb-4">
               [Degree] graduate from [University] with [classification]. Strong skills in [skill 1], [skill 2], and [skill 3]. 
               [Key achievement or project]. Seeking [target role] where I can apply my [relevant skills] to [company goal].
             </p>
-            <p className="text-gray-900 font-bold mb-2">EDUCATION</p>
-            <p className="text-gray-700 mb-1"><strong>[Degree Title], [University] — [Classification] ([Year-Year])</strong></p>
-            <p className="text-gray-700 mb-1">Relevant Modules: [Module 1], [Module 2], [Module 3]</p>
-            <p className="text-gray-700 mb-4">Dissertation: [Title] — [Brief description and grade]</p>
-            <p className="text-gray-900 font-bold mb-2">SKILLS</p>
-            <p className="text-gray-700 mb-1"><strong>Technical:</strong> [List software, tools, languages]</p>
-            <p className="text-gray-700 mb-4"><strong>Soft Skills:</strong> [List with brief evidence]</p>
-            <p className="text-gray-900 font-bold mb-2">EXPERIENCE</p>
-            <p className="text-gray-700 mb-1"><strong>[Job Title], [Company] — [City] ([Month Year - Month Year])</strong></p>
-            <p className="text-gray-700 mb-4">• [Achievement with numbers]<br/>• [Achievement with numbers]<br/>• [Achievement with numbers]</p>
-            <p className="text-gray-900 font-bold mb-2">PROJECTS</p>
-            <p className="text-gray-700 mb-4"><strong>[Project Name]:</strong> [Brief description, technologies used, impact]</p>
-            <p className="text-gray-900 font-bold mb-2">EXTRACURRICULAR</p>
-            <p className="text-gray-700">• [Society/Sport/Volunteer role with brief description]</p>
+            <p className="text-white font-bold mb-2">EDUCATION</p>
+            <p className="text-gray-300 mb-1"><strong>[Degree Title], [University] — [Classification] ([Year-Year])</strong></p>
+            <p className="text-gray-300 mb-1">Relevant Modules: [Module 1], [Module 2], [Module 3]</p>
+            <p className="text-gray-300 mb-4">Dissertation: [Title] — [Brief description and grade]</p>
+            <p className="text-white font-bold mb-2">SKILLS</p>
+            <p className="text-gray-300 mb-1"><strong>Technical:</strong> [List software, tools, languages]</p>
+            <p className="text-gray-300 mb-4"><strong>Soft Skills:</strong> [List with brief evidence]</p>
+            <p className="text-white font-bold mb-2">EXPERIENCE</p>
+            <p className="text-gray-300 mb-1"><strong>[Job Title], [Company] — [City] ([Month Year - Month Year])</strong></p>
+            <p className="text-gray-300 mb-4">• [Achievement with numbers]<br/>• [Achievement with numbers]<br/>• [Achievement with numbers]</p>
+            <p className="text-white font-bold mb-2">PROJECTS</p>
+            <p className="text-gray-300 mb-4"><strong>[Project Name]:</strong> [Brief description, technologies used, impact]</p>
+            <p className="text-white font-bold mb-2">EXTRACURRICULAR</p>
+            <p className="text-gray-300">• [Society/Sport/Volunteer role with brief description]</p>
           </div>
 
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 my-12 text-center">
@@ -384,7 +384,7 @@ export default function GraduateCVNoExperience() {
             </Link>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Final Checklist</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Final Checklist</h2>
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
             <h4 className="text-blue-900 font-semibold mb-4">✅ Before You Apply:</h4>
@@ -402,18 +402,18 @@ export default function GraduateCVNoExperience() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">You've Got This!</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">You've Got This!</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Remember: Every professional started exactly where you are now. Your lack of experience isn't a weakness—it's 
             an opportunity to show your potential, enthusiasm, and fresh perspective.
           </p>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Focus on what you <strong>can</strong> offer: your education, your projects, your transferable skills, and 
             your willingness to learn. With a well-crafted CV and genuine enthusiasm, you'll land that first graduate role.
           </p>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in helping 
               UK graduates create compelling CVs that get interviews. We've helped thousands of university leavers land 
               their first roles at top companies.

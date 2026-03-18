@@ -35,13 +35,13 @@ export const metadata: Metadata = {
 
 export default function AIPoweredCVOptimizationPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -52,7 +52,7 @@ export default function AIPoweredCVOptimizationPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             AI-Powered CV Optimization: The Future of Job Applications in 2025
           </h1>
-          <p className="text-xl text-gray-600 mb-4">How artificial intelligence is transforming the way we create and tailor CVs for maximum impact</p>
+          <p className="text-xl text-gray-300 mb-4">How artificial intelligence is transforming the way we create and tailor CVs for maximum impact</p>
           <div className="flex items-center text-gray-600 space-x-4 text-sm">
             <span>October 29, 2025</span>
             <span>•</span>
@@ -95,12 +95,12 @@ export default function AIPoweredCVOptimizationPage() {
 
         {/* Introduction */}
         <div className="prose prose-lg max-w-none mb-12">
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-300 text-lg leading-relaxed">
             The job market in 2025 is more competitive than ever. With hundreds of applications for every position, 
             standing out requires more than just a well-written CV—it requires <strong>intelligent optimization</strong> 
             that speaks directly to what recruiters and ATS systems are looking for.
           </p>
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-300 text-lg leading-relaxed">
             Enter AI-powered CV optimization: a game-changing technology that's leveling the playing field and 
             helping job seekers land their dream roles faster than ever before.
           </p>
@@ -110,14 +110,14 @@ export default function AIPoweredCVOptimizationPage() {
         <div className="space-y-8 mb-12">
           
           {/* Section 1 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-blue-100 rounded-lg p-3">
-                <Brain className="w-6 h-6 text-blue-600" />
+                <Brain className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">What is AI CV Optimization?</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-3xl font-black text-white mb-3">What is AI CV Optimization?</h3>
+                <p className="text-gray-400 mb-4">
                   AI CV optimization uses advanced machine learning algorithms to analyze job descriptions and 
                   automatically tailor your CV to match specific requirements. It's like having a professional 
                   CV writer working for you 24/7.
@@ -158,38 +158,38 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 2 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-green-100 rounded-lg p-3">
                 <Sparkles className="w-6 h-6 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">The Benefits of AI-Powered CVs</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-3xl font-black text-white mb-3">The Benefits of AI-Powered CVs</h3>
+                <p className="text-gray-400 mb-4">
                   AI optimization isn't just about saving time—it's about dramatically improving your chances of landing interviews.
                 </p>
                 <div className="space-y-4">
                   <div className="border-l-4 border-green-500 pl-4">
                     <h4 className="font-bold text-gray-900 mb-1">⚡ Speed & Efficiency</h4>
-                    <p className="text-gray-600">
+                    <p className="text-gray-400">
                       What used to take 2-3 hours per application now takes 30 seconds. Apply to more jobs without sacrificing quality.
                     </p>
                   </div>
                   <div className="border-l-4 border-blue-500 pl-4">
                     <h4 className="font-bold text-gray-900 mb-1">🎯 Perfect Keyword Matching</h4>
-                    <p className="text-gray-600">
+                    <p className="text-gray-400">
                       AI identifies and incorporates the exact keywords recruiters and ATS systems are scanning for.
                     </p>
                   </div>
                   <div className="border-l-4 border-purple-500 pl-4">
                     <h4 className="font-bold text-gray-900 mb-1">📈 Data-Driven Improvements</h4>
-                    <p className="text-gray-600">
+                    <p className="text-gray-400">
                       Learn from thousands of successful CVs to understand what works and what doesn't.
                     </p>
                   </div>
                   <div className="border-l-4 border-yellow-500 pl-4">
                     <h4 className="font-bold text-gray-900 mb-1">🔄 Consistency Across Applications</h4>
-                    <p className="text-gray-600">
+                    <p className="text-gray-400">
                       Maintain professional quality across all your applications without manual effort.
                     </p>
                   </div>
@@ -199,35 +199,35 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 3 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-purple-100 rounded-lg p-3">
                 <Target className="w-6 h-6 text-purple-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Real-World Results</h3>
-                <p className="text-gray-600 mb-6">
+                <h3 className="text-3xl font-black text-white mb-3">Real-World Results</h3>
+                <p className="text-gray-400 mb-6">
                   The numbers don't lie. AI-optimized CVs are delivering measurable results for job seekers:
                 </p>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-blue-600 mb-2">3x</div>
-                    <p className="text-gray-900 font-semibold mb-1">More Interview Invitations</p>
+                    <p className="text-white font-semibold mb-1">More Interview Invitations</p>
                     <p className="text-sm text-gray-600">Compared to generic CVs</p>
                   </div>
                   <div className="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-green-600 mb-2">95%</div>
-                    <p className="text-gray-900 font-semibold mb-1">ATS Pass Rate</p>
+                    <p className="text-white font-semibold mb-1">ATS Pass Rate</p>
                     <p className="text-sm text-gray-600">Successfully screened by automated systems</p>
                   </div>
                   <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-purple-600 mb-2">10x</div>
-                    <p className="text-gray-900 font-semibold mb-1">Faster Application Process</p>
+                    <p className="text-white font-semibold mb-1">Faster Application Process</p>
                     <p className="text-sm text-gray-600">From hours to seconds per application</p>
                   </div>
                   <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-orange-600 mb-2">67%</div>
-                    <p className="text-gray-900 font-semibold mb-1">Reduction in Job Search Time</p>
+                    <p className="text-white font-semibold mb-1">Reduction in Job Search Time</p>
                     <p className="text-sm text-gray-600">Land offers faster with optimized CVs</p>
                   </div>
                 </div>
@@ -236,19 +236,19 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 4 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-yellow-100 rounded-lg p-3">
                 <Award className="w-6 h-6 text-yellow-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">AI vs. Traditional CV Writing</h3>
-                <p className="text-gray-600 mb-6">
+                <h3 className="text-3xl font-black text-white mb-3">AI vs. Traditional CV Writing</h3>
+                <p className="text-gray-400 mb-6">
                   See how AI-powered optimization compares to traditional manual CV writing:
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-white/5">
                       <tr>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Feature</th>
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Traditional</th>
@@ -289,14 +289,14 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 5 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-indigo-100 rounded-lg p-3">
                 <Clock className="w-6 h-6 text-indigo-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Getting Started with AI CV Optimization</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-3xl font-black text-white mb-3">Getting Started with AI CV Optimization</h3>
+                <p className="text-gray-400 mb-4">
                   Ready to supercharge your job search? Here's how to get started:
                 </p>
                 <div className="space-y-4">
@@ -304,28 +304,28 @@ export default function AIPoweredCVOptimizationPage() {
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">1</div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Upload Your Current CV</h4>
-                      <p className="text-gray-600">Start with your existing CV—AI will analyze and understand your background</p>
+                      <p className="text-gray-400">Start with your existing CV—AI will analyze and understand your background</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">2</div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Paste the Job Description</h4>
-                      <p className="text-gray-600">Copy the job posting you're applying for—AI will identify key requirements</p>
+                      <p className="text-gray-400">Copy the job posting you're applying for—AI will identify key requirements</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">3</div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Let AI Work Its Magic</h4>
-                      <p className="text-gray-600">In 30 seconds, get a perfectly tailored CV optimized for that specific role</p>
+                      <p className="text-gray-400">In 30 seconds, get a perfectly tailored CV optimized for that specific role</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">4</div>
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Review & Download</h4>
-                      <p className="text-gray-600">Review the changes, make any tweaks, and download in your preferred format</p>
+                      <p className="text-gray-400">Review the changes, make any tweaks, and download in your preferred format</p>
                     </div>
                   </div>
                 </div>

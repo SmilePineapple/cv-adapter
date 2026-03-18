@@ -43,10 +43,10 @@ export default function CVKeywordsForATS() {
         </div>
 
         <div className="w-full h-64 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl mb-8 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">🔑 ATS Keywords Guide</p>
+          <p className="text-gray-400 text-lg">🔑 ATS Keywords Guide</p>
         </div>
 
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           <p className="text-xl text-gray-700 leading-relaxed mb-6">
             <strong>75% of CVs never reach human eyes</strong> because they lack the right keywords for Applicant Tracking Systems (ATS). 
             This comprehensive guide provides 500+ ATS-friendly keywords organized by industry to help your CV get past automated screening.
@@ -59,7 +59,7 @@ export default function CVKeywordsForATS() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Universal ATS Keywords (All Industries)</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Universal ATS Keywords (All Industries)</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -94,81 +94,81 @@ export default function CVKeywordsForATS() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Industry-Specific Keywords</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Industry-Specific Keywords</h2>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Technology & IT</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-700 mb-3"><strong>Programming & Development:</strong></p>
-            <p className="text-gray-600 mb-4">Python, Java, JavaScript, React, Node.js, Angular, Vue.js, TypeScript, C++, C#, Ruby, PHP, Swift, Kotlin, SQL, NoSQL, MongoDB, PostgreSQL, MySQL, Git, GitHub, Docker, Kubernetes, AWS, Azure, Google Cloud, CI/CD, Agile, Scrum, DevOps, Microservices, REST API, GraphQL, Full-stack, Front-end, Back-end</p>
+            <p className="text-gray-300 mb-3"><strong>Programming & Development:</strong></p>
+            <p className="text-gray-400 mb-4">Python, Java, JavaScript, React, Node.js, Angular, Vue.js, TypeScript, C++, C#, Ruby, PHP, Swift, Kotlin, SQL, NoSQL, MongoDB, PostgreSQL, MySQL, Git, GitHub, Docker, Kubernetes, AWS, Azure, Google Cloud, CI/CD, Agile, Scrum, DevOps, Microservices, REST API, GraphQL, Full-stack, Front-end, Back-end</p>
             
-            <p className="text-gray-700 mb-3"><strong>Data & Analytics:</strong></p>
-            <p className="text-gray-600 mb-4">Data Analysis, Machine Learning, AI, Deep Learning, TensorFlow, PyTorch, Pandas, NumPy, Tableau, Power BI, SQL, Python, R, Data Visualization, Statistical Analysis, Predictive Modeling, Big Data, Hadoop, Spark, ETL, Data Warehousing</p>
+            <p className="text-gray-300 mb-3"><strong>Data & Analytics:</strong></p>
+            <p className="text-gray-400 mb-4">Data Analysis, Machine Learning, AI, Deep Learning, TensorFlow, PyTorch, Pandas, NumPy, Tableau, Power BI, SQL, Python, R, Data Visualization, Statistical Analysis, Predictive Modeling, Big Data, Hadoop, Spark, ETL, Data Warehousing</p>
             
-            <p className="text-gray-700 mb-3"><strong>Cybersecurity:</strong></p>
-            <p className="text-gray-600">Penetration Testing, Vulnerability Assessment, SIEM, Firewall, Encryption, ISO 27001, GDPR Compliance, Risk Assessment, Incident Response, Network Security, Cloud Security, CISSP, CEH, CompTIA Security+</p>
+            <p className="text-gray-300 mb-3"><strong>Cybersecurity:</strong></p>
+            <p className="text-gray-400">Penetration Testing, Vulnerability Assessment, SIEM, Firewall, Encryption, ISO 27001, GDPR Compliance, Risk Assessment, Incident Response, Network Security, Cloud Security, CISSP, CEH, CompTIA Security+</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Marketing & Digital</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-700 mb-3"><strong>Digital Marketing:</strong></p>
-            <p className="text-gray-600 mb-4">SEO, SEM, PPC, Google Ads, Facebook Ads, Social Media Marketing, Content Marketing, Email Marketing, Marketing Automation, HubSpot, Mailchimp, Google Analytics, Conversion Rate Optimization, A/B Testing, Landing Pages, Lead Generation, Marketing Funnel, Customer Journey</p>
+            <p className="text-gray-300 mb-3"><strong>Digital Marketing:</strong></p>
+            <p className="text-gray-400 mb-4">SEO, SEM, PPC, Google Ads, Facebook Ads, Social Media Marketing, Content Marketing, Email Marketing, Marketing Automation, HubSpot, Mailchimp, Google Analytics, Conversion Rate Optimization, A/B Testing, Landing Pages, Lead Generation, Marketing Funnel, Customer Journey</p>
             
-            <p className="text-gray-700 mb-3"><strong>Content & Social:</strong></p>
-            <p className="text-gray-600 mb-4">Content Strategy, Copywriting, Blog Writing, Social Media Management, Instagram, LinkedIn, TikTok, Twitter/X, Facebook, Community Management, Influencer Marketing, Brand Voice, Editorial Calendar, Content Calendar</p>
+            <p className="text-gray-300 mb-3"><strong>Content & Social:</strong></p>
+            <p className="text-gray-400 mb-4">Content Strategy, Copywriting, Blog Writing, Social Media Management, Instagram, LinkedIn, TikTok, Twitter/X, Facebook, Community Management, Influencer Marketing, Brand Voice, Editorial Calendar, Content Calendar</p>
             
-            <p className="text-gray-700 mb-3"><strong>Analytics & Strategy:</strong></p>
-            <p className="text-gray-600">Market Research, Competitor Analysis, Customer Segmentation, Brand Strategy, Campaign Management, ROI Analysis, KPI Tracking, Marketing Mix, Customer Acquisition Cost, Lifetime Value, Attribution Modeling</p>
+            <p className="text-gray-300 mb-3"><strong>Analytics & Strategy:</strong></p>
+            <p className="text-gray-400">Market Research, Competitor Analysis, Customer Segmentation, Brand Strategy, Campaign Management, ROI Analysis, KPI Tracking, Marketing Mix, Customer Acquisition Cost, Lifetime Value, Attribution Modeling</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Finance & Accounting</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-700 mb-3"><strong>Accounting:</strong></p>
-            <p className="text-gray-600 mb-4">Financial Reporting, GAAP, IFRS, Accounts Payable, Accounts Receivable, General Ledger, Month-end Close, Year-end Close, Reconciliation, Audit, Tax Compliance, VAT, Payroll, Sage, Xero, QuickBooks, SAP, Oracle, ACCA, CIMA, ACA</p>
+            <p className="text-gray-300 mb-3"><strong>Accounting:</strong></p>
+            <p className="text-gray-400 mb-4">Financial Reporting, GAAP, IFRS, Accounts Payable, Accounts Receivable, General Ledger, Month-end Close, Year-end Close, Reconciliation, Audit, Tax Compliance, VAT, Payroll, Sage, Xero, QuickBooks, SAP, Oracle, ACCA, CIMA, ACA</p>
             
-            <p className="text-gray-700 mb-3"><strong>Financial Analysis:</strong></p>
-            <p className="text-gray-600 mb-4">Financial Modeling, Budgeting, Forecasting, Variance Analysis, P&L, Balance Sheet, Cash Flow, Financial Planning & Analysis (FP&A), Investment Analysis, Risk Management, Excel, VBA, Bloomberg, Capital Markets</p>
+            <p className="text-gray-300 mb-3"><strong>Financial Analysis:</strong></p>
+            <p className="text-gray-400 mb-4">Financial Modeling, Budgeting, Forecasting, Variance Analysis, P&L, Balance Sheet, Cash Flow, Financial Planning & Analysis (FP&A), Investment Analysis, Risk Management, Excel, VBA, Bloomberg, Capital Markets</p>
             
-            <p className="text-gray-700 mb-3"><strong>Banking & Investment:</strong></p>
-            <p className="text-gray-600">Mergers & Acquisitions, Due Diligence, Valuation, DCF, LBO, Private Equity, Venture Capital, Portfolio Management, Trading, Derivatives, Fixed Income, Equity Research, CFA, FRM</p>
+            <p className="text-gray-300 mb-3"><strong>Banking & Investment:</strong></p>
+            <p className="text-gray-400">Mergers & Acquisitions, Due Diligence, Valuation, DCF, LBO, Private Equity, Venture Capital, Portfolio Management, Trading, Derivatives, Fixed Income, Equity Research, CFA, FRM</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Human Resources</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-700 mb-3"><strong>Recruitment:</strong></p>
-            <p className="text-gray-600 mb-4">Talent Acquisition, Recruitment, Sourcing, Screening, Interviewing, Onboarding, Applicant Tracking System (ATS), LinkedIn Recruiter, Boolean Search, Headhunting, Executive Search, Employer Branding, Candidate Experience</p>
+            <p className="text-gray-300 mb-3"><strong>Recruitment:</strong></p>
+            <p className="text-gray-400 mb-4">Talent Acquisition, Recruitment, Sourcing, Screening, Interviewing, Onboarding, Applicant Tracking System (ATS), LinkedIn Recruiter, Boolean Search, Headhunting, Executive Search, Employer Branding, Candidate Experience</p>
             
-            <p className="text-gray-700 mb-3"><strong>HR Operations:</strong></p>
-            <p className="text-gray-600 mb-4">Employee Relations, Performance Management, Compensation & Benefits, HRIS, Workday, BambooHR, Employee Engagement, Retention, Succession Planning, Organizational Development, Change Management, CIPD, SHRM</p>
+            <p className="text-gray-300 mb-3"><strong>HR Operations:</strong></p>
+            <p className="text-gray-400 mb-4">Employee Relations, Performance Management, Compensation & Benefits, HRIS, Workday, BambooHR, Employee Engagement, Retention, Succession Planning, Organizational Development, Change Management, CIPD, SHRM</p>
             
-            <p className="text-gray-700 mb-3"><strong>Learning & Development:</strong></p>
-            <p className="text-gray-600">Training & Development, L&D, Coaching, Mentoring, Leadership Development, Talent Management, Skills Assessment, Learning Management System (LMS), E-learning, Workshop Facilitation</p>
+            <p className="text-gray-300 mb-3"><strong>Learning & Development:</strong></p>
+            <p className="text-gray-400">Training & Development, L&D, Coaching, Mentoring, Leadership Development, Talent Management, Skills Assessment, Learning Management System (LMS), E-learning, Workshop Facilitation</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Sales & Business Development</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-700 mb-3"><strong>Sales:</strong></p>
-            <p className="text-gray-600 mb-4">B2B Sales, B2C Sales, Enterprise Sales, SaaS Sales, Account Management, Key Account Management, Sales Pipeline, Lead Generation, Prospecting, Cold Calling, Negotiation, Closing, Salesforce, CRM, Sales Targets, Revenue Growth, Quota Attainment</p>
+            <p className="text-gray-300 mb-3"><strong>Sales:</strong></p>
+            <p className="text-gray-400 mb-4">B2B Sales, B2C Sales, Enterprise Sales, SaaS Sales, Account Management, Key Account Management, Sales Pipeline, Lead Generation, Prospecting, Cold Calling, Negotiation, Closing, Salesforce, CRM, Sales Targets, Revenue Growth, Quota Attainment</p>
             
-            <p className="text-gray-700 mb-3"><strong>Business Development:</strong></p>
-            <p className="text-gray-600">Partnership Development, Strategic Partnerships, Market Expansion, New Business Development, Client Acquisition, Proposal Writing, RFP Response, Contract Negotiation, Stakeholder Management, Relationship Building</p>
+            <p className="text-gray-300 mb-3"><strong>Business Development:</strong></p>
+            <p className="text-gray-400">Partnership Development, Strategic Partnerships, Market Expansion, New Business Development, Client Acquisition, Proposal Writing, RFP Response, Contract Negotiation, Stakeholder Management, Relationship Building</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Project Management</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-600">Project Planning, Project Delivery, Stakeholder Management, Risk Management, Budget Management, Resource Allocation, Gantt Charts, Critical Path, Agile, Scrum, Kanban, Sprint Planning, Jira, Asana, Monday.com, MS Project, PRINCE2, PMP, Change Management, Quality Assurance, Project Governance</p>
+            <p className="text-gray-400">Project Planning, Project Delivery, Stakeholder Management, Risk Management, Budget Management, Resource Allocation, Gantt Charts, Critical Path, Agile, Scrum, Kanban, Sprint Planning, Jira, Asana, Monday.com, MS Project, PRINCE2, PMP, Change Management, Quality Assurance, Project Governance</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Healthcare & Nursing</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-600">Patient Care, Clinical Assessment, Medication Administration, Wound Care, Vital Signs Monitoring, Care Planning, Electronic Health Records (EHR), NHS Experience, CQC Standards, Safeguarding, Infection Control, NMC Registration, CPR, First Aid, Palliative Care, Mental Health, Dementia Care</p>
+            <p className="text-gray-400">Patient Care, Clinical Assessment, Medication Administration, Wound Care, Vital Signs Monitoring, Care Planning, Electronic Health Records (EHR), NHS Experience, CQC Standards, Safeguarding, Infection Control, NMC Registration, CPR, First Aid, Palliative Care, Mental Health, Dementia Care</p>
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">Education & Teaching</h3>
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-            <p className="text-gray-600">Curriculum Development, Lesson Planning, Classroom Management, Differentiation, Assessment, Marking, Feedback, Safeguarding, SEN Support, Behavior Management, Parent Communication, OFSTED, National Curriculum, QTS, PGCE, Phonics, Literacy, Numeracy, E-learning, Google Classroom, Microsoft Teams</p>
+            <p className="text-gray-400">Curriculum Development, Lesson Planning, Classroom Management, Differentiation, Assessment, Marking, Feedback, Safeguarding, SEN Support, Behavior Management, Parent Communication, OFSTED, National Curriculum, QTS, PGCE, Phonics, Literacy, Numeracy, E-learning, Google Classroom, Microsoft Teams</p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">How to Use Keywords Effectively</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">How to Use Keywords Effectively</h2>
           
           <div className="space-y-4 mb-8">
             <div className="bg-green-50 border-l-4 border-green-600 p-4">
@@ -221,7 +221,7 @@ export default function CVKeywordsForATS() {
           </div>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in ATS optimization 
               for the UK job market. Our AI-powered tool has helped thousands of job seekers get past ATS systems and land interviews.
             </p>

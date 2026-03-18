@@ -35,13 +35,13 @@ export const metadata: Metadata = {
 
 export default function CVWritingTipsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -52,7 +52,7 @@ export default function CVWritingTipsPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             CV Writing Tips & Best Practices
           </h1>
-          <p className="text-xl text-gray-600 mb-4">Expert advice to create a winning CV that gets you interviews</p>
+          <p className="text-xl text-gray-300 mb-4">Expert advice to create a winning CV that gets you interviews</p>
           <div className="flex items-center text-gray-600 space-x-4 text-sm">
             <span>October 10, 2025</span>
             <span>•</span>
@@ -94,14 +94,14 @@ export default function CVWritingTipsPage() {
         <div className="space-y-8 mb-12">
           
           {/* Tip 1 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-blue-100 rounded-lg p-3">
-                <Target className="w-6 h-6 text-blue-600" />
+                <Target className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Tailor Your CV to Each Job</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-2xl font-black text-white mb-3">1. Tailor Your CV to Each Job</h3>
+                <p className="text-gray-400 mb-4">
                   Generic CVs get rejected. Customize your CV for each application by:
                 </p>
                 <ul className="space-y-2 text-gray-700">
@@ -128,24 +128,24 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 2 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-green-100 rounded-lg p-3">
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Quantify Your Achievements</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-2xl font-black text-white mb-3">2. Quantify Your Achievements</h3>
+                <p className="text-gray-400 mb-4">
                   Numbers make your accomplishments tangible and memorable:
                 </p>
                 <div className="space-y-3">
                   <div className="border-l-4 border-red-500 pl-4">
                     <p className="text-sm text-gray-500 mb-1">❌ Weak:</p>
-                    <p className="text-gray-700">"Managed a team"</p>
+                    <p className="text-gray-300">"Managed a team"</p>
                   </div>
                   <div className="border-l-4 border-green-500 pl-4">
                     <p className="text-sm text-gray-500 mb-1">✅ Strong:</p>
-                    <p className="text-gray-700">"Led team of 12 developers, delivering 15+ projects with 98% client satisfaction"</p>
+                    <p className="text-gray-300">"Led team of 12 developers, delivering 15+ projects with 98% client satisfaction"</p>
                   </div>
                 </div>
               </div>
@@ -153,14 +153,14 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 3 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-purple-100 rounded-lg p-3">
                 <Zap className="w-6 h-6 text-purple-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">3. Use Action Verbs</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-2xl font-black text-white mb-3">3. Use Action Verbs</h3>
+                <p className="text-gray-400 mb-4">
                   Start bullet points with powerful action verbs to show impact:
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
@@ -178,14 +178,14 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 4 */}
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-yellow-100 rounded-lg p-3">
                 <Star className="w-6 h-6 text-yellow-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">4. Optimize for ATS</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="text-2xl font-black text-white mb-3">4. Optimize for ATS</h3>
+                <p className="text-gray-400 mb-4">
                   75% of CVs are rejected by ATS before a human sees them. Beat the bots:
                 </p>
                 <ul className="space-y-2 text-gray-700">
@@ -214,7 +214,7 @@ export default function CVWritingTipsPage() {
 
         {/* CV Structure Guide */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+          <h2 className="text-3xl font-black text-white mb-6 flex items-center">
             <Award className="w-6 h-6 text-blue-600 mr-3" />
             Perfect CV Structure
           </h2>

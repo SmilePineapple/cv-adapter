@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 
 export default function WhatToPutOnCVGuide() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-black text-white">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -44,7 +44,7 @@ export default function WhatToPutOnCVGuide() {
       </header>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           
           <div className="bg-gradient-to-r from-emerald-50 to-blue-50 border-l-4 border-emerald-600 p-6 mb-8 rounded-r-lg">
             <p className="text-lg text-gray-800 font-medium mb-0">
@@ -53,11 +53,11 @@ export default function WhatToPutOnCVGuide() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Essential CV Sections (Must Include)</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Essential CV Sections (Must Include)</h2>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Contact Information</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">1. Contact Information</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-blue-500">
-            <p className="text-gray-700 mb-4"><strong>What to Include:</strong></p>
+            <p className="text-gray-300 mb-4"><strong>What to Include:</strong></p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li><strong>Full Name</strong> - Use your professional name (larger font, bold)</li>
               <li><strong>Phone Number</strong> - UK mobile format: 07XXX XXXXXX</li>
@@ -78,9 +78,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Professional Summary / Personal Statement</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">2. Professional Summary / Personal Statement</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
-            <p className="text-gray-700 mb-4"><strong>What to Include (3-5 sentences):</strong></p>
+            <p className="text-gray-300 mb-4"><strong>What to Include (3-5 sentences):</strong></p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li>Your job title and years of experience</li>
               <li>Key skills and areas of expertise</li>
@@ -95,9 +95,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Work Experience</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">3. Work Experience</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-purple-500">
-            <p className="text-gray-700 mb-4"><strong>What to Include for Each Role:</strong></p>
+            <p className="text-gray-300 mb-4"><strong>What to Include for Each Role:</strong></p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li><strong>Job Title</strong> - Your official position</li>
               <li><strong>Company Name</strong> - Include location if not well-known</li>
@@ -131,13 +131,13 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Education</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">4. Education</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-orange-500">
-            <p className="text-gray-700 mb-4"><strong>What to Include:</strong></p>
+            <p className="text-gray-300 mb-4"><strong>What to Include:</strong></p>
             <div className="grid md:grid-cols-2 gap-6 mb-4">
               <div>
                 <p className="font-semibold text-gray-900 mb-2">For Graduates (0-3 years):</p>
-                <ul className="text-gray-700 text-sm space-y-1">
+                <ul className="text-gray-300 text-sm space-y-1">
                   <li>• Degree classification and subject</li>
                   <li>• University name and dates</li>
                   <li>• Relevant modules with grades</li>
@@ -149,7 +149,7 @@ export default function WhatToPutOnCVGuide() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900 mb-2">For Experienced (5+ years):</p>
-                <ul className="text-gray-700 text-sm space-y-1">
+                <ul className="text-gray-300 text-sm space-y-1">
                   <li>• Degree classification and subject</li>
                   <li>• University name and year</li>
                   <li>• A-Levels (optional)</li>
@@ -163,9 +163,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">5. Skills</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">5. Skills</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-teal-500">
-            <p className="text-gray-700 mb-4"><strong>What to Include:</strong></p>
+            <p className="text-gray-300 mb-4"><strong>What to Include:</strong></p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li><strong>Technical Skills</strong> - Software, programming languages, tools</li>
               <li><strong>Professional Skills</strong> - Industry-specific abilities</li>
@@ -183,13 +183,13 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Optional CV Sections (Include If Relevant)</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Optional CV Sections (Include If Relevant)</h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Certifications & Qualifications</h3>
-              <p className="text-gray-700 text-sm mb-3">Include professional certifications that add credibility:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Certifications & Qualifications</h3>
+              <p className="text-gray-300 text-sm mb-3">Include professional certifications that add credibility:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• PMP, PRINCE2, Agile certifications</li>
                 <li>• ACCA, CIMA, ACA (accounting)</li>
                 <li>• AWS, Microsoft, Google Cloud certified</li>
@@ -199,9 +199,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Volunteering</h3>
-              <p className="text-gray-700 text-sm mb-3">Include if it demonstrates relevant skills:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Volunteering</h3>
+              <p className="text-gray-300 text-sm mb-3">Include if it demonstrates relevant skills:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• Leadership roles in charities</li>
                 <li>• Skills-based volunteering</li>
                 <li>• Long-term commitments</li>
@@ -210,9 +210,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Projects</h3>
-              <p className="text-gray-700 text-sm mb-3">Especially for technical roles or graduates:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Projects</h3>
+              <p className="text-gray-300 text-sm mb-3">Especially for technical roles or graduates:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• University projects with results</li>
                 <li>• Personal coding projects (GitHub)</li>
                 <li>• Freelance work</li>
@@ -221,9 +221,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Awards & Achievements</h3>
-              <p className="text-gray-700 text-sm mb-3">Recognition that demonstrates excellence:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Awards & Achievements</h3>
+              <p className="text-gray-300 text-sm mb-3">Recognition that demonstrates excellence:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• Industry awards</li>
                 <li>• Academic honors (Dean's List)</li>
                 <li>• Sales/performance awards</li>
@@ -232,9 +232,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Professional Memberships</h3>
-              <p className="text-gray-700 text-sm mb-3">Membership in professional bodies:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Professional Memberships</h3>
+              <p className="text-gray-300 text-sm mb-3">Membership in professional bodies:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• Chartered status (CEng, MICE)</li>
                 <li>• Professional associations</li>
                 <li>• Industry bodies</li>
@@ -243,9 +243,9 @@ export default function WhatToPutOnCVGuide() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Interests & Hobbies</h3>
-              <p className="text-gray-700 text-sm mb-3">Only include if they:</p>
-              <ul className="text-gray-700 text-sm space-y-1">
+              <h3 className="text-2xl font-black text-white mb-3">Interests & Hobbies</h3>
+              <p className="text-gray-300 text-sm mb-3">Only include if they:</p>
+              <ul className="text-gray-300 text-sm space-y-1">
                 <li>• Demonstrate leadership (team captain)</li>
                 <li>• Show relevant skills</li>
                 <li>• Are unique/conversation starters</li>
@@ -255,7 +255,7 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">What NOT to Put on Your CV</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">What NOT to Put on Your CV</h2>
 
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
             <h3 className="text-red-900 font-semibold mb-4 flex items-center">
@@ -306,7 +306,7 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">How Much Detail to Include</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">How Much Detail to Include</h2>
 
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <h3 className="font-bold text-gray-900 mb-4">Detail Level by Experience:</h3>
@@ -317,7 +317,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Graduate / Entry-Level (0-3 years)</h4>
-                  <p className="text-gray-600 text-sm">MORE detail on education, projects, university activities. LESS on work experience (you don't have much yet).</p>
+                  <p className="text-gray-400 text-sm">MORE detail on education, projects, university activities. LESS on work experience (you don't have much yet).</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -326,7 +326,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Mid-Level (3-10 years)</h4>
-                  <p className="text-gray-600 text-sm">MORE detail on recent roles (5-6 bullets). LESS on education (just degree and grade). Older roles get 2-3 bullets.</p>
+                  <p className="text-gray-400 text-sm">MORE detail on recent roles (5-6 bullets). LESS on education (just degree and grade). Older roles get 2-3 bullets.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -335,13 +335,13 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Senior (10+ years)</h4>
-                  <p className="text-gray-600 text-sm">Focus on strategic achievements and leadership. Summarize or omit roles from 15+ years ago. Education is one line.</p>
+                  <p className="text-gray-400 text-sm">Focus on strategic achievements and leadership. Summarize or omit roles from 15+ years ago. Education is one line.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">CV Content Checklist</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">CV Content Checklist</h2>
 
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-gray-900 mb-4">Before Submitting, Check:</h3>
@@ -351,23 +351,23 @@ export default function WhatToPutOnCVGuide() {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Contact information (name, phone, email, location)</span>
+                    <span className="text-gray-300 text-sm">Contact information (name, phone, email, location)</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Professional summary (3-5 sentences)</span>
+                    <span className="text-gray-300 text-sm">Professional summary (3-5 sentences)</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Work experience with achievements</span>
+                    <span className="text-gray-300 text-sm">Work experience with achievements</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Education with qualifications</span>
+                    <span className="text-gray-300 text-sm">Education with qualifications</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Skills relevant to target role</span>
+                    <span className="text-gray-300 text-sm">Skills relevant to target role</span>
                   </li>
                 </ul>
               </div>
@@ -376,31 +376,31 @@ export default function WhatToPutOnCVGuide() {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <AlertCircle className="w-4 h-4 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Photo, age, or date of birth</span>
+                    <span className="text-gray-300 text-sm">Photo, age, or date of birth</span>
                   </li>
                   <li className="flex items-start">
                     <AlertCircle className="w-4 h-4 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Marital status or children</span>
+                    <span className="text-gray-300 text-sm">Marital status or children</span>
                   </li>
                   <li className="flex items-start">
                     <AlertCircle className="w-4 h-4 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">National Insurance number</span>
+                    <span className="text-gray-300 text-sm">National Insurance number</span>
                   </li>
                   <li className="flex items-start">
                     <AlertCircle className="w-4 h-4 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Salary expectations</span>
+                    <span className="text-gray-300 text-sm">Salary expectations</span>
                   </li>
                   <li className="flex items-start">
                     <AlertCircle className="w-4 h-4 text-red-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Generic hobbies or clichés</span>
+                    <span className="text-gray-300 text-sm">Generic hobbies or clichés</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Tailoring Your CV Content</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Tailoring Your CV Content</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             The most important rule: <strong>tailor your CV for each application</strong>. Don't send the same CV to every job.
           </p>
 
@@ -413,7 +413,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Read Job Description Carefully</h4>
-                  <p className="text-gray-600 text-sm">Highlight key requirements, skills, and keywords mentioned multiple times.</p>
+                  <p className="text-gray-400 text-sm">Highlight key requirements, skills, and keywords mentioned multiple times.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -422,7 +422,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Match Keywords</h4>
-                  <p className="text-gray-600 text-sm">Use exact phrases from the job posting in your professional summary and skills section.</p>
+                  <p className="text-gray-400 text-sm">Use exact phrases from the job posting in your professional summary and skills section.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -431,7 +431,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Reorder Bullet Points</h4>
-                  <p className="text-gray-600 text-sm">Put most relevant achievements first in each role. Recruiters scan top bullets.</p>
+                  <p className="text-gray-400 text-sm">Put most relevant achievements first in each role. Recruiters scan top bullets.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -440,7 +440,7 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Adjust Skills Section</h4>
-                  <p className="text-gray-600 text-sm">Prioritize skills mentioned in the job description. Remove irrelevant ones.</p>
+                  <p className="text-gray-400 text-sm">Prioritize skills mentioned in the job description. Remove irrelevant ones.</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -449,14 +449,14 @@ export default function WhatToPutOnCVGuide() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Customize Professional Summary</h4>
-                  <p className="text-gray-600 text-sm">Rewrite your opening paragraph to align with the specific role and company.</p>
+                  <p className="text-gray-400 text-sm">Rewrite your opening paragraph to align with the specific role and company.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Create Your Perfect CV with AI</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Create Your Perfect CV with AI</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Knowing what to include is one thing - actually writing it all is another. <strong>My CV Buddy</strong> uses AI to help you create comprehensive, tailored CVs in minutes.
           </p>
           
@@ -481,46 +481,46 @@ export default function WhatToPutOnCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Key Takeaways</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Key Takeaways</h2>
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Essential sections:</strong> Contact info, professional summary, work experience, education, skills</span>
+                <span className="text-gray-300"><strong>Essential sections:</strong> Contact info, professional summary, work experience, education, skills</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Focus on achievements</strong> with quantified results, not just responsibilities</span>
+                <span className="text-gray-300"><strong>Focus on achievements</strong> with quantified results, not just responsibilities</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Never include:</strong> Photo, age, marital status, salary expectations</span>
+                <span className="text-gray-300"><strong>Never include:</strong> Photo, age, marital status, salary expectations</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Tailor for each job</strong> - match keywords and prioritize relevant content</span>
+                <span className="text-gray-300"><strong>Tailor for each job</strong> - match keywords and prioritize relevant content</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Detail level varies</strong> by experience - graduates need more education detail</span>
+                <span className="text-gray-300"><strong>Detail level varies</strong> by experience - graduates need more education detail</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700"><strong>Optional sections</strong> only if they add value and are relevant</span>
+                <span className="text-gray-300"><strong>Optional sections</strong> only if they add value and are relevant</span>
               </li>
             </ul>
           </div>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <Link href="/blog/professional-cv-how-to-create" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">Professional CV: How to Create One</h4>
-                <p className="text-gray-600 text-sm">Complete guide to creating a professional CV</p>
+                <p className="text-gray-400 text-sm">Complete guide to creating a professional CV</p>
               </Link>
               <Link href="/blog/cv-examples-by-industry-uk" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Examples by Industry</h4>
-                <p className="text-gray-600 text-sm">15 winning CV examples to inspire you</p>
+                <p className="text-gray-400 text-sm">15 winning CV examples to inspire you</p>
               </Link>
             </div>
           </div>

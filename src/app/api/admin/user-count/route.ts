@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createAdminClient } from '@/lib/supabase-admin'
 
 const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     // Check admin auth
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {

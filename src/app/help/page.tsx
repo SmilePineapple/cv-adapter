@@ -141,22 +141,22 @@ export default function HelpCenterPage() {
   })).filter(category => category.questions.length > 0)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
           <div className="flex items-center space-x-3">
-            <HelpCircle className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Help Center</h1>
+            <HelpCircle className="w-8 h-8 text-blue-400" />
+            <h1 className="text-4xl font-black text-white">Help Center</h1>
           </div>
-          <p className="mt-2 text-gray-600">Find answers to common questions and get support</p>
+          <p className="mt-2 text-gray-400">Find answers to common questions and get support</p>
         </div>
       </header>
 
@@ -173,10 +173,10 @@ export default function HelpCenterPage() {
                 placeholder="Search for help..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full pl-12 pr-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               />
             </div>
-            <p className="text-sm text-gray-500 mt-2 text-center">
+            <p className="text-sm text-gray-400 mt-2 text-center">
               Try: "How to upload CV", "Export formats", "Pricing"
             </p>
           </div>
@@ -185,19 +185,19 @@ export default function HelpCenterPage() {
         {/* Quick Links */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Link href="/blog" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
-            <Book className="w-8 h-8 text-blue-600 mb-3" />
-            <h3 className="font-bold text-gray-900 mb-2">CV Writing Tips</h3>
-            <p className="text-sm text-gray-600">Learn best practices for creating winning CVs</p>
+            <Book className="w-8 h-8 text-blue-400 mb-3" />
+            <h3 className="font-black text-white mb-2">CV Writing Tips</h3>
+            <p className="text-sm text-gray-400">Learn best practices for creating winning CVs</p>
           </Link>
           <Link href="/api-docs" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
-            <Book className="w-8 h-8 text-purple-600 mb-3" />
-            <h3 className="font-bold text-gray-900 mb-2">API Documentation</h3>
-            <p className="text-sm text-gray-600">Integrate CV Adapter into your applications</p>
+            <Book className="w-8 h-8 text-purple-400 mb-3" />
+            <h3 className="font-black text-white mb-2">API Documentation</h3>
+            <p className="text-sm text-gray-400">Integrate CV Adapter into your applications</p>
           </Link>
           <Link href="/contact" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
-            <MessageCircle className="w-8 h-8 text-green-600 mb-3" />
-            <h3 className="font-bold text-gray-900 mb-2">Contact Support</h3>
-            <p className="text-sm text-gray-600">Get help from our support team</p>
+            <MessageCircle className="w-8 h-8 text-green-400 mb-3" />
+            <h3 className="font-black text-white mb-2">Contact Support</h3>
+            <p className="text-sm text-gray-400">Get help from our support team</p>
           </Link>
         </div>
 
@@ -206,11 +206,11 @@ export default function HelpCenterPage() {
           {filteredFaqs.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-12 text-center">
               <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
-              <p className="text-gray-600">Try different keywords or browse all categories</p>
+              <h3 className="text-xl font-black text-white mb-2">No results found</h3>
+              <p className="text-gray-400">Try different keywords or browse all categories</p>
               <button
                 onClick={() => setSearchQuery('')}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                className="mt-4 px-4 py-2 bg-white text-black rounded-full font-black hover:bg-blue-700 transition"
               >
                 Clear Search
               </button>
@@ -218,21 +218,21 @@ export default function HelpCenterPage() {
           ) : (
             filteredFaqs.map((category, idx) => (
               <div key={idx} className="bg-white rounded-lg shadow-sm p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.category}</h2>
+                <h2 className="text-3xl font-black text-white mb-6">{category.category}</h2>
                 <div className="space-y-4">
                   {category.questions.map((faq, qIdx) => {
                     const key = `${idx}-${qIdx}`
                     const isExpanded = expandedQuestions.has(key)
                     
                     return (
-                      <div key={qIdx} className="border border-gray-200 rounded-lg overflow-hidden">
+                      <div key={qIdx} className="border border-white/10 rounded-lg overflow-hidden">
                         <button
                           onClick={() => toggleQuestion(idx, qIdx)}
-                          className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition text-left"
+                          className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition text-left"
                         >
                           <div className="flex items-start flex-1">
-                            <HelpCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
-                            <h3 className="font-semibold text-gray-900">{faq.q}</h3>
+                            <HelpCircle className="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
+                            <h3 className="font-black text-white">{faq.q}</h3>
                           </div>
                           {isExpanded ? (
                             <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" />
@@ -242,7 +242,7 @@ export default function HelpCenterPage() {
                         </button>
                         {isExpanded && (
                           <div className="px-4 pb-4 pt-0 ml-8">
-                            <p className="text-gray-600">{faq.a}</p>
+                            <p className="text-gray-400">{faq.a}</p>
                           </div>
                         )}
                       </div>
@@ -257,22 +257,22 @@ export default function HelpCenterPage() {
         {/* Still Need Help */}
         <div className="mt-12 bg-blue-50 border-l-4 border-blue-600 p-8">
           <div className="flex items-start space-x-4">
-            <Mail className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+            <Mail className="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" />
             <div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Still need help?</h3>
-              <p className="text-gray-700 mb-4">
+              <h3 className="text-xl font-black text-white mb-2">Still need help?</h3>
+              <p className="text-gray-300 mb-4">
                 Can't find what you're looking for? Our support team is here to help!
               </p>
               <div className="flex space-x-4">
                 <Link 
                   href="/contact"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+                  className="bg-white text-black px-6 py-2 rounded-full font-black font-semibold hover:bg-blue-700 transition"
                 >
                   Contact Support
                 </Link>
                 <a 
                   href="mailto:support@cvadapter.com"
-                  className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition border border-blue-600"
+                  className="bg-white text-blue-400 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition border border-blue-600"
                 >
                   Email Us
                 </a>

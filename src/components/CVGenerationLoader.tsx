@@ -23,7 +23,7 @@ export default function CVGenerationLoader({ progress, step }: CVGenerationLoade
   }, [])
 
   return (
-    <div className="relative mt-6 p-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-2xl border border-blue-100 overflow-hidden">
+    <div className="relative mt-6 p-8 bg-gradient-to-br from-black via-gray-900 to-black rounded-2xl border border-white/10 overflow-hidden backdrop-blur-xl shadow-2xl">
       {/* Animated Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {particles.map((particle) => (
@@ -34,104 +34,104 @@ export default function CVGenerationLoader({ progress, step }: CVGenerationLoade
               left: `${particle.x}%`,
               top: `${particle.y}%`,
               animationDelay: `${particle.delay}s`,
-              opacity: 0.3
+              opacity: 0.6
             }}
           />
         ))}
       </div>
 
-      {/* Animated Gradient Orbs */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
-      <div className="absolute top-0 right-0 w-32 h-32 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+      {/* Animated Gradient Orbs - More dramatic */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl opacity-20 animate-blob" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute bottom-0 left-1/2 w-64 h-64 bg-pink-500 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
 
       {/* Content */}
       <div className="relative z-10">
         {/* Header with Icon */}
         <div className="flex items-center justify-center space-x-3 mb-6">
           <div className="relative">
-            <div className="absolute inset-0 bg-blue-500 rounded-full blur-md opacity-50 animate-pulse" />
-            <div className="relative bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-full">
-              <Sparkles className="w-6 h-6 text-white animate-spin-slow" />
+            <div className="absolute inset-0 bg-blue-500 rounded-full blur-lg opacity-70 animate-pulse" />
+            <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-4 rounded-full shadow-lg">
+              <Sparkles className="w-7 h-7 text-white animate-spin-slow" />
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-900">Crafting Your Perfect CV</h3>
-            <p className="text-sm text-gray-600">AI is working its magic...</p>
+            <h3 className="text-2xl font-black text-white">Crafting Your Perfect CV</h3>
+            <p className="text-sm text-gray-300">AI is working its magic...</p>
           </div>
         </div>
 
         {/* Current Step with Animation */}
         <div className="mb-6 text-center">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-blue-100">
-            <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
-            <p className="text-sm font-medium text-gray-900 animate-pulse">{step}</p>
+          <div className="inline-flex items-center space-x-2 px-5 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-lg border border-white/20">
+            <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+            <p className="text-sm font-black text-white animate-pulse">{step}</p>
           </div>
         </div>
 
         {/* Progress Bar with Glow Effect */}
         <div className="space-y-3">
-          <div className="relative w-full bg-white/50 backdrop-blur-sm rounded-full h-4 overflow-hidden shadow-inner border border-blue-100">
+          <div className="relative w-full bg-white/10 backdrop-blur-sm rounded-full h-5 overflow-hidden shadow-inner border border-white/20">
             {/* Background shimmer */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
             
             {/* Progress fill with gradient */}
             <div
-              className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-500 ease-out relative overflow-hidden"
+              className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-500 ease-out relative overflow-hidden shadow-lg"
               style={{ width: `${progress}%` }}
             >
               {/* Animated shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shine" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shine" />
               
               {/* Glow effect */}
-              <div className="absolute inset-0 blur-sm bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-50" />
+              <div className="absolute inset-0 blur-md bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-60" />
             </div>
           </div>
 
           {/* Progress Percentage */}
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600 font-medium">{progress}% Complete</span>
-            <span className="text-gray-500">~{Math.max(0, Math.ceil((100 - progress) * 1.2))}s remaining</span>
+            <span className="text-white font-black">{progress}% Complete</span>
+            <span className="text-gray-400">~{Math.max(0, Math.ceil((100 - progress) * 1.2))}s remaining</span>
           </div>
         </div>
 
         {/* Feature Highlights */}
         <div className="mt-6 grid grid-cols-3 gap-3">
-          <div className={`flex flex-col items-center p-3 rounded-lg transition-all duration-500 ${progress >= 30 ? 'bg-white/80 border-2 border-green-200' : 'bg-white/40 border border-gray-200'}`}>
+          <div className={`flex flex-col items-center p-4 rounded-xl transition-all duration-500 ${progress >= 30 ? 'bg-green-500/20 border-2 border-green-500/40 shadow-lg shadow-green-500/20' : 'bg-white/5 border border-white/20'}`}>
             {progress >= 30 ? (
-              <CheckCircle2 className="w-5 h-5 text-green-600 mb-1" />
+              <CheckCircle2 className="w-6 h-6 text-green-400 mb-2" />
             ) : (
-              <Loader2 className="w-5 h-5 text-gray-400 mb-1 animate-spin" />
+              <Loader2 className="w-6 h-6 text-gray-400 mb-2 animate-spin" />
             )}
-            <span className="text-xs font-medium text-gray-700">AI Analysis</span>
+            <span className="text-xs font-black text-white">AI Analysis</span>
           </div>
           
-          <div className={`flex flex-col items-center p-3 rounded-lg transition-all duration-500 ${progress >= 70 ? 'bg-white/80 border-2 border-green-200' : 'bg-white/40 border border-gray-200'}`}>
+          <div className={`flex flex-col items-center p-4 rounded-xl transition-all duration-500 ${progress >= 70 ? 'bg-green-500/20 border-2 border-green-500/40 shadow-lg shadow-green-500/20' : 'bg-white/5 border border-white/20'}`}>
             {progress >= 70 ? (
-              <CheckCircle2 className="w-5 h-5 text-green-600 mb-1" />
+              <CheckCircle2 className="w-6 h-6 text-green-400 mb-2" />
             ) : (
-              <Loader2 className="w-5 h-5 text-gray-400 mb-1 animate-spin" />
+              <Loader2 className="w-6 h-6 text-gray-400 mb-2 animate-spin" />
             )}
-            <span className="text-xs font-medium text-gray-700">ATS Optimization</span>
+            <span className="text-xs font-black text-white">ATS Optimization</span>
           </div>
           
-          <div className={`flex flex-col items-center p-3 rounded-lg transition-all duration-500 ${progress >= 90 ? 'bg-white/80 border-2 border-green-200' : 'bg-white/40 border border-gray-200'}`}>
+          <div className={`flex flex-col items-center p-4 rounded-xl transition-all duration-500 ${progress >= 90 ? 'bg-green-500/20 border-2 border-green-500/40 shadow-lg shadow-green-500/20' : 'bg-white/5 border border-white/20'}`}>
             {progress >= 90 ? (
-              <CheckCircle2 className="w-5 h-5 text-green-600 mb-1" />
+              <CheckCircle2 className="w-6 h-6 text-green-400 mb-2" />
             ) : (
-              <Loader2 className="w-5 h-5 text-gray-400 mb-1 animate-spin" />
+              <Loader2 className="w-6 h-6 text-gray-400 mb-2 animate-spin" />
             )}
-            <span className="text-xs font-medium text-gray-700">Formatting</span>
+            <span className="text-xs font-black text-white">Formatting</span>
           </div>
         </div>
 
         {/* Reassurance Message */}
-        <div className="mt-6 p-4 bg-white/60 backdrop-blur-sm rounded-lg border border-blue-100">
+        <div className="mt-6 p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
           <div className="flex items-start space-x-3">
-            <Zap className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+            <Zap className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-gray-900 mb-1">Why does this take time?</p>
-              <p className="text-xs text-gray-600 leading-relaxed">
+              <p className="text-sm font-black text-white mb-1">Why does this take time?</p>
+              <p className="text-xs text-gray-300 leading-relaxed">
                 Our AI carefully analyzes every section of your CV, matches it with the job requirements, 
                 optimizes for ATS systems, and ensures perfect formatting. Quality takes time! ⏱️
               </p>

@@ -36,22 +36,22 @@ export default function FreeCVBuilderNoSignUp() {
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-8 sm:p-12">
             <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
                 <span>January 15, 2025</span>
                 <span>•</span>
                 <span>10 min read</span>
                 <span>•</span>
-                <span className="text-blue-600 font-medium">Guide</span>
+                <span className="text-blue-400 font-black">Guide</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
                 Free CV Builder No Sign Up Required (2025)
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-xl text-gray-300 leading-relaxed">
                 Want to create a CV without the hassle of creating an account? Here's the truth about "no sign up" CV builders and the best alternatives that respect your time.
               </p>
             </div>
 
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-invert prose-lg max-w-none">
               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
                 <h3 className="text-lg font-bold text-gray-900 mt-0 mb-3">⚠️ The Truth About "No Sign Up" CV Builders</h3>
                 <p className="mb-0">

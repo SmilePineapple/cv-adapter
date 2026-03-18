@@ -37,22 +37,22 @@ export default function ATSFriendlyCVBuilder() {
         <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-8 sm:p-12">
             <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
                 <span>January 15, 2025</span>
                 <span>•</span>
                 <span>14 min read</span>
                 <span>•</span>
-                <span className="text-blue-600 font-medium">ATS Guide</span>
+                <span className="text-blue-400 font-black">ATS Guide</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
                 ATS-Friendly CV Builder UK: Best Tools for 2025
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-xl text-gray-300 leading-relaxed">
                 75% of CVs are rejected by Applicant Tracking Systems before a human sees them. Here's how to choose an ATS-friendly CV builder that actually gets you interviews.
               </p>
             </div>
 
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-invert prose-lg max-w-none">
               <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
                 <h3 className="text-lg font-bold text-gray-900 mt-0 mb-3">🚨 Critical Stat</h3>
                 <p className="mb-0 text-lg">
@@ -76,17 +76,17 @@ export default function ATSFriendlyCVBuilder() {
 
               <h2>ATS Compatibility Scores: CV Builders Compared</h2>
               <div className="overflow-x-auto -mx-4 sm:mx-0 mb-8">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-white/10">
+                  <thead className="bg-white/5">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">CV Builder</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ATS Score</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Keywords</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Verdict</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">CV Builder</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">ATS Score</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">AI Keywords</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Price</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Verdict</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white/5 divide-y divide-white/10">
                     <tr className="bg-green-50">
                       <td className="px-4 py-4 font-medium text-gray-900">My CV Buddy</td>
                       <td className="px-4 py-4">

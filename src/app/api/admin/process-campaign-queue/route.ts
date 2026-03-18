@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase-admin'
 import { Resend } from 'resend'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
@@ -21,6 +11,7 @@ const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
  */
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
 

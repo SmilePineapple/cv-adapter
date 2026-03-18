@@ -72,8 +72,8 @@ export default function ViewInterviewPrepPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
       </div>
     )
   }
@@ -85,30 +85,30 @@ export default function ViewInterviewPrepPage() {
   const { company_research, interview_data } = prep
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-white/5 py-8">
       <div className="max-w-5xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
           <Link
             href="/dashboard"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4"
+            className="inline-flex items-center text-blue-400 hover:text-blue-700 mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-4xl font-black text-white">
             Interview Prep
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-400 mt-2">
             Created {new Date(prep.created_at).toLocaleDateString()}
           </p>
         </div>
 
         {/* Company Research Section */}
         {company_research && (
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Building2 className="w-7 h-7 text-green-600" />
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-6 mb-6">
+            <h2 className="text-3xl font-black text-white mb-4 flex items-center gap-2">
+              <Building2 className="w-7 h-7 text-green-400" />
               {company_research.company_name}
               <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
                 <Crown className="w-3 h-3" />
@@ -118,31 +118,31 @@ export default function ViewInterviewPrepPage() {
 
             {/* Company Overview */}
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Overview</h3>
-              <p className="text-gray-700 leading-relaxed">{company_research.overview}</p>
+              <h3 className="text-xl font-black text-white mb-2">Overview</h3>
+              <p className="text-gray-300 leading-relaxed">{company_research.overview}</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {company_research.industry && (
                   <div className="bg-blue-50 rounded-lg p-3">
-                    <p className="text-xs text-blue-600 font-medium">Industry</p>
-                    <p className="text-sm font-semibold text-gray-900">{company_research.industry}</p>
+                    <p className="text-xs text-blue-400 font-medium">Industry</p>
+                    <p className="text-sm font-semibold text-white">{company_research.industry}</p>
                   </div>
                 )}
                 {company_research.founded && (
                   <div className="bg-purple-50 rounded-lg p-3">
-                    <p className="text-xs text-purple-600 font-medium">Founded</p>
-                    <p className="text-sm font-semibold text-gray-900">{company_research.founded}</p>
+                    <p className="text-xs text-purple-400 font-medium">Founded</p>
+                    <p className="text-sm font-semibold text-white">{company_research.founded}</p>
                   </div>
                 )}
                 {company_research.headquarters && (
                   <div className="bg-green-50 rounded-lg p-3">
-                    <p className="text-xs text-green-600 font-medium">Headquarters</p>
-                    <p className="text-sm font-semibold text-gray-900">{company_research.headquarters}</p>
+                    <p className="text-xs text-green-400 font-medium">Headquarters</p>
+                    <p className="text-sm font-semibold text-white">{company_research.headquarters}</p>
                   </div>
                 )}
                 {company_research.employee_count && (
                   <div className="bg-orange-50 rounded-lg p-3">
-                    <p className="text-xs text-orange-600 font-medium">Employees</p>
-                    <p className="text-sm font-semibold text-gray-900">{company_research.employee_count}</p>
+                    <p className="text-xs text-orange-400 font-medium">Employees</p>
+                    <p className="text-sm font-semibold text-white">{company_research.employee_count}</p>
                   </div>
                 )}
               </div>
@@ -151,16 +151,16 @@ export default function ViewInterviewPrepPage() {
             {/* Products/Services */}
             {company_research.products_services && company_research.products_services.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <Target className="w-5 h-5 text-blue-600" />
+                <h3 className="text-xl font-black text-white mb-3 flex items-center gap-2">
+                  <Target className="w-5 h-5 text-blue-400" />
                   Products & Services
                 </h3>
                 <div className="grid gap-3">
                   {company_research.products_services.map((product: any, i: number) => (
-                    <div key={i} className="bg-gray-50 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900">{product.name || product}</h4>
+                    <div key={i} className="bg-white/5 rounded-lg p-4">
+                      <h4 className="font-black text-white">{product.name || product}</h4>
                       {product.description && (
-                        <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+                        <p className="text-sm text-gray-400 mt-1">{product.description}</p>
                       )}
                     </div>
                   ))}
@@ -171,19 +171,19 @@ export default function ViewInterviewPrepPage() {
             {/* Culture & Values */}
             {company_research.culture && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Company Culture</h3>
-                <p className="text-gray-700">{company_research.culture}</p>
+                <h3 className="text-xl font-black text-white mb-2">Company Culture</h3>
+                <p className="text-gray-300">{company_research.culture}</p>
               </div>
             )}
 
             {company_research.values && company_research.values.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Core Values</h3>
+                <h3 className="text-xl font-black text-white mb-3">Core Values</h3>
                 <div className="grid gap-2">
                   {company_research.values.map((value: string, i: number) => (
                     <div key={i} className="flex items-start gap-2">
-                      <Award className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{value}</span>
+                      <Award className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-300">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -193,22 +193,22 @@ export default function ViewInterviewPrepPage() {
             {/* Recent News */}
             {company_research.recent_news && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
+                <h3 className="text-xl font-black text-white mb-3 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-green-400" />
                   Recent News & Achievements
                 </h3>
                 <div className="space-y-2">
                   {Array.isArray(company_research.recent_news) ? (
                     company_research.recent_news.map((news: string, i: number) => (
                       <div key={i} className="flex items-start gap-2 bg-green-50 rounded-lg p-3">
-                        <span className="text-green-600 font-bold">•</span>
-                        <span className="text-gray-700">{news}</span>
+                        <span className="text-green-400 font-bold">•</span>
+                        <span className="text-gray-300">{news}</span>
                       </div>
                     ))
                   ) : (
                     <div className="flex items-start gap-2 bg-green-50 rounded-lg p-3">
-                      <span className="text-green-600 font-bold">•</span>
-                      <span className="text-gray-700">{company_research.recent_news}</span>
+                      <span className="text-green-400 font-bold">•</span>
+                      <span className="text-gray-300">{company_research.recent_news}</span>
                     </div>
                   )}
                 </div>
@@ -218,7 +218,7 @@ export default function ViewInterviewPrepPage() {
             {/* Key People */}
             {company_research.key_people && company_research.key_people.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <h3 className="text-xl font-black text-white mb-3 flex items-center gap-2">
                   <Users className="w-5 h-5 text-indigo-600" />
                   Key People to Know
                 </h3>
@@ -226,11 +226,11 @@ export default function ViewInterviewPrepPage() {
                   {company_research.key_people.map((person: any, i: number) => (
                     <div key={i} className="bg-indigo-50 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-gray-900">{person.name}</h4>
+                        <h4 className="font-black text-white">{person.name}</h4>
                         <span className="text-xs bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">{person.role}</span>
                       </div>
                       {person.background && (
-                        <p className="text-sm text-gray-600">{person.background}</p>
+                        <p className="text-sm text-gray-400">{person.background}</p>
                       )}
                     </div>
                   ))}
@@ -241,15 +241,15 @@ export default function ViewInterviewPrepPage() {
             {/* Red Flags */}
             {company_research.red_flags && company_research.red_flags.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-orange-600" />
+                <h3 className="text-xl font-black text-white mb-3 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-orange-400" />
                   Things to Clarify
                 </h3>
                 <div className="space-y-2">
                   {company_research.red_flags.map((flag: string, i: number) => (
                     <div key={i} className="flex items-start gap-2 bg-orange-50 rounded-lg p-3">
-                      <AlertTriangle className="w-4 h-4 text-orange-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{flag}</span>
+                      <AlertTriangle className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-300">{flag}</span>
                     </div>
                   ))}
                 </div>
@@ -265,7 +265,7 @@ export default function ViewInterviewPrepPage() {
             {interview_data.general_questions && interview_data.general_questions.length > 0 && (
               <QuestionSection
                 title="General Questions"
-                icon={<HelpCircle className="w-6 h-6 text-blue-600" />}
+                icon={<HelpCircle className="w-6 h-6 text-blue-400" />}
                 questions={interview_data.general_questions}
                 category="general"
                 expandedQuestions={expandedQuestions}
@@ -277,7 +277,7 @@ export default function ViewInterviewPrepPage() {
             {interview_data.technical_questions && interview_data.technical_questions.length > 0 && (
               <QuestionSection
                 title="Technical Questions"
-                icon={<Briefcase className="w-6 h-6 text-purple-600" />}
+                icon={<Briefcase className="w-6 h-6 text-purple-400" />}
                 questions={interview_data.technical_questions}
                 category="technical"
                 expandedQuestions={expandedQuestions}
@@ -289,7 +289,7 @@ export default function ViewInterviewPrepPage() {
             {interview_data.behavioral_questions && interview_data.behavioral_questions.length > 0 && (
               <QuestionSection
                 title="Behavioral Questions"
-                icon={<Lightbulb className="w-6 h-6 text-yellow-600" />}
+                icon={<Lightbulb className="w-6 h-6 text-yellow-400" />}
                 questions={interview_data.behavioral_questions}
                 category="behavioral"
                 expandedQuestions={expandedQuestions}
@@ -301,7 +301,7 @@ export default function ViewInterviewPrepPage() {
             {interview_data.company_specific_questions && interview_data.company_specific_questions.length > 0 && (
               <QuestionSection
                 title="Company-Specific Questions"
-                icon={<Building2 className="w-6 h-6 text-green-600" />}
+                icon={<Building2 className="w-6 h-6 text-green-400" />}
                 questions={interview_data.company_specific_questions}
                 category="company"
                 expandedQuestions={expandedQuestions}
@@ -312,8 +312,8 @@ export default function ViewInterviewPrepPage() {
 
             {/* Questions to Ask Them */}
             {interview_data.questions_to_ask_them && interview_data.questions_to_ask_them.length > 0 && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
                   <HelpCircle className="w-6 h-6 text-indigo-600" />
                   Questions to Ask the Interviewer
                 </h2>
@@ -321,7 +321,7 @@ export default function ViewInterviewPrepPage() {
                   {interview_data.questions_to_ask_them.map((q: string, i: number) => (
                     <li key={i} className="flex items-start gap-3 bg-indigo-50 rounded-lg p-4">
                       <span className="text-indigo-600 font-bold text-lg">{i + 1}.</span>
-                      <span className="text-gray-700 flex-1">{q}</span>
+                      <span className="text-gray-300 flex-1">{q}</span>
                     </li>
                   ))}
                 </ul>
@@ -336,8 +336,8 @@ export default function ViewInterviewPrepPage() {
 
 function QuestionSection({ title, icon, questions, category, expandedQuestions, toggleQuestion, isPro }: any) {
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-6">
+      <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
         {icon}
         {title}
         {isPro && (
@@ -349,25 +349,25 @@ function QuestionSection({ title, icon, questions, category, expandedQuestions, 
       </h2>
       <div className="space-y-4">
         {questions.map((q: any, i: number) => (
-          <div key={i} className="border border-gray-200 rounded-lg overflow-hidden">
+          <div key={i} className="border border-white/10 rounded-lg overflow-hidden">
             <button
               onClick={() => toggleQuestion(category, i)}
-              className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
+              className="w-full text-left p-4 hover:bg-white/5 transition-colors"
             >
-              <h3 className="font-semibold text-gray-900 flex items-start gap-2">
-                <span className="text-blue-600 flex-shrink-0">{i + 1}.</span>
+              <h3 className="font-black text-white flex items-start gap-2">
+                <span className="text-blue-400 flex-shrink-0">{i + 1}.</span>
                 <span className="flex-1">{q.question}</span>
               </h3>
             </button>
             {expandedQuestions[category] === i && (
-              <div className="px-4 pb-4 space-y-3 bg-gray-50">
+              <div className="px-4 pb-4 space-y-3 bg-white/5">
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-1">💡 Sample Answer:</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{q.sample_answer}</p>
+                  <p className="text-sm font-semibold text-gray-300 mb-1">💡 Sample Answer:</p>
+                  <p className="text-sm text-gray-400 leading-relaxed">{q.sample_answer}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-1">✨ Tips:</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{q.tips}</p>
+                  <p className="text-sm font-semibold text-gray-300 mb-1">✨ Tips:</p>
+                  <p className="text-sm text-gray-400 leading-relaxed">{q.tips}</p>
                 </div>
               </div>
             )}

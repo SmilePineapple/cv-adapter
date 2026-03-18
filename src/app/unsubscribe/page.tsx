@@ -40,20 +40,20 @@ export default function UnsubscribePage() {
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-10 h-10 text-green-600" />
+              <CheckCircle className="w-10 h-10 text-green-400" />
             </div>
           </div>
           
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-black text-white mb-4">
             You've Been Unsubscribed
           </h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-400 mb-6">
             We've removed <strong>{email}</strong> from our promotional email list. 
             You won't receive any more marketing emails from us.
           </p>
           
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-sm text-gray-400 mb-8">
             You'll still receive important account-related emails (like password resets and purchase confirmations).
           </p>
           
@@ -73,21 +73,21 @@ export default function UnsubscribePage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-            <Mail className="w-10 h-10 text-blue-600" />
+            <Mail className="w-10 h-10 text-blue-400" />
           </div>
         </div>
         
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+        <h1 className="text-3xl font-black text-white mb-2 text-center">
           Unsubscribe from Emails
         </h1>
         
-        <p className="text-gray-600 mb-6 text-center">
+        <p className="text-gray-400 mb-6 text-center">
           We're sorry to see you go! Enter your email below to unsubscribe from promotional emails.
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
             <input
@@ -97,7 +97,7 @@ export default function UnsubscribePage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="your@email.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           
@@ -110,20 +110,20 @@ export default function UnsubscribePage() {
           </button>
         </form>
         
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-500 text-center mb-4">
+        <div className="mt-6 pt-6 border-t border-white/10">
+          <p className="text-sm text-gray-400 text-center mb-4">
             Changed your mind?
           </p>
           <Link 
             href="/"
-            className="block text-center text-blue-600 hover:text-blue-700 font-medium"
+            className="block text-center text-blue-400 hover:text-blue-700 font-medium"
           >
             Return to Homepage
           </Link>
         </div>
         
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-600 text-center">
+        <div className="mt-6 p-4 bg-white/5 rounded-lg">
+          <p className="text-xs text-gray-400 text-center">
             <strong>Note:</strong> You'll still receive important account emails like password resets and purchase confirmations.
           </p>
         </div>

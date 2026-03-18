@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 
 export default function CVFormatGuide() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-black text-white">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -44,7 +44,7 @@ export default function CVFormatGuide() {
       </header>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 mb-8 rounded-r-lg">
             <p className="text-lg text-gray-800 font-medium mb-0">
@@ -53,8 +53,8 @@ export default function CVFormatGuide() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Why CV Format Matters</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Why CV Format Matters</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Recruiters spend an average of <strong>6-8 seconds</strong> on initial CV screening. A clean, professional format helps them quickly find the information they need. Poor formatting can get your CV rejected before anyone reads the content.
           </p>
 
@@ -65,12 +65,12 @@ export default function CVFormatGuide() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">3 Main CV Format Types</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">3 Main CV Format Types</h2>
 
           <div className="space-y-6 mb-8">
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">1. Reverse Chronological (Most Common)</h3>
-              <p className="text-gray-700 mb-4">Lists work experience from most recent to oldest. <strong>Best for:</strong> Most professionals with consistent work history.</p>
+              <h3 className="text-2xl font-black text-white mb-3">1. Reverse Chronological (Most Common)</h3>
+              <p className="text-gray-300 mb-4">Lists work experience from most recent to oldest. <strong>Best for:</strong> Most professionals with consistent work history.</p>
               <div className="bg-green-50 rounded p-4">
                 <p className="text-green-900 font-semibold mb-2">✅ Advantages:</p>
                 <ul className="text-green-800 space-y-1 text-sm">
@@ -83,8 +83,8 @@ export default function CVFormatGuide() {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">2. Skills-Based (Functional)</h3>
-              <p className="text-gray-700 mb-4">Emphasizes skills over work history. <strong>Best for:</strong> Career changers, employment gaps, or varied experience.</p>
+              <h3 className="text-2xl font-black text-white mb-3">2. Skills-Based (Functional)</h3>
+              <p className="text-gray-300 mb-4">Emphasizes skills over work history. <strong>Best for:</strong> Career changers, employment gaps, or varied experience.</p>
               <div className="bg-purple-50 rounded p-4">
                 <p className="text-purple-900 font-semibold mb-2">⚠️ Use Carefully:</p>
                 <ul className="text-purple-800 space-y-1 text-sm">
@@ -97,8 +97,8 @@ export default function CVFormatGuide() {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">3. Combination (Hybrid)</h3>
-              <p className="text-gray-700 mb-4">Highlights skills at the top, followed by chronological work history. <strong>Best for:</strong> Senior professionals or career changers with relevant skills.</p>
+              <h3 className="text-2xl font-black text-white mb-3">3. Combination (Hybrid)</h3>
+              <p className="text-gray-300 mb-4">Highlights skills at the top, followed by chronological work history. <strong>Best for:</strong> Senior professionals or career changers with relevant skills.</p>
               <div className="bg-orange-50 rounded p-4">
                 <p className="text-orange-900 font-semibold mb-2">💡 Best of Both:</p>
                 <ul className="text-orange-800 space-y-1 text-sm">
@@ -111,14 +111,14 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Professional CV Layout Guidelines</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Professional CV Layout Guidelines</h2>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Typography & Fonts</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Typography & Fonts</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <p className="font-semibold text-gray-900 mb-3">✅ Professional Fonts:</p>
-                <ul className="text-gray-700 text-sm space-y-2">
+                <ul className="text-gray-300 text-sm space-y-2">
                   <li><strong>Traditional:</strong> Times New Roman, Georgia</li>
                   <li><strong>Modern:</strong> Arial, Calibri, Helvetica</li>
                   <li><strong>Contemporary:</strong> Lato, Roboto, Open Sans</li>
@@ -127,7 +127,7 @@ export default function CVFormatGuide() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900 mb-3">❌ Fonts to Avoid:</p>
-                <ul className="text-gray-700 text-sm space-y-2">
+                <ul className="text-gray-300 text-sm space-y-2">
                   <li>Comic Sans (unprofessional)</li>
                   <li>Papyrus (outdated)</li>
                   <li>Brush Script (hard to read)</li>
@@ -146,12 +146,12 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Margins & Spacing</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Margins & Spacing</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <p className="font-semibold text-gray-900 mb-3">Margins:</p>
-                <ul className="text-gray-700 text-sm space-y-2">
+                <ul className="text-gray-300 text-sm space-y-2">
                   <li><strong>Standard:</strong> 2.5cm (1 inch) all sides</li>
                   <li><strong>Minimum:</strong> 2cm (0.8 inch)</li>
                   <li><strong>Maximum:</strong> 3cm (1.2 inch)</li>
@@ -160,7 +160,7 @@ export default function CVFormatGuide() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900 mb-3">Line Spacing:</p>
-                <ul className="text-gray-700 text-sm space-y-2">
+                <ul className="text-gray-300 text-sm space-y-2">
                   <li><strong>Body text:</strong> 1.15 or 1.5</li>
                   <li><strong>Between sections:</strong> 12-18pt</li>
                   <li><strong>Between bullets:</strong> 6-8pt</li>
@@ -170,24 +170,24 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Color Scheme</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Color Scheme</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <p className="text-gray-700 mb-4">Color can enhance your CV, but use it sparingly:</p>
+            <p className="text-gray-300 mb-4">Color can enhance your CV, but use it sparingly:</p>
             <div className="grid md:grid-cols-3 gap-4">
               <div className="bg-gray-50 rounded p-4 border-l-4 border-gray-600">
                 <p className="font-semibold text-gray-900 mb-2">Conservative</p>
-                <p className="text-gray-700 text-sm mb-2">Finance, Law, Accounting</p>
-                <p className="text-gray-600 text-xs">Black & grey only</p>
+                <p className="text-gray-300 text-sm mb-2">Finance, Law, Accounting</p>
+                <p className="text-gray-400 text-xs">Black & grey only</p>
               </div>
               <div className="bg-blue-50 rounded p-4 border-l-4 border-blue-600">
                 <p className="font-semibold text-gray-900 mb-2">Professional</p>
-                <p className="text-gray-700 text-sm mb-2">Most corporate roles</p>
-                <p className="text-gray-600 text-xs">One accent color (navy, teal, burgundy)</p>
+                <p className="text-gray-300 text-sm mb-2">Most corporate roles</p>
+                <p className="text-gray-400 text-xs">One accent color (navy, teal, burgundy)</p>
               </div>
               <div className="bg-purple-50 rounded p-4 border-l-4 border-purple-600">
                 <p className="font-semibold text-gray-900 mb-2">Creative</p>
-                <p className="text-gray-700 text-sm mb-2">Design, Marketing, Media</p>
-                <p className="text-gray-600 text-xs">Modern color palette acceptable</p>
+                <p className="text-gray-300 text-sm mb-2">Design, Marketing, Media</p>
+                <p className="text-gray-400 text-xs">Modern color palette acceptable</p>
               </div>
             </div>
             <div className="bg-red-50 rounded p-4 mt-4">
@@ -201,9 +201,9 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">CV Layout Examples</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">CV Layout Examples</h2>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Layout 1: Classic Professional</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Layout 1: Classic Professional</h3>
           <div className="bg-gray-50 border-l-4 border-blue-500 p-6 mb-6">
             <div className="bg-white rounded p-4 font-mono text-xs">
               <div className="text-center mb-4 pb-4 border-b-2 border-gray-300">
@@ -237,7 +237,7 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Layout 2: Modern Two-Column</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Layout 2: Modern Two-Column</h3>
           <div className="bg-gray-50 border-l-4 border-purple-500 p-6 mb-6">
             <div className="bg-white rounded p-4">
               <div className="grid grid-cols-3 gap-4 font-mono text-xs">
@@ -273,7 +273,7 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Layout 3: Skills-First Hybrid</h3>
+          <h3 className="text-3xl font-black text-white mt-8 mb-4">Layout 3: Skills-First Hybrid</h3>
           <div className="bg-gray-50 border-l-4 border-green-500 p-6 mb-6">
             <div className="bg-white rounded p-4 font-mono text-xs">
               <div className="text-center mb-4 pb-4 border-b-2 border-gray-300">
@@ -304,57 +304,57 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">ATS-Friendly Formatting Rules</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">ATS-Friendly Formatting Rules</h2>
 
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <p className="text-gray-700 mb-4">92% of UK recruiters use ATS systems. Follow these rules to ensure your CV passes:</p>
+            <p className="text-gray-300 mb-4">92% of UK recruiters use ATS systems. Follow these rules to ensure your CV passes:</p>
             <div className="space-y-3">
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Use Standard Section Headings</p>
-                  <p className="text-gray-600 text-sm">"Work Experience" not "Where I've Worked" - ATS looks for standard terms</p>
+                  <p className="text-white font-semibold">Use Standard Section Headings</p>
+                  <p className="text-gray-400 text-sm">"Work Experience" not "Where I've Worked" - ATS looks for standard terms</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Avoid Tables, Text Boxes, Columns</p>
-                  <p className="text-gray-600 text-sm">ATS can't read complex layouts - stick to simple formatting</p>
+                  <p className="text-white font-semibold">Avoid Tables, Text Boxes, Columns</p>
+                  <p className="text-gray-400 text-sm">ATS can't read complex layouts - stick to simple formatting</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Don't Put Info in Headers/Footers</p>
-                  <p className="text-gray-600 text-sm">ATS often ignores header/footer content</p>
+                  <p className="text-white font-semibold">Don't Put Info in Headers/Footers</p>
+                  <p className="text-gray-400 text-sm">ATS often ignores header/footer content</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Use Standard Bullet Points</p>
-                  <p className="text-gray-600 text-sm">Simple bullets (•) work best - avoid fancy symbols</p>
+                  <p className="text-white font-semibold">Use Standard Bullet Points</p>
+                  <p className="text-gray-400 text-sm">Simple bullets (•) work best - avoid fancy symbols</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Save as .docx or PDF</p>
-                  <p className="text-gray-600 text-sm">Check job posting - most accept both, some prefer .docx</p>
+                  <p className="text-white font-semibold">Save as .docx or PDF</p>
+                  <p className="text-gray-400 text-sm">Check job posting - most accept both, some prefer .docx</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Include Keywords from Job Description</p>
-                  <p className="text-gray-600 text-sm">Use exact phrases from the posting throughout your CV</p>
+                  <p className="text-white font-semibold">Include Keywords from Job Description</p>
+                  <p className="text-gray-400 text-sm">Use exact phrases from the posting throughout your CV</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common CV Formatting Mistakes</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Common CV Formatting Mistakes</h2>
 
           <div className="space-y-4 mb-8">
             <div className="bg-red-50 border-l-4 border-red-500 p-4">
@@ -383,7 +383,7 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">CV Format Checklist</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">CV Format Checklist</h2>
 
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <h3 className="font-bold text-gray-900 mb-4">Before Sending Your CV:</h3>
@@ -393,19 +393,19 @@ export default function CVFormatGuide() {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Clean, professional appearance</span>
+                    <span className="text-gray-300 text-sm">Clean, professional appearance</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Consistent formatting throughout</span>
+                    <span className="text-gray-300 text-sm">Consistent formatting throughout</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Adequate white space</span>
+                    <span className="text-gray-300 text-sm">Adequate white space</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">2 pages maximum (UK standard)</span>
+                    <span className="text-gray-300 text-sm">2 pages maximum (UK standard)</span>
                   </li>
                 </ul>
               </div>
@@ -414,27 +414,27 @@ export default function CVFormatGuide() {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">ATS-friendly (no tables/columns)</span>
+                    <span className="text-gray-300 text-sm">ATS-friendly (no tables/columns)</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Saved as PDF or .docx</span>
+                    <span className="text-gray-300 text-sm">Saved as PDF or .docx</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">File name: FirstName_LastName_CV.pdf</span>
+                    <span className="text-gray-300 text-sm">File name: FirstName_LastName_CV.pdf</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">Test print to check appearance</span>
+                    <span className="text-gray-300 text-sm">Test print to check appearance</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Get Perfectly Formatted CVs with AI</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Get Perfectly Formatted CVs with AI</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Formatting a CV correctly can be time-consuming. <strong>My CV Buddy</strong> automatically formats your CV to professional standards while ensuring ATS compatibility.
           </p>
           
@@ -459,46 +459,46 @@ export default function CVFormatGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Key Takeaways</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Key Takeaways</h2>
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Use <strong>reverse chronological format</strong> for most applications</span>
+                <span className="text-gray-300">Use <strong>reverse chronological format</strong> for most applications</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Choose <strong>professional fonts</strong> (Arial, Calibri, Times New Roman)</span>
+                <span className="text-gray-300">Choose <strong>professional fonts</strong> (Arial, Calibri, Times New Roman)</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Keep <strong>consistent formatting</strong> throughout your CV</span>
+                <span className="text-gray-300">Keep <strong>consistent formatting</strong> throughout your CV</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Ensure <strong>ATS compatibility</strong> - avoid tables and columns</span>
+                <span className="text-gray-300">Ensure <strong>ATS compatibility</strong> - avoid tables and columns</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Use <strong>adequate white space</strong> for readability</span>
+                <span className="text-gray-300">Use <strong>adequate white space</strong> for readability</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-700">Stick to <strong>2 pages</strong> for UK CVs</span>
+                <span className="text-gray-300">Stick to <strong>2 pages</strong> for UK CVs</span>
               </li>
             </ul>
           </div>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <Link href="/blog/cv-template-uk-2025" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Template UK: 10 Free Templates</h4>
-                <p className="text-gray-600 text-sm">Professional CV templates with perfect formatting</p>
+                <p className="text-gray-400 text-sm">Professional CV templates with perfect formatting</p>
               </Link>
               <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
-                <p className="text-gray-600 text-sm">Complete guide to ATS optimization</p>
+                <p className="text-gray-400 text-sm">Complete guide to ATS optimization</p>
               </Link>
             </div>
           </div>

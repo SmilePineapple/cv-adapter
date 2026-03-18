@@ -64,19 +64,19 @@ export default function CVWritingGuidePage() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-gray-900">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-white">CV Adapter</span>
           </Link>
           
           <div className="flex items-center space-x-3 sm:space-x-4">
             <Link 
               href="/auth/login" 
-              className="text-sm sm:text-base text-gray-600 hover:text-gray-900"
+              className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors"
             >
               Log In
             </Link>
             <Link 
               href="/auth/signup" 
-              className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 text-sm sm:text-base font-medium"
+              className="bg-white text-black px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-black hover:bg-blue-700 text-sm sm:text-base font-medium"
             >
               Get Started Free
             </Link>
@@ -92,23 +92,23 @@ export default function CVWritingGuidePage() {
               <Award className="w-4 h-4" />
               <span>Updated for 2026 Job Market</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
               The Complete CV Writing Guide for 2026
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-400 mb-8">
               Master the art of CV writing with our comprehensive, step-by-step guide. Learn how to create a professional CV that gets you interviews.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/auth/signup" 
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 font-semibold text-lg inline-flex items-center justify-center"
+                className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center justify-center"
               >
                 Create Your CV Now
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
               <Link 
                 href="/blog" 
-                className="bg-white text-gray-700 px-8 py-4 rounded-lg hover:bg-gray-50 font-semibold text-lg border-2 border-gray-200 inline-flex items-center justify-center"
+                className="bg-white text-gray-300 px-8 py-4 rounded-lg hover:bg-white/5 font-semibold text-lg border-2 border-white/10 inline-flex items-center justify-center"
               >
                 Read More Guides
               </Link>
@@ -118,16 +118,16 @@ export default function CVWritingGuidePage() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 sm:gap-8 mb-16 bg-white rounded-2xl shadow-lg p-6 sm:p-8">
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">10K+</div>
-              <div className="text-sm sm:text-base text-gray-600">CVs Created</div>
+              <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-2">10K+</div>
+              <div className="text-sm sm:text-base text-gray-400">CVs Created</div>
             </div>
-            <div className="text-center border-x border-gray-200">
-              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">95%</div>
-              <div className="text-sm sm:text-base text-gray-600">Success Rate</div>
+            <div className="text-center border-x border-white/10">
+              <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-2">95%</div>
+              <div className="text-sm sm:text-base text-gray-400">Success Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">2 min</div>
-              <div className="text-sm sm:text-base text-gray-600">Average Time</div>
+              <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-2">2 min</div>
+              <div className="text-sm sm:text-base text-gray-400">Average Time</div>
             </div>
           </div>
         </div>
@@ -140,25 +140,25 @@ export default function CVWritingGuidePage() {
             
             {/* Table of Contents */}
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-lg mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-0">Table of Contents</h2>
+              <h2 className="text-3xl font-black text-white mb-4 mt-0">Table of Contents</h2>
               <ul className="space-y-2 mb-0">
-                <li><a href="#what-is-cv" className="text-blue-600 hover:text-blue-700">1. What is a CV?</a></li>
-                <li><a href="#cv-structure" className="text-blue-600 hover:text-blue-700">2. Essential CV Structure</a></li>
-                <li><a href="#contact-info" className="text-blue-600 hover:text-blue-700">3. Contact Information</a></li>
-                <li><a href="#personal-statement" className="text-blue-600 hover:text-blue-700">4. Personal Statement</a></li>
-                <li><a href="#work-experience" className="text-blue-600 hover:text-blue-700">5. Work Experience</a></li>
-                <li><a href="#education" className="text-blue-600 hover:text-blue-700">6. Education & Qualifications</a></li>
-                <li><a href="#skills" className="text-blue-600 hover:text-blue-700">7. Skills Section</a></li>
-                <li><a href="#ats-optimization" className="text-blue-600 hover:text-blue-700">8. ATS Optimization</a></li>
-                <li><a href="#common-mistakes" className="text-blue-600 hover:text-blue-700">9. Common Mistakes to Avoid</a></li>
-                <li><a href="#final-checklist" className="text-blue-600 hover:text-blue-700">10. Final Checklist</a></li>
+                <li><a href="#what-is-cv" className="text-blue-400 hover:text-blue-700">1. What is a CV?</a></li>
+                <li><a href="#cv-structure" className="text-blue-400 hover:text-blue-700">2. Essential CV Structure</a></li>
+                <li><a href="#contact-info" className="text-blue-400 hover:text-blue-700">3. Contact Information</a></li>
+                <li><a href="#personal-statement" className="text-blue-400 hover:text-blue-700">4. Personal Statement</a></li>
+                <li><a href="#work-experience" className="text-blue-400 hover:text-blue-700">5. Work Experience</a></li>
+                <li><a href="#education" className="text-blue-400 hover:text-blue-700">6. Education & Qualifications</a></li>
+                <li><a href="#skills" className="text-blue-400 hover:text-blue-700">7. Skills Section</a></li>
+                <li><a href="#ats-optimization" className="text-blue-400 hover:text-blue-700">8. ATS Optimization</a></li>
+                <li><a href="#common-mistakes" className="text-blue-400 hover:text-blue-700">9. Common Mistakes to Avoid</a></li>
+                <li><a href="#final-checklist" className="text-blue-400 hover:text-blue-700">10. Final Checklist</a></li>
               </ul>
             </div>
 
             {/* Section 1 */}
             <section id="what-is-cv" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">1. What is a CV?</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">1. What is a CV?</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 A Curriculum Vitae (CV) is a comprehensive document that showcases your professional history, skills, education, and achievements. In the UK, a CV is typically 2 pages long and is your primary tool for securing job interviews.
               </p>
               <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
@@ -169,11 +169,11 @@ export default function CVWritingGuidePage() {
 
             {/* Section 2 */}
             <section id="cv-structure" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">2. Essential CV Structure</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">2. Essential CV Structure</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 A well-structured CV follows this proven format:
               </p>
-              <ol className="space-y-3 text-gray-700 text-lg">
+              <ol className="space-y-3 text-gray-300 text-lg">
                 <li><strong>Contact Information</strong> - Name, phone, email, location, LinkedIn</li>
                 <li><strong>Personal Statement</strong> - 3-4 sentences summarizing your value</li>
                 <li><strong>Work Experience</strong> - Reverse chronological order with achievements</li>
@@ -185,11 +185,11 @@ export default function CVWritingGuidePage() {
 
             {/* Section 3 */}
             <section id="contact-info" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">3. Contact Information</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">3. Contact Information</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 Your contact details should be clear and professional:
               </p>
-              <div className="bg-gray-50 p-6 rounded-lg mb-4">
+              <div className="bg-white/5 p-6 rounded-lg mb-4">
                 <p className="font-mono text-sm mb-2"><strong>John Smith</strong></p>
                 <p className="font-mono text-sm mb-2">📧 john.smith@email.com</p>
                 <p className="font-mono text-sm mb-2">📱 07700 900000</p>
@@ -209,19 +209,19 @@ export default function CVWritingGuidePage() {
 
             {/* Section 4 */}
             <section id="personal-statement" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">4. Personal Statement</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">4. Personal Statement</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 Your personal statement is your elevator pitch. It should be 3-4 sentences that highlight:
               </p>
-              <ul className="space-y-2 text-gray-700 text-lg mb-4">
+              <ul className="space-y-2 text-gray-300 text-lg mb-4">
                 <li>✅ Your current role or status</li>
                 <li>✅ Your key skills and experience</li>
                 <li>✅ Your career goals and what you're looking for</li>
                 <li>✅ Your unique value proposition</li>
               </ul>
               <div className="bg-blue-50 p-6 rounded-lg mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Example for Marketing Manager:</p>
-                <p className="text-gray-700 italic mb-0">
+                <p className="font-black text-white mb-2">Example for Marketing Manager:</p>
+                <p className="text-gray-300 italic mb-0">
                   "Results-driven Marketing Manager with 7+ years of experience in digital marketing and brand strategy. Proven track record of increasing online engagement by 150% and generating £2M+ in revenue through data-driven campaigns. Seeking to leverage my expertise in SEO, content marketing, and team leadership to drive growth for a forward-thinking tech company."
                 </p>
               </div>
@@ -229,45 +229,45 @@ export default function CVWritingGuidePage() {
 
             {/* Section 5 */}
             <section id="work-experience" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">5. Work Experience</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">5. Work Experience</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 This is the most important section of your CV. Follow these rules:
               </p>
               <div className="space-y-4 mb-6">
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Use the STAR method</p>
-                    <p className="text-gray-700">Situation, Task, Action, Result - quantify achievements wherever possible</p>
+                    <p className="font-black text-white">Use the STAR method</p>
+                    <p className="text-gray-300">Situation, Task, Action, Result - quantify achievements wherever possible</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Start with action verbs</p>
-                    <p className="text-gray-700">Led, Managed, Developed, Increased, Reduced, Implemented, etc.</p>
+                    <p className="font-black text-white">Start with action verbs</p>
+                    <p className="text-gray-300">Led, Managed, Developed, Increased, Reduced, Implemented, etc.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Include numbers and metrics</p>
-                    <p className="text-gray-700">Percentages, revenue figures, team sizes, time saved, etc.</p>
+                    <p className="font-black text-white">Include numbers and metrics</p>
+                    <p className="text-gray-300">Percentages, revenue figures, team sizes, time saved, etc.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Tailor to the job description</p>
-                    <p className="text-gray-700">Highlight relevant experience and use keywords from the job posting</p>
+                    <p className="font-black text-white">Tailor to the job description</p>
+                    <p className="text-gray-300">Highlight relevant experience and use keywords from the job posting</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <p className="font-semibold text-gray-900 mb-3">Example Entry:</p>
-                <p className="font-bold text-gray-900 mb-1">Senior Marketing Manager | Tech Solutions Ltd</p>
-                <p className="text-gray-600 mb-3 text-sm">January 2021 - Present | London, UK</p>
-                <ul className="space-y-2 text-gray-700 mb-0">
+              <div className="bg-white/5 p-6 rounded-lg">
+                <p className="font-black text-white mb-3">Example Entry:</p>
+                <p className="font-black text-white mb-1">Senior Marketing Manager | Tech Solutions Ltd</p>
+                <p className="text-gray-400 mb-3 text-sm">January 2021 - Present | London, UK</p>
+                <ul className="space-y-2 text-gray-300 mb-0">
                   <li>• Led a team of 8 marketers to deliver integrated campaigns across digital and traditional channels</li>
                   <li>• Increased organic website traffic by 200% through SEO optimization and content strategy</li>
                   <li>• Managed £500K annual marketing budget, achieving 25% cost reduction while improving ROI by 40%</li>
@@ -278,11 +278,11 @@ export default function CVWritingGuidePage() {
 
             {/* Section 6 */}
             <section id="education" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">6. Education & Qualifications</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">6. Education & Qualifications</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 List your education in reverse chronological order. Include:
               </p>
-              <ul className="space-y-2 text-gray-700 text-lg mb-4">
+              <ul className="space-y-2 text-gray-300 text-lg mb-4">
                 <li>✅ Degree title and classification (e.g., BSc Computer Science, First Class Honours)</li>
                 <li>✅ University name and location</li>
                 <li>✅ Graduation year (or expected graduation)</li>
@@ -297,14 +297,14 @@ export default function CVWritingGuidePage() {
 
             {/* Section 7 */}
             <section id="skills" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">7. Skills Section</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">7. Skills Section</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 Divide your skills into categories for better readability:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-3">Technical Skills</h3>
-                  <ul className="space-y-1 text-gray-700 mb-0">
+                  <h3 className="font-black text-white mb-3">Technical Skills</h3>
+                  <ul className="space-y-1 text-gray-300 mb-0">
                     <li>• Programming languages</li>
                     <li>• Software proficiency</li>
                     <li>• Tools and platforms</li>
@@ -312,8 +312,8 @@ export default function CVWritingGuidePage() {
                   </ul>
                 </div>
                 <div className="bg-purple-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-3">Soft Skills</h3>
-                  <ul className="space-y-1 text-gray-700 mb-0">
+                  <h3 className="font-black text-white mb-3">Soft Skills</h3>
+                  <ul className="space-y-1 text-gray-300 mb-0">
                     <li>• Leadership and management</li>
                     <li>• Communication</li>
                     <li>• Problem-solving</li>
@@ -329,33 +329,33 @@ export default function CVWritingGuidePage() {
 
             {/* Section 8 */}
             <section id="ats-optimization" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">8. ATS Optimization</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">8. ATS Optimization</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 75% of CVs are rejected by Applicant Tracking Systems (ATS) before a human ever sees them. Here's how to pass:
               </p>
               <div className="space-y-4 mb-6">
                 <div className="bg-white border-2 border-blue-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2">✅ Use Standard Section Headings</h3>
-                  <p className="text-gray-700 mb-0">Stick to "Work Experience", "Education", "Skills" - avoid creative headings like "My Journey"</p>
+                  <h3 className="font-black text-white mb-2">✅ Use Standard Section Headings</h3>
+                  <p className="text-gray-300 mb-0">Stick to "Work Experience", "Education", "Skills" - avoid creative headings like "My Journey"</p>
                 </div>
                 <div className="bg-white border-2 border-blue-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2">✅ Include Keywords from Job Description</h3>
-                  <p className="text-gray-700 mb-0">Mirror the language used in the job posting - if they say "project management", use that exact phrase</p>
+                  <h3 className="font-black text-white mb-2">✅ Include Keywords from Job Description</h3>
+                  <p className="text-gray-300 mb-0">Mirror the language used in the job posting - if they say "project management", use that exact phrase</p>
                 </div>
                 <div className="bg-white border-2 border-blue-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2">✅ Use Simple Formatting</h3>
-                  <p className="text-gray-700 mb-0">Avoid tables, text boxes, headers/footers, and images - stick to standard fonts and bullet points</p>
+                  <h3 className="font-black text-white mb-2">✅ Use Simple Formatting</h3>
+                  <p className="text-gray-300 mb-0">Avoid tables, text boxes, headers/footers, and images - stick to standard fonts and bullet points</p>
                 </div>
                 <div className="bg-white border-2 border-blue-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2">✅ Save as .docx or PDF</h3>
-                  <p className="text-gray-700 mb-0">Most ATS systems prefer .docx format, but PDF is also widely accepted</p>
+                  <h3 className="font-black text-white mb-2">✅ Save as .docx or PDF</h3>
+                  <p className="text-gray-300 mb-0">Most ATS systems prefer .docx format, but PDF is also widely accepted</p>
                 </div>
               </div>
             </section>
 
             {/* Section 9 */}
             <section id="common-mistakes" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">9. Common Mistakes to Avoid</h2>
+              <h2 className="text-4xl font-black text-white mb-4">9. Common Mistakes to Avoid</h2>
               <div className="space-y-4">
                 <div className="bg-red-50 p-4 rounded-lg">
                   <p className="font-bold text-red-900 mb-2">❌ Spelling and Grammar Errors</p>
@@ -382,43 +382,43 @@ export default function CVWritingGuidePage() {
 
             {/* Section 10 */}
             <section id="final-checklist" className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">10. Final Checklist</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">10. Final Checklist</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 Before sending your CV, verify:
               </p>
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
                 <ul className="space-y-3 mb-0">
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Contact information is correct and professional</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Contact information is correct and professional</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Personal statement is tailored to the specific role</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Personal statement is tailored to the specific role</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Work experience includes quantified achievements</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Work experience includes quantified achievements</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Keywords from job description are included</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Keywords from job description are included</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">No spelling or grammar errors</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">No spelling or grammar errors</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Formatting is clean and ATS-friendly</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Formatting is clean and ATS-friendly</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">File is saved as "FirstName_LastName_CV.pdf"</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">File is saved as "FirstName_LastName_CV.pdf"</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Someone else has proofread it</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Someone else has proofread it</span>
                   </li>
                 </ul>
               </div>
@@ -440,7 +440,7 @@ export default function CVWritingGuidePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/auth/signup" 
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 font-semibold text-lg inline-flex items-center justify-center"
+              className="bg-white text-blue-400 px-8 py-4 rounded-lg hover:bg-white/10 font-semibold text-lg inline-flex items-center justify-center"
             >
               Start Building Your CV
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -456,27 +456,27 @@ export default function CVWritingGuidePage() {
       </section>
 
       {/* Related Articles */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Related Guides</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Related Guides</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/blog/cv-format-best-layouts-uk" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <FileText className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CV Format Guide</h3>
-              <p className="text-gray-600 mb-4">Learn the best CV layouts and formatting tips for UK jobs.</p>
-              <span className="text-blue-600 font-semibold">Read More →</span>
+              <FileText className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">CV Format Guide</h3>
+              <p className="text-gray-400 mb-4">Learn the best CV layouts and formatting tips for UK jobs.</p>
+              <span className="text-blue-400 font-semibold">Read More →</span>
             </Link>
             <Link href="/blog/cv-personal-statement-examples" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Target className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Personal Statement Examples</h3>
-              <p className="text-gray-600 mb-4">15 professional personal statement examples for your CV.</p>
-              <span className="text-blue-600 font-semibold">Read More →</span>
+              <Target className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">Personal Statement Examples</h3>
+              <p className="text-gray-400 mb-4">15 professional personal statement examples for your CV.</p>
+              <span className="text-blue-400 font-semibold">Read More →</span>
             </Link>
             <Link href="/blog/first-job-cv-no-experience" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Sparkles className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">First Job CV Guide</h3>
-              <p className="text-gray-600 mb-4">How to write a CV with no work experience.</p>
-              <span className="text-blue-600 font-semibold">Read More →</span>
+              <Sparkles className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">First Job CV Guide</h3>
+              <p className="text-gray-400 mb-4">How to write a CV with no work experience.</p>
+              <span className="text-blue-400 font-semibold">Read More →</span>
             </Link>
           </div>
         </div>

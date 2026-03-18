@@ -203,8 +203,8 @@ export default function InterviewPrepPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
       </div>
     )
   }
@@ -212,32 +212,32 @@ export default function InterviewPrepPage() {
   // Pro gate
   if (!isPro) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
           <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Crown className="w-8 h-8 text-purple-600" />
+            <Crown className="w-8 h-8 text-purple-400" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Pro Feature</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-3xl font-black text-white mb-2">Pro Feature</h2>
+          <p className="text-gray-400 mb-6">
             Interview Prep is available exclusively to Pro users. Upgrade now to generate personalized interview questions and answers based on your CV!
           </p>
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-2">What you'll get:</h3>
-            <ul className="text-sm text-gray-700 space-y-2 text-left">
+            <h3 className="font-black text-white mb-2">What you'll get:</h3>
+            <ul className="text-sm text-gray-300 space-y-2 text-left">
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                 <span>Personalized interview questions based on your CV</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                 <span>Company research and insights</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                 <span>Suggested answers with examples</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                 <span>Unlimited interview prep sessions</span>
               </li>
             </ul>
@@ -250,7 +250,7 @@ export default function InterviewPrepPage() {
           </Link>
           <Link
             href="/dashboard"
-            className="inline-block mt-4 text-gray-600 hover:text-gray-900"
+            className="inline-block mt-4 text-gray-400 hover:text-white transition-colors"
           >
             Back to Dashboard
           </Link>
@@ -260,23 +260,23 @@ export default function InterviewPrepPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-white/5 py-8">
       <div className="max-w-5xl mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
           <Link
             href="/dashboard"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-4"
+            className="inline-flex items-center text-blue-400 hover:text-blue-700 mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <Sparkles className="w-8 h-8 text-purple-600" />
+          <h1 className="text-4xl font-black text-white flex items-center gap-3">
+            <Sparkles className="w-8 h-8 text-purple-400" />
             Interview Prep Assistant
             <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-semibold">PRO</span>
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-400 mt-2">
             Generate personalized interview questions and answers based on your CV
           </p>
         </div>
@@ -296,13 +296,13 @@ export default function InterviewPrepPage() {
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
           {/* CV Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Select CV *
             </label>
             <select
               value={selectedCvId}
               onChange={(e) => setSelectedCvId(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
             >
               <option value="">Select a CV...</option>
               {cvs.map((cv) => (
@@ -315,14 +315,14 @@ export default function InterviewPrepPage() {
 
           {/* Job Description */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Job Description *
             </label>
             <textarea
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               rows={6}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
               placeholder="Paste the job description here..."
             />
           </div>
@@ -330,7 +330,7 @@ export default function InterviewPrepPage() {
           {/* Company Research (Pro Only) */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+              <label className="block text-sm font-medium text-gray-300 flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
                 Company Research (Optional)
                 {!isPro && (
@@ -347,13 +347,13 @@ export default function InterviewPrepPage() {
                 value={companyUrl}
                 onChange={(e) => setCompanyUrl(e.target.value)}
                 placeholder="https://company-website.com"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                className="flex-1 px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500"
                 disabled={!isPro}
               />
               <button
                 onClick={handleCompanyResearch}
                 disabled={isResearchingCompany || !isPro || !companyUrl.trim()}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-3 bg-white text-black rounded-full font-black font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isResearchingCompany ? (
                   <>
@@ -369,7 +369,7 @@ export default function InterviewPrepPage() {
               </button>
             </div>
             {!isPro && (
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-400 mt-2">
                 Upgrade to Pro to research companies and get company-specific interview questions!
               </p>
             )}
@@ -377,7 +377,7 @@ export default function InterviewPrepPage() {
 
           {/* Company Research Results */}
           {companyResearch && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-6">
               <h3 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
                 <CheckCircle className="w-5 h-5" />
                 Company Research Complete: {companyResearch.company_name}
@@ -416,7 +416,7 @@ export default function InterviewPrepPage() {
             {interviewData.general_questions && (
               <QuestionSection
                 title="General Questions"
-                icon={<HelpCircle className="w-6 h-6 text-blue-600" />}
+                icon={<HelpCircle className="w-6 h-6 text-blue-400" />}
                 questions={interviewData.general_questions}
               />
             )}
@@ -425,7 +425,7 @@ export default function InterviewPrepPage() {
             {interviewData.technical_questions && (
               <QuestionSection
                 title="Technical Questions"
-                icon={<Briefcase className="w-6 h-6 text-purple-600" />}
+                icon={<Briefcase className="w-6 h-6 text-purple-400" />}
                 questions={interviewData.technical_questions}
               />
             )}
@@ -434,7 +434,7 @@ export default function InterviewPrepPage() {
             {interviewData.behavioral_questions && (
               <QuestionSection
                 title="Behavioral Questions"
-                icon={<Lightbulb className="w-6 h-6 text-yellow-600" />}
+                icon={<Lightbulb className="w-6 h-6 text-yellow-400" />}
                 questions={interviewData.behavioral_questions}
               />
             )}
@@ -443,7 +443,7 @@ export default function InterviewPrepPage() {
             {interviewData.company_specific_questions && (
               <QuestionSection
                 title="Company-Specific Questions"
-                icon={<Building2 className="w-6 h-6 text-green-600" />}
+                icon={<Building2 className="w-6 h-6 text-green-400" />}
                 questions={interviewData.company_specific_questions}
                 isPro
               />
@@ -452,7 +452,7 @@ export default function InterviewPrepPage() {
             {/* Questions to Ask Them */}
             {interviewData.questions_to_ask_them && (
               <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
                   <HelpCircle className="w-6 h-6 text-indigo-600" />
                   Questions to Ask the Interviewer
                 </h2>
@@ -460,7 +460,7 @@ export default function InterviewPrepPage() {
                   {interviewData.questions_to_ask_them.map((q: string, i: number) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="text-indigo-600 font-bold">•</span>
-                      <span className="text-gray-700">{q}</span>
+                      <span className="text-gray-300">{q}</span>
                     </li>
                   ))}
                 </ul>
@@ -478,7 +478,7 @@ function QuestionSection({ title, icon, questions, isPro }: any) {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+      <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
         {icon}
         {title}
         {isPro && (
@@ -490,25 +490,25 @@ function QuestionSection({ title, icon, questions, isPro }: any) {
       </h2>
       <div className="space-y-4">
         {questions.map((q: any, i: number) => (
-          <div key={i} className="border border-gray-200 rounded-lg p-4">
+          <div key={i} className="border border-white/10 rounded-lg p-4">
             <button
               onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
               className="w-full text-left"
             >
-              <h3 className="font-semibold text-gray-900 flex items-start gap-2">
-                <span className="text-blue-600">{i + 1}.</span>
+              <h3 className="font-black text-white flex items-start gap-2">
+                <span className="text-blue-400">{i + 1}.</span>
                 {q.question}
               </h3>
             </button>
             {expandedIndex === i && (
               <div className="mt-4 space-y-3">
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-1">Sample Answer:</p>
-                  <p className="text-sm text-gray-600">{q.sample_answer}</p>
+                  <p className="text-sm font-semibold text-gray-300 mb-1">Sample Answer:</p>
+                  <p className="text-sm text-gray-400">{q.sample_answer}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-1">Tips:</p>
-                  <p className="text-sm text-gray-600">{q.tips}</p>
+                  <p className="text-sm font-semibold text-gray-300 mb-1">Tips:</p>
+                  <p className="text-sm text-gray-400">{q.tips}</p>
                 </div>
               </div>
             )}

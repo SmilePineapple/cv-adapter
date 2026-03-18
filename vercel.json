@@ -6,7 +6,8 @@
     },
     "src/app/api/rewrite/route.ts": {
       "maxDuration": 300,
-      "memory": 1024
+      "memory": 1024,
+      "timeout": 300
     }
   },
   "crons": [

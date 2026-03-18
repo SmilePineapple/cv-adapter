@@ -42,13 +42,13 @@ export default function CVProgressStepper({ currentStep }: CVProgressStepperProp
   ]
 
   return (
-    <div className="bg-white border-b border-gray-200 py-4">
+    <div className="bg-black border-b border-white/10 py-4">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex items-center justify-between">
-          <div className="text-sm font-medium text-gray-700">
+          <div className="text-sm font-black text-white">
             Your journey to a better CV:
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-gray-400">
             Takes 2 minutes
           </div>
         </div>
@@ -60,12 +60,12 @@ export default function CVProgressStepper({ currentStep }: CVProgressStepperProp
               <div className="flex flex-col items-center">
                 <div
                   className={`
-                    w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all
+                    w-10 h-10 rounded-full flex items-center justify-center font-black text-sm transition-all
                     ${step.completed 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-blue-500 text-white' 
                       : step.active 
-                        ? 'bg-blue-600 text-white ring-4 ring-blue-100' 
-                        : 'bg-gray-200 text-gray-600'
+                        ? 'bg-blue-500 text-white ring-4 ring-blue-500/20' 
+                        : 'bg-white/10 text-gray-400 border border-white/20'
                     }
                   `}
                 >
@@ -77,8 +77,8 @@ export default function CVProgressStepper({ currentStep }: CVProgressStepperProp
                 </div>
                 <div
                   className={`
-                    mt-2 text-xs font-medium whitespace-nowrap
-                    ${step.active ? 'text-blue-600' : 'text-gray-600'}
+                    mt-2 text-xs font-bold whitespace-nowrap
+                    ${step.active ? 'text-blue-400' : 'text-gray-400'}
                   `}
                 >
                   {step.label}
@@ -91,7 +91,7 @@ export default function CVProgressStepper({ currentStep }: CVProgressStepperProp
                   <div
                     className={`
                       h-full transition-all
-                      ${step.completed ? 'bg-blue-600' : 'bg-gray-200'}
+                      ${step.completed ? 'bg-blue-500' : 'bg-white/10'}
                     `}
                   />
                 </div>

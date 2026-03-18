@@ -328,14 +328,14 @@ export default function CVExamplesPage() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-gray-900">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-white">CV Adapter</span>
           </Link>
           
           <div className="flex items-center space-x-3 sm:space-x-4">
-            <Link href="/auth/login" className="text-sm sm:text-base text-gray-600 hover:text-gray-900">
+            <Link href="/auth/login" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">
               Log In
             </Link>
-            <Link href="/auth/signup" className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 text-sm sm:text-base font-medium">
+            <Link href="/auth/signup" className="bg-white text-black px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-black hover:bg-blue-700 text-sm sm:text-base font-medium">
               Get Started Free
             </Link>
           </div>
@@ -346,13 +346,13 @@ export default function CVExamplesPage() {
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
               CV Examples by Industry
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
               Browse 15+ professional CV examples tailored for different UK industries. Real templates you can customize for your job application.
             </p>
-            <Link href="/auth/signup" className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
+            <Link href="/auth/signup" className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
               Create Your CV Now
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
@@ -363,15 +363,15 @@ export default function CVExamplesPage() {
       {/* Industries Grid */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Browse by Industry</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Browse by Industry</h2>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {industries.map((industry) => {
               const Icon = industry.icon
               return (
-                <div key={industry.name} className="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+                <div key={industry.name} className="bg-white/5 p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
                   <Icon className={`w-8 h-8 text-${industry.color}-600 mb-2`} />
-                  <h3 className="font-semibold text-gray-900 mb-2">{industry.name}</h3>
-                  <p className="text-sm text-gray-600">{industry.examples.length} examples</p>
+                  <h3 className="font-black text-white mb-2">{industry.name}</h3>
+                  <p className="text-sm text-gray-400">{industry.examples.length} examples</p>
                 </div>
               )
             })}
@@ -380,46 +380,46 @@ export default function CVExamplesPage() {
       </section>
 
       {/* CV Examples */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Professional CV Examples</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Professional CV Examples</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {cvExamples.map((example, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{example.title}</h3>
-                    <p className="text-sm text-blue-600 font-medium">{example.industry}</p>
+                    <h3 className="text-2xl font-black text-white mb-1">{example.title}</h3>
+                    <p className="text-sm text-blue-400 font-medium">{example.industry}</p>
                   </div>
                   <FileText className="w-6 h-6 text-gray-400" />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                   <div>
-                    <span className="text-gray-500">Experience:</span>
-                    <p className="font-medium text-gray-900">{example.experience}</p>
+                    <span className="text-gray-400">Experience:</span>
+                    <p className="font-bold text-white">{example.experience}</p>
                   </div>
                   <div>
-                    <span className="text-gray-500">Salary Range:</span>
-                    <p className="font-medium text-gray-900">{example.salary}</p>
+                    <span className="text-gray-400">Salary Range:</span>
+                    <p className="font-bold text-white">{example.salary}</p>
                   </div>
                 </div>
 
-                <p className="text-gray-700 mb-4">{example.description}</p>
+                <p className="text-gray-300 mb-4">{example.description}</p>
 
                 <div className="mb-4">
-                  <p className="text-sm font-semibold text-gray-900 mb-2">Key Features:</p>
+                  <p className="text-sm font-semibold text-white mb-2">Key Features:</p>
                   <ul className="space-y-1">
                     {example.keyFeatures.map((feature, i) => (
-                      <li key={i} className="text-sm text-gray-600 flex items-start">
-                        <span className="text-green-600 mr-2">✓</span>
+                      <li key={i} className="text-sm text-gray-400 flex items-start">
+                        <span className="text-green-400 mr-2">✓</span>
                         {feature}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 font-semibold text-sm inline-flex items-center">
+                <Link href="/auth/signup" className="text-blue-400 hover:text-blue-700 font-semibold text-sm inline-flex items-center">
                   Use This Template
                   <ArrowRight className="ml-1 w-4 h-4" />
                 </Link>
@@ -432,23 +432,23 @@ export default function CVExamplesPage() {
       {/* Tips Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">How to Use These CV Examples</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">How to Use These CV Examples</h2>
           <div className="space-y-6">
             <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-2">1. Choose Your Industry</h3>
-              <p className="text-gray-700">Select the CV example that matches your target industry. Each template is optimized for specific sector requirements and expectations.</p>
+              <h3 className="font-black text-white mb-2">1. Choose Your Industry</h3>
+              <p className="text-gray-300">Select the CV example that matches your target industry. Each template is optimized for specific sector requirements and expectations.</p>
             </div>
             <div className="bg-purple-50 p-6 rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-2">2. Customize the Content</h3>
-              <p className="text-gray-700">Replace the example content with your own experience, skills, and achievements. Keep the structure but make it personal.</p>
+              <h3 className="font-black text-white mb-2">2. Customize the Content</h3>
+              <p className="text-gray-300">Replace the example content with your own experience, skills, and achievements. Keep the structure but make it personal.</p>
             </div>
             <div className="bg-green-50 p-6 rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-2">3. Tailor to Each Job</h3>
-              <p className="text-gray-700">Adjust keywords and achievements to match the specific job description. Generic CVs have 70% lower success rates.</p>
+              <h3 className="font-black text-white mb-2">3. Tailor to Each Job</h3>
+              <p className="text-gray-300">Adjust keywords and achievements to match the specific job description. Generic CVs have 70% lower success rates.</p>
             </div>
             <div className="bg-yellow-50 p-6 rounded-lg">
-              <h3 className="font-bold text-gray-900 mb-2">4. Optimize for ATS</h3>
-              <p className="text-gray-700">Ensure your CV passes Applicant Tracking Systems by using standard formatting and including relevant keywords from the job posting.</p>
+              <h3 className="font-black text-white mb-2">4. Optimize for ATS</h3>
+              <p className="text-gray-300">Ensure your CV passes Applicant Tracking Systems by using standard formatting and including relevant keywords from the job posting.</p>
             </div>
           </div>
         </div>
@@ -464,7 +464,7 @@ export default function CVExamplesPage() {
             Use our AI-powered CV builder to create a tailored CV in 2 minutes. Choose from industry-specific templates.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/signup" className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 font-semibold text-lg inline-flex items-center justify-center">
+            <Link href="/auth/signup" className="bg-white text-blue-400 px-8 py-4 rounded-lg hover:bg-white/10 font-semibold text-lg inline-flex items-center justify-center">
               Start Building Your CV
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
@@ -476,27 +476,27 @@ export default function CVExamplesPage() {
       </section>
 
       {/* Related Resources */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Related Resources</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Related Resources</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/cv-writing-guide" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <BookOpen className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CV Writing Guide</h3>
-              <p className="text-gray-600 mb-4">Complete step-by-step tutorial on writing a winning CV.</p>
-              <span className="text-blue-600 font-semibold">Read Guide →</span>
+              <BookOpen className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">CV Writing Guide</h3>
+              <p className="text-gray-400 mb-4">Complete step-by-step tutorial on writing a winning CV.</p>
+              <span className="text-blue-400 font-semibold">Read Guide →</span>
             </Link>
             <Link href="/templates" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <FileText className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CV Templates</h3>
-              <p className="text-gray-600 mb-4">Professional CV templates ready to customize.</p>
-              <span className="text-blue-600 font-semibold">View Templates →</span>
+              <FileText className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">CV Templates</h3>
+              <p className="text-gray-400 mb-4">Professional CV templates ready to customize.</p>
+              <span className="text-blue-400 font-semibold">View Templates →</span>
             </Link>
             <Link href="/blog" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Briefcase className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Career Blog</h3>
-              <p className="text-gray-600 mb-4">Expert tips and advice for your job search.</p>
-              <span className="text-blue-600 font-semibold">Read Blog →</span>
+              <Briefcase className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">Career Blog</h3>
+              <p className="text-gray-400 mb-4">Expert tips and advice for your job search.</p>
+              <span className="text-blue-400 font-semibold">Read Blog →</span>
             </Link>
           </div>
         </div>

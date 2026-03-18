@@ -47,18 +47,18 @@ export default function CareerChangeCVGuide() {
 
         {/* Featured Image Placeholder */}
         <div className="w-full h-64 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl mb-8 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">🔄 Career Change Guide</p>
+          <p className="text-gray-400 text-lg">🔄 Career Change Guide</p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           <p className="text-xl text-gray-700 leading-relaxed mb-6">
             Thinking about switching careers? You're not alone. <strong>Nearly 60% of UK workers</strong> have considered 
             a career change in 2025, but many struggle with one crucial question: <em>How do I write a CV when I have no 
             experience in my target industry?</em>
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             The good news? With the right approach, you can create a compelling career change CV that highlights your 
             transferable skills and convinces employers you're the perfect fit—even without direct industry experience.
           </p>
@@ -71,8 +71,8 @@ export default function CareerChangeCVGuide() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Why Career Changes Are More Common Than Ever</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Why Career Changes Are More Common Than Ever</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             The UK job market has transformed dramatically:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -82,13 +82,13 @@ export default function CareerChangeCVGuide() {
             <li><strong>Life priorities:</strong> Post-pandemic, workers prioritize work-life balance and meaningful work</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">The Career Change CV Structure</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">The Career Change CV Structure</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             A career change CV requires a different approach than a traditional CV. Here's the winning structure:
           </p>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">1. Professional Summary (Critical!)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Your professional summary is your elevator pitch. It must immediately address the elephant in the room: 
             why you're changing careers and what value you bring.
           </p>
@@ -126,12 +126,12 @@ export default function CareerChangeCVGuide() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">2. Skills Section (Your Secret Weapon)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Place your skills section prominently—right after your professional summary. This immediately shows 
             employers you have what they need, regardless of your previous job titles.
           </p>
           
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             <strong>Organize skills into categories:</strong>
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -152,12 +152,12 @@ export default function CareerChangeCVGuide() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Work Experience (Reframed for Relevance)</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Don't hide your previous career—reframe it! For each role, emphasize responsibilities and achievements 
             that align with your target industry.
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             <strong>The STAR Method for Career Changers:</strong>
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -182,7 +182,7 @@ export default function CareerChangeCVGuide() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">4. Education & Professional Development</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             This section is crucial for career changers. Include:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -193,8 +193,8 @@ export default function CareerChangeCVGuide() {
             <li><strong>Self-directed learning:</strong> Personal projects, GitHub repositories, portfolio work</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Top 10 Transferable Skills Employers Value</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Top 10 Transferable Skills Employers Value</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             These skills transfer across virtually any industry:
           </p>
           
@@ -241,7 +241,7 @@ export default function CareerChangeCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Common Career Change Mistakes to Avoid</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Common Career Change Mistakes to Avoid</h2>
           
           <div className="space-y-4 mb-8">
             <div className="bg-red-50 border-l-4 border-red-600 p-4">
@@ -277,7 +277,7 @@ export default function CareerChangeCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Real Career Change Success Stories</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Real Career Change Success Stories</h2>
           
           <div className="space-y-6 mb-8">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -326,8 +326,8 @@ export default function CareerChangeCVGuide() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">How to Address Employment Gaps</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">How to Address Employment Gaps</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             Many career changers have gaps while retraining. Here's how to handle them:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -338,8 +338,8 @@ export default function CareerChangeCVGuide() {
             <li><strong>Freelance/consulting:</strong> If you did any freelance work, include it as legitimate experience</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">The Cover Letter: Your Secret Weapon</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">The Cover Letter: Your Secret Weapon</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             For career changers, a compelling cover letter is non-negotiable. Use it to:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -363,7 +363,7 @@ export default function CareerChangeCVGuide() {
             </Link>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Final Checklist for Career Change CVs</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Final Checklist for Career Change CVs</h2>
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
             <h4 className="text-blue-900 font-semibold mb-4">✅ Before You Apply:</h4>
@@ -381,8 +381,8 @@ export default function CareerChangeCVGuide() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Conclusion: Your Career Change Starts Here</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Conclusion: Your Career Change Starts Here</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Switching careers in the UK is challenging but absolutely achievable with the right CV strategy. Remember:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -391,14 +391,14 @@ export default function CareerChangeCVGuide() {
             <li>Continuous learning shows commitment and adaptability</li>
             <li>Every CV should be tailored to the specific role and company</li>
           </ul>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             The UK job market in 2025 values skills, potential, and cultural fit over traditional career paths. 
             With a well-crafted career change CV, you can convince employers that your unique background makes you 
             the perfect candidate for their role.
           </p>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in AI-powered 
               CV optimization. We've helped thousands of UK professionals successfully transition to new careers by 
               highlighting their transferable skills and creating ATS-optimized CVs.

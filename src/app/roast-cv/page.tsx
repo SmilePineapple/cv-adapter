@@ -395,21 +395,21 @@ export default function RoastCVPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-600" />
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-orange-400" />
       </div>
     )
   }
 
   if (!isPro) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
           <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Flame className="w-8 h-8 text-orange-600" />
+            <Flame className="w-8 h-8 text-orange-400" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Pro Feature</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="text-3xl font-black text-white mb-2">Pro Feature</h1>
+          <p className="text-gray-400 mb-6">
             Roast Your CV is available to Pro users. Get brutally honest (and hilarious) feedback on your CV!
           </p>
           <button
@@ -424,7 +424,7 @@ export default function RoastCVPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -451,11 +451,11 @@ export default function RoastCVPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Settings Card */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Roast Settings</h2>
+          <h2 className="text-2xl font-black text-white mb-6">Roast Settings</h2>
           
           {/* CV Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Select CV to Roast (Uploaded or Generated)
             </label>
             {roastableItems.length > 0 ? (
@@ -469,7 +469,7 @@ export default function RoastCVPage() {
                     setSelectedItemType(selectedItem.type)
                   }
                 }}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 {roastableItems.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -478,9 +478,9 @@ export default function RoastCVPage() {
                 ))}
               </select>
             ) : (
-              <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+              <div className="text-center py-8 border-2 border-dashed border-white/20 rounded-lg">
                 <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-600 mb-4">No CVs found. Upload or generate one first!</p>
+                <p className="text-gray-400 mb-4">No CVs found. Upload or generate one first!</p>
                 <div className="flex gap-3 justify-center">
                   <button
                     onClick={() => router.push('/upload')}
@@ -490,7 +490,7 @@ export default function RoastCVPage() {
                   </button>
                   <button
                     onClick={() => router.push('/dashboard')}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                    className="px-4 py-2 bg-white text-black rounded-full font-black hover:bg-purple-700"
                   >
                     Generate CV
                   </button>
@@ -501,7 +501,7 @@ export default function RoastCVPage() {
 
           {/* Roast Level */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-300 mb-3">
               Roast Level 🔥
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -510,12 +510,12 @@ export default function RoastCVPage() {
                 className={`p-4 border-2 rounded-lg transition-all ${
                   roastLevel === 'mild'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <ThumbsUp className="w-6 h-6 mx-auto mb-2 text-green-600" />
-                <div className="font-semibold text-gray-900">Mild</div>
-                <div className="text-xs text-gray-600 mt-1">Gentle & constructive</div>
+                <ThumbsUp className="w-6 h-6 mx-auto mb-2 text-green-400" />
+                <div className="font-black text-white">Mild</div>
+                <div className="text-xs text-gray-400 mt-1">Gentle & constructive</div>
               </button>
 
               <button
@@ -523,12 +523,12 @@ export default function RoastCVPage() {
                 className={`p-4 border-2 rounded-lg transition-all ${
                   roastLevel === 'medium'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <Flame className="w-6 h-6 mx-auto mb-2 text-orange-600" />
-                <div className="font-semibold text-gray-900">Medium</div>
-                <div className="text-xs text-gray-600 mt-1">Honest & funny</div>
+                <Flame className="w-6 h-6 mx-auto mb-2 text-orange-400" />
+                <div className="font-black text-white">Medium</div>
+                <div className="text-xs text-gray-400 mt-1">Honest & funny</div>
               </button>
 
               <button
@@ -536,19 +536,19 @@ export default function RoastCVPage() {
                 className={`p-4 border-2 rounded-lg transition-all ${
                   roastLevel === 'brutal'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <Skull className="w-6 h-6 mx-auto mb-2 text-red-600" />
-                <div className="font-semibold text-gray-900">Brutal</div>
-                <div className="text-xs text-gray-600 mt-1">No mercy!</div>
+                <Skull className="w-6 h-6 mx-auto mb-2 text-red-400" />
+                <div className="font-black text-white">Brutal</div>
+                <div className="text-xs text-gray-400 mt-1">No mercy!</div>
               </button>
             </div>
           </div>
 
           {/* Roast Style */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-300 mb-3">
               Roast Style 😂
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -557,10 +557,10 @@ export default function RoastCVPage() {
                 className={`p-3 border-2 rounded-lg transition-all ${
                   roastStyle === 'funny'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <Laugh className="w-5 h-5 mx-auto mb-1 text-yellow-600" />
+                <Laugh className="w-5 h-5 mx-auto mb-1 text-yellow-400" />
                 <div className="text-sm font-semibold">Funny</div>
               </button>
 
@@ -569,10 +569,10 @@ export default function RoastCVPage() {
                 className={`p-3 border-2 rounded-lg transition-all ${
                   roastStyle === 'sarcastic'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <Zap className="w-5 h-5 mx-auto mb-1 text-purple-600" />
+                <Zap className="w-5 h-5 mx-auto mb-1 text-purple-400" />
                 <div className="text-sm font-semibold">Sarcastic</div>
               </button>
 
@@ -581,10 +581,10 @@ export default function RoastCVPage() {
                 className={`p-3 border-2 rounded-lg transition-all ${
                   roastStyle === 'professional'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <AlertTriangle className="w-5 h-5 mx-auto mb-1 text-blue-600" />
+                <AlertTriangle className="w-5 h-5 mx-auto mb-1 text-blue-400" />
                 <div className="text-sm font-semibold">Professional</div>
               </button>
 
@@ -593,10 +593,10 @@ export default function RoastCVPage() {
                 className={`p-3 border-2 rounded-lg transition-all ${
                   roastStyle === 'savage'
                     ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-orange-300'
+                    : 'border-white/10 hover:border-orange-300'
                 }`}
               >
-                <Skull className="w-5 h-5 mx-auto mb-1 text-red-600" />
+                <Skull className="w-5 h-5 mx-auto mb-1 text-red-400" />
                 <div className="text-sm font-semibold">Savage</div>
               </button>
             </div>
@@ -606,7 +606,7 @@ export default function RoastCVPage() {
           <div className="mb-6">
             <button
               onClick={() => setShowCustomPrompt(!showCustomPrompt)}
-              className="flex items-center gap-2 text-sm text-orange-600 hover:text-orange-700 font-medium"
+              className="flex items-center gap-2 text-sm text-orange-400 hover:text-orange-700 font-medium"
             >
               <Sparkles className="w-4 h-4" />
               {showCustomPrompt ? 'Hide' : 'Show'} Custom Roast Prompts
@@ -614,7 +614,7 @@ export default function RoastCVPage() {
             
             {showCustomPrompt && (
               <div className="mt-3 space-y-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Choose a Celebrity Roaster
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -623,7 +623,7 @@ export default function RoastCVPage() {
                     className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
                       customPrompt.includes('Gordon Ramsay')
                         ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-orange-300'
+                        : 'border-white/10 hover:border-orange-300'
                     }`}
                   >
                     👨‍🍳 Gordon Ramsay
@@ -633,7 +633,7 @@ export default function RoastCVPage() {
                     className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
                       customPrompt.includes('pirate')
                         ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-orange-300'
+                        : 'border-white/10 hover:border-orange-300'
                     }`}
                   >
                     🏴‍☠️ Pirate
@@ -643,7 +643,7 @@ export default function RoastCVPage() {
                     className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
                       customPrompt.includes('aristocrat')
                         ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-orange-300'
+                        : 'border-white/10 hover:border-orange-300'
                     }`}
                   >
                     🎩 British Aristocrat
@@ -653,7 +653,7 @@ export default function RoastCVPage() {
                     className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
                       customPrompt.includes('Gen Z')
                         ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-orange-300'
+                        : 'border-white/10 hover:border-orange-300'
                     }`}
                   >
                     📱 Gen Z Influencer
@@ -662,7 +662,7 @@ export default function RoastCVPage() {
                 {customPrompt && (
                   <button
                     onClick={() => setCustomPrompt('')}
-                    className="text-xs text-gray-500 hover:text-gray-700"
+                    className="text-xs text-gray-400 hover:text-gray-300"
                   >
                     Clear custom prompt
                   </button>
@@ -694,7 +694,7 @@ export default function RoastCVPage() {
             <button
               onClick={() => setComparisonMode(!comparisonMode)}
               disabled={isRoasting || !selectedItemId}
-              className="py-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="py-4 bg-white text-black font-bold rounded-full font-black hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Zap className="w-5 h-5" />
               Compare Roasts
@@ -703,7 +703,7 @@ export default function RoastCVPage() {
             <button
               onClick={() => setBattleMode(!battleMode)}
               disabled={isRoasting}
-              className="py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="py-4 bg-white text-black font-bold rounded-full font-black hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Skull className="w-5 h-5" />
               CV Battle
@@ -720,7 +720,7 @@ export default function RoastCVPage() {
               <button
                 onClick={handleComparison}
                 disabled={isRoasting || !selectedItemId}
-                className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50"
+                className="w-full py-3 bg-white text-black font-semibold rounded-full font-black hover:bg-purple-700 transition-all disabled:opacity-50"
               >
                 Generate Comparison (Uses 2 roasts)
               </button>
@@ -754,7 +754,7 @@ export default function RoastCVPage() {
               <button
                 onClick={handleBattle}
                 disabled={isRoasting || !selectedItemId || !battleCv2Id}
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50"
+                className="w-full py-3 bg-white text-black font-semibold rounded-full font-black hover:bg-blue-700 transition-all disabled:opacity-50"
               >
                 Start Battle! (Uses 2 roasts)
               </button>
@@ -765,8 +765,8 @@ export default function RoastCVPage() {
           {isRoasting && (
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">AI is analyzing your CV...</span>
-                <span className="text-sm font-bold text-orange-600">{Math.round(roastProgress)}%</span>
+                <span className="text-sm font-medium text-gray-300">AI is analyzing your CV...</span>
+                <span className="text-sm font-bold text-orange-400">{Math.round(roastProgress)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div 
@@ -775,18 +775,18 @@ export default function RoastCVPage() {
                 />
               </div>
               <div className="mt-3 space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2 text-sm text-gray-400">
                   <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" />
                   <span>Reading your CV content...</span>
                 </div>
                 {roastProgress > 30 && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
                     <span>Finding things to roast...</span>
                   </div>
                 )}
                 {roastProgress > 60 && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
                     <div className="w-2 h-2 bg-orange-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                     <span>Crafting the perfect roast...</span>
                   </div>
@@ -800,14 +800,14 @@ export default function RoastCVPage() {
         {roastResult && (
           <div className="bg-white rounded-xl shadow-sm p-6 border-2 border-orange-200">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <Flame className="w-6 h-6 text-orange-600" />
+              <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                <Flame className="w-6 h-6 text-orange-400" />
                 The Roast
               </h2>
               <div className="flex gap-2">
                 <button
                   onClick={copyToClipboard}
-                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="p-2 text-gray-400 hover:text-white transition-colors hover:bg-white/10 rounded-lg transition-colors"
                   title="Copy to clipboard"
                 >
                   <Copy className="w-5 h-5" />
@@ -825,7 +825,7 @@ export default function RoastCVPage() {
             
             <div className="prose prose-orange max-w-none">
               <div className="bg-orange-50 rounded-lg p-6 border border-orange-200">
-                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <p className="text-white whitespace-pre-wrap leading-relaxed">
                   {roastResult}
                 </p>
               </div>
@@ -833,7 +833,7 @@ export default function RoastCVPage() {
 
             <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <div className="flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <Sparkles className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-blue-900 mb-1">Remember:</p>
                   <p className="text-sm text-blue-800">
@@ -858,7 +858,7 @@ export default function RoastCVPage() {
               {roastHistory.length > 0 && (
                 <button
                   onClick={() => setShowHistory(!showHistory)}
-                  className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all"
+                  className="px-6 py-3 bg-gray-200 text-gray-300 font-semibold rounded-lg hover:bg-gray-300 transition-all"
                 >
                   {showHistory ? 'Hide' : 'Show'} History ({roastHistory.length})
                 </button>
@@ -868,9 +868,9 @@ export default function RoastCVPage() {
             {/* Roast History */}
             {showHistory && roastHistory.length > 0 && (
               <div className="mt-6 space-y-3">
-                <h3 className="text-lg font-bold text-gray-900">Previous Roasts</h3>
+                <h3 className="text-xl font-black text-white">Previous Roasts</h3>
                 {roastHistory.map((item, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div key={index} className="p-4 bg-white/5 rounded-lg border border-white/10">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold px-2 py-1 bg-orange-100 text-orange-700 rounded">
@@ -880,18 +880,18 @@ export default function RoastCVPage() {
                           {item.style.toUpperCase()}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-400">
                         {new Date(item.date).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 line-clamp-3">{item.result}</p>
+                    <p className="text-sm text-gray-300 line-clamp-3">{item.result}</p>
                     <button
                       onClick={() => {
                         setRoastResult(item.result)
                         setShowHistory(false)
                         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
                       }}
-                      className="mt-2 text-xs text-orange-600 hover:text-orange-700 font-medium"
+                      className="mt-2 text-xs text-orange-400 hover:text-orange-700 font-medium"
                     >
                       View Full Roast →
                     </button>
@@ -905,8 +905,8 @@ export default function RoastCVPage() {
         {/* Comparison Result */}
         {comparison && (
           <div className="bg-white rounded-xl shadow-sm p-6 border-2 border-purple-200 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Zap className="w-6 h-6 text-purple-600" />
+            <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
+              <Zap className="w-6 h-6 text-purple-400" />
               Roast Comparison: Mild vs Brutal
             </h2>
             
@@ -914,10 +914,10 @@ export default function RoastCVPage() {
               {/* Mild Roast */}
               <div className="border-2 border-green-200 rounded-lg p-4 bg-green-50">
                 <div className="flex items-center gap-2 mb-3">
-                  <ThumbsUp className="w-5 h-5 text-green-600" />
+                  <ThumbsUp className="w-5 h-5 text-green-400" />
                   <h3 className="font-bold text-green-900">Mild Roast</h3>
                 </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm text-white whitespace-pre-wrap leading-relaxed">
                   {comparison.roast1}
                 </p>
               </div>
@@ -925,10 +925,10 @@ export default function RoastCVPage() {
               {/* Brutal Roast */}
               <div className="border-2 border-red-200 rounded-lg p-4 bg-red-50">
                 <div className="flex items-center gap-2 mb-3">
-                  <Flame className="w-5 h-5 text-red-600" />
+                  <Flame className="w-5 h-5 text-red-400" />
                   <h3 className="font-bold text-red-900">Brutal Roast</h3>
                 </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm text-white whitespace-pre-wrap leading-relaxed">
                   {comparison.roast2}
                 </p>
               </div>
@@ -942,7 +942,7 @@ export default function RoastCVPage() {
 
             <button
               onClick={() => setComparison(null)}
-              className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+              className="mt-4 px-4 py-2 bg-gray-200 text-gray-300 rounded-lg hover:bg-gray-300 transition-all"
             >
               Close Comparison
             </button>
@@ -952,38 +952,38 @@ export default function RoastCVPage() {
         {/* Battle Result */}
         {battleResult && (
           <div className="bg-white rounded-xl shadow-sm p-6 border-2 border-blue-200 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Skull className="w-6 h-6 text-blue-600" />
+            <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
+              <Skull className="w-6 h-6 text-blue-400" />
               CV Battle Results
             </h2>
             
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               {/* CV 1 */}
-              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 1' ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-gray-50'}`}>
+              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 1' ? 'border-yellow-400 bg-yellow-50' : 'border-white/10 bg-white/5'}`}>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-gray-900">CV 1</h3>
+                  <h3 className="font-black text-white">CV 1</h3>
                   {battleResult.winner === 'CV 1' && (
                     <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
                       🏆 WINNER
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm text-white whitespace-pre-wrap leading-relaxed">
                   {battleResult.roast1}
                 </p>
               </div>
 
               {/* CV 2 */}
-              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 2' ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-gray-50'}`}>
+              <div className={`border-2 rounded-lg p-4 ${battleResult.winner === 'CV 2' ? 'border-yellow-400 bg-yellow-50' : 'border-white/10 bg-white/5'}`}>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-gray-900">CV 2</h3>
+                  <h3 className="font-black text-white">CV 2</h3>
                   {battleResult.winner === 'CV 2' && (
                     <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
                       🏆 WINNER
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm text-white whitespace-pre-wrap leading-relaxed">
                   {battleResult.roast2}
                 </p>
               </div>
@@ -997,7 +997,7 @@ export default function RoastCVPage() {
 
             <button
               onClick={() => setBattleResult(null)}
-              className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+              className="mt-4 px-4 py-2 bg-gray-200 text-gray-300 rounded-lg hover:bg-gray-300 transition-all"
             >
               Close Battle
             </button>
@@ -1007,30 +1007,30 @@ export default function RoastCVPage() {
         {/* Info Card */}
         {!roastResult && !comparison && !battleResult && (
           <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <Flame className="w-5 h-5 text-orange-600" />
+            <h3 className="text-xl font-black text-white mb-3 flex items-center gap-2">
+              <Flame className="w-5 h-5 text-orange-400" />
               How It Works
             </h3>
-            <ul className="space-y-2 text-gray-700">
+            <ul className="space-y-2 text-gray-300">
               <li className="flex items-start gap-2">
-                <span className="text-orange-600 font-bold">1.</span>
+                <span className="text-orange-400 font-bold">1.</span>
                 <span>Select a CV you want to roast</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-orange-600 font-bold">2.</span>
+                <span className="text-orange-400 font-bold">2.</span>
                 <span>Choose how brutal you want the roast to be</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-orange-600 font-bold">3.</span>
+                <span className="text-orange-400 font-bold">3.</span>
                 <span>Pick a style (funny, sarcastic, professional, or savage)</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-orange-600 font-bold">4.</span>
+                <span className="text-orange-400 font-bold">4.</span>
                 <span>Get AI-powered roasting with honest (and hilarious) feedback</span>
               </li>
             </ul>
             <div className="mt-4 p-3 bg-white rounded-lg border border-orange-200">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-400">
                 <strong>Pro Tip:</strong> Start with "Medium" level and "Funny" style for the best balance of humor and useful feedback!
               </p>
             </div>

@@ -47,18 +47,18 @@ export default function ATSCVTipsUK2025() {
 
         {/* Featured Image Placeholder */}
         <div className="w-full h-64 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl mb-8 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">🤖 ATS Optimization Guide</p>
+          <p className="text-gray-400 text-lg">🤖 ATS Optimization Guide</p>
         </div>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           <p className="text-xl text-gray-700 leading-relaxed mb-6">
             Did you know that <strong>92% of UK recruiters use Applicant Tracking Systems (ATS)</strong> to screen CVs? 
             If your CV isn't optimized for these systems, it might never reach human eyes—no matter how qualified you are.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">What is an ATS?</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">What is an ATS?</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             An Applicant Tracking System (ATS) is software that automatically scans, parses, and ranks CVs before a recruiter sees them. 
             In the UK, companies like Taleo, Workday, and Greenhouse are commonly used to manage hundreds or thousands of applications.
           </p>
@@ -70,10 +70,10 @@ export default function ATSCVTipsUK2025() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">10 ATS Optimization Tips for UK Job Seekers</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">10 ATS Optimization Tips for UK Job Seekers</h2>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">1. Use Standard Section Headings</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             ATS systems look for specific section names. Use these UK-standard headings:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -84,12 +84,12 @@ export default function ATSCVTipsUK2025() {
             <li><strong>Skills</strong></li>
             <li><strong>Certifications</strong> (if applicable)</li>
           </ul>
-          <p className="text-gray-600 italic mb-6">
+          <p className="text-gray-400 italic mb-6">
             ❌ Avoid creative headings like "My Journey" or "What I Bring to the Table"
           </p>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">2. Include Keywords from the Job Description</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             ATS systems scan for specific keywords. Read the job posting carefully and include relevant terms naturally throughout your CV.
           </p>
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
@@ -100,7 +100,7 @@ export default function ATSCVTipsUK2025() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Use a Simple, Clean Format</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             ATS systems struggle with complex formatting. Follow these rules:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -112,13 +112,13 @@ export default function ATSCVTipsUK2025() {
           </ul>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">4. Spell Out Acronyms</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Always spell out acronyms the first time, then use the abbreviation. For example: 
             "Bachelor of Science (BSc)" or "Chartered Institute of Personnel and Development (CIPD)".
           </p>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">5. Include UK-Specific Qualifications</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             If you have UK qualifications, make them prominent:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -129,7 +129,7 @@ export default function ATSCVTipsUK2025() {
           </ul>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">6. Use Action Verbs</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Start bullet points with strong action verbs that ATS systems recognize:
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
@@ -142,12 +142,12 @@ export default function ATSCVTipsUK2025() {
           </div>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">7. Quantify Your Achievements</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             ATS systems love numbers. Include metrics wherever possible: "Increased sales by 35%" or "Managed team of 12 staff members".
           </p>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">8. Include a Skills Section</h3>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-300 leading-relaxed mb-4">
             Create a dedicated "Skills" section with both hard and soft skills:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -156,17 +156,17 @@ export default function ATSCVTipsUK2025() {
           </ul>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">9. Avoid Unusual Characters</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Stick to standard punctuation. Avoid symbols like ★, ●, or → as they can confuse ATS parsers.
           </p>
 
           <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">10. Test Your CV</h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Before applying, test your CV with an ATS checker or upload it to a job board to see how it parses. 
             Better yet, use an AI-powered tool like <strong>CV Adapter</strong> to automatically optimize your CV for ATS systems.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Common ATS Mistakes to Avoid</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Common ATS Mistakes to Avoid</h2>
           
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
             <h4 className="text-red-900 font-semibold mb-3">❌ Don't Do This:</h4>
@@ -180,8 +180,8 @@ export default function ATSCVTipsUK2025() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">UK vs. USA: CV Differences for ATS</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">UK vs. USA: CV Differences for ATS</h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
             If you're applying to UK companies, remember these differences:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -191,8 +191,8 @@ export default function ATSCVTipsUK2025() {
             <li><strong>Spelling:</strong> Use British English (organised, not organized)</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">How CV Adapter Helps</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">How CV Adapter Helps</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             CV Adapter uses AI to automatically optimize your CV for ATS systems. Our tool:
           </p>
           <ul className="list-disc pl-6 mb-6 text-gray-700">
@@ -216,18 +216,18 @@ export default function ATSCVTipsUK2025() {
             </Link>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-4">Final Thoughts</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">Final Thoughts</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             In 2025, beating the ATS is essential for UK job seekers. By following these tips and using the right tools, 
             you can ensure your CV gets past automated screening and into the hands of real recruiters.
           </p>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Remember: An ATS-optimized CV doesn't mean a boring CV. It means a <strong>smart CV</strong> that works with 
             modern recruitment technology while still showcasing your unique value.
           </p>
 
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in AI-powered 
               CV optimization for the UK job market. We help thousands of job seekers get past ATS systems every month.
             </p>

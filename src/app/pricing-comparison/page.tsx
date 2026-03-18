@@ -114,21 +114,21 @@ export default function PricingComparisonPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">CV</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+              <span className="text-2xl font-black text-white">CV Adapter</span>
             </Link>
             
             <div className="flex items-center space-x-4">
               {user ? (
                 <Link
                   href="/dashboard"
-                  className="text-gray-600 hover:text-gray-900 font-medium"
+                  className="text-gray-400 hover:text-white transition-colors font-medium"
                 >
                   Dashboard
                 </Link>
@@ -136,13 +136,13 @@ export default function PricingComparisonPage() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="text-gray-600 hover:text-gray-900 font-medium"
+                    className="text-gray-400 hover:text-white transition-colors font-medium"
                   >
                     Log In
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    className="bg-white text-black px-4 py-2 rounded-full font-black font-medium hover:bg-blue-700 transition-colors"
                   >
                     Sign Up Free
                   </Link>
@@ -156,10 +156,10 @@ export default function PricingComparisonPage() {
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Free vs Pro Comparison
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             See exactly what you get with each plan. Upgrade anytime to unlock premium features.
           </p>
         </div>
@@ -167,44 +167,44 @@ export default function PricingComparisonPage() {
         {/* Quick Comparison Cards */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           {/* Free Plan */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-200">
+          <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-white/10">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h2>
-              <div className="text-4xl font-bold text-gray-900 mb-2">£0</div>
-              <p className="text-gray-600">Perfect for trying out CV Adapter</p>
+              <h2 className="text-3xl font-black text-white mb-2">Free Plan</h2>
+              <div className="text-5xl font-black text-white mb-2">£0</div>
+              <p className="text-gray-400">Perfect for trying out CV Adapter</p>
             </div>
 
             <div className="space-y-3 mb-8">
               <div className="flex items-start space-x-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">1 basic CV generation</span>
+                <span className="text-gray-300">1 basic CV generation</span>
               </div>
               <div className="flex items-start space-x-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">3 basic templates</span>
+                <span className="text-gray-300">3 basic templates</span>
               </div>
               <div className="flex items-start space-x-3">
                 <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">PDF download</span>
+                <span className="text-gray-300">PDF download</span>
               </div>
               <div className="flex items-start space-x-3">
                 <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-500">No ATS optimization</span>
+                <span className="text-gray-400">No ATS optimization</span>
               </div>
               <div className="flex items-start space-x-3">
                 <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-500">Watermarked CVs</span>
+                <span className="text-gray-400">Watermarked CVs</span>
               </div>
               <div className="flex items-start space-x-3">
                 <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-500">No cover letters</span>
+                <span className="text-gray-400">No cover letters</span>
               </div>
             </div>
 
             {!user && (
               <button
                 onClick={() => router.push('/auth/signup')}
-                className="w-full bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                className="w-full bg-gray-200 text-gray-300 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
               >
                 Get Started Free
               </button>
@@ -267,7 +267,7 @@ export default function PricingComparisonPage() {
             ) : (
               <button
                 onClick={handleUpgrade}
-                className="w-full bg-white text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center space-x-2 shadow-lg"
+                className="w-full bg-white text-blue-400 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center space-x-2 shadow-lg"
               >
                 <span>Upgrade to Pro</span>
                 <ArrowRight className="w-5 h-5" />
@@ -290,13 +290,13 @@ export default function PricingComparisonPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b-2 border-gray-200">
+              <thead className="bg-white/5 border-b-2 border-white/10">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">Free</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 bg-blue-50">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-white">Feature</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-white">Free</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-white bg-blue-50">
                     <div className="flex items-center justify-center space-x-2">
-                      <Crown className="w-5 h-5 text-blue-600" />
+                      <Crown className="w-5 h-5 text-blue-400" />
                       <span>Pro</span>
                     </div>
                   </th>
@@ -305,8 +305,8 @@ export default function PricingComparisonPage() {
               <tbody className="divide-y divide-gray-200">
                 {features.map((category, categoryIndex) => (
                   <>
-                    <tr key={`category-${categoryIndex}`} className="bg-gray-100">
-                      <td colSpan={3} className="px-6 py-3 text-sm font-bold text-gray-900">
+                    <tr key={`category-${categoryIndex}`} className="bg-white/10">
+                      <td colSpan={3} className="px-6 py-3 text-sm font-bold text-white">
                         {category.category}
                       </td>
                     </tr>
@@ -320,16 +320,16 @@ export default function PricingComparisonPage() {
                           <td className="px-6 py-4">
                             <div className="flex items-center space-x-3">
                               <Icon className="w-5 h-5 text-gray-400" />
-                              <span className="text-gray-900 font-medium">{item.name}</span>
+                              <span className="text-white font-medium">{item.name}</span>
                               {item.highlight && (
                                 <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                               )}
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-center text-gray-600">
+                          <td className="px-6 py-4 text-center text-gray-400">
                             {item.free}
                           </td>
-                          <td className="px-6 py-4 text-center font-medium text-blue-600 bg-blue-50">
+                          <td className="px-6 py-4 text-center font-medium text-blue-400 bg-blue-50">
                             {item.pro}
                           </td>
                         </tr>
@@ -355,7 +355,7 @@ export default function PricingComparisonPage() {
             {!isPro && (
               <button
                 onClick={handleUpgrade}
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2 shadow-lg"
+                className="bg-white text-blue-400 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2 shadow-lg"
               >
                 <span>Upgrade to Pro - £2.99/month</span>
                 <ArrowRight className="w-6 h-6" />
@@ -390,35 +390,35 @@ export default function PricingComparisonPage() {
 
         {/* FAQ Section */}
         <div className="mt-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
+          <h2 className="text-4xl font-black text-white text-center mb-8">
             Frequently Asked Questions
           </h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Can I upgrade anytime?</h3>
-              <p className="text-gray-600">
+              <h3 className="font-black text-white mb-2">Can I upgrade anytime?</h3>
+              <p className="text-gray-400">
                 Yes! You can upgrade from Free to Pro at any time. Your Pro features activate immediately.
               </p>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">What if I'm not satisfied?</h3>
-              <p className="text-gray-600">
+              <h3 className="font-black text-white mb-2">What if I'm not satisfied?</h3>
+              <p className="text-gray-400">
                 You can cancel your subscription anytime from your account settings. No questions asked.
               </p>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Can I cancel my Pro subscription?</h3>
-              <p className="text-gray-600">
+              <h3 className="font-black text-white mb-2">Can I cancel my Pro subscription?</h3>
+              <p className="text-gray-400">
                 Yes, you can cancel anytime. You'll keep Pro access until the end of your billing period.
               </p>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">What's the difference in AI quality?</h3>
-              <p className="text-gray-600">
+              <h3 className="font-black text-white mb-2">What's the difference in AI quality?</h3>
+              <p className="text-gray-400">
                 Free uses a basic AI assistant. Pro uses an expert CV writer with 20+ years experience, resulting in significantly better CVs.
               </p>
             </div>

@@ -19,13 +19,13 @@ export const metadata: Metadata = {
 
 export default function CoverLetterTemplateUK() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -46,7 +46,7 @@ export default function CoverLetterTemplateUK() {
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="prose prose-lg max-w-none">
+        <div className="prose prose-invert prose-lg max-w-none">
           
           {/* Introduction */}
           <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-l-4 border-purple-600 p-6 mb-8 rounded-r-lg">
@@ -56,8 +56,8 @@ export default function CoverLetterTemplateUK() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Why You Need a Cover Letter</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Why You Need a Cover Letter</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             While some UK employers say cover letters are optional, <strong>63% of recruiters still expect them</strong>. A cover letter allows you to:
           </p>
           <ul className="list-disc pl-6 mb-8 text-gray-700 space-y-2">
@@ -68,7 +68,7 @@ export default function CoverLetterTemplateUK() {
             <li>Show you've researched the company and understand their needs</li>
           </ul>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">UK Cover Letter Format (2025)</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">UK Cover Letter Format (2025)</h2>
           
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border-l-4 border-blue-500">
             <h3 className="font-bold text-gray-900 mb-4">Standard UK Cover Letter Structure:</h3>
@@ -92,8 +92,8 @@ export default function CoverLetterTemplateUK() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Template 1: Standard Professional Cover Letter</h2>
-          <p className="text-gray-700 mb-4"><strong>Best for:</strong> Most corporate roles, office jobs, professional positions</p>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Template 1: Standard Professional Cover Letter</h2>
+          <p className="text-gray-300 mb-4"><strong>Best for:</strong> Most corporate roles, office jobs, professional positions</p>
           
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 font-mono text-sm">
             <p className="mb-2"><strong>Your Name</strong></p>
@@ -121,8 +121,8 @@ export default function CoverLetterTemplateUK() {
             <p><strong>Your Name</strong></p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Template 2: Graduate/Entry-Level Cover Letter</h2>
-          <p className="text-gray-700 mb-4"><strong>Best for:</strong> Recent graduates, first job applications, internships</p>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Template 2: Graduate/Entry-Level Cover Letter</h2>
+          <p className="text-gray-300 mb-4"><strong>Best for:</strong> Recent graduates, first job applications, internships</p>
           
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
             <h4 className="font-bold text-green-900 mb-3">Key Points for Graduate Cover Letters:</h4>
@@ -152,8 +152,8 @@ export default function CoverLetterTemplateUK() {
             <p><strong>Your Name</strong></p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Template 3: Career Change Cover Letter</h2>
-          <p className="text-gray-700 mb-4"><strong>Best for:</strong> Switching industries, changing career paths</p>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Template 3: Career Change Cover Letter</h2>
+          <p className="text-gray-300 mb-4"><strong>Best for:</strong> Switching industries, changing career paths</p>
           
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
             <h4 className="font-bold text-orange-900 mb-3">Career Change Strategy:</h4>
@@ -166,8 +166,8 @@ export default function CoverLetterTemplateUK() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Template 4: Internal Position Cover Letter</h2>
-          <p className="text-gray-700 mb-4"><strong>Best for:</strong> Applying for promotions or different roles within your current company</p>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Template 4: Internal Position Cover Letter</h2>
+          <p className="text-gray-300 mb-4"><strong>Best for:</strong> Applying for promotions or different roles within your current company</p>
           
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
             <h4 className="font-bold text-purple-900 mb-3">Internal Application Tips:</h4>
@@ -180,8 +180,8 @@ export default function CoverLetterTemplateUK() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Template 5: Speculative/Cold Application Cover Letter</h2>
-          <p className="text-gray-700 mb-4"><strong>Best for:</strong> Approaching companies without advertised vacancies</p>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Template 5: Speculative/Cold Application Cover Letter</h2>
+          <p className="text-gray-300 mb-4"><strong>Best for:</strong> Approaching companies without advertised vacancies</p>
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
             <h4 className="font-bold text-blue-900 mb-3">Speculative Application Strategy:</h4>
@@ -194,7 +194,7 @@ export default function CoverLetterTemplateUK() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Cover Letter Writing Tips</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Cover Letter Writing Tips</h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
@@ -227,7 +227,7 @@ export default function CoverLetterTemplateUK() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common Cover Letter Mistakes</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Common Cover Letter Mistakes</h2>
 
           <div className="space-y-4 mb-8">
             <div className="bg-red-50 border-l-4 border-red-500 p-4">
@@ -249,7 +249,7 @@ export default function CoverLetterTemplateUK() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">UK Cover Letter Etiquette</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">UK Cover Letter Etiquette</h2>
 
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <h3 className="font-bold text-gray-900 mb-4">Important UK-Specific Rules:</h3>
@@ -257,37 +257,37 @@ export default function CoverLetterTemplateUK() {
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Salutation Rules</p>
-                  <p className="text-gray-600 text-sm">If you know the name: "Dear Mr/Ms/Dr [Surname]" → "Yours sincerely"</p>
-                  <p className="text-gray-600 text-sm">If you don't know the name: "Dear Hiring Manager" → "Yours faithfully"</p>
+                  <p className="text-white font-semibold">Salutation Rules</p>
+                  <p className="text-gray-400 text-sm">If you know the name: "Dear Mr/Ms/Dr [Surname]" → "Yours sincerely"</p>
+                  <p className="text-gray-400 text-sm">If you don't know the name: "Dear Hiring Manager" → "Yours faithfully"</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">British English</p>
-                  <p className="text-gray-600 text-sm">Use UK spelling: organised (not organized), colour (not color), analyse (not analyze)</p>
+                  <p className="text-white font-semibold">British English</p>
+                  <p className="text-gray-400 text-sm">Use UK spelling: organised (not organized), colour (not color), analyse (not analyze)</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Formal Tone</p>
-                  <p className="text-gray-600 text-sm">UK cover letters are generally more formal than US versions. Avoid overly casual language.</p>
+                  <p className="text-white font-semibold">Formal Tone</p>
+                  <p className="text-gray-400 text-sm">UK cover letters are generally more formal than US versions. Avoid overly casual language.</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-900 font-semibold">Date Format</p>
-                  <p className="text-gray-600 text-sm">Use UK date format: 8 January 2025 (not 01/08/2025 or January 8, 2025)</p>
+                  <p className="text-white font-semibold">Date Format</p>
+                  <p className="text-gray-400 text-sm">Use UK date format: 8 January 2025 (not 01/08/2025 or January 8, 2025)</p>
                 </div>
               </li>
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Generate Perfect Cover Letters with AI</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Generate Perfect Cover Letters with AI</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             Writing a customized cover letter for every application is time-consuming. <strong>My CV Buddy</strong> can generate tailored cover letters in seconds using AI.
           </p>
           
@@ -312,49 +312,49 @@ export default function CoverLetterTemplateUK() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Frequently Asked Questions</h2>
           
           <div className="space-y-6 mb-8">
             <div className="bg-gray-100 rounded-lg p-6">
               <h3 className="font-bold text-gray-900 mb-2">Do I always need a cover letter?</h3>
-              <p className="text-gray-700">If the job posting says "optional," it's still recommended. 63% of UK recruiters expect cover letters. When in doubt, include one.</p>
+              <p className="text-gray-300">If the job posting says "optional," it's still recommended. 63% of UK recruiters expect cover letters. When in doubt, include one.</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
               <h3 className="font-bold text-gray-900 mb-2">Should I attach my cover letter as a separate file?</h3>
-              <p className="text-gray-700">Yes, unless the application system has a text box for it. Save as PDF with a clear filename: "YourName_CoverLetter_CompanyName.pdf"</p>
+              <p className="text-gray-300">Yes, unless the application system has a text box for it. Save as PDF with a clear filename: "YourName_CoverLetter_CompanyName.pdf"</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
               <h3 className="font-bold text-gray-900 mb-2">Can I use the same cover letter for multiple applications?</h3>
-              <p className="text-gray-700">No! Always customize. Change the company name, role title, and specific examples to match each job description. Generic cover letters are obvious and ineffective.</p>
+              <p className="text-gray-300">No! Always customize. Change the company name, role title, and specific examples to match each job description. Generic cover letters are obvious and ineffective.</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
               <h3 className="font-bold text-gray-900 mb-2">What if I can't find the hiring manager's name?</h3>
-              <p className="text-gray-700">Check LinkedIn, the company website, or call reception to ask. If you truly can't find it, use "Dear Hiring Manager" or "Dear [Department] Team".</p>
+              <p className="text-gray-300">Check LinkedIn, the company website, or call reception to ask. If you truly can't find it, use "Dear Hiring Manager" or "Dear [Department] Team".</p>
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Conclusion</h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">Conclusion</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
             A well-crafted cover letter can be the difference between getting an interview and being overlooked. Use these templates as a starting point, but always customize them to reflect your unique experience and the specific role you're applying for.
           </p>
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-gray-300 leading-relaxed mb-6">
             Remember: Your cover letter should complement your CV, not repeat it. Use it to tell your story, explain your motivation, and demonstrate why you're the perfect fit for the role.
           </p>
 
           {/* Related Articles */}
           <div className="border-t border-gray-200 pt-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+            <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <Link href="/blog/cv-template-uk-2025" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">CV Template UK: 10 Free Templates</h4>
-                <p className="text-gray-600 text-sm">Professional CV templates for UK job applications</p>
+                <p className="text-gray-400 text-sm">Professional CV templates for UK job applications</p>
               </Link>
               <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
-                <p className="text-gray-600 text-sm">Optimize your application for tracking systems</p>
+                <p className="text-gray-400 text-sm">Optimize your application for tracking systems</p>
               </Link>
             </div>
           </div>

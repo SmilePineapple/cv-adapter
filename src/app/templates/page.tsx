@@ -86,22 +86,22 @@ export default function TemplatesPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
           <div className="flex items-center space-x-3">
-            <FileText className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">CV Templates</h1>
+            <FileText className="w-8 h-8 text-blue-400" />
+            <h1 className="text-4xl font-black text-white">CV Templates</h1>
           </div>
-          <p className="mt-2 text-gray-600">Choose from 10 professional templates designed for different industries and roles</p>
+          <p className="mt-2 text-gray-400">Choose from 10 professional templates designed for different industries and roles</p>
         </div>
       </header>
 
@@ -111,17 +111,17 @@ export default function TemplatesPage() {
         {/* Info Banner */}
         <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-12">
           <div className="flex items-start space-x-4">
-            <Sparkles className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+            <Sparkles className="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" />
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-2">How It Works</h2>
-              <p className="text-gray-700 mb-4">
+              <h2 className="text-xl font-black text-white mb-2">How It Works</h2>
+              <p className="text-gray-300 mb-4">
                 All templates are available when you export your CV. Simply upload your CV, tailor it to a job, 
                 and choose your preferred template at the download stage.
               </p>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+              <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <CheckCircle className="w-4 h-4 text-green-400" />
                 <span>All templates are ATS-friendly</span>
-                <CheckCircle className="w-4 h-4 text-green-600 ml-4" />
+                <CheckCircle className="w-4 h-4 text-green-400 ml-4" />
                 <span>Export as PDF, DOCX, or TXT</span>
               </div>
             </div>
@@ -139,16 +139,16 @@ export default function TemplatesPage() {
               
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{template.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{template.description}</p>
+                <h3 className="text-2xl font-black text-white mb-2">{template.name}</h3>
+                <p className="text-gray-400 text-sm mb-4">{template.description}</p>
                 
                 {/* Features */}
                 <div className="mb-4">
-                  <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Features</p>
+                  <p className="text-xs font-semibold text-gray-400 uppercase mb-2">Features</p>
                   <ul className="space-y-1">
                     {template.features.map((feature, idx) => (
-                      <li key={idx} className="text-sm text-gray-700 flex items-start">
-                        <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                      <li key={idx} className="text-sm text-gray-300 flex items-start">
+                        <CheckCircle className="w-4 h-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -156,9 +156,9 @@ export default function TemplatesPage() {
                 </div>
                 
                 {/* Best For */}
-                <div className="pt-4 border-t border-gray-200">
-                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Best For</p>
-                  <p className="text-sm text-blue-600 font-medium">{template.bestFor}</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-semibold text-gray-400 uppercase mb-1">Best For</p>
+                  <p className="text-sm text-blue-400 font-medium">{template.bestFor}</p>
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function TemplatesPage() {
           <div className="flex justify-center space-x-4">
             <Link 
               href="/auth/signup"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+              className="bg-white text-blue-400 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
             >
               Get Started Free
             </Link>
@@ -189,27 +189,27 @@ export default function TemplatesPage() {
 
         {/* Template Comparison */}
         <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Choosing the Right Template</h2>
+          <h2 className="text-3xl font-black text-white mb-6">Choosing the Right Template</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <h3 className="font-bold text-gray-900 mb-3">For Tech Roles</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h3 className="font-black text-white mb-3">For Tech Roles</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
                 <li>• Modern - Clean and contemporary</li>
                 <li>• Technical - Code-inspired</li>
                 <li>• Minimal - ATS-friendly</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 mb-3">For Corporate Roles</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h3 className="font-black text-white mb-3">For Corporate Roles</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
                 <li>• Classic - Traditional format</li>
                 <li>• Executive - Premium design</li>
                 <li>• Corporate - Professional polish</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 mb-3">For Creative Roles</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h3 className="font-black text-white mb-3">For Creative Roles</h3>
+              <ul className="space-y-2 text-sm text-gray-400">
                 <li>• Creative - Bold and colorful</li>
                 <li>• Designer - Visually striking</li>
                 <li>• Startup - Dynamic and modern</li>
@@ -219,24 +219,24 @@ export default function TemplatesPage() {
 
           {/* Helpful Resources */}
           <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">📚 CV Writing Resources</h3>
-            <p className="text-gray-600 mb-4">Learn how to create a professional CV with our comprehensive guides:</p>
+            <h3 className="text-2xl font-black text-white mb-4">📚 CV Writing Resources</h3>
+            <p className="text-gray-400 mb-4">Learn how to create a professional CV with our comprehensive guides:</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Link href="/cv-writing-guide" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
-                <p className="text-blue-600 hover:text-blue-700 font-semibold">CV Writing Guide 2026 →</p>
-                <p className="text-sm text-gray-600 mt-1">Complete step-by-step tutorial</p>
+                <p className="text-blue-400 hover:text-blue-700 font-semibold">CV Writing Guide 2026 →</p>
+                <p className="text-sm text-gray-400 mt-1">Complete step-by-step tutorial</p>
               </Link>
               <Link href="/ats-optimization-guide" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
-                <p className="text-blue-600 hover:text-blue-700 font-semibold">ATS Optimization →</p>
-                <p className="text-sm text-gray-600 mt-1">Beat applicant tracking systems</p>
+                <p className="text-blue-400 hover:text-blue-700 font-semibold">ATS Optimization →</p>
+                <p className="text-sm text-gray-400 mt-1">Beat applicant tracking systems</p>
               </Link>
               <Link href="/cv-examples" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
-                <p className="text-blue-600 hover:text-blue-700 font-semibold">CV Examples →</p>
-                <p className="text-sm text-gray-600 mt-1">15+ industry-specific examples</p>
+                <p className="text-blue-400 hover:text-blue-700 font-semibold">CV Examples →</p>
+                <p className="text-sm text-gray-400 mt-1">15+ industry-specific examples</p>
               </Link>
               <Link href="/interview-prep" className="bg-white p-4 rounded-lg hover:shadow-md transition-shadow">
-                <p className="text-blue-600 hover:text-blue-700 font-semibold">Interview Prep →</p>
-                <p className="text-sm text-gray-600 mt-1">50+ questions and tips</p>
+                <p className="text-blue-400 hover:text-blue-700 font-semibold">Interview Prep →</p>
+                <p className="text-sm text-gray-400 mt-1">50+ questions and tips</p>
               </Link>
             </div>
           </div>

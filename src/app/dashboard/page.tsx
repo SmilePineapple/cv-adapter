@@ -612,23 +612,23 @@ export default function DashboardPage() {
   }
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-white border-b">
+      <div className="min-h-screen bg-black">
+        <header className="bg-black/80 backdrop-blur-xl border-b border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-4">
               <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CV</span>
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-black text-sm">CV</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+                <span className="text-xl font-black text-white tracking-tight">My CV Buddy</span>
               </div>
             </div>
           </div>
         </header>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
-            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-2"></div>
-            <div className="h-4 w-64 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-8 w-48 bg-white/10 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-64 bg-white/10 rounded animate-pulse"></div>
           </div>
           <DashboardStatsSkeleton />
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -652,7 +652,7 @@ export default function DashboardPage() {
   const usagePercentage = (currentUsage / maxGenerations) * 100
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       <OnboardingModal 
         isOpen={showOnboarding}
         onClose={() => setShowOnboarding(false)}
@@ -661,30 +661,30 @@ export default function DashboardPage() {
           fetchDashboardData()
         }}
       />
-      <header className="bg-white border-b">
+      <header className="bg-black/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CV</span>
+              <Link href="/" className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-black text-sm">CV</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">CV Adapter</span>
+                <span className="text-xl font-black text-white tracking-tight">My CV Buddy</span>
               </Link>
               {/* User Info with Tier Badge */}
               {user && (
-                <div className="flex items-center gap-3 pl-6 border-l border-gray-200">
+                <div className="flex items-center gap-3 pl-6 border-l border-white/20">
                   <div className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-700 hidden md:inline">{user.email}</span>
+                    <User className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-300 hidden md:inline">{user.email}</span>
                   </div>
                   {isPro ? (
-                    <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-3 py-1 rounded-full font-semibold flex items-center gap-1">
+                    <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs px-3 py-1 rounded-full font-black flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       PRO
                     </span>
                   ) : (
-                    <span className="bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full font-semibold">
+                    <span className="bg-white/10 text-gray-300 text-xs px-3 py-1 rounded-full font-bold">
                       FREE
                     </span>
                   )}
@@ -696,50 +696,43 @@ export default function DashboardPage() {
                 <>
                   <Link
                     href="/admin"
-                    className="flex items-center space-x-2 text-purple-600 hover:text-purple-700"
+                    className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition-colors"
                   >
                     <Shield className="w-4 h-4" />
-                    <span>Admin</span>
+                    <span className="hidden lg:inline">Admin</span>
                   </Link>
                   <Link
                     href="/admin/analytics"
-                    className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700"
+                    className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     <BarChart3 className="w-4 h-4" />
-                    <span>Analytics</span>
+                    <span className="hidden lg:inline">Analytics</span>
                   </Link>
                 </>
               )}
               {!isPro && (
                 <Link
                   href="/subscription"
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm flex items-center gap-2"
+                  className="bg-white text-black px-4 py-2 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span className="hidden sm:inline">Upgrade to Pro</span>
-                  <span className="sm:hidden">Upgrade</span>
+                  <span className="hidden sm:inline">Upgrade</span>
+                  <span className="sm:hidden">Pro</span>
                 </Link>
               )}
               <Link
                 href="/subscription"
-                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
+                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
               >
                 <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">Subscription</span>
-              </Link>
-              <Link
-                href="/contact"
-                className="flex items-center space-x-2 text-green-600 hover:text-green-700"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Contact Support</span>
+                <span className="hidden sm:inline">Settings</span>
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
               >
                 <LogOut className="w-4 h-4" />
-                <span>Logout</span>
+                <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
@@ -748,11 +741,15 @@ export default function DashboardPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 mb-8 text-white shadow-lg">
-          <div className="flex items-center justify-between">
+        <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-white/10 rounded-3xl p-8 mb-8 text-white relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+          </div>
+          <div className="flex items-center justify-between relative z-10">
             <div>
-              <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.email?.split('@')[0] || 'there'}! 👋</h1>
-              <p className="text-blue-100 text-lg">
+              <h1 className="text-4xl sm:text-5xl font-black mb-3 tracking-tight">Welcome back, {user?.email?.split('@')[0] || 'there'}! 👋</h1>
+              <p className="text-gray-300 text-xl font-light">
                 {generations.length > 0 
                   ? `You've created ${generations.length} amazing CV${generations.length !== 1 ? 's' : ''}. Ready for your next one?`
                   : "Let's create your first professional CV together!"}
@@ -760,70 +757,70 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-3">
               {isPro && (
-                <div className="hidden lg:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                  <Crown className="w-5 h-5 text-yellow-300" />
-                  <span className="font-semibold">Pro Member</span>
+                <div className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-2 rounded-full">
+                  <Crown className="w-5 h-5 text-white" />
+                  <span className="font-black">Pro Member</span>
                 </div>
               )}
               {user?.email === 'jake.rourke@btinternet.com' && (
                 <button
                   onClick={handleResetGenerations}
                   disabled={isResettingGenerations}
-                  className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-white/20"
                   title="Reset generation count for testing"
                 >
                   <RefreshCw className={`w-4 h-4 ${isResettingGenerations ? 'animate-spin' : ''}`} />
-                  <span className="font-semibold text-sm">Reset Gens</span>
+                  <span className="font-semibold text-sm">Reset</span>
                 </button>
               )}
             </div>
           </div>
         </div>
 
-        {/* Stats Cards - Improved Design */}
+        {/* Stats Cards - Glass Morphism Design */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                <FileText className="w-6 h-6 text-blue-400" />
               </div>
-              <span className="text-3xl font-bold text-gray-900">{cvs.length}</span>
+              <span className="text-3xl font-black text-white">{cvs.length}</span>
             </div>
-            <p className="text-sm font-medium text-gray-600">Total CVs</p>
+            <p className="text-sm font-semibold text-gray-400">Total CVs</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-purple-400" />
               </div>
-              <span className="text-3xl font-bold text-gray-900">{generations.length}</span>
+              <span className="text-3xl font-black text-white">{generations.length}</span>
             </div>
-            <p className="text-sm font-medium text-gray-600">Generations</p>
+            <p className="text-sm font-semibold text-gray-400">Generations</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Mail className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                <Mail className="w-6 h-6 text-green-400" />
               </div>
-              <span className="text-3xl font-bold text-gray-900">{coverLetters.length}</span>
+              <span className="text-3xl font-black text-white">{coverLetters.length}</span>
             </div>
-            <p className="text-sm font-medium text-gray-600">Cover Letters</p>
+            <p className="text-sm font-semibold text-gray-400">Cover Letters</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                <BarChart3 className="w-6 h-6 text-orange-400" />
               </div>
-              <span className="text-3xl font-bold text-gray-900">{currentUsage}/{maxGenerations}</span>
+              <span className="text-3xl font-black text-white">{currentUsage}/{maxGenerations}</span>
             </div>
-            <p className="text-sm font-medium text-gray-600">This Month</p>
+            <p className="text-sm font-semibold text-gray-400">This Month</p>
             <div className="mt-3">
-              <div className="bg-gray-200 rounded-full h-2">
+              <div className="bg-white/10 rounded-full h-2">
                 <div 
-                  className="bg-orange-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-orange-400 to-red-400 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${Math.min(usagePercentage, 100)}%` }}
                 ></div>
               </div>
@@ -834,13 +831,13 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Primary Actions - Enhanced CTAs */}
+        {/* Primary Actions - Minimalist CTAs */}
         <div className="space-y-4 mb-8">
           {/* Hero Action - Generate CV (Full Width, Standalone) */}
           {cvs.length > 0 && (
             <button
               onClick={(e) => handleGenerateClick(e, cvs[0].id)}
-              className="w-full flex items-center justify-center px-8 py-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-xl gap-3"
+              className="w-full flex items-center justify-center px-8 py-6 bg-white text-black rounded-full font-black text-xl hover:bg-gray-100 transition-all shadow-2xl gap-3"
             >
               <Zap className="w-6 h-6" />
               Generate your New CV
@@ -851,7 +848,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link
               href="/upload"
-              className="flex items-center justify-center px-6 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-all shadow-md gap-2"
+              className="flex items-center justify-center px-6 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-bold hover:bg-white/20 transition-all gap-2"
             >
               <Upload className="w-5 h-5" />
               Upload CV
@@ -859,7 +856,7 @@ export default function DashboardPage() {
 
             <Link
               href="/cover-letter"
-              className="flex items-center justify-center px-6 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-all shadow-md gap-2"
+              className="flex items-center justify-center px-6 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-bold hover:bg-white/20 transition-all gap-2"
             >
               <FileText className="w-5 h-5" />
               Cover Letter
@@ -867,49 +864,60 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Access Grid - Organized by Priority */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {/* Quick Access Grid - Glass Morphism Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
             href="/skills-assessment"
-            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group"
           >
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-              <Target className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
+              <Target className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Skills Test</h3>
-            <p className="text-sm text-gray-500">Assess abilities</p>
+            <h3 className="font-bold text-white mb-1">Skills Test</h3>
+            <p className="text-sm text-gray-400">Assess abilities</p>
           </Link>
 
           <Link
             href={isPro ? "/interview-prep" : "/subscription"}
-            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group relative"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group relative"
           >
             {!isPro && (
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
                 PRO
               </div>
             )}
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-              <Sparkles className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
+              <Sparkles className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Interview Prep</h3>
-            <p className="text-sm text-gray-500">Practice questions</p>
+            <h3 className="font-bold text-white mb-1">Interview Prep</h3>
+            <p className="text-sm text-gray-400">Practice questions</p>
           </Link>
 
           <Link
             href={isPro ? "/career-coach" : "/subscription"}
-            className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-400 hover:shadow-lg transition-all group relative"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group relative"
           >
             {!isPro && (
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
                 PRO
               </div>
             )}
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
-              <TrendingUp className="w-6 h-6 text-gray-600 group-hover:text-blue-600 transition-colors" />
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
+              <TrendingUp className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Career Coach</h3>
-            <p className="text-sm text-gray-500">Get guidance</p>
+            <h3 className="font-bold text-white mb-1">Career Coach</h3>
+            <p className="text-sm text-gray-400">Get guidance</p>
+          </Link>
+
+          <Link
+            href="/roast-cv"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group"
+          >
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
+              <Flame className="w-6 h-6 text-orange-400 group-hover:text-orange-300 transition-colors" />
+            </div>
+            <h3 className="font-bold text-white mb-1">Roast CV</h3>
+            <p className="text-sm text-gray-400">Get honest feedback</p>
           </Link>
         </div>
 
@@ -1037,16 +1045,16 @@ export default function DashboardPage() {
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search documents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-white/40 transition-colors"
               />
             </div>
-            <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button className="flex items-center px-6 py-3 bg-white/10 border border-white/20 rounded-xl hover:bg-white/20 transition-colors text-white font-medium">
               <Filter className="w-4 h-4 mr-2" />
               Filter
             </button>
@@ -1060,24 +1068,24 @@ export default function DashboardPage() {
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value as any)}
-              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium"
+              className="w-full p-3 bg-white/10 border border-white/20 rounded-xl text-white font-medium"
             >
-              <option value="overview">📊 Overview</option>
-              <option value="cvs">📄 CVs ({searchQuery ? filteredCvs.length : cvs.length})</option>
-              <option value="generations">✨ Generations ({searchQuery ? filteredGenerations.length : generations.length})</option>
-              <option value="cover-letters">✉️ Cover Letters ({searchQuery ? filteredCoverLetters.length : coverLetters.length})</option>
+              <option value="overview" className="bg-black">📊 Overview</option>
+              <option value="cvs" className="bg-black">📄 CVs ({searchQuery ? filteredCvs.length : cvs.length})</option>
+              <option value="generations" className="bg-black">✨ Generations ({searchQuery ? filteredGenerations.length : generations.length})</option>
+              <option value="cover-letters" className="bg-black">✉️ Cover Letters ({searchQuery ? filteredCoverLetters.length : coverLetters.length})</option>
             </select>
           </div>
 
           {/* Desktop Tabs */}
-          <div className="hidden sm:block bg-white rounded-xl shadow-sm p-2">
+          <div className="hidden sm:block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-2">
             <nav className="flex space-x-2">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
                   activeTab === 'overview'
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <Activity className="w-5 h-5 mr-2" />
@@ -1085,64 +1093,64 @@ export default function DashboardPage() {
               </button>
               <button
                 onClick={() => setActiveTab('cvs')}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
                   activeTab === 'cvs'
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <FileText className="w-5 h-5 mr-2" />
                 <span>CVs</span>
-                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                  activeTab === 'cvs' ? 'bg-blue-500' : 'bg-gray-200 text-gray-700'
+                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === 'cvs' ? 'bg-black text-white' : 'bg-white/10 text-gray-400'
                 }`}>
                   {searchQuery ? filteredCvs.length : cvs.length}
                 </span>
               </button>
               <button
                 onClick={() => setActiveTab('generations')}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
                   activeTab === 'generations'
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <Sparkles className="w-5 h-5 mr-2" />
                 <span>Generations</span>
-                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                  activeTab === 'generations' ? 'bg-blue-500' : 'bg-gray-200 text-gray-700'
+                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === 'generations' ? 'bg-black text-white' : 'bg-white/10 text-gray-400'
                 }`}>
                   {searchQuery ? filteredGenerations.length : generations.length}
                 </span>
               </button>
               <button
                 onClick={() => setActiveTab('cover-letters')}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
                   activeTab === 'cover-letters'
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <Mail className="w-5 h-5 mr-2" />
                 <span>Cover Letters</span>
-                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                  activeTab === 'cover-letters' ? 'bg-blue-500' : 'bg-gray-200 text-gray-700'
+                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === 'cover-letters' ? 'bg-black text-white' : 'bg-white/10 text-gray-400'
                 }`}>
                   {searchQuery ? filteredCoverLetters.length : coverLetters.length}
                 </span>
               </button>
               <button
                 onClick={() => setActiveTab('interview-prep')}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
                   activeTab === 'interview-prep'
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <Zap className="w-5 h-5 mr-2" />
                 <span>Interview Prep</span>
-                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                  activeTab === 'interview-prep' ? 'bg-purple-500' : 'bg-gray-200 text-gray-700'
+                <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === 'interview-prep' ? 'bg-black text-white' : 'bg-white/10 text-gray-400'
                 }`}>
                   {searchQuery ? filteredInterviewPreps.length : interviewPreps.length}
                 </span>
@@ -1156,15 +1164,15 @@ export default function DashboardPage() {
           <>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Activity */}
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b">
-                <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+              <div className="px-6 py-4 border-b border-white/10">
+                <h3 className="text-xl font-black text-white">Recent Activity</h3>
               </div>
               <div className="p-6">
                 {recentActivity.length === 0 ? (
                   <div className="text-center py-8">
                     <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">No recent activity</p>
+                    <p className="text-gray-400">No recent activity</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -1172,13 +1180,13 @@ export default function DashboardPage() {
                       const Icon = activity.icon
                       return (
                         <div key={activity.id} className="flex items-start space-x-3">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                            <Icon className="w-4 h-4 text-gray-600" />
+                          <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
+                            <Icon className="w-4 h-4 text-gray-300" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900">{activity.title}</p>
-                            <p className="text-sm text-gray-500">{activity.description}</p>
-                            <p className="text-xs text-gray-400 mt-1">{formatDate(activity.created_at)}</p>
+                            <p className="text-sm font-bold text-white">{activity.title}</p>
+                            <p className="text-sm text-gray-400">{activity.description}</p>
+                            <p className="text-xs text-gray-500 mt-1">{formatDate(activity.created_at)}</p>
                           </div>
                         </div>
                       )
@@ -1189,43 +1197,43 @@ export default function DashboardPage() {
             </div>
 
             {/* Usage Analytics */}
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b">
-                <h3 className="text-lg font-medium text-gray-900">Usage Analytics</h3>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+              <div className="px-6 py-4 border-b border-white/10">
+                <h3 className="text-xl font-black text-white">Usage Analytics</h3>
               </div>
               <div className="p-6">
                 <div className="space-y-6">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">Monthly Usage</span>
-                      <span className="text-sm text-gray-500">{currentUsage}/{maxGenerations}</span>
+                      <span className="text-sm font-semibold text-gray-300">Monthly Usage</span>
+                      <span className="text-sm text-gray-400">{currentUsage}/{maxGenerations}</span>
                     </div>
-                    <div className="bg-gray-200 rounded-full h-2">
+                    <div className="bg-white/10 rounded-full h-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        className="bg-gradient-to-r from-blue-400 to-purple-400 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${Math.min(usagePercentage, 100)}%` }}
                       ></div>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-900">{cvs.length}</p>
-                      <p className="text-sm text-gray-600">CVs Uploaded</p>
+                    <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
+                      <p className="text-2xl font-black text-white">{cvs.length}</p>
+                      <p className="text-sm text-gray-400">CVs Uploaded</p>
                     </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold text-gray-900">{generations.length}</p>
-                      <p className="text-sm text-gray-600">Generations</p>
+                    <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
+                      <p className="text-2xl font-black text-white">{generations.length}</p>
+                      <p className="text-sm text-gray-400">Generations</p>
                     </div>
                   </div>
 
                   {!isPro && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-xl p-4">
                       <div className="flex items-center">
-                        <Star className="w-5 h-5 text-blue-600 mr-2" />
+                        <Star className="w-5 h-5 text-purple-400 mr-2" />
                         <div>
-                          <p className="text-sm font-medium text-blue-900">Upgrade to Pro</p>
-                          <p className="text-xs text-blue-700">Unlimited generations and premium features</p>
+                          <p className="text-sm font-bold text-white">Upgrade to Pro</p>
+                          <p className="text-xs text-gray-300">Unlimited generations and premium features</p>
                         </div>
                       </div>
                     </div>
@@ -1252,18 +1260,18 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'cvs' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b">
-              <h3 className="text-lg font-medium text-gray-900">Your CVs</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+            <div className="px-6 py-4 border-b border-white/10">
+              <h3 className="text-xl font-black text-white">Your CVs</h3>
             </div>
             
             {filteredCvs.length === 0 ? (
               <div className="p-12 text-center">
                 <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-white mb-2">
                   {searchQuery ? 'No CVs found' : 'No CVs uploaded yet'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-400 mb-6">
                   {searchQuery 
                     ? `No CVs match "${searchQuery}". Try a different search term.`
                     : 'Upload your first CV to start tailoring it to job descriptions with AI.'
@@ -1272,7 +1280,7 @@ export default function DashboardPage() {
                 {!searchQuery && (
                   <Link
                     href="/upload"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-white text-black rounded-full hover:bg-gray-100 transition-all font-black"
                   >
                     <Upload className="w-4 h-4 mr-2" />
                     Upload CV
@@ -1280,24 +1288,24 @@ export default function DashboardPage() {
                 )}
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-white/10">
                 {filteredCvs.map((cv) => (
-                  <div key={cv.id} className="p-6 hover:bg-gray-50">
+                  <div key={cv.id} className="p-6 hover:bg-white/5 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-blue-600" />
+                        <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                          <FileText className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-medium text-gray-900">
+                            <h3 className="text-sm font-bold text-white">
                               {cv.file_meta.name}
                             </h3>
                             {cv.detected_language && cv.detected_language !== 'en' && (
                               <LanguageBadge languageCode={cv.detected_language} showIcon={false} />
                             )}
                           </div>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-400">
                             {formatFileSize(cv.file_meta.size)} • Uploaded {formatDate(cv.created_at)}
                           </p>
                         </div>
@@ -1306,31 +1314,31 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleRateCV(cv.id)}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-all border border-green-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-green-400 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all border border-green-500/20"
                         >
                           <Star className="w-4 h-4" />
-                          Rate
+                          <span className="hidden sm:inline">Rate</span>
                         </button>
                         <Link
                           href={`/edit/${cv.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all border border-blue-500/20"
                         >
                           <Edit3 className="w-4 h-4" />
-                          Edit
+                          <span className="hidden sm:inline">Edit</span>
                         </Link>
                         <Link
                           href={`/generate/${cv.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 rounded-xl transition-all border border-purple-500/20"
                         >
                           <Sparkles className="w-4 h-4" />
-                          Generate
+                          <span className="hidden sm:inline">Generate</span>
                         </Link>
                         <button
                           onClick={() => handleDeleteCV(cv.id)}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-all border border-red-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all border border-red-500/20"
                         >
                           <Trash2 className="w-4 h-4" />
-                          Delete
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>
@@ -1342,18 +1350,18 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'generations' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b">
-              <h3 className="text-lg font-medium text-gray-900">CV Generations</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+            <div className="px-6 py-4 border-b border-white/10">
+              <h3 className="text-xl font-black text-white">CV Generations</h3>
             </div>
             
             {filteredGenerations.length === 0 ? (
               <div className="p-12 text-center">
                 <Sparkles className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-white mb-2">
                   {searchQuery ? 'No generations found' : 'No generations yet'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-400 mb-6">
                   {searchQuery 
                     ? `No generations match "${searchQuery}". Try a different search term.`
                     : 'Generate your first tailored CV to see it here.'
@@ -1362,7 +1370,7 @@ export default function DashboardPage() {
                 {!searchQuery && cvs.length > 0 && (
                   <button
                     onClick={(e) => handleGenerateClick(e, cvs[0].id)}
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-white text-black rounded-full hover:bg-gray-100 transition-all font-black"
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Generate CV
@@ -1370,32 +1378,32 @@ export default function DashboardPage() {
                 )}
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-white/10">
                 {filteredGenerations.map((generation) => (
-                  <div key={generation.id} className="p-6 hover:bg-gray-50">
+                  <div key={generation.id} className="p-6 hover:bg-white/5 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                          <Sparkles className="w-5 h-5 text-purple-600" />
+                        <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                          <Sparkles className="w-5 h-5 text-purple-400" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-medium text-gray-900">
+                            <h3 className="text-sm font-bold text-white">
                               {generation.job_title}
                             </h3>
                             {generation.output_language && generation.output_language !== 'en' && (
                               <LanguageBadge languageCode={generation.output_language} showIcon={false} />
                             )}
                           </div>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-400">
                             {generation.rewrite_style} • {generation.tone} • {formatDate(generation.created_at)}
                           </p>
                           <div className="flex items-center gap-2 mt-2">
                             {generation.ats_score && (
-                              <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                                generation.ats_score >= 80 ? 'bg-green-100 text-green-800' :
-                                generation.ats_score >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
+                              <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black ${
+                                generation.ats_score >= 80 ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                                generation.ats_score >= 60 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                                'bg-red-500/20 text-red-400 border border-red-500/30'
                               }`}>
                                 <TrendingUp className="w-3 h-3 mr-1" />
                                 ATS Score: {generation.ats_score}%
@@ -1415,42 +1423,42 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/review/${generation.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 rounded-xl transition-all border border-purple-500/20"
                         >
                           <Eye className="w-4 h-4" />
-                          View
+                          <span className="hidden sm:inline">View</span>
                         </Link>
                         {generation.cv_id ? (
                           <Link
                             href={`/edit/${generation.cv_id}?generation=${generation.id}`}
-                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all border border-blue-500/20"
                           >
                             <Edit3 className="w-4 h-4" />
-                            Edit
+                            <span className="hidden sm:inline">Edit</span>
                           </Link>
                         ) : (
                           <button
                             disabled
                             title="Original CV was deleted"
-                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed border border-gray-200"
+                            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-gray-600 bg-white/5 rounded-xl cursor-not-allowed border border-white/10"
                           >
                             <Edit3 className="w-4 h-4" />
-                            Edit
+                            <span className="hidden sm:inline">Edit</span>
                           </button>
                         )}
                         <Link
                           href={`/download/${generation.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-all border border-green-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-green-400 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all border border-green-500/20"
                         >
                           <Download className="w-4 h-4" />
-                          Download
+                          <span className="hidden sm:inline">Download</span>
                         </Link>
                         <button
                           onClick={() => handleDeleteGeneration(generation.id)}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-all border border-red-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all border border-red-500/20"
                         >
                           <Trash2 className="w-4 h-4" />
-                          Delete
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>
@@ -1462,18 +1470,18 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'cover-letters' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b">
-              <h3 className="text-lg font-medium text-gray-900">Cover Letters</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+            <div className="px-6 py-4 border-b border-white/10">
+              <h3 className="text-xl font-black text-white">Cover Letters</h3>
             </div>
             
             {filteredCoverLetters.length === 0 ? (
               <div className="p-12 text-center">
                 <Mail className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-white mb-2">
                   {searchQuery ? 'No cover letters found' : 'No cover letters yet'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-400 mb-6">
                   {searchQuery 
                     ? `No cover letters match "${searchQuery}". Try a different search term.`
                     : 'Create your first cover letter to see it here.'
@@ -1482,7 +1490,7 @@ export default function DashboardPage() {
                 {!searchQuery && (
                   <Link
                     href="/cover-letter"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-white text-black rounded-full hover:bg-gray-100 transition-all font-black"
                   >
                     <Mail className="w-4 h-4 mr-2" />
                     Create Cover Letter
@@ -1490,24 +1498,24 @@ export default function DashboardPage() {
                 )}
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-white/10">
                 {filteredCoverLetters.map((coverLetter) => (
-                  <div key={coverLetter.id} className="p-6 hover:bg-gray-50">
+                  <div key={coverLetter.id} className="p-6 hover:bg-white/5 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                          <Mail className="w-5 h-5 text-green-600" />
+                        <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
+                          <Mail className="w-5 h-5 text-green-400" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-medium text-gray-900">
+                            <h3 className="text-sm font-bold text-white">
                               {coverLetter.job_title} at {coverLetter.company_name}
                             </h3>
                             {coverLetter.output_language && coverLetter.output_language !== 'en' && (
                               <LanguageBadge languageCode={coverLetter.output_language} showIcon={false} />
                             )}
                           </div>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-400">
                             Created {formatDate(coverLetter.created_at)}
                           </p>
                         </div>
@@ -1516,25 +1524,25 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/cover-letter/view/${coverLetter.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all border border-blue-500/20"
                         >
                           <Eye className="w-4 h-4" />
-                          View
+                          <span className="hidden sm:inline">View</span>
                         </Link>
                         <Link
                           href={`/api/cover-letter/${coverLetter.id}/export?format=docx`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-all border border-green-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-green-400 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all border border-green-500/20"
                           target="_blank"
                         >
                           <Download className="w-4 h-4" />
-                          Download
+                          <span className="hidden sm:inline">Download</span>
                         </Link>
                         <button
                           onClick={() => handleDeleteCoverLetter(coverLetter.id)}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-all border border-red-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all border border-red-500/20"
                         >
                           <Trash2 className="w-4 h-4" />
-                          Delete
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>
@@ -1546,25 +1554,25 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'interview-prep' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Interview Prep Sessions</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl">
+            <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
+              <h3 className="text-xl font-black text-white">Interview Prep Sessions</h3>
               <Link
                 href="/interview-prep"
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition-all text-sm font-black"
               >
                 <Plus className="w-4 h-4" />
-                New Interview Prep
+                New Prep
               </Link>
             </div>
             
             {filteredInterviewPreps.length === 0 ? (
               <div className="p-12 text-center">
                 <Zap className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-white mb-2">
                   {searchQuery ? 'No interview preps found' : 'No interview preps yet'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-400 mb-6">
                   {searchQuery 
                     ? `No interview preps match "${searchQuery}". Try a different search term.`
                     : 'Generate interview questions and company research to ace your interviews!'
@@ -1573,7 +1581,7 @@ export default function DashboardPage() {
                 {!searchQuery && (
                   <Link
                     href="/interview-prep"
-                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors"
+                    className="inline-flex items-center px-6 py-3 bg-white text-black rounded-full hover:bg-gray-100 transition-all font-black"
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Start Interview Prep
@@ -1581,30 +1589,30 @@ export default function DashboardPage() {
                 )}
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-white/10">
                 {filteredInterviewPreps.map((prep) => (
-                  <div key={prep.id} className="p-6 hover:bg-gray-50">
+                  <div key={prep.id} className="p-6 hover:bg-white/5 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4 flex-1">
-                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                          <Zap className="w-5 h-5 text-purple-600" />
+                        <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                          <Zap className="w-5 h-5 text-purple-400" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <h3 className="text-sm font-medium text-gray-900 truncate">
+                            <h3 className="text-sm font-bold text-white truncate">
                               {prep.company_research?.company_name || 'Interview Prep'}
                             </h3>
                             {prep.company_research && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black bg-green-500/20 text-green-400 border border-green-500/30">
                                 <Crown className="w-3 h-3 mr-1" />
-                                Company Research
+                                Research
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-500 truncate">
+                          <p className="text-sm text-gray-400 truncate">
                             {prep.job_description.substring(0, 80)}...
                           </p>
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-gray-500 mt-1">
                             Created {formatDate(prep.created_at)}
                             {prep.cv?.file_meta?.name && ` • ${prep.cv.file_meta.name}`}
                           </p>
@@ -1614,10 +1622,10 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2 ml-4">
                         <Link
                           href={`/interview-prep/view/${prep.id}`}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all border border-purple-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 rounded-xl transition-all border border-purple-500/20"
                         >
                           <Eye className="w-4 h-4" />
-                          View
+                          <span className="hidden sm:inline">View</span>
                         </Link>
                         <button
                           onClick={async () => {
@@ -1635,10 +1643,10 @@ export default function DashboardPage() {
                               }
                             }
                           }}
-                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-all border border-red-200"
+                          className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-red-400 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all border border-red-500/20"
                         >
                           <Trash2 className="w-4 h-4" />
-                          Delete
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>
@@ -1651,67 +1659,67 @@ export default function DashboardPage() {
 
         {/* Feature Comparison for Free Users */}
         {!isPro && (
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border-2 border-purple-200 mt-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-purple-600" />
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 mt-8">
+            <h3 className="text-2xl font-black text-white mb-6 flex items-center gap-2">
+              <Lock className="w-6 h-6 text-purple-400" />
               Unlock Pro Features
             </h3>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                    <X className="w-4 h-4 text-gray-600" />
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                    <X className="w-4 h-4 text-gray-400" />
                   </div>
-                  <div className="font-semibold text-gray-900">Free Tier</div>
+                  <div className="font-bold text-gray-300">Free Tier</div>
                 </div>
-                <ul className="text-sm text-gray-600 space-y-2">
+                <ul className="text-sm text-gray-400 space-y-2">
                   <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span className="text-gray-500 mt-0.5">•</span>
                     <span>1 CV generation</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span className="text-gray-500 mt-0.5">•</span>
                     <span>PDF export only</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span className="text-gray-500 mt-0.5">•</span>
                     <span>2 templates</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span className="text-gray-500 mt-0.5">•</span>
                     <span>Watermark on exports</span>
                   </li>
                 </ul>
               </div>
-              <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg p-4 text-white">
+              <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                     <Crown className="w-4 h-4 text-white" />
                   </div>
-                  <div className="font-semibold">Pro Tier</div>
-                  <span className="ml-auto bg-white bg-opacity-20 text-xs px-2 py-1 rounded-full font-semibold">
+                  <div className="font-black text-white">Pro Tier</div>
+                  <span className="ml-auto bg-white/20 text-xs px-2 py-1 rounded-full font-black">
                     £2.99/month
                   </span>
                 </div>
-                <ul className="text-sm space-y-2">
+                <ul className="text-sm text-white space-y-2">
                   <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <span>Unlimited generations</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <span>All export formats (PDF, DOCX, HTML, TXT)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <span>14 premium templates</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <span>No watermarks</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <span>AI Review & Cover Letters</span>
                   </li>
                 </ul>
@@ -1719,7 +1727,7 @@ export default function DashboardPage() {
             </div>
             <Link
               href="/subscription"
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg"
             >
               <Sparkles className="w-5 h-5" />
               Upgrade to Pro - £2.99/month
@@ -1730,16 +1738,19 @@ export default function DashboardPage() {
 
       {/* CV Rating Modal */}
       {ratingModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-slideUp">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-2xl">
-              <div className="flex items-center justify-between">
+        <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn">
+          <div className="bg-black border border-white/20 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-slideUp">
+            <div className="bg-gradient-to-br from-black via-gray-900 to-black border-b border-white/10 p-6 rounded-t-2xl relative overflow-hidden">
+              <div className="absolute inset-0">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+              </div>
+              <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                    <Star className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                    <Star className="w-6 h-6 text-blue-400" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">AI CV Analysis</h2>
+                    <h2 className="text-2xl font-black text-white">AI CV Analysis</h2>
                     <p className="text-blue-100 text-sm">Powered by GPT-4</p>
                   </div>
                 </div>
@@ -1756,41 +1767,41 @@ export default function DashboardPage() {
               {isRating ? (
                 <div className="text-center py-16">
                   <div className="relative w-20 h-20 mx-auto mb-6">
-                    <div className="absolute inset-0 rounded-full border-4 border-blue-200"></div>
-                    <div className="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-white/20"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-blue-400 border-t-transparent animate-spin"></div>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Analyzing Your CV</h3>
-                  <p className="text-gray-600">Our AI is reviewing your experience, skills, and formatting...</p>
+                  <h3 className="text-xl font-black text-white mb-2">Analyzing Your CV</h3>
+                  <p className="text-gray-400">Our AI is reviewing your experience, skills, and formatting...</p>
                 </div>
               ) : cvRating ? (
                 <div className="space-y-6">
                   {/* Score Cards */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+                    <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-xl p-6 text-white shadow-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-blue-100 text-sm font-medium">Overall Score</p>
-                        <Star className="w-5 h-5 text-blue-200" />
+                        <p className="text-gray-300 text-sm font-bold">Overall Score</p>
+                        <Star className="w-5 h-5 text-blue-400" />
                       </div>
-                      <p className="text-5xl font-bold">{cvRating.overall_score}</p>
-                      <p className="text-blue-100 text-sm mt-1">out of 100</p>
-                      <div className="mt-3 bg-white bg-opacity-20 rounded-full h-2">
+                      <p className="text-5xl font-black">{cvRating.overall_score}</p>
+                      <p className="text-gray-400 text-sm mt-1">out of 100</p>
+                      <div className="mt-3 bg-white/10 rounded-full h-2">
                         <div 
-                          className="bg-white h-2 rounded-full transition-all duration-1000"
+                          className="bg-blue-400 h-2 rounded-full transition-all duration-1000"
                           style={{ width: `${cvRating.overall_score}%` }}
                         ></div>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+                    <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-xl p-6 text-white shadow-lg">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-purple-100 text-sm font-medium">ATS Compatibility</p>
-                        <BarChart3 className="w-5 h-5 text-purple-200" />
+                        <p className="text-gray-300 text-sm font-bold">ATS Compatibility</p>
+                        <BarChart3 className="w-5 h-5 text-purple-400" />
                       </div>
-                      <p className="text-5xl font-bold">{cvRating.ats_score}</p>
-                      <p className="text-purple-100 text-sm mt-1">out of 100</p>
-                      <div className="mt-3 bg-white bg-opacity-20 rounded-full h-2">
+                      <p className="text-5xl font-black">{cvRating.ats_score}</p>
+                      <p className="text-gray-400 text-sm mt-1">out of 100</p>
+                      <div className="mt-3 bg-white/10 rounded-full h-2">
                         <div 
-                          className="bg-white h-2 rounded-full transition-all duration-1000"
+                          className="bg-purple-400 h-2 rounded-full transition-all duration-1000"
                           style={{ width: `${cvRating.ats_score}%` }}
                         ></div>
                       </div>
@@ -1798,62 +1809,62 @@ export default function DashboardPage() {
                   </div>
 
                   {/* Summary */}
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
+                  <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10">
                     <div className="flex items-start space-x-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="w-5 h-5 text-blue-400" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">AI Summary</h4>
-                        <p className="text-gray-700 leading-relaxed">{cvRating.summary}</p>
+                        <h4 className="font-black text-white mb-1">AI Summary</h4>
+                        <p className="text-gray-300 leading-relaxed">{cvRating.summary}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Strengths */}
-                  <div className="bg-green-50 rounded-xl p-6 border border-green-100">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                        <CheckCircle className="w-5 h-5 text-green-600" />
+                  <div className="bg-green-500/10 rounded-xl p-6 border border-green-500/30">
+                    <h3 className="text-lg font-black text-white mb-4 flex items-center">
+                      <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mr-3">
+                        <CheckCircle className="w-5 h-5 text-green-400" />
                       </div>
                       Key Strengths
                     </h3>
                     <ul className="space-y-3">
                       {cvRating.strengths?.map((strength: string, index: number) => (
-                        <li key={index} className="flex items-start bg-white rounded-lg p-3 shadow-sm">
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-green-600 text-sm font-bold">✓</span>
+                        <li key={index} className="flex items-start bg-white/5 rounded-lg p-3 border border-white/10">
+                          <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-green-400 text-sm font-bold">✓</span>
                           </div>
-                          <span className="text-gray-700 ml-3 leading-relaxed">{strength}</span>
+                          <span className="text-gray-300 ml-3 leading-relaxed">{strength}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   {/* Improvements */}
-                  <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
-                        <TrendingUp className="w-5 h-5 text-orange-600" />
+                  <div className="bg-orange-500/10 rounded-xl p-6 border border-orange-500/30">
+                    <h3 className="text-lg font-black text-white mb-4 flex items-center">
+                      <div className="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center mr-3">
+                        <TrendingUp className="w-5 h-5 text-orange-400" />
                       </div>
                       Areas for Improvement
                     </h3>
                     <ul className="space-y-3">
                       {cvRating.improvements?.map((improvement: string, index: number) => (
-                        <li key={index} className="flex items-start bg-white rounded-lg p-3 shadow-sm">
-                          <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-orange-600 text-sm font-bold">→</span>
+                        <li key={index} className="flex items-start bg-white/5 rounded-lg p-3 border border-white/10">
+                          <div className="w-6 h-6 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-orange-400 text-sm font-bold">→</span>
                           </div>
-                          <span className="text-gray-700 ml-3 leading-relaxed">{improvement}</span>
+                          <span className="text-gray-300 ml-3 leading-relaxed">{improvement}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="flex justify-end pt-4 border-t">
+                  <div className="flex justify-end pt-4 border-t border-white/10">
                     <button
                       onClick={() => setRatingModalOpen(false)}
-                      className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl font-medium"
+                      className="px-8 py-3 bg-white text-black rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl font-black"
                     >
                       Close
                     </button>

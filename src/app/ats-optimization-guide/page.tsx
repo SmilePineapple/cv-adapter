@@ -43,14 +43,14 @@ export default function ATSOptimizationGuidePage() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-gray-900">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-white">CV Adapter</span>
           </Link>
           
           <div className="flex items-center space-x-3 sm:space-x-4">
-            <Link href="/auth/login" className="text-sm sm:text-base text-gray-600 hover:text-gray-900">
+            <Link href="/auth/login" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">
               Log In
             </Link>
-            <Link href="/auth/signup" className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 text-sm sm:text-base font-medium">
+            <Link href="/auth/signup" className="bg-white text-black px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-black hover:bg-blue-700 text-sm sm:text-base font-medium">
               Get Started Free
             </Link>
           </div>
@@ -65,13 +65,13 @@ export default function ATSOptimizationGuidePage() {
               <AlertTriangle className="w-4 h-4" />
               <span>75% of CVs Rejected by ATS</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
               ATS Optimization Guide 2026
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-400 mb-8">
               Master the art of beating Applicant Tracking Systems. Learn how to format your CV, choose the right keywords, and get past the robots to reach human recruiters.
             </p>
-            <Link href="/auth/signup" className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
+            <Link href="/auth/signup" className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
               Optimize My CV for ATS
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
@@ -80,16 +80,16 @@ export default function ATSOptimizationGuidePage() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 sm:gap-8 bg-white rounded-2xl shadow-lg p-6 sm:p-8">
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-red-600 mb-2">75%</div>
-              <div className="text-sm sm:text-base text-gray-600">CVs Rejected by ATS</div>
+              <div className="text-3xl sm:text-4xl font-bold text-red-400 mb-2">75%</div>
+              <div className="text-sm sm:text-base text-gray-400">CVs Rejected by ATS</div>
             </div>
-            <div className="text-center border-x border-gray-200">
-              <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">98%</div>
-              <div className="text-sm sm:text-base text-gray-600">Fortune 500 Use ATS</div>
+            <div className="text-center border-x border-white/10">
+              <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-2">98%</div>
+              <div className="text-sm sm:text-base text-gray-400">Fortune 500 Use ATS</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">3x</div>
-              <div className="text-sm sm:text-base text-gray-600">Higher Interview Rate</div>
+              <div className="text-3xl sm:text-4xl font-bold text-green-400 mb-2">3x</div>
+              <div className="text-sm sm:text-base text-gray-400">Higher Interview Rate</div>
             </div>
           </div>
         </div>
@@ -102,8 +102,8 @@ export default function ATSOptimizationGuidePage() {
             
             {/* What is ATS */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">What is an ATS?</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-4">What is an ATS?</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 An Applicant Tracking System (ATS) is software that automates the hiring process by scanning, parsing, and ranking CVs before they reach human recruiters. In 2026, over 98% of Fortune 500 companies and 66% of large organizations use ATS to filter applications.
               </p>
               <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-6">
@@ -111,34 +111,34 @@ export default function ATSOptimizationGuidePage() {
                 <p className="text-blue-800 mb-0">Your CV needs to be optimized for BOTH robots (ATS) and humans (recruiters). A CV that passes ATS but looks terrible to humans won't get you interviews.</p>
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 mt-8">How ATS Works</h3>
+              <h3 className="text-3xl font-black text-white mb-4 mt-8">How ATS Works</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">1</div>
                   <div>
-                    <p className="font-semibold text-gray-900">Parsing</p>
-                    <p className="text-gray-700">ATS extracts information from your CV (name, contact, experience, education, skills)</p>
+                    <p className="font-black text-white">Parsing</p>
+                    <p className="text-gray-300">ATS extracts information from your CV (name, contact, experience, education, skills)</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">2</div>
                   <div>
-                    <p className="font-semibold text-gray-900">Keyword Matching</p>
-                    <p className="text-gray-700">Compares your CV against job description keywords and required qualifications</p>
+                    <p className="font-black text-white">Keyword Matching</p>
+                    <p className="text-gray-300">Compares your CV against job description keywords and required qualifications</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">3</div>
                   <div>
-                    <p className="font-semibold text-gray-900">Scoring & Ranking</p>
-                    <p className="text-gray-700">Assigns a match score (0-100%) and ranks candidates accordingly</p>
+                    <p className="font-black text-white">Scoring & Ranking</p>
+                    <p className="text-gray-300">Assigns a match score (0-100%) and ranks candidates accordingly</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">4</div>
                   <div>
-                    <p className="font-semibold text-gray-900">Filtering</p>
-                    <p className="text-gray-700">Only top-scoring CVs (typically 75%+ match) reach human recruiters</p>
+                    <p className="font-black text-white">Filtering</p>
+                    <p className="text-gray-300">Only top-scoring CVs (typically 75%+ match) reach human recruiters</p>
                   </div>
                 </div>
               </div>
@@ -146,12 +146,12 @@ export default function ATSOptimizationGuidePage() {
 
             {/* ATS-Friendly Formatting */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">ATS-Friendly Formatting Rules</h2>
+              <h2 className="text-4xl font-black text-white mb-6">ATS-Friendly Formatting Rules</h2>
               
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-green-50 p-6 rounded-lg">
                   <div className="flex items-center space-x-2 mb-4">
-                    <CheckCircle className="w-6 h-6 text-green-600" />
+                    <CheckCircle className="w-6 h-6 text-green-400" />
                     <h3 className="font-bold text-green-900">DO THIS</h3>
                   </div>
                   <ul className="space-y-2 text-green-800">
@@ -168,7 +168,7 @@ export default function ATSOptimizationGuidePage() {
 
                 <div className="bg-red-50 p-6 rounded-lg">
                   <div className="flex items-center space-x-2 mb-4">
-                    <XCircle className="w-6 h-6 text-red-600" />
+                    <XCircle className="w-6 h-6 text-red-400" />
                     <h3 className="font-bold text-red-900">AVOID THIS</h3>
                   </div>
                   <ul className="space-y-2 text-red-800">
@@ -192,35 +192,35 @@ export default function ATSOptimizationGuidePage() {
 
             {/* Keyword Optimization */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Keyword Optimization Strategy</h2>
+              <h2 className="text-4xl font-black text-white mb-6">Keyword Optimization Strategy</h2>
               
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Step 1: Extract Keywords from Job Description</h3>
-              <p className="text-gray-700 text-lg mb-4">
+              <h3 className="text-3xl font-black text-white mb-4">Step 1: Extract Keywords from Job Description</h3>
+              <p className="text-gray-300 text-lg mb-4">
                 Read the job posting carefully and identify:
               </p>
-              <ul className="space-y-2 text-gray-700 text-lg mb-6">
+              <ul className="space-y-2 text-gray-300 text-lg mb-6">
                 <li><strong>Hard Skills:</strong> Software, tools, certifications (e.g., "Python", "Google Analytics", "PMP")</li>
                 <li><strong>Soft Skills:</strong> Leadership, communication, problem-solving</li>
                 <li><strong>Required Qualifications:</strong> Degree level, years of experience, licenses</li>
                 <li><strong>Industry Terms:</strong> Specific jargon or methodologies (e.g., "Agile", "GDPR compliance")</li>
               </ul>
 
-              <div className="bg-gray-50 p-6 rounded-lg mb-6">
-                <p className="font-semibold text-gray-900 mb-3">Example Job Description Analysis:</p>
-                <p className="text-sm text-gray-600 mb-3 italic">"Seeking Digital Marketing Manager with 5+ years experience in SEO, Google Ads, and social media marketing. Must have Google Analytics certification and proven track record of increasing organic traffic."</p>
-                <p className="font-semibold text-gray-900 mb-2">Keywords to Include:</p>
+              <div className="bg-white/5 p-6 rounded-lg mb-6">
+                <p className="font-black text-white mb-3">Example Job Description Analysis:</p>
+                <p className="text-sm text-gray-400 mb-3 italic">"Seeking Digital Marketing Manager with 5+ years experience in SEO, Google Ads, and social media marketing. Must have Google Analytics certification and proven track record of increasing organic traffic."</p>
+                <p className="font-black text-white mb-2">Keywords to Include:</p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Digital Marketing Manager</span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">SEO</span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Google Ads</span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Social Media Marketing</span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Google Analytics</span>
-                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Organic Traffic</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">Digital Marketing Manager</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">SEO</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">Google Ads</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">Social Media Marketing</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">Google Analytics</span>
+                  <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-sm">Organic Traffic</span>
                 </div>
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Step 2: Mirror the Language</h3>
-              <p className="text-gray-700 text-lg mb-4">
+              <h3 className="text-3xl font-black text-white mb-4">Step 2: Mirror the Language</h3>
+              <p className="text-gray-300 text-lg mb-4">
                 Use the EXACT same phrases from the job description. If they say "project management", don't say "managing projects". ATS looks for exact matches.
               </p>
 
@@ -235,11 +235,11 @@ export default function ATSOptimizationGuidePage() {
                 </div>
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Step 3: Strategic Keyword Placement</h3>
-              <p className="text-gray-700 text-lg mb-4">
+              <h3 className="text-3xl font-black text-white mb-4">Step 3: Strategic Keyword Placement</h3>
+              <p className="text-gray-300 text-lg mb-4">
                 Place keywords in these high-impact sections:
               </p>
-              <ol className="space-y-3 text-gray-700 text-lg">
+              <ol className="space-y-3 text-gray-300 text-lg">
                 <li><strong>1. Personal Statement</strong> - Include 3-5 key skills and job title</li>
                 <li><strong>2. Skills Section</strong> - List all relevant technical and soft skills</li>
                 <li><strong>3. Work Experience</strong> - Weave keywords naturally into bullet points</li>
@@ -249,8 +249,8 @@ export default function ATSOptimizationGuidePage() {
 
             {/* Section Headings */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Standard Section Headings</h2>
-              <p className="text-gray-700 text-lg mb-4">
+              <h2 className="text-4xl font-black text-white mb-6">Standard Section Headings</h2>
+              <p className="text-gray-300 text-lg mb-4">
                 ATS software is trained to recognize standard section headings. Use these exact headings:
               </p>
               
@@ -282,31 +282,31 @@ export default function ATSOptimizationGuidePage() {
 
             {/* File Format */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">File Format Best Practices</h2>
+              <h2 className="text-4xl font-black text-white mb-6">File Format Best Practices</h2>
               
               <div className="space-y-4">
                 <div className="bg-white border-2 border-green-200 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2 flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                  <h3 className="font-black text-white mb-2 flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
                     Best: .docx (Microsoft Word)
                   </h3>
-                  <p className="text-gray-700">Most ATS systems prefer .docx format. It's easily parsed and maintains formatting.</p>
+                  <p className="text-gray-300">Most ATS systems prefer .docx format. It's easily parsed and maintains formatting.</p>
                 </div>
 
                 <div className="bg-white border-2 border-blue-200 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2 flex items-center">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mr-2" />
+                  <h3 className="font-black text-white mb-2 flex items-center">
+                    <CheckCircle className="w-5 h-5 text-blue-400 mr-2" />
                     Good: .pdf
                   </h3>
-                  <p className="text-gray-700">PDF works with most modern ATS systems. Ensure it's a text-based PDF, not a scanned image.</p>
+                  <p className="text-gray-300">PDF works with most modern ATS systems. Ensure it's a text-based PDF, not a scanned image.</p>
                 </div>
 
                 <div className="bg-white border-2 border-red-200 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-2 flex items-center">
-                    <XCircle className="w-5 h-5 text-red-600 mr-2" />
+                  <h3 className="font-black text-white mb-2 flex items-center">
+                    <XCircle className="w-5 h-5 text-red-400 mr-2" />
                     Avoid: .jpg, .png, .pages
                   </h3>
-                  <p className="text-gray-700">Image files and Mac-specific formats often can't be parsed by ATS.</p>
+                  <p className="text-gray-300">Image files and Mac-specific formats often can't be parsed by ATS.</p>
                 </div>
               </div>
 
@@ -318,7 +318,7 @@ export default function ATSOptimizationGuidePage() {
 
             {/* Common ATS Mistakes */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">7 Common ATS Mistakes That Kill Your Application</h2>
+              <h2 className="text-4xl font-black text-white mb-6">7 Common ATS Mistakes That Kill Your Application</h2>
               
               <div className="space-y-4">
                 <div className="bg-red-50 p-6 rounded-lg">
@@ -360,12 +360,12 @@ export default function ATSOptimizationGuidePage() {
 
             {/* Testing Your CV */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">How to Test Your CV for ATS Compatibility</h2>
+              <h2 className="text-4xl font-black text-white mb-6">How to Test Your CV for ATS Compatibility</h2>
               
               <div className="space-y-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-3">Method 1: Plain Text Test</h3>
-                  <ol className="space-y-2 text-gray-700">
+                  <h3 className="font-black text-white mb-3">Method 1: Plain Text Test</h3>
+                  <ol className="space-y-2 text-gray-300">
                     <li>1. Copy all text from your CV</li>
                     <li>2. Paste into Notepad (Windows) or TextEdit (Mac)</li>
                     <li>3. Check if information is readable and in correct order</li>
@@ -374,17 +374,17 @@ export default function ATSOptimizationGuidePage() {
                 </div>
 
                 <div className="bg-purple-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-3">Method 2: Use Our ATS Checker</h3>
-                  <p className="text-gray-700 mb-4">Upload your CV to CV Adapter for instant ATS compatibility analysis:</p>
-                  <Link href="/auth/signup" className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 font-semibold inline-flex items-center">
+                  <h3 className="font-black text-white mb-3">Method 2: Use Our ATS Checker</h3>
+                  <p className="text-gray-300 mb-4">Upload your CV to CV Adapter for instant ATS compatibility analysis:</p>
+                  <Link href="/auth/signup" className="bg-white text-black px-6 py-3 rounded-full font-black hover:bg-purple-700 font-semibold inline-flex items-center">
                     Check My CV for ATS
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Link>
                 </div>
 
                 <div className="bg-green-50 p-6 rounded-lg">
-                  <h3 className="font-bold text-gray-900 mb-3">Method 3: Keyword Match Test</h3>
-                  <ol className="space-y-2 text-gray-700">
+                  <h3 className="font-black text-white mb-3">Method 3: Keyword Match Test</h3>
+                  <ol className="space-y-2 text-gray-300">
                     <li>1. Highlight all keywords from the job description</li>
                     <li>2. Search for each keyword in your CV (Ctrl+F)</li>
                     <li>3. Aim for 70-80% keyword match</li>
@@ -396,49 +396,49 @@ export default function ATSOptimizationGuidePage() {
 
             {/* ATS Checklist */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Final ATS Optimization Checklist</h2>
+              <h2 className="text-4xl font-black text-white mb-6">Final ATS Optimization Checklist</h2>
               
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-lg">
                 <ul className="space-y-3">
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Used standard fonts (Arial, Calibri, Times New Roman)</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Used standard fonts (Arial, Calibri, Times New Roman)</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Saved as .docx or PDF (not image file)</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Saved as .docx or PDF (not image file)</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">No tables, text boxes, headers, or footers</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">No tables, text boxes, headers, or footers</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Standard section headings (Work Experience, Education, Skills)</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Standard section headings (Work Experience, Education, Skills)</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Keywords from job description included naturally</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Keywords from job description included naturally</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Acronyms spelled out on first use</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Acronyms spelled out on first use</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Contact information in main body (not header)</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Contact information in main body (not header)</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Consistent date formatting throughout</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Consistent date formatting throughout</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Passed plain text test (readable in Notepad)</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">Passed plain text test (readable in Notepad)</span>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">70-80% keyword match with job description</span>
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">70-80% keyword match with job description</span>
                   </li>
                 </ul>
               </div>
@@ -457,7 +457,7 @@ export default function ATSOptimizationGuidePage() {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Our AI-powered CV builder automatically formats your CV for ATS compatibility while keeping it beautiful for human recruiters.
           </p>
-          <Link href="/auth/signup" className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 font-semibold text-lg inline-flex items-center">
+          <Link href="/auth/signup" className="bg-white text-blue-400 px-8 py-4 rounded-lg hover:bg-white/10 font-semibold text-lg inline-flex items-center">
             Start Building ATS-Friendly CV
             <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
@@ -465,27 +465,27 @@ export default function ATSOptimizationGuidePage() {
       </section>
 
       {/* Related */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Related Guides</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Related Guides</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/cv-writing-guide" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <FileText className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CV Writing Guide</h3>
-              <p className="text-gray-600 mb-4">Complete guide to writing a professional CV.</p>
-              <span className="text-blue-600 font-semibold">Read Guide →</span>
+              <FileText className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">CV Writing Guide</h3>
+              <p className="text-gray-400 mb-4">Complete guide to writing a professional CV.</p>
+              <span className="text-blue-400 font-semibold">Read Guide →</span>
             </Link>
             <Link href="/cv-examples" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Target className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CV Examples</h3>
-              <p className="text-gray-600 mb-4">15+ industry-specific CV examples.</p>
-              <span className="text-blue-600 font-semibold">View Examples →</span>
+              <Target className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">CV Examples</h3>
+              <p className="text-gray-400 mb-4">15+ industry-specific CV examples.</p>
+              <span className="text-blue-400 font-semibold">View Examples →</span>
             </Link>
             <Link href="/templates" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <Zap className="w-10 h-10 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">ATS Templates</h3>
-              <p className="text-gray-600 mb-4">Pre-optimized ATS-friendly templates.</p>
-              <span className="text-blue-600 font-semibold">Get Templates →</span>
+              <Zap className="w-10 h-10 text-blue-400 mb-4" />
+              <h3 className="text-2xl font-black text-white mb-2">ATS Templates</h3>
+              <p className="text-gray-400 mb-4">Pre-optimized ATS-friendly templates.</p>
+              <span className="text-blue-400 font-semibold">Get Templates →</span>
             </Link>
           </div>
         </div>

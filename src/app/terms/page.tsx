@@ -3,39 +3,39 @@ import { ArrowLeft, FileText, CheckCircle, XCircle, AlertTriangle } from 'lucide
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Link 
             href="/"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-gray-400 hover:text-white mb-4 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
           <div className="flex items-center space-x-3">
-            <FileText className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Terms of Service</h1>
+            <FileText className="w-8 h-8 text-blue-400" />
+            <h1 className="text-4xl font-black text-white tracking-tight">Terms of Service</h1>
           </div>
-          <p className="mt-2 text-gray-600">Last updated: September 30, 2025</p>
+          <p className="mt-2 text-gray-400">Last updated: September 30, 2025</p>
         </div>
       </header>
 
       {/* Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-sm p-8 prose prose-blue max-w-none">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 prose prose-invert max-w-none">
           
           {/* Quick Summary */}
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8 not-prose">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Summary</h2>
+          <div className="bg-blue-500/10 border-l-4 border-blue-400 p-6 mb-8 not-prose rounded-r-xl">
+            <h2 className="text-2xl font-black text-white mb-4">Quick Summary</h2>
             <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
+                <h3 className="font-black text-white mb-3 flex items-center">
+                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
                   What You Can Do
                 </h3>
-                <ul className="text-sm text-gray-700 space-y-1 list-none pl-0">
+                <ul className="text-sm text-gray-400 space-y-1 list-none pl-0">
                   <li>✅ Upload and tailor CVs</li>
                   <li>✅ Create cover letters</li>
                   <li>✅ Export documents</li>
@@ -43,11 +43,11 @@ export default function TermsOfServicePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                  <XCircle className="w-5 h-5 mr-2 text-red-600" />
+                <h3 className="font-black text-white mb-3 flex items-center">
+                  <XCircle className="w-5 h-5 mr-2 text-red-400" />
                   What You Can't Do
                 </h3>
-                <ul className="text-sm text-gray-700 space-y-1 list-none pl-0">
+                <ul className="text-sm text-gray-400 space-y-1 list-none pl-0">
                   <li>❌ Violate copyright</li>
                   <li>❌ Abuse the Service</li>
                   <li>❌ Share your account</li>
@@ -55,11 +55,11 @@ export default function TermsOfServicePage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-                  <AlertTriangle className="w-5 h-5 mr-2 text-yellow-600" />
+                <h3 className="font-black text-white mb-3 flex items-center">
+                  <AlertTriangle className="w-5 h-5 mr-2 text-yellow-400" />
                   Important Notes
                 </h3>
-                <ul className="text-sm text-gray-700 space-y-1 list-none pl-0">
+                <ul className="text-sm text-gray-400 space-y-1 list-none pl-0">
                   <li>⚠️ Service "as is"</li>
                   <li>⚠️ No job guarantees</li>
                   <li>⚠️ Review AI content</li>

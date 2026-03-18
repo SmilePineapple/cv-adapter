@@ -92,9 +92,9 @@ export default function AssessmentResultsPage() {
   }
 
   const getScoreColor = (percentage: number) => {
-    if (percentage >= 80) return 'text-green-600'
-    if (percentage >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (percentage >= 80) return 'text-green-400'
+    if (percentage >= 60) return 'text-yellow-400'
+    return 'text-red-400'
   }
 
   const getScoreBg = (percentage: number) => {
@@ -116,7 +116,7 @@ export default function AssessmentResultsPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading results...</p>
+          <p className="text-gray-400">Loading results...</p>
         </div>
       </div>
     )
@@ -126,8 +126,8 @@ export default function AssessmentResultsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Results not found</p>
-          <Link href="/skills-assessment" className="text-blue-600 hover:text-blue-700">
+          <p className="text-gray-400 mb-4">Results not found</p>
+          <Link href="/skills-assessment" className="text-blue-400 hover:text-blue-700">
             Back to Skills Assessment
           </Link>
         </div>
@@ -147,7 +147,7 @@ export default function AssessmentResultsPage() {
           <div className="flex items-center justify-between py-4">
             <Link 
               href="/skills-assessment"
-              className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              className="flex items-center text-gray-400 hover:text-white transition-colors transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Assessments
@@ -155,7 +155,7 @@ export default function AssessmentResultsPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:bg-white/10 rounded-lg transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span className="hidden sm:inline">Download</span>
@@ -165,7 +165,7 @@ export default function AssessmentResultsPage() {
                   navigator.clipboard.writeText(window.location.href)
                   toast.success('Link copied!')
                 }}
-                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:bg-white/10 rounded-lg transition-colors"
               >
                 <Share2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Share</span>
@@ -180,43 +180,43 @@ export default function AssessmentResultsPage() {
         <div className={`rounded-2xl border-2 p-8 mb-8 ${getScoreBg(result.percentage_score)}`}>
           <div className="text-center mb-6">
             <Trophy className={`w-16 h-16 mx-auto mb-4 ${getScoreColor(result.percentage_score)}`} />
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
               Assessment Complete!
             </h1>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-300">
               {assessment.job_role}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-            <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-              <p className="text-sm text-gray-600 mb-1">Your Score</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 text-center shadow-sm">
+              <p className="text-sm text-gray-400 mb-1">Your Score</p>
               <p className={`text-4xl font-bold ${getScoreColor(result.percentage_score)}`}>
                 {result.percentage_score.toFixed(1)}%
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
                 {result.questions_correct} / {result.questions_total} correct
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-              <p className="text-sm text-gray-600 mb-1">Time Taken</p>
-              <p className="text-4xl font-bold text-blue-600">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 text-center shadow-sm">
+              <p className="text-sm text-gray-400 mb-1">Time Taken</p>
+              <p className="text-4xl font-bold text-blue-400">
                 {result.time_taken_minutes || 0}
               </p>
-              <p className="text-xs text-gray-500 mt-1">minutes</p>
+              <p className="text-xs text-gray-400 mt-1">minutes</p>
             </div>
 
-            <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-              <p className="text-sm text-gray-600 mb-1">Skill Gaps</p>
-              <p className="text-4xl font-bold text-purple-600">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 text-center shadow-sm">
+              <p className="text-sm text-gray-400 mb-1">Skill Gaps</p>
+              <p className="text-4xl font-bold text-purple-400">
                 {result.skill_gaps.length}
               </p>
-              <p className="text-xs text-gray-500 mt-1">areas to improve</p>
+              <p className="text-xs text-gray-400 mt-1">areas to improve</p>
             </div>
           </div>
 
-          <p className="text-center text-lg font-medium text-gray-700">
+          <p className="text-center text-lg font-medium text-gray-300">
             {getScoreMessage(result.percentage_score)}
           </p>
         </div>
@@ -225,17 +225,17 @@ export default function AssessmentResultsPage() {
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Skill Breakdown */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
               <div className="flex items-center gap-3 mb-6">
-                <Target className="w-6 h-6 text-blue-600" />
-                <h2 className="text-2xl font-bold text-gray-900">Skill Breakdown</h2>
+                <Target className="w-6 h-6 text-blue-400" />
+                <h2 className="text-3xl font-black text-white">Skill Breakdown</h2>
               </div>
 
               <div className="space-y-4">
                 {Object.entries(result.skill_breakdown).map(([category, score]) => (
                   <div key={category}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 capitalize">
+                      <span className="text-sm font-medium text-gray-300 capitalize">
                         {category.replace('_', ' ')}
                       </span>
                       <span className={`text-sm font-bold ${getScoreColor(score as number)}`}>
@@ -258,17 +258,17 @@ export default function AssessmentResultsPage() {
 
             {/* Questions & Answers Review */}
             {questions.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
                 <div className="flex items-center gap-3 mb-6">
-                  <BookOpen className="w-6 h-6 text-blue-600" />
-                  <h2 className="text-2xl font-bold text-gray-900">Question Review</h2>
+                  <BookOpen className="w-6 h-6 text-blue-400" />
+                  <h2 className="text-3xl font-black text-white">Question Review</h2>
                 </div>
                 <div className="space-y-6">
                   {questions.map((question) => {
                     const userAnswer = answers.find(a => a.question_id === question.id)
                     
                     return (
-                      <div key={question.id} className="border-b border-gray-200 pb-6 last:border-0">
+                      <div key={question.id} className="border-b border-white/10 pb-6 last:border-0">
                         <div className="flex items-start gap-3 mb-3">
                           <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                             userAnswer?.is_correct
@@ -278,7 +278,7 @@ export default function AssessmentResultsPage() {
                             {question.question_number}
                           </div>
                           <div className="flex-1">
-                            <p className="text-gray-900 font-medium mb-3">{question.question_text}</p>
+                            <p className="text-white font-medium mb-3">{question.question_text}</p>
                             <div className="space-y-2">
                               {question.options.map((option: string, optIdx: number) => {
                                 const isUserAnswer = userAnswer?.selected_option === optIdx
@@ -294,20 +294,20 @@ export default function AssessmentResultsPage() {
                                           : 'bg-red-50 border-red-500'
                                         : isCorrectAnswer
                                         ? 'bg-green-50 border-green-300'
-                                        : 'bg-gray-50 border-gray-200'
+                                        : 'bg-white/5 border-white/10'
                                     }`}
                                   >
                                     <div className="flex items-center justify-between">
-                                      <span className="text-sm text-gray-700">{option}</span>
+                                      <span className="text-sm text-gray-300">{option}</span>
                                       {isUserAnswer && (
                                         <span className={`text-xs font-semibold ${
-                                          userAnswer.is_correct ? 'text-green-600' : 'text-red-600'
+                                          userAnswer.is_correct ? 'text-green-400' : 'text-red-400'
                                         }`}>
                                           {userAnswer.is_correct ? '✓ Your Answer' : '✗ Your Answer'}
                                         </span>
                                       )}
                                       {!userAnswer?.is_correct && isCorrectAnswer && (
-                                        <span className="text-xs text-green-600 font-semibold">✓ Correct Answer</span>
+                                        <span className="text-xs text-green-400 font-semibold">✓ Correct Answer</span>
                                       )}
                                     </div>
                                   </div>
@@ -326,15 +326,15 @@ export default function AssessmentResultsPage() {
             {/* Strengths & Weaknesses */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Strengths */}
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Strengths</h3>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <h3 className="text-xl font-black text-white">Strengths</h3>
                 </div>
                 <ul className="space-y-2">
                   {result.strengths.map((strength, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                      <span className="text-green-600 mt-0.5">✓</span>
+                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                      <span className="text-green-400 mt-0.5">✓</span>
                       <span>{strength}</span>
                     </li>
                   ))}
@@ -342,15 +342,15 @@ export default function AssessmentResultsPage() {
               </div>
 
               {/* Weaknesses */}
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <XCircle className="w-5 h-5 text-red-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Areas to Improve</h3>
+                  <XCircle className="w-5 h-5 text-red-400" />
+                  <h3 className="text-xl font-black text-white">Areas to Improve</h3>
                 </div>
                 <ul className="space-y-2">
                   {result.weaknesses.map((weakness, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                      <span className="text-red-600 mt-0.5">→</span>
+                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                      <span className="text-red-400 mt-0.5">→</span>
                       <span>{weakness}</span>
                     </li>
                   ))}
@@ -360,10 +360,10 @@ export default function AssessmentResultsPage() {
 
             {/* Skill Gaps */}
             {result.skill_gaps.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
                 <div className="flex items-center gap-3 mb-6">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
-                  <h2 className="text-2xl font-bold text-gray-900">Skill Gaps</h2>
+                  <TrendingUp className="w-6 h-6 text-purple-400" />
+                  <h2 className="text-3xl font-black text-white">Skill Gaps</h2>
                 </div>
                 <SkillGapChart 
                   skillGaps={result.skill_gaps}
@@ -374,17 +374,17 @@ export default function AssessmentResultsPage() {
 
             {/* Learning Resources for Selected Skill */}
             {selectedSkillGap && selectedSkillGap.resources && selectedSkillGap.resources.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <BookOpen className="w-6 h-6 text-blue-600" />
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <BookOpen className="w-6 h-6 text-blue-400" />
+                    <h2 className="text-3xl font-black text-white">
                       Resources for {selectedSkill}
                     </h2>
                   </div>
                   <button
                     onClick={() => setSelectedSkill(null)}
-                    className="text-sm text-gray-600 hover:text-gray-900"
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     View All
                   </button>
@@ -401,21 +401,21 @@ export default function AssessmentResultsPage() {
           {/* Right Column - Recommendations */}
           <div className="space-y-6">
             {/* Recommendations */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-lg p-6 sticky top-24">
+              <h3 className="text-xl font-black text-white mb-4">
                 📋 Recommendations
               </h3>
               <ul className="space-y-3">
                 {result.recommendations.map((rec, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
-                    <span className="text-blue-600 font-bold mt-0.5">{idx + 1}.</span>
+                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                    <span className="text-blue-400 font-bold mt-0.5">{idx + 1}.</span>
                     <span>{rec}</span>
                   </li>
                 ))}
               </ul>
 
               {/* Actions */}
-              <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
+              <div className="mt-6 pt-6 border-t border-white/10 space-y-3">
                 <Link
                   href="/skills-assessment"
                   className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
@@ -425,7 +425,7 @@ export default function AssessmentResultsPage() {
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="flex items-center justify-center gap-2 w-full bg-white border-2 border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-center gap-2 w-full bg-white/5 backdrop-blur-md border border-white/10 border-2 border-white/20 text-gray-300 py-3 px-4 rounded-lg font-semibold hover:bg-white/5 transition-colors"
                 >
                   Back to Dashboard
                 </Link>

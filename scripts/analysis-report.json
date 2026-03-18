@@ -1,0 +1,1382 @@
+{
+  "pages": {
+    "total": 100,
+    "darkTheme": 4,
+    "lightTheme": 0,
+    "mixed": 76,
+    "details": [
+      {
+        "path": "admin\\analytics\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 29,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\analytics-enhanced\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 66,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\analytics-v2\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 33,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\competition\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 32,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\dashboard\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 31,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\email-campaign\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 24,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 45,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\send-email\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\social-bot\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 18,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "admin\\upgrade-user\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ar\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 28,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ats-optimization-guide\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 12,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "auth\\callback\\route.ts",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "auth\\login\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "auth\\login\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "auth\\signup\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "auth\\signup\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "auth\\verify-email\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "auto-cv\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 39,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\ai-cv-generator-guide\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 25,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\ai-powered-cv-optimization-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 23,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\ats-cv-tips-uk-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 14,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\ats-friendly-cv-builder\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 15,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\best-free-cv-builders-uk-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\career-change-cv-guide-uk\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 38,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cover-letter-template-uk-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 22,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-buddy-vs-canva\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 23,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-examples-by-industry-uk\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 60,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-format-best-layouts-uk\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 42,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-keywords-for-ats-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 37,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-personal-statement-examples\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 56,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-skills-section-guide\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 42,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-template-uk-2025\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 25,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\cv-writing-tips\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\first-job-cv-no-experience\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 33,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\free-cv-builder-no-sign-up\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 11,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\graduate-cv-no-experience-uk\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 20,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\how-long-should-cv-be-uk\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 31,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\how-to-beat-ats-systems\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 20,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "blog\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\professional-cv-how-to-create\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 43,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\resume-vs-cv-difference\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 23,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "blog\\what-to-put-on-cv-complete-guide\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 46,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "career-coach\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "contact\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "contact\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "cover-letter\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "cover-letter\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "cover-letter\\view\\[id]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 14,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "cover-letter\\[id]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 17,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "cv-examples\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 9,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "cv-writing-guide\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 13,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "dashboard\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "dashboard\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 20,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "de\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "download\\[id]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 7,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "edit\\[cvId]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 55,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "es\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 28,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "fr\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 28,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "generate\\[id]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "global-error.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "help\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "help\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 9,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "hi\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 17,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "history\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "hobbies\\[cvId]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "homepage.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 14,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "interview-prep\\content.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "interview-prep\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "interview-prep\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "interview-prep\\view\\[id]\\page.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "interview-simulator\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 24,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "landing\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "page.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "pricing-comparison\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 9,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "privacy\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "privacy\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "pt\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "review\\[id]\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "roast-cv\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "roast-cv\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 11,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "robots.ts",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "sitemap.ts",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "skills-assessment\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "skills-assessment\\results\\[id]\\page.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "skills-assessment\\take\\[id]\\page.tsx",
+        "theme": "dark",
+        "darkScore": 4,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "subscription\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "subscription\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 36,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "templates\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "templates\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 7,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "terms\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "terms\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 4,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "test-modal\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 3,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "uk-cv-builder\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 51,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "unsubscribe\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "upload\\layout.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "upload\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "usa-resume-builder\\page.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 51,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      }
+    ]
+  },
+  "components": {
+    "total": 48,
+    "darkTheme": 4,
+    "lightTheme": 3,
+    "mixed": 27,
+    "details": [
+      {
+        "path": "AssessmentProgress.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "AssessmentTimer.tsx",
+        "theme": "unknown",
+        "darkScore": 1,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "ATSOptimizer.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ColorSchemeSelector.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ComparisonView.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 12,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "CompetitionBanner.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 1,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "CrispChat.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "CVGenerationLoader.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "CVProgressStepper.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "CVVerification.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "CVWritingGuideSchema.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "DownloadResource.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "EmptyStates.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "EnhancedUpgradeModal.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 15,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ErrorMessages.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ExampleCVs.tsx",
+        "theme": "light",
+        "darkScore": 0,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "FAQSchema.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "GoogleAnalytics.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "HobbyIconSelector.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 7,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "JobScraper.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "LanguageBadge.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 1,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "LanguageSelector.tsx",
+        "theme": "light",
+        "darkScore": 0,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "LearningResourceCard.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "LinkedInImport.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "LoadingProgress.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "OAuthHandler.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "OAuthMetadataHandler.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "OnboardingModal.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 17,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "PageTracker.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "PhotoUpload.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "ProCompetitionGame.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 9,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "PromoBanner.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "PublicCompetitionGame.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "PublicCompetitionSection.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 7,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "QuestionCard.tsx",
+        "theme": "light",
+        "darkScore": 0,
+        "lightScore": 11,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "RotatingTipsBar.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 3,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "SkillGapChart.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 3,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "SkillScoreEditor.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 10,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "SmartUpgradeModal.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 5,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "StrategicUpgradePrompt.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "StructuredData.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "SuccessAnimation.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 6,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "TemplatePreview.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 8,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "TrackingInitializer.tsx",
+        "theme": "unknown",
+        "darkScore": 0,
+        "lightScore": 0,
+        "issues": []
+      },
+      {
+        "path": "UpgradeModal.tsx",
+        "theme": "mixed",
+        "darkScore": 2,
+        "lightScore": 9,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "UpgradePromptModal.tsx",
+        "theme": "mixed",
+        "darkScore": 3,
+        "lightScore": 4,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "UploadProgressStepper.tsx",
+        "theme": "mixed",
+        "darkScore": 1,
+        "lightScore": 2,
+        "issues": [
+          "Contains light theme elements"
+        ]
+      },
+      {
+        "path": "UsageTracker.tsx",
+        "theme": "dark",
+        "darkScore": 3,
+        "lightScore": 0,
+        "issues": []
+      }
+    ]
+  },
+  "issues": [
+    "admin\\analytics\\page.tsx: Mixed theme (dark: 2, light: 29)",
+    "admin\\analytics-enhanced\\page.tsx: Mixed theme (dark: 2, light: 66)",
+    "admin\\analytics-v2\\page.tsx: Mixed theme (dark: 1, light: 33)",
+    "admin\\competition\\page.tsx: Mixed theme (dark: 1, light: 32)",
+    "admin\\dashboard\\page.tsx: Mixed theme (dark: 1, light: 31)",
+    "admin\\email-campaign\\page.tsx: Mixed theme (dark: 1, light: 24)",
+    "admin\\page.tsx: Mixed theme (dark: 2, light: 45)",
+    "admin\\send-email\\page.tsx: Mixed theme (dark: 1, light: 8)",
+    "admin\\social-bot\\page.tsx: Mixed theme (dark: 1, light: 18)",
+    "admin\\upgrade-user\\page.tsx: Mixed theme (dark: 1, light: 6)",
+    "ar\\page.tsx: Mixed theme (dark: 2, light: 28)",
+    "ats-optimization-guide\\page.tsx: Mixed theme (dark: 3, light: 12)",
+    "auth\\login\\page.tsx: Mixed theme (dark: 4, light: 4)",
+    "auth\\signup\\page.tsx: Mixed theme (dark: 4, light: 4)",
+    "auth\\verify-email\\page.tsx: Mixed theme (dark: 1, light: 8)",
+    "auto-cv\\page.tsx: Mixed theme (dark: 1, light: 39)",
+    "blog\\ai-cv-generator-guide\\page.tsx: Mixed theme (dark: 3, light: 25)",
+    "blog\\ai-powered-cv-optimization-2025\\page.tsx: Mixed theme (dark: 4, light: 23)",
+    "blog\\ats-cv-tips-uk-2025\\page.tsx: Mixed theme (dark: 2, light: 14)",
+    "blog\\ats-friendly-cv-builder\\page.tsx: Mixed theme (dark: 2, light: 15)",
+    "blog\\best-free-cv-builders-uk-2025\\page.tsx: Mixed theme (dark: 4, light: 4)",
+    "blog\\career-change-cv-guide-uk\\page.tsx: Mixed theme (dark: 2, light: 38)",
+    "blog\\cover-letter-template-uk-2025\\page.tsx: Mixed theme (dark: 3, light: 22)",
+    "blog\\cv-buddy-vs-canva\\page.tsx: Mixed theme (dark: 2, light: 23)",
+    "blog\\cv-examples-by-industry-uk\\page.tsx: Mixed theme (dark: 3, light: 60)",
+    "blog\\cv-format-best-layouts-uk\\page.tsx: Mixed theme (dark: 3, light: 42)",
+    "blog\\cv-keywords-for-ats-2025\\page.tsx: Mixed theme (dark: 2, light: 37)",
+    "blog\\cv-personal-statement-examples\\page.tsx: Mixed theme (dark: 4, light: 56)",
+    "blog\\cv-skills-section-guide\\page.tsx: Mixed theme (dark: 3, light: 42)",
+    "blog\\cv-template-uk-2025\\page.tsx: Mixed theme (dark: 3, light: 25)",
+    "blog\\cv-writing-tips\\page.tsx: Mixed theme (dark: 4, light: 8)",
+    "blog\\first-job-cv-no-experience\\page.tsx: Mixed theme (dark: 3, light: 33)",
+    "blog\\free-cv-builder-no-sign-up\\page.tsx: Mixed theme (dark: 1, light: 11)",
+    "blog\\graduate-cv-no-experience-uk\\page.tsx: Mixed theme (dark: 2, light: 20)",
+    "blog\\how-long-should-cv-be-uk\\page.tsx: Mixed theme (dark: 4, light: 31)",
+    "blog\\how-to-beat-ats-systems\\page.tsx: Mixed theme (dark: 4, light: 20)",
+    "blog\\page.tsx: Mixed theme (dark: 4, light: 2)",
+    "blog\\professional-cv-how-to-create\\page.tsx: Mixed theme (dark: 3, light: 43)",
+    "blog\\resume-vs-cv-difference\\page.tsx: Mixed theme (dark: 2, light: 23)",
+    "blog\\what-to-put-on-cv-complete-guide\\page.tsx: Mixed theme (dark: 3, light: 46)",
+    "career-coach\\page.tsx: Mixed theme (dark: 4, light: 2)",
+    "contact\\page.tsx: Mixed theme (dark: 4, light: 2)",
+    "cover-letter\\page.tsx: Mixed theme (dark: 4, light: 5)",
+    "cover-letter\\view\\[id]\\page.tsx: Mixed theme (dark: 1, light: 14)",
+    "cover-letter\\[id]\\page.tsx: Mixed theme (dark: 1, light: 17)",
+    "cv-examples\\page.tsx: Mixed theme (dark: 2, light: 9)",
+    "cv-writing-guide\\page.tsx: Mixed theme (dark: 3, light: 13)",
+    "dashboard\\page.tsx: Mixed theme (dark: 4, light: 20)",
+    "de\\page.tsx: Mixed theme (dark: 2, light: 8)",
+    "download\\[id]\\page.tsx: Mixed theme (dark: 4, light: 7)",
+    "edit\\[cvId]\\page.tsx: Mixed theme (dark: 2, light: 55)",
+    "es\\page.tsx: Mixed theme (dark: 2, light: 28)",
+    "fr\\page.tsx: Mixed theme (dark: 2, light: 28)",
+    "generate\\[id]\\page.tsx: Mixed theme (dark: 4, light: 5)",
+    "help\\page.tsx: Mixed theme (dark: 4, light: 9)",
+    "hi\\page.tsx: Mixed theme (dark: 2, light: 17)",
+    "history\\page.tsx: Mixed theme (dark: 4, light: 4)",
+    "hobbies\\[cvId]\\page.tsx: Mixed theme (dark: 1, light: 5)",
+    "homepage.tsx: Mixed theme (dark: 4, light: 14)",
+    "interview-prep\\page.tsx: Mixed theme (dark: 3, light: 5)",
+    "interview-simulator\\page.tsx: Mixed theme (dark: 1, light: 24)",
+    "landing\\page.tsx: Mixed theme (dark: 3, light: 6)",
+    "pricing-comparison\\page.tsx: Mixed theme (dark: 3, light: 9)",
+    "privacy\\page.tsx: Mixed theme (dark: 4, light: 5)",
+    "pt\\page.tsx: Mixed theme (dark: 2, light: 8)",
+    "review\\[id]\\page.tsx: Mixed theme (dark: 4, light: 8)",
+    "roast-cv\\page.tsx: Mixed theme (dark: 4, light: 11)",
+    "skills-assessment\\page.tsx: Mixed theme (dark: 3, light: 5)",
+    "subscription\\page.tsx: Mixed theme (dark: 2, light: 36)",
+    "templates\\page.tsx: Mixed theme (dark: 3, light: 7)",
+    "terms\\page.tsx: Mixed theme (dark: 4, light: 5)",
+    "test-modal\\page.tsx: Mixed theme (dark: 1, light: 3)",
+    "uk-cv-builder\\page.tsx: Mixed theme (dark: 2, light: 51)",
+    "unsubscribe\\page.tsx: Mixed theme (dark: 3, light: 2)",
+    "upload\\page.tsx: Mixed theme (dark: 3, light: 6)",
+    "usa-resume-builder\\page.tsx: Mixed theme (dark: 2, light: 51)",
+    "AssessmentProgress.tsx: Mixed theme (dark: 1, light: 2)",
+    "ATSOptimizer.tsx: Mixed theme (dark: 2, light: 10)",
+    "ColorSchemeSelector.tsx: Mixed theme (dark: 1, light: 10)",
+    "ComparisonView.tsx: Mixed theme (dark: 1, light: 12)",
+    "CompetitionBanner.tsx: Mixed theme (dark: 3, light: 1)",
+    "CVVerification.tsx: Mixed theme (dark: 1, light: 10)",
+    "DownloadResource.tsx: Mixed theme (dark: 1, light: 6)",
+    "EmptyStates.tsx: Mixed theme (dark: 1, light: 10)",
+    "EnhancedUpgradeModal.tsx: Mixed theme (dark: 3, light: 15)",
+    "ErrorMessages.tsx: Mixed theme (dark: 1, light: 10)",
+    "ExampleCVs.tsx: Still using light theme",
+    "HobbyIconSelector.tsx: Mixed theme (dark: 1, light: 7)",
+    "LanguageSelector.tsx: Still using light theme",
+    "LearningResourceCard.tsx: Mixed theme (dark: 1, light: 4)",
+    "LinkedInImport.tsx: Mixed theme (dark: 2, light: 8)",
+    "OnboardingModal.tsx: Mixed theme (dark: 3, light: 17)",
+    "PhotoUpload.tsx: Mixed theme (dark: 1, light: 5)",
+    "ProCompetitionGame.tsx: Mixed theme (dark: 3, light: 9)",
+    "PublicCompetitionGame.tsx: Mixed theme (dark: 2, light: 8)",
+    "PublicCompetitionSection.tsx: Mixed theme (dark: 1, light: 7)",
+    "QuestionCard.tsx: Still using light theme",
+    "RotatingTipsBar.tsx: Mixed theme (dark: 2, light: 3)",
+    "SkillScoreEditor.tsx: Mixed theme (dark: 1, light: 10)",
+    "SmartUpgradeModal.tsx: Mixed theme (dark: 3, light: 5)",
+    "StrategicUpgradePrompt.tsx: Mixed theme (dark: 3, light: 2)",
+    "SuccessAnimation.tsx: Mixed theme (dark: 1, light: 6)",
+    "TemplatePreview.tsx: Mixed theme (dark: 3, light: 8)",
+    "UpgradeModal.tsx: Mixed theme (dark: 2, light: 9)",
+    "UpgradePromptModal.tsx: Mixed theme (dark: 3, light: 4)",
+    "UploadProgressStepper.tsx: Mixed theme (dark: 1, light: 2)"
+  ]
+}

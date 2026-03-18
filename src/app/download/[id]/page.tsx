@@ -756,37 +756,37 @@ export default function DownloadPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Progress Stepper */}
       <CVProgressStepper currentStep="download" />
       
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-40 shadow-sm">
+      <header className="bg-black border-b border-white/10 sticky top-0 z-40 shadow-sm backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <Link 
               href="/dashboard"
-              className="flex items-center text-gray-700 hover:text-gray-900 font-semibold transition-colors"
+              className="flex items-center text-gray-300 hover:text-white font-semibold transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Dashboard
             </Link>
             <div className="flex-1 text-center px-4">
-              <h1 className="text-xl font-bold text-gray-900 truncate">
+              <h1 className="text-2xl font-black text-white truncate">
                 {generationData?.job_title || 'Your CV'}
               </h1>
             </div>
             <button
               onClick={handleExport}
               disabled={isExporting}
-              className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+              className="bg-white text-black px-6 py-2.5 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
             >
               {isExporting ? (
                 <>
@@ -807,7 +807,7 @@ export default function DownloadPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Template Slider - Horizontal */}
         <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Choose Template</h2>
+          <h2 className="text-xl font-black text-white mb-4">Choose Template</h2>
           <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
             {TEMPLATES.map((template) => {
               const isLocked = template.pro && !isPro
@@ -826,16 +826,16 @@ export default function DownloadPage() {
                     ${selectedTemplate === template.id 
                       ? 'border-blue-500 bg-blue-50 shadow-lg' 
                       : isLocked
-                      ? 'border-gray-200 bg-gray-50 opacity-60'
-                      : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                      ? 'border-white/10 bg-white/5 opacity-60'
+                      : 'border-white/10 hover:border-white/20 hover:shadow-md'
                     }
                   `}
                 >
                   <div className="text-left">
-                    <div className="font-semibold text-sm text-gray-900 mb-1">
+                    <div className="font-semibold text-sm text-white mb-1">
                       {template.name}
                     </div>
-                    <div className="text-xs text-gray-500 line-clamp-2 mb-2">
+                    <div className="text-xs text-gray-400 line-clamp-2 mb-2">
                       {template.description}
                     </div>
                     
@@ -845,7 +845,7 @@ export default function DownloadPage() {
                       </span>
                     )}
                     {template.category && (
-                      <span className="inline-block ml-1 px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+                      <span className="inline-block ml-1 px-2 py-0.5 text-xs font-medium bg-white/10 text-gray-300 rounded">
                         {template.category}
                       </span>
                     )}
@@ -855,7 +855,7 @@ export default function DownloadPage() {
                     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
                       <div className="text-center">
                         <div className="text-2xl mb-1">🔒</div>
-                        <div className="text-xs font-semibold text-purple-600">PRO</div>
+                        <div className="text-xs font-semibold text-purple-400">PRO</div>
                       </div>
                     </div>
                   )}
@@ -868,20 +868,20 @@ export default function DownloadPage() {
         {/* Preview - Clean and Centered */}
         <div className="max-w-5xl mx-auto mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Preview</h2>
+            <h2 className="text-xl font-black text-white">Preview</h2>
             <button
               onClick={async () => {
                 await generatePreview()
                 toast.success('Preview refreshed!')
               }}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-white/20 rounded-lg hover:bg-white/5 transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh Preview
             </button>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6">
+            <div className="border border-white/10 rounded-lg overflow-hidden bg-white/5">
               <iframe
                 key={previewHtml} 
                 srcDoc={previewHtml}
@@ -897,16 +897,16 @@ export default function DownloadPage() {
           ['professional-metrics', 'teal-sidebar', 'soft-header', 'artistic-header', 'bold-split'].includes(selectedTemplate)
         ) && (
           <div className="max-w-5xl mx-auto mb-8">
-            <div className="bg-white rounded-lg border-2 border-blue-200 overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-md border-2 border-blue-500/30 rounded-2xl overflow-hidden">
               <button
                 onClick={() => setShowSkillEditor(!showSkillEditor)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
               >
-                <h3 className="text-lg font-bold text-gray-900">🎯 Adjust Skill Levels</h3>
+                <h3 className="text-xl font-black text-white">🎯 Adjust Skill Levels</h3>
                 {showSkillEditor ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
+                  <ChevronUp className="w-5 h-5 text-gray-400" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
+                  <ChevronDown className="w-5 h-5 text-gray-400" />
                 )}
               </button>
               {showSkillEditor && (
@@ -928,16 +928,16 @@ export default function DownloadPage() {
         {/* Photo Upload - Collapsible */}
         {generationData && generationData.cv_id && (
           <div className="max-w-5xl mx-auto mb-8">
-            <div className="bg-white rounded-lg border-2 border-purple-200 overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-md border-2 border-purple-500/30 rounded-2xl overflow-hidden">
               <button
                 onClick={() => setShowPhotoUpload(!showPhotoUpload)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
               >
-                <h3 className="text-lg font-bold text-gray-900">📸 Upload Your Photo</h3>
+                <h3 className="text-xl font-black text-white">📸 Upload Your Photo</h3>
                 {showPhotoUpload ? (
-                  <ChevronUp className="w-5 h-5 text-gray-500" />
+                  <ChevronUp className="w-5 h-5 text-gray-400" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-500" />
+                  <ChevronDown className="w-5 h-5 text-gray-400" />
                 )}
               </button>
               {showPhotoUpload && (
@@ -959,7 +959,7 @@ export default function DownloadPage() {
 
         {/* Export Format Selection */}
         <div className="max-w-5xl mx-auto mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Export Format</h2>
+          <h2 className="text-xl font-black text-white mb-4">Export Format</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {EXPORT_FORMATS.map((format) => {
               const isLocked = format.pro && !isPro
@@ -988,8 +988,8 @@ export default function DownloadPage() {
                     ${selectedFormat === format.id 
                       ? 'border-blue-500 bg-blue-50' 
                       : isLocked
-                      ? 'border-gray-200 bg-gray-50 opacity-60'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-white/10 bg-white/5 opacity-60'
+                      : 'border-white/10 hover:border-white/20'
                     }
                   `}>
                     {format.pro && (
@@ -1000,10 +1000,10 @@ export default function DownloadPage() {
                       </div>
                     )}
                     <div className="text-2xl mb-2">{format.icon}</div>
-                    <div className="font-semibold text-gray-900">{format.name}</div>
-                    <div className="text-xs text-gray-500 mt-1">{format.description}</div>
+                    <div className="font-black text-white">{format.name}</div>
+                    <div className="text-xs text-gray-400 mt-1">{format.description}</div>
                     {isLocked && (
-                      <div className="text-xs text-purple-600 mt-2 font-semibold">
+                      <div className="text-xs text-purple-400 mt-2 font-semibold">
                         🔒 Upgrade to unlock
                       </div>
                     )}
@@ -1019,10 +1019,10 @@ export default function DownloadPage() {
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">
+                <h3 className="text-xl font-black text-white mb-1">
                   Your CV is Ready!
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-400">
                   Download your tailored CV or make final edits
                 </p>
               </div>
@@ -1031,7 +1031,7 @@ export default function DownloadPage() {
                 <button
                   onClick={handleExport}
                   disabled={isExporting}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
+                  className="bg-white text-black px-6 py-3 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
                 >
                   {isExporting ? (
                     <>
@@ -1049,7 +1049,7 @@ export default function DownloadPage() {
                 {generationData && generationData.cv_id && (
                   <Link
                     href={`/edit/${generationData.cv_id}`}
-                    className="bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-gray-300 flex items-center gap-2"
+                    className="bg-white text-gray-300 px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-colors border-2 border-white/20 flex items-center gap-2"
                   >
                     <Edit3 className="w-5 h-5" />
                     Edit CV
@@ -1091,21 +1091,21 @@ export default function DownloadPage() {
                         ${selectedTemplate === template.id 
                           ? 'border-blue-500 bg-blue-50 shadow-md'
                           : isLocked
-                          ? 'border-gray-200 bg-gray-50 opacity-60'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-white/10 bg-white/5 opacity-60'
+                          : 'border-white/10 hover:border-white/20'
                         }
                       `}>
                         {isLocked && (
                           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
                             <div className="text-center">
                               <div className="text-3xl mb-2">🔒</div>
-                              <div className="text-sm font-semibold text-purple-600">Upgrade to unlock</div>
+                              <div className="text-sm font-semibold text-purple-400">Upgrade to unlock</div>
                             </div>
                           </div>
                         )}
                         <div className="flex flex-col h-full">
-                          <div className="font-medium text-gray-900 mb-2">{template.name}</div>
-                          <div className="text-sm text-gray-600 mb-3 flex-grow">{template.description}</div>
+                          <div className="font-bold text-white mb-2">{template.name}</div>
+                          <div className="text-sm text-gray-400 mb-3 flex-grow">{template.description}</div>
                           <div className="flex items-center gap-2 flex-wrap">
                             {template.badge && (
                               <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
@@ -1113,7 +1113,7 @@ export default function DownloadPage() {
                               </span>
                             )}
                             {template.category && (
-                              <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-700 rounded">
+                              <span className="px-2 py-0.5 text-xs font-medium bg-white/10 text-gray-300 rounded">
                                 {template.category}
                               </span>
                             )}
@@ -1129,7 +1129,7 @@ export default function DownloadPage() {
             {(selectedTemplate === 'creative_modern' || selectedTemplate === 'professional_columns' || selectedTemplate === 'artistic-header') && generationData && (
               <div className="mt-6 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 border border-purple-200">
                 <div className="flex items-start gap-3">
-                  <Sparkles className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <Sparkles className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-bold text-purple-900 text-sm mb-1">✨ Advanced Template Feature</h3>
                     <p className="text-purple-800 text-xs mb-3">
@@ -1144,7 +1144,7 @@ export default function DownloadPage() {
                         Add Hobby Icons
                       </Link>
                     ) : (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-500 text-sm font-semibold rounded-lg cursor-not-allowed" title="Original CV was deleted">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-400 text-sm font-semibold rounded-lg cursor-not-allowed" title="Original CV was deleted">
                         <Sparkles className="w-4 h-4" />
                         Add Hobby Icons (Original Deleted)
                       </div>
@@ -1158,11 +1158,11 @@ export default function DownloadPage() {
             <div className="mt-6 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-purple-200 shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-purple-600" />
+                  <h3 className="text-2xl font-black text-white flex items-center gap-2">
+                    <Sparkles className="w-6 h-6 text-purple-400" />
                     AI Expert Review
                   </h3>
-                  <p className="text-sm text-gray-600 mt-1">Get professional feedback on your CV before downloading</p>
+                  <p className="text-sm text-gray-400 mt-1">Get professional feedback on your CV before downloading</p>
                 </div>
                 {!showReview && (
                   <button
@@ -1186,7 +1186,7 @@ export default function DownloadPage() {
               </div>
               
               {isReviewing && reviewStep && (
-                <div className="text-sm text-gray-600 animate-pulse mb-4">
+                <div className="text-sm text-gray-400 animate-pulse mb-4">
                   {reviewStep}
                 </div>
               )}
@@ -1195,27 +1195,27 @@ export default function DownloadPage() {
                 <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-6 border-2 border-purple-200">
                   <div className="space-y-4">
                     {/* Overall Assessment */}
-                    <div className="bg-white rounded-lg p-4 shadow-sm">
-                      <h4 className="font-semibold text-gray-900 text-sm mb-2">Overall Assessment</h4>
-                      <p className="text-sm text-gray-700">{aiReview.overall_assessment}</p>
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                      <h4 className="font-black text-white text-sm mb-2">Overall Assessment</h4>
+                      <p className="text-sm text-gray-300">{aiReview.overall_assessment}</p>
                     </div>
                     
                     {/* Strengths & Improvements Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-white rounded-lg p-4 shadow-sm">
-                        <h4 className="font-semibold text-green-700 text-sm mb-2">✓ Strengths</h4>
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                        <h4 className="font-black text-green-400 text-sm mb-2">✓ Strengths</h4>
                         <ul className="space-y-1">
                           {aiReview.strengths.map((strength, index) => (
-                            <li key={index} className="text-xs text-gray-600">• {strength}</li>
+                            <li key={index} className="text-xs text-gray-400">• {strength}</li>
                           ))}
                         </ul>
                       </div>
                       
-                      <div className="bg-white rounded-lg p-4 shadow-sm">
-                        <h4 className="font-semibold text-orange-700 text-sm mb-2">⚡ Areas for Improvement</h4>
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                        <h4 className="font-black text-orange-400 text-sm mb-2">⚡ Areas for Improvement</h4>
                         <ul className="space-y-1">
                           {aiReview.improvements.map((improvement, index) => (
-                            <li key={index} className="text-xs text-gray-600">• {improvement}</li>
+                            <li key={index} className="text-xs text-gray-400">• {improvement}</li>
                           ))}
                         </ul>
                       </div>
@@ -1223,29 +1223,29 @@ export default function DownloadPage() {
                     
                     {/* Additional Insights */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="bg-white rounded-lg p-4 shadow-sm">
-                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Missing Sections</h4>
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                        <h4 className="font-black text-white text-sm mb-2">Missing Sections</h4>
                         <ul className="space-y-1">
                           {aiReview.missing_sections.map((section, index) => (
-                            <li key={index} className="text-xs text-gray-600">• {section}</li>
+                            <li key={index} className="text-xs text-gray-400">• {section}</li>
                           ))}
                         </ul>
                       </div>
                       
-                      <div className="bg-white rounded-lg p-4 shadow-sm">
-                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Keywords to Add</h4>
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                        <h4 className="font-black text-white text-sm mb-2">Keywords to Add</h4>
                         <ul className="space-y-1">
                           {aiReview.keywords_to_add.map((keyword, index) => (
-                            <li key={index} className="text-xs text-gray-600">• {keyword}</li>
+                            <li key={index} className="text-xs text-gray-400">• {keyword}</li>
                           ))}
                         </ul>
                       </div>
                       
-                      <div className="bg-white rounded-lg p-4 shadow-sm">
-                        <h4 className="font-semibold text-gray-900 text-sm mb-2">Formatting Tips</h4>
+                      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-sm">
+                        <h4 className="font-black text-white text-sm mb-2">Formatting Tips</h4>
                         <ul className="space-y-1">
                           {aiReview.formatting_tips.map((tip, index) => (
-                            <li key={index} className="text-xs text-gray-600">• {tip}</li>
+                            <li key={index} className="text-xs text-gray-400">• {tip}</li>
                           ))}
                         </ul>
                       </div>
@@ -1271,7 +1271,7 @@ export default function DownloadPage() {
               <button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-white text-black py-4 px-6 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {isExporting ? (
                   <>
@@ -1289,7 +1289,7 @@ export default function DownloadPage() {
               {/* Progress Bar for Export */}
               {isExporting && (
                 <div className="mt-4 space-y-2">
-                  <div className="flex justify-between text-sm text-gray-600">
+                  <div className="flex justify-between text-sm text-gray-400">
                     <span>{exportStep}</span>
                     <span>{exportProgress}%</span>
                   </div>

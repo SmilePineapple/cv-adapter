@@ -22,40 +22,40 @@ export default function UsageTracker({
   const isAtLimit = currentUsage >= maxGenerations
 
   return (
-    <div className={`rounded-lg border-2 p-4 ${
+    <div className={`rounded-2xl border-2 p-4 backdrop-blur-md ${
       isAtLimit 
-        ? 'bg-red-50 border-red-300' 
+        ? 'bg-red-500/10 border-red-500/30' 
         : isNearLimit 
-        ? 'bg-orange-50 border-orange-300' 
-        : 'bg-blue-50 border-blue-300'
+        ? 'bg-orange-500/10 border-orange-500/30' 
+        : 'bg-blue-500/10 border-blue-500/30'
     }`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Zap className={`w-5 h-5 ${
-            isAtLimit ? 'text-red-600' : isNearLimit ? 'text-orange-600' : 'text-blue-600'
+            isAtLimit ? 'text-red-400' : isNearLimit ? 'text-orange-400' : 'text-blue-400'
           }`} />
-          <h3 className="font-semibold text-gray-900">
+          <h3 className="font-black text-white">
             {isPro ? 'Pro Plan' : 'Free Plan'}
           </h3>
-          {isPro && <Crown className="w-4 h-4 text-purple-600" />}
+          {isPro && <Crown className="w-4 h-4 text-purple-400" />}
         </div>
         <div className="text-right">
-          <div className={`text-2xl font-bold ${
-            isAtLimit ? 'text-red-600' : isNearLimit ? 'text-orange-600' : 'text-blue-600'
+          <div className={`text-2xl font-black ${
+            isAtLimit ? 'text-red-400' : isNearLimit ? 'text-orange-400' : 'text-blue-400'
           }`}>
             {remaining}
           </div>
-          <div className="text-xs text-gray-600">remaining</div>
+          <div className="text-xs text-gray-400">remaining</div>
         </div>
       </div>
 
       {/* Progress Bar */}
       <div className="mb-3">
-        <div className="flex justify-between text-sm text-gray-600 mb-1">
+        <div className="flex justify-between text-sm text-gray-400 mb-1">
           <span>{currentUsage} used</span>
           <span>{maxGenerations} total</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
           <div 
             className={`h-full rounded-full transition-all duration-500 ${
               isAtLimit 
@@ -73,11 +73,11 @@ export default function UsageTracker({
       {!isPro && (
         <>
           {isAtLimit ? (
-            <div className="bg-white rounded-lg p-3 border border-red-200">
-              <p className="text-sm font-semibold text-red-900 mb-2">
+            <div className="bg-red-500/10 rounded-xl p-3 border border-red-500/30">
+              <p className="text-sm font-black text-red-400 mb-2">
                 🚫 You've used all your free generations!
               </p>
-              <p className="text-xs text-red-700 mb-3">
+              <p className="text-xs text-red-300 mb-3">
                 Upgrade to Pro for unlimited generations at just £2.99/month
               </p>
               {onUpgradeClick ? (
@@ -97,11 +97,11 @@ export default function UsageTracker({
               )}
             </div>
           ) : isNearLimit ? (
-            <div className="bg-white rounded-lg p-3 border border-orange-200">
-              <p className="text-sm font-semibold text-orange-900 mb-2">
+            <div className="bg-orange-500/10 rounded-xl p-3 border border-orange-500/30">
+              <p className="text-sm font-black text-orange-400 mb-2">
                 ⚠️ Almost out of generations!
               </p>
-              <p className="text-xs text-orange-700 mb-3">
+              <p className="text-xs text-orange-300 mb-3">
                 Upgrade now for unlimited generations at £2.99/month
               </p>
               {onUpgradeClick ? (
@@ -121,9 +121,9 @@ export default function UsageTracker({
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-lg p-3 border border-blue-200">
-              <p className="text-xs text-gray-600 mb-2">
-                💡 <span className="font-semibold">Pro Tip:</span> Upgrade to Pro for unlimited generations at £2.99/month
+            <div className="bg-blue-500/10 rounded-xl p-3 border border-blue-500/30">
+              <p className="text-xs text-gray-300 mb-2">
+                💡 <span className="font-black">Pro Tip:</span> Upgrade to Pro for unlimited generations at £2.99/month
               </p>
               {onUpgradeClick ? (
                 <button
@@ -147,14 +147,14 @@ export default function UsageTracker({
 
       {/* Pro User Message */}
       {isPro && (
-        <div className="bg-white rounded-lg p-3 border border-purple-200">
+        <div className="bg-purple-500/10 rounded-xl p-3 border border-purple-500/30">
           <div className="flex items-center gap-2 mb-1">
-            <Crown className="w-4 h-4 text-purple-600" />
-            <p className="text-sm font-semibold text-purple-900">
+            <Crown className="w-4 h-4 text-purple-400" />
+            <p className="text-sm font-black text-purple-400">
               Pro Member
             </p>
           </div>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-gray-300">
             {remaining > 0 
               ? `Unlimited generations available. Keep creating amazing CVs!`
               : "Unlimited generations available. Keep creating amazing CVs!"
@@ -167,7 +167,7 @@ export default function UsageTracker({
       <div className="mt-4">
         <Link
           href="/upload"
-          className="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-300 bg-white text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors gap-2"
+          className="w-full flex items-center justify-center px-4 py-3 border-2 border-white/20 bg-white/10 text-white rounded-xl font-black hover:bg-white/20 transition-colors gap-2"
         >
           <Upload className="w-5 h-5" />
           Upload CV & Photo
