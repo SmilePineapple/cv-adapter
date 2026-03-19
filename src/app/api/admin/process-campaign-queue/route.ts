@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
 const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
 
 /**
@@ -24,6 +23,9 @@ export async function POST(request: NextRequest) {
     if (authError || !user || user.id !== ADMIN_USER_ID) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    // Initialize Resend client at runtime
+    const resend = new Resend(process.env.RESEND_API_KEY!)
 
     const body = await request.json()
     const { campaignId } = body

@@ -3,11 +3,12 @@ import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
-const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <noreply@mycvbuddy.com>'
 
 export async function POST(request: NextRequest) {
   try {
+    // Initialize Resend client at runtime
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 

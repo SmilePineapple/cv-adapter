@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
-
 const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = createAdminClient()
+    
+    // Initialize Resend client at runtime
+    const resend = new Resend(process.env.RESEND_API_KEY!)
+    
     // Check admin auth
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {
