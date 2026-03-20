@@ -4,9 +4,19 @@ import Stripe from 'stripe'
 import { trackPaymentCompleted } from '@/lib/analytics'
 import { sendUpgradeConfirmationEmail } from '@/lib/email'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+/**
+ * Lazy initialization of Stripe client to avoid build-time errors
+ */
+function getStripeClient() {
+  const apiKey = process.env.STRIPE_SECRET_KEY
+  if (!apiKey) {
+    throw new Error('STRIPE_SECRET_KEY is not configured')
+  }
+  return new Stripe(apiKey)
+}
 
 export async function POST(request: NextRequest) {
+  const stripe = getStripeClient()
   const supabase = createSupabaseAdminClient()
   const body = await request.text()
   const signature = request.headers.get('stripe-signature')!

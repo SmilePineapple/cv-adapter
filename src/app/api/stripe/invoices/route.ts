@@ -2,11 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import Stripe from 'stripe'
 
-const stripe = process.env.STRIPE_SECRET_KEY 
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2025-08-27.basil',
-    })
-  : null
+/**
+ * Lazy initialization of Stripe client to avoid build-time errors
+ */
+function getStripeClient() {
+  const apiKey = process.env.STRIPE_SECRET_KEY
+  if (!apiKey) {
+    return null
+  }
+  return new Stripe(apiKey, {
+    apiVersion: '2025-08-27.basil',
+  })
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,6 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if Stripe is configured
+    const stripe = getStripeClient()
     if (!stripe) {
       return NextResponse.json({ 
         error: 'Stripe is not configured',

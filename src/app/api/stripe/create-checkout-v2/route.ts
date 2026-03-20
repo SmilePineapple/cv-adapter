@@ -2,12 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-
-
+/**
+ * Lazy initialization of Stripe client to avoid build-time errors
+ */
+function getStripeClient() {
+  const apiKey = process.env.STRIPE_SECRET_KEY
+  if (!apiKey) {
+    throw new Error('STRIPE_SECRET_KEY is not configured')
+  }
+  return new Stripe(apiKey)
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const stripe = getStripeClient()
     const supabase = createAdminClient()
     const { userId, couponCode } = await request.json()
 
