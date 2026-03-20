@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
   console.log('[UPLOAD API] Request URL:', request.url)
   
   try {
+    const openai = getOpenAIClient()
     // Get the authorization header
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {

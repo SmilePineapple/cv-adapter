@@ -6,6 +6,7 @@ import { getOpenAIClient } from '@/lib/openai-client'
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     const supabase = createSupabaseRouteClient()
     
     // Get user

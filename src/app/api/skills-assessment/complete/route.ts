@@ -7,6 +7,7 @@ import { CompleteAssessmentRequest, CompleteAssessmentResponse, AISkillGapAnalys
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     const supabase = createSupabaseAdminClient()
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {

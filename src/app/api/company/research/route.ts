@@ -16,6 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     const { companyUrl, userId } = await request.json()
 
     if (!companyUrl || !userId) {

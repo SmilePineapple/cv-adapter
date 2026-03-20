@@ -7,6 +7,7 @@ import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     // Check if OpenAI API key is configured
     if (!process.env.OPENAI_API_KEY) {
       console.error('OpenAI API key not configured')

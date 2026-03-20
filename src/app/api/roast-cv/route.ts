@@ -7,6 +7,7 @@ import { getOpenAIClient } from '@/lib/openai-client'
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json({ 
         error: 'OpenAI API key not configured' 

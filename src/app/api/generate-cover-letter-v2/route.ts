@@ -26,6 +26,7 @@ interface CoverLetterRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     const body: CoverLetterRequest = await request.json()
     const { 
       generation_id, 

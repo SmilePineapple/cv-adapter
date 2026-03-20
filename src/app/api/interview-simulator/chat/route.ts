@@ -35,6 +35,7 @@ function isInterviewRelated(message: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
+    const openai = getOpenAIClient()
     const supabase = createSupabaseAdminClient()
     const { company_name, /* company_website, */ job_description, messages } = await request.json()
 
