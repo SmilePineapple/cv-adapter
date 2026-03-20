@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createAdminClient } from '@/lib/supabase-admin'
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     const body = await request.json()
     const { email, score, game_type = 'cv_clicker', competition_id = 'oct_2025' } = body
 
@@ -79,6 +75,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     const { searchParams } = new URL(request.url)
     const competition_id = searchParams.get('competition_id') || 'oct_2025'
     const limit = parseInt(searchParams.get('limit') || '10')

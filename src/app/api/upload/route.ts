@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase-admin'
 import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
 import { getOpenAIClient } from '@/lib/openai-client'
@@ -23,15 +23,7 @@ export const config = {
 export const maxDuration = 60
 
 // Use service role key for server-side operations
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
 
 // Define types inline to avoid import issues
 interface CVSection {
@@ -55,6 +47,7 @@ interface FileMetadata {
 const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15MB
 
 export async function POST(request: NextRequest) {
+  const supabase = createAdminClient()
   console.log('[UPLOAD API] Called at:', new Date().toISOString())
   console.log('[UPLOAD API] Request method:', request.method)
   console.log('[UPLOAD API] Request URL:', request.url)

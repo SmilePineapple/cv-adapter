@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase-admin'
 import { send3DayReminderEmail } from '@/lib/email'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
 
 /**
  * Cron job to send 3-day reminder emails to users who haven't generated a CV yet
@@ -20,6 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     // Verify cron secret to prevent unauthorized access
     const authHeader = request.headers.get('authorization')
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {

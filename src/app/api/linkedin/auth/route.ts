@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase-admin'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+
 
 /**
  * LinkedIn OAuth - Step 1: Redirect to LinkedIn for authorization
@@ -12,6 +9,7 @@ const supabase = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createAdminClient()
     // Get LinkedIn credentials from database
     const { data: config } = await supabase
       .from('social_media_config')
