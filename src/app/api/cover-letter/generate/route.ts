@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+
 
 export async function POST(request: NextRequest) {
   try {

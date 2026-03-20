@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+
 
 interface AutoCVRequest {
   job_description: string

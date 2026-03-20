@@ -9,11 +9,7 @@
  * - Content variety (tips, stats, questions, testimonials)
  */
 
-import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+import { getOpenAIClient } from './openai-client'
 
 // Content types for variety
 export type ContentType = 
@@ -92,6 +88,7 @@ Examples of good posts:
 Generate an engaging post now:`
 
   try {
+    const openai = getOpenAIClient()
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [

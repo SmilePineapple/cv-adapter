@@ -2,13 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import mammoth from 'mammoth'
 import pdfParse from 'pdf-parse'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 import { detectLanguage } from '@/lib/language-detection'
 import { trackCVUpload, trackFunnelStage } from '@/lib/analytics'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-})
+
 
 // Force dynamic rendering - don't try to build this at build time
 export const dynamic = 'force-dynamic'

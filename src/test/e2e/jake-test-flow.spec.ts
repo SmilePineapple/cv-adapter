@@ -130,14 +130,20 @@ test.describe('Jake Test Account - Complete Flow', () => {
     await page.click('button[type="submit"]')
     await page.waitForURL(/\/dashboard/, { timeout: 10000 })
     
-    // Navigate to generate page
-    const generateButton = page.locator('text=Generate CV, button:has-text("Generate")').first()
-    if (await generateButton.isVisible({ timeout: 5000 })) {
+    // Navigate to generate page - use more robust selectors
+    await page.waitForLoadState('networkidle')
+    const generateButton = page.getByRole('button', { name: /generate/i }).or(
+      page.getByRole('link', { name: /generate/i })
+    ).first()
+    
+    if (await generateButton.isVisible({ timeout: 10000 })) {
       await generateButton.click()
     } else {
       // Try to find CV in dashboard and click it
-      const cvCard = page.locator('[data-testid="cv-card"], .cv-item').first()
-      if (await cvCard.isVisible({ timeout: 5000 })) {
+      const cvCard = page.locator('[data-testid="cv-card"]').or(
+        page.locator('.cv-item, .cv-card, [class*="cv"]')
+      ).first()
+      if (await cvCard.isVisible({ timeout: 10000 })) {
         await cvCard.click()
       }
     }
@@ -221,15 +227,21 @@ test.describe('Jake Test Account - Complete Flow', () => {
     await page.waitForURL(/\/dashboard/, { timeout: 10000 })
     
     // Navigate to edit page (try multiple approaches)
-    const editButton = page.locator('text=Edit, button:has-text("Edit")').first()
-    if (await editButton.isVisible({ timeout: 5000 })) {
+    await page.waitForLoadState('networkidle')
+    const editButton = page.getByRole('button', { name: /edit/i }).or(
+      page.getByRole('link', { name: /edit/i })
+    ).first()
+    
+    if (await editButton.isVisible({ timeout: 10000 })) {
       await editButton.click()
     } else {
       // Try to find generation and click edit
-      const generationCard = page.locator('[data-testid="generation-card"]').first()
-      if (await generationCard.isVisible({ timeout: 5000 })) {
+      const generationCard = page.locator('[data-testid="generation-card"]').or(
+        page.locator('.generation-card, [class*="generation"]')
+      ).first()
+      if (await generationCard.isVisible({ timeout: 10000 })) {
         await generationCard.hover()
-        await page.click('text=Edit')
+        await page.getByRole('button', { name: /edit/i }).click()
       }
     }
     
@@ -268,8 +280,12 @@ test.describe('Jake Test Account - Complete Flow', () => {
     await page.waitForURL(/\/dashboard/, { timeout: 10000 })
     
     // Navigate to download page
-    const downloadButton = page.locator('text=Download, button:has-text("Download")').first()
-    if (await downloadButton.isVisible({ timeout: 5000 })) {
+    await page.waitForLoadState('networkidle')
+    const downloadButton = page.getByRole('button', { name: /download/i }).or(
+      page.getByRole('link', { name: /download/i })
+    ).first()
+    
+    if (await downloadButton.isVisible({ timeout: 10000 })) {
       await downloadButton.click()
     }
     
@@ -311,8 +327,14 @@ test.describe('Jake Test Account - Complete Flow', () => {
     await page.waitForURL(/\/dashboard/, { timeout: 10000 })
     
     // Navigate to cover letter page
-    const coverLetterButton = page.locator('text=Cover Letter, text=Create Cover Letter').first()
-    if (await coverLetterButton.isVisible({ timeout: 5000 })) {
+    await page.waitForLoadState('networkidle')
+    const coverLetterButton = page.getByRole('button', { name: /cover letter/i }).or(
+      page.getByRole('link', { name: /cover letter/i })
+    ).or(
+      page.getByText(/create cover letter/i)
+    ).first()
+    
+    if (await coverLetterButton.isVisible({ timeout: 10000 })) {
       await coverLetterButton.click()
     } else {
       await page.goto('/cover-letter')

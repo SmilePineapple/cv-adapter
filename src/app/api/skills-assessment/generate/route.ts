@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 import {
   GenerateAssessmentRequest,
   GenerateAssessmentResponse,
@@ -10,9 +10,7 @@ import {
   AIGeneratedQuestion
 } from '@/types/skills-assessment'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 import { CVSection } from '@/types/database'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-})
+
 
 export async function POST(request: NextRequest) {
   try {

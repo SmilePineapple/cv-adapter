@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
 import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
 import { trackCVGeneration, trackFunnelStage } from '@/lib/analytics'
@@ -15,9 +15,7 @@ import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
 // Set to 300s to allow completion with buffer for slow API responses
 export const maxDuration = 300
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-})
+
 
 export async function POST(request: NextRequest) {
   try {

@@ -5,12 +5,8 @@
  * ATS optimization opportunities and uses AI to improve the CV.
  */
 
-import OpenAI from 'openai'
 import { CVSection } from '@/types/database'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+import { getOpenAIClient } from './openai-client'
 
 export interface ATSAnalysis {
   currentScore: number
@@ -78,6 +74,7 @@ Focus on:
 6. Generic statements instead of specific accomplishments`
 
   try {
+    const openai = getOpenAIClient()
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
@@ -171,6 +168,7 @@ CRITICAL RULES:
 🚨 YOUR OUTPUT MUST HAVE THE SAME NUMBER OF SECTIONS AS THE INPUT! 🚨`
 
   try {
+    const openai = getOpenAIClient()
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [

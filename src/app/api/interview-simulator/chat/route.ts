@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
-import OpenAI from 'openai'
+import { getOpenAIClient } from '@/lib/openai-client'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+
 
 // Content moderation - detect inappropriate topics
 function detectInappropriateContent(message: string): boolean {
