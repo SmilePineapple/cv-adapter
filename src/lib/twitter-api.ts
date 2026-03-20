@@ -114,6 +114,7 @@ function generateOAuthHeader(
 
 /**
  * Post a tweet to Twitter using API v2
+ * v2 API is available on Free tier (1,500 tweets/month)
  */
 export async function postTweet(
   content: string,
@@ -130,33 +131,28 @@ export async function postTweet(
       content_length: content.length
     })
     
-    // Use v1.1 API which works with Free tier
-    const url = 'https://api.twitter.com/1.1/statuses/update.json'
+    // Use v2 API which works with Free tier (1,500 tweets/month)
+    const url = 'https://api.twitter.com/2/tweets'
     const method = 'POST'
     
-    // URL encode the status
-    const params = { status: content }
+    // v2 uses JSON body, not form parameters
+    const body = JSON.stringify({ text: content })
 
-    console.log('[Twitter POST] Generating OAuth signature for:', { method, url, params })
+    console.log('[Twitter POST] Generating OAuth signature for v2 API:', { method, url })
 
-    // Generate OAuth header with status parameter
-    const authHeader = generateOAuthHeader(method, url, config, params)
+    // Generate OAuth header WITHOUT body params (v2 uses JSON body)
+    const authHeader = generateOAuthHeader(method, url, config)
     
     console.log('[Twitter POST] OAuth header generated:', {
       headerLength: authHeader.length,
       headerPreview: authHeader.substring(0, 100) + '...'
     })
-
-    // Post tweet using RFC 3986 encoded form data (must match signature encoding)
-    const bodyString = Object.entries(params)
-      .map(([key, value]) => `${percentEncode(key)}=${percentEncode(value)}`)
-      .join('&')
     
     console.log('[Twitter POST] Request details:', {
       url,
       method,
-      bodyLength: bodyString.length,
-      bodyPreview: bodyString.substring(0, 100) + '...',
+      bodyLength: body.length,
+      bodyPreview: body.substring(0, 100) + '...',
       authHeaderPreview: authHeader.substring(0, 150) + '...'
     })
     
@@ -164,9 +160,9 @@ export async function postTweet(
       method,
       headers: {
         'Authorization': authHeader,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: bodyString
+      body
     })
 
     if (!response.ok) {
@@ -183,7 +179,7 @@ export async function postTweet(
         error: errorData,
         requestUrl: url,
         requestMethod: method,
-        bodyParams: params
+        body: body
       })
       return {
         success: false,
@@ -192,8 +188,14 @@ export async function postTweet(
     }
 
     const data = await response.json()
-    const tweetId = data.id_str || data.id
-    const username = data.user?.screen_name || 'JPicklejak5299'
+    // v2 API returns { data: { id, text } }
+    const tweetId = data.data?.id || data.id
+    const username = 'JPicklejak5299' // v2 doesn't return username in response
+
+    console.log('[Twitter POST] Tweet posted successfully:', {
+      tweetId,
+      response: data
+    })
 
     return {
       success: true,
