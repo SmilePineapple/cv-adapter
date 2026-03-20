@@ -158,25 +158,25 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 19192,
+                      "duration": 28293,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    21 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    21 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 68,
+                          "column": 16,
                           "line": 101
                         },
-                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 68,
+                            "column": 16,
                             "line": 101
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68\u001b[22m"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    21 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -207,7 +207,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:17:33.573Z",
+                      "startTime": "2026-03-20T16:20:57.710Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -228,7 +228,7 @@
                       ],
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 68,
+                        "column": 16,
                         "line": 101
                       }
                     }
@@ -253,7 +253,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 268,
+                        "line": 269,
                         "column": 10
                       }
                     }
@@ -266,7 +266,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "skipped",
-                      "duration": 2979,
+                      "duration": 15590,
                       "errors": [],
                       "stdout": [
                         {
@@ -275,13 +275,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:17:34.231Z",
+                      "startTime": "2026-03-20T16:20:57.760Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 268,
+                            "line": 269,
                             "column": 10
                           }
                         }
@@ -294,7 +294,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-b7452af8dd6683a0486e",
               "file": "onboarding-flow.spec.ts",
-              "line": 263,
+              "line": 264,
               "column": 7
             },
             {
@@ -313,7 +313,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 9470,
+                      "duration": 14101,
                       "errors": [],
                       "stdout": [
                         {
@@ -325,7 +325,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:17:33.610Z",
+                      "startTime": "2026-03-20T16:20:57.713Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -335,7 +335,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-f928ceea80ae1ab5eb19",
               "file": "onboarding-flow.spec.ts",
-              "line": 271,
+              "line": 272,
               "column": 7
             },
             {
@@ -354,436 +354,25 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "failed",
-                      "duration": 23850,
+                      "duration": 43103,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64",
-                        "location": {
-                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 64,
-                          "line": 58
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 64,
-                            "line": 58
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "📍 Step 1: Navigating to signup page...\n"
-                        },
-                        {
-                          "text": "✅ Signup page loaded with usage limit banner\n"
-                        },
-                        {
-                          "text": "📍 Step 2: Logging in...\n"
-                        },
-                        {
-                          "text": "✅ Logged in successfully\n"
-                        },
-                        {
-                          "text": "📍 Step 3: Checking onboarding modal...\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:17:33.755Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 64,
-                        "line": 58
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-5f5454f039cd53ae9004",
-              "file": "onboarding-flow.spec.ts",
-              "line": 22,
-              "column": 7
-            },
-            {
-              "title": "Verify image-based PDF rejection",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 268,
-                        "column": 10
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 4,
-                      "status": "skipped",
-                      "duration": 8523,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "📍 Testing image-based PDF rejection...\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:17:33.826Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 268,
-                            "column": 10
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-96f61d834df983ee96b9",
-              "file": "onboarding-flow.spec.ts",
-              "line": 263,
-              "column": 7
-            },
-            {
-              "title": "Verify onboarding cannot be skipped",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "firefox",
-                  "projectName": "firefox",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 5,
-                      "status": "passed",
-                      "duration": 33145,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "📍 Testing mandatory onboarding...\n"
-                        },
-                        {
-                          "text": "✅ Onboarding is truly mandatory\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:17:33.649Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-9f131593059b02a206d9",
-              "file": "onboarding-flow.spec.ts",
-              "line": 271,
-              "column": 7
-            },
-            {
-              "title": "Full user journey: Signup → Onboarding → Upload → Generate",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 22249,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64",
-                        "location": {
-                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 64,
-                          "line": 58
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 64,
-                            "line": 58
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "📍 Step 1: Navigating to signup page...\n"
-                        },
-                        {
-                          "text": "✅ Signup page loaded with usage limit banner\n"
-                        },
-                        {
-                          "text": "📍 Step 2: Logging in...\n"
-                        },
-                        {
-                          "text": "✅ Logged in successfully\n"
-                        },
-                        {
-                          "text": "📍 Step 3: Checking onboarding modal...\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:17:56.123Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 64,
-                        "line": 58
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-4326945b3ce7975d7958",
-              "file": "onboarding-flow.spec.ts",
-              "line": 22,
-              "column": 7
-            },
-            {
-              "title": "Verify image-based PDF rejection",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [
-                    {
-                      "type": "skip",
-                      "location": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 268,
-                        "column": 10
-                      }
-                    }
-                  ],
-                  "expectedStatus": "skipped",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 7,
-                      "parallelIndex": 2,
-                      "status": "skipped",
-                      "duration": 2989,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "📍 Testing image-based PDF rejection...\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:17:56.296Z",
-                      "annotations": [
-                        {
-                          "type": "skip",
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 268,
-                            "column": 10
-                          }
-                        }
-                      ],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "skipped"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-443056649b75753f188a",
-              "file": "onboarding-flow.spec.ts",
-              "line": 263,
-              "column": 7
-            },
-            {
-              "title": "Verify onboarding cannot be skipped",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 9,
-                      "parallelIndex": 4,
-                      "status": "failed",
-                      "duration": 29878,
-                      "error": {
-                        "message": "TimeoutError: page.waitForURL: Timeout 15000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/dashboard\" until \"load\"\n============================================================",
-                        "stack": "TimeoutError: page.waitForURL: Timeout 15000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/dashboard\" until \"load\"\n============================================================\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:279:16",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    19 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    19 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                           "column": 16,
-                          "line": 279
+                          "line": 101
                         },
-                        "snippet": "\u001b[0m \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\n \u001b[90m 278 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 279 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[32m'**/dashboard'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 280 |\u001b[39m     \n \u001b[90m 281 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n \u001b[90m 282 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                             "column": 16,
-                            "line": 279
-                          },
-                          "message": "TimeoutError: page.waitForURL: Timeout 15000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/dashboard\" until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\n \u001b[90m 278 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 279 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[32m'**/dashboard'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m15000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 280 |\u001b[39m     \n \u001b[90m 281 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n \u001b[90m 282 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:279:16\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "📍 Testing mandatory onboarding...\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-03-20T16:18:05.143Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 16,
-                        "line": 279
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "b6a9ad3f1af3b775c25e-6ec21e54f6334249f7d8",
-              "file": "onboarding-flow.spec.ts",
-              "line": 271,
-              "column": 7
-            },
-            {
-              "title": "Full user journey: Signup → Onboarding → Upload → Generate",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 120000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "Mobile Chrome",
-                  "projectName": "Mobile Chrome",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 16423,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68",
-                        "location": {
-                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 68,
-                          "line": 101
-                        },
-                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 68,
                             "line": 101
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68\u001b[22m"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    19 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -814,7 +403,399 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:03.718Z",
+                      "startTime": "2026-03-20T16:20:57.763Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "column": 16,
+                        "line": 101
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-5f5454f039cd53ae9004",
+              "file": "onboarding-flow.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "Verify image-based PDF rejection",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "line": 269,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "skipped",
+                      "duration": 26987,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📍 Testing image-based PDF rejection...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:20:57.745Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "location": {
+                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                            "line": 269,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-96f61d834df983ee96b9",
+              "file": "onboarding-flow.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "Verify onboarding cannot be skipped",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 54553,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📍 Testing mandatory onboarding...\n"
+                        },
+                        {
+                          "text": "✅ Onboarding is truly mandatory\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:20:57.773Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-9f131593059b02a206d9",
+              "file": "onboarding-flow.spec.ts",
+              "line": 272,
+              "column": 7
+            },
+            {
+              "title": "Full user journey: Signup → Onboarding → Upload → Generate",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 41606,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16",
+                        "location": {
+                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                          "column": 16,
+                          "line": 101
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                            "column": 16,
+                            "line": 101
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📍 Step 1: Navigating to signup page...\n"
+                        },
+                        {
+                          "text": "✅ Signup page loaded with usage limit banner\n"
+                        },
+                        {
+                          "text": "📍 Step 2: Logging in...\n"
+                        },
+                        {
+                          "text": "✅ Logged in successfully\n"
+                        },
+                        {
+                          "text": "📍 Step 3: Checking onboarding modal...\n"
+                        },
+                        {
+                          "text": "✅ Onboarding modal is mandatory (no skip/close buttons)\n"
+                        },
+                        {
+                          "text": "📍 Step 4: Completing onboarding steps...\n"
+                        },
+                        {
+                          "text": "  ✓ Selected goal: Get a new job\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:21:50.448Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "column": 16,
+                        "line": 101
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-4326945b3ce7975d7958",
+              "file": "onboarding-flow.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "Verify image-based PDF rejection",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "line": 269,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 2885,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📍 Testing image-based PDF rejection...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:21:47.820Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "location": {
+                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                            "line": 269,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-443056649b75753f188a",
+              "file": "onboarding-flow.spec.ts",
+              "line": 264,
+              "column": 7
+            },
+            {
+              "title": "Verify onboarding cannot be skipped",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 23750,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📍 Testing mandatory onboarding...\n"
+                        },
+                        {
+                          "text": "✅ Onboarding is truly mandatory\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:21:54.287Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b6a9ad3f1af3b775c25e-6ec21e54f6334249f7d8",
+              "file": "onboarding-flow.spec.ts",
+              "line": 272,
+              "column": 7
+            },
+            {
+              "title": "Full user journey: Signup → Onboarding → Upload → Generate",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 20912,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16",
+                        "location": {
+                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                          "column": 16,
+                          "line": 101
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                            "column": 16,
+                            "line": 101
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    22 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📍 Step 1: Navigating to signup page...\n"
+                        },
+                        {
+                          "text": "✅ Signup page loaded with usage limit banner\n"
+                        },
+                        {
+                          "text": "📍 Step 2: Logging in...\n"
+                        },
+                        {
+                          "text": "✅ Logged in successfully\n"
+                        },
+                        {
+                          "text": "📍 Step 3: Checking onboarding modal...\n"
+                        },
+                        {
+                          "text": "✅ Onboarding modal is mandatory (no skip/close buttons)\n"
+                        },
+                        {
+                          "text": "📍 Step 4: Completing onboarding steps...\n"
+                        },
+                        {
+                          "text": "  ✓ Selected goal: Get a new job\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-20T16:21:54.540Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -835,7 +816,7 @@
                       ],
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 68,
+                        "column": 16,
                         "line": 101
                       }
                     }
@@ -860,7 +841,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 268,
+                        "line": 269,
                         "column": 10
                       }
                     }
@@ -871,9 +852,9 @@
                   "results": [
                     {
                       "workerIndex": 10,
-                      "parallelIndex": 2,
+                      "parallelIndex": 1,
                       "status": "skipped",
-                      "duration": 3483,
+                      "duration": 2463,
                       "errors": [],
                       "stdout": [
                         {
@@ -882,13 +863,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:08.974Z",
+                      "startTime": "2026-03-20T16:22:03.017Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 268,
+                            "line": 269,
                             "column": 10
                           }
                         }
@@ -901,7 +882,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-659e8a3de374a32a3358",
               "file": "onboarding-flow.spec.ts",
-              "line": 263,
+              "line": 264,
               "column": 7
             },
             {
@@ -917,10 +898,10 @@
                   "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 10,
-                      "parallelIndex": 2,
+                      "workerIndex": 11,
+                      "parallelIndex": 3,
                       "status": "passed",
-                      "duration": 5978,
+                      "duration": 6707,
                       "errors": [],
                       "stdout": [
                         {
@@ -932,7 +913,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:15.095Z",
+                      "startTime": "2026-03-20T16:22:12.252Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -942,7 +923,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-4cf203b636db696dbe16",
               "file": "onboarding-flow.spec.ts",
-              "line": 271,
+              "line": 272,
               "column": 7
             },
             {
@@ -958,28 +939,28 @@
                   "projectName": "Mobile Safari",
                   "results": [
                     {
-                      "workerIndex": 13,
-                      "parallelIndex": 5,
+                      "workerIndex": 12,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 15499,
+                      "duration": 22386,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    23 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    23 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 68,
+                          "column": 16,
                           "line": 101
                         },
-                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 68,
+                            "column": 16,
                             "line": 101
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).not.\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('text=Welcome to My CV Buddy!')\nExpected: not visible\nReceived: visible\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"not toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\u001b[2m    8 × locator resolved to <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\u001b[2m      - unexpected value \"visible\"\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m     |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:68\u001b[22m"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!') to be hidden\u001b[22m\n\u001b[2m    23 × locator resolved to visible <h2 class=\"text-2xl font-bold text-white\">Welcome to My CV Buddy!</h2>\u001b[22m\n\n\n\u001b[0m \u001b[90m  99 |\u001b[39m     \n \u001b[90m 100 |\u001b[39m     \u001b[90m// Wait for modal to close - check for the modal container to disappear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 101 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'hidden'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Onboarding completed'\u001b[39m)\n \u001b[90m 103 |\u001b[39m\n \u001b[90m 104 |\u001b[39m     \u001b[90m// ==========================================\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:101:16\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -1010,7 +991,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:27.182Z",
+                      "startTime": "2026-03-20T16:22:21.265Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1031,7 +1012,7 @@
                       ],
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 68,
+                        "column": 16,
                         "line": 101
                       }
                     }
@@ -1056,7 +1037,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 268,
+                        "line": 269,
                         "column": 10
                       }
                     }
@@ -1066,10 +1047,10 @@
                   "projectName": "Mobile Safari",
                   "results": [
                     {
-                      "workerIndex": 11,
-                      "parallelIndex": 1,
+                      "workerIndex": 13,
+                      "parallelIndex": 5,
                       "status": "skipped",
-                      "duration": 1386,
+                      "duration": 1106,
                       "errors": [],
                       "stdout": [
                         {
@@ -1078,13 +1059,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:24.384Z",
+                      "startTime": "2026-03-20T16:22:22.224Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 268,
+                            "line": 269,
                             "column": 10
                           }
                         }
@@ -1097,7 +1078,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-a725b6a1dab65773280c",
               "file": "onboarding-flow.spec.ts",
-              "line": 263,
+              "line": 264,
               "column": 7
             },
             {
@@ -1113,10 +1094,10 @@
                   "projectName": "Mobile Safari",
                   "results": [
                     {
-                      "workerIndex": 12,
-                      "parallelIndex": 3,
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
                       "status": "passed",
-                      "duration": 6611,
+                      "duration": 6249,
                       "errors": [],
                       "stdout": [
                         {
@@ -1128,7 +1109,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:18:24.332Z",
+                      "startTime": "2026-03-20T16:22:24.370Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1138,7 +1119,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-0d2f7e56fde85504833a",
               "file": "onboarding-flow.spec.ts",
-              "line": 271,
+              "line": 272,
               "column": 7
             }
           ]
@@ -1148,11 +1129,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-03-20T16:17:28.456Z",
-    "duration": 74422.627,
-    "expected": 4,
+    "startTime": "2026-03-20T16:20:51.784Z",
+    "duration": 112105.948,
+    "expected": 5,
     "skipped": 5,
-    "unexpected": 6,
+    "unexpected": 5,
     "flaky": 0
   }
 }

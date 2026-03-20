@@ -265,5 +265,4 @@
           - text: Upgrade to Pro - £2.99/month
   - region "Notifications alt+T"
   - alert [ref=e359]: Dashboard - Manage Your CVs | CV Adapter
-  - button "Open chat" [ref=e360] [cursor=pointer]
 ```

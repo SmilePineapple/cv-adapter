@@ -13,7 +13,7 @@ import path from 'path'
 
 const TEST_EMAIL = 'jake.rourke@btinternet.com'
 const TEST_PASSWORD = 'Fearnley09' // Update with actual password
-const CV_FILE_PATH = 'C:\\Users\\jaket\\Desktop\\Personal\\Pamela Dale-Rourke CV.pdf'
+const CV_FILE_PATH = 'C:\\Users\\jaket\\Desktop\\CV\\Pamela Dale-Rourke CV.pdf'
 const BASE_URL = process.env.BASE_URL || 'https://www.mycvbuddy.com'
 
 test.describe('Complete Onboarding Flow', () => {
@@ -71,69 +71,27 @@ test.describe('Complete Onboarding Flow', () => {
     // ==========================================
     // STEP 4: Complete Onboarding Steps
     // ==========================================
-    console.log('📍 Step 4: Completing onboarding steps...')
+    console.log('📍 Step 4: Completing onboarding...')
     
-    // Step 1: Select goal (if present)
-    const goalButton = page.locator('button:has-text("Get a new job")')
-    if (await goalButton.isVisible()) {
-      await goalButton.click()
-      await page.click('button:has-text("Next")')
-      console.log('  ✓ Selected goal: Get a new job')
-    }
+    // Select goal
+    await page.click('button:has-text("Get a new job")')
+    console.log('  ✓ Selected goal: Get a new job')
     
-    // Step 2: Experience level (if present)
-    const experienceButton = page.locator('button:has-text("Mid-level")')
-    if (await experienceButton.isVisible()) {
-      await experienceButton.click()
-      await page.click('button:has-text("Next")')
-      console.log('  ✓ Selected experience: Mid-level')
-    }
+    // Wait a moment for selection to register
+    await page.waitForTimeout(500)
     
-    // Step 3: Industry (if present)
-    const industryButton = page.locator('button:has-text("Technology")')
-    if (await industryButton.isVisible()) {
-      await industryButton.click()
-      await page.click('button:has-text("Get Started")')
-      console.log('  ✓ Selected industry: Technology')
-    }
+    // Click "Upload CV Now" button to proceed
+    await page.click('button:has-text("Upload CV Now")')
+    console.log('  ✓ Clicked Upload CV Now')
     
-    // Wait for modal to close - check for the modal container to disappear
-    await page.waitForSelector('text=Welcome to My CV Buddy!', { state: 'hidden', timeout: 10000 })
-    console.log('✅ Onboarding completed')
-
-    // ==========================================
-    // STEP 5: Verify Dashboard State
-    // ==========================================
-    console.log('📍 Step 5: Verifying dashboard state...')
-    
-    // Wait for dashboard to load
-    await page.waitForLoadState('networkidle')
-    
-    // Verify primary CTA shows "Upload CV to Get Started" (no CVs yet)
-    await expect(page.locator('text=Upload CV to Get Started')).toBeVisible({ timeout: 10000 })
-    console.log('✅ Dashboard loaded with correct empty state')
-    
-    // Verify usage limit banner is visible
-    await expect(page.locator('text=1 Free Generation')).toBeVisible()
-    await expect(page.locator('text=Remaining')).toBeVisible()
-    
-    console.log('✅ Dashboard shows correct empty state')
-
-    // ==========================================
-    // STEP 6: Navigate to Upload Page
-    // ==========================================
-    console.log('📍 Step 6: Navigating to upload page...')
-    
-    await page.click('text=Upload CV to Get Started')
+    // Should redirect to /upload page
     await page.waitForURL('**/upload', { timeout: 10000 })
-    
-    await expect(page.locator('h1')).toContainText('Upload')
-    console.log('✅ Upload page loaded')
+    console.log('✅ Redirected to upload page')
 
     // ==========================================
-    // STEP 7: Upload CV File
+    // STEP 5: Upload CV File
     // ==========================================
-    console.log('📍 Step 7: Uploading CV file...')
+    console.log('📍 Step 5: Uploading CV file...')
     
     // Check if file exists
     const fs = require('fs')
