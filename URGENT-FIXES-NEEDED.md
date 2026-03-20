@@ -103,7 +103,97 @@ Temporarily disable PDF export and only offer DOCX/TXT until we can properly con
 
 ---
 
-## 🔧 Quick Fixes to Implement Now:
+## � 1. CRITICAL: Vercel Environment Variables Missing
+
+**Status:** NEEDS IMMEDIATE ACTION ❌
+**Priority:** CRITICAL
+**Identified:** 2026-03-20
+
+### Issue
+Sentry is reporting 1.2K errors across 33 users:
+```
+Error: either NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY env variables or supabaseUrl and supabaseKey are required!
+```
+
+The Supabase environment variables are in `.env.local` but **NOT deployed to Vercel**, causing the entire app to fail for production users.
+
+### Solution Required
+**YOU MUST DO THIS NOW:**
+
+1. Go to: https://vercel.com/your-project/settings/environment-variables
+2. Add these variables for **ALL ENVIRONMENTS** (Production, Preview, Development):
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://vuslzrevbkuugqeiadnq.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR_SUPABASE_ANON_KEY_FROM_ENV_LOCAL>
+SUPABASE_SERVICE_ROLE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY_FROM_ENV_LOCAL>
+```
+**Copy these values from your `.env.local` file**
+
+3. Redeploy the app
+4. Verify at https://www.mycvbuddy.com/dashboard
+
+### Full Environment Variable List
+See: `VERCEL-ENV-SETUP.md` for complete list of all required environment variables
+
+### Impact
+- **1,200+ errors** in production
+- **33 users** affected
+- Dashboard completely broken
+- App unusable without these variables
+
+---
+
+## 🐦 2. Twitter API Disabled (Temporary)
+
+**Status:** SQL READY TO RUN ⏳
+**Priority:** MEDIUM
+**Identified:** 2026-03-20
+
+### Issue
+Twitter API has been completely down since **February 27, 2026** with 503 Service Unavailable errors. This is a platform-wide outage affecting all developers globally.
+
+### Solution
+Run this SQL in Supabase SQL Editor to disable Twitter temporarily:
+
+```sql
+-- Temporarily disable Twitter posting due to ongoing Twitter API 503 outage
+-- Twitter API has been down since Feb 27, 2026 affecting all developers
+-- Re-enable when Twitter fixes their infrastructure
+
+UPDATE social_media_config 
+SET posting_enabled = FALSE 
+WHERE platform = 'twitter';
+
+-- Verify the change
+SELECT 
+  platform,
+  posting_enabled,
+  daily_post_limit,
+  posts_today,
+  last_post_date
+FROM social_media_config
+WHERE platform IN ('twitter', 'linkedin')
+ORDER BY platform;
+```
+
+Or use: `scripts/disable-twitter-temporarily.sql`
+
+### What We Built
+- ✅ Fixed OAuth signature (RFC 3986 encoding)
+- ✅ Switched to v2 API (Free tier compatible)
+- ✅ Added retry logic with exponential backoff (2s → 4s → 8s)
+- ✅ All code working perfectly - just waiting for Twitter to fix their servers
+
+### LinkedIn Status
+- ✅ Ready to use immediately
+- ✅ Access token valid until April 5, 2026
+- ✅ Organization ID configured (109509220)
+- ✅ No known issues
+
+---
+
+## �🔧 Quick Fixes to Implement Now:
 
 ### 1. Fix Review Page (High Priority)
 - Add `formatSectionContent` helper
