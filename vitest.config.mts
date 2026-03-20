@@ -31,8 +31,7 @@ export default defineConfig({
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}'
       ],
-      include: ['src/lib/__tests__/**/*.{ts,tsx}'],
-      all: false
+      include: ['src/lib/__tests__/**/*.{ts,tsx}']
     }
   },
   resolve: {
