@@ -135,6 +135,17 @@ export async function POST(request: NextRequest) {
         console.log('Parsing PDF file')
         const pdfData = await pdfParse(Buffer.from(buffer))
         extractedText = pdfData.text
+        console.log('PDF metadata:', {
+          pages: pdfData.numpages,
+          info: pdfData.info,
+          textLength: pdfData.text.length
+        })
+        
+        // Check if PDF is image-based (scanned)
+        if (pdfData.text.length < 100 && pdfData.numpages > 0) {
+          console.warn('⚠️ PDF appears to be image-based (scanned). Text extraction yielded very little text.')
+          console.warn('Consider using OCR or asking user to upload a text-based PDF')
+        }
       } else if (fileType.includes('word') || fileType.includes('document')) {
         console.log('Parsing Word document')
         const result = await mammoth.extractRawText({ buffer: Buffer.from(buffer) })
