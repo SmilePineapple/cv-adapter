@@ -5,7 +5,17 @@ import LimitReachedEmail from '@/emails/LimitReachedEmail'
 import ReEngagementEmail from '@/emails/ReEngagementEmail'
 import PromoEmail from '@/emails/PromoEmail'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+/**
+ * Lazy initialization of Resend client to avoid build-time errors
+ * when RESEND_API_KEY is not available
+ */
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is not configured')
+  }
+  return new Resend(apiKey)
+}
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <support@mycvbuddy.com>'
 const REPLY_TO = 'support@mycvbuddy.com'
@@ -15,6 +25,7 @@ const REPLY_TO = 'support@mycvbuddy.com'
  */
 export async function send3DayReminderEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -225,6 +236,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
       </html>
     `
 
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -251,6 +263,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
  */
 export async function sendFirstGenerationEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     // Use HTML fallback for production stability
     const htmlContent = `
       <!DOCTYPE html>
@@ -346,6 +359,7 @@ export async function sendFirstGenerationEmail(email: string, name: string) {
  */
 export async function sendLimitReachedEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     // Use HTML fallback for production stability
     const htmlContent = `
       <!DOCTYPE html>
@@ -457,6 +471,7 @@ export async function sendReEngagementEmail(
   remainingGenerations: number = 1
 ) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -487,6 +502,7 @@ export async function sendReEngagementEmail(
  */
 export async function sendUpgradeConfirmationEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -531,6 +547,7 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
  */
 export async function sendPromoEmail(email: string, name: string) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -649,6 +666,7 @@ export async function sendPromoEmail(email: string, name: string) {
  */
 export async function sendTestEmail(email: string) {
   try {
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
