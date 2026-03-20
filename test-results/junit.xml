@@ -1,0 +1,390 @@
+<testsuites id="" name="" tests="15" failures="6" skipped="5" errors="0" time="74.42262699999999">
+<testsuite name="onboarding-flow.spec.ts" timestamp="2026-03-20T16:17:28.581Z" hostname="chromium" tests="3" failures="1" skipped="1" time="31.641" errors="0">
+<testcase name="Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate" classname="onboarding-flow.spec.ts" time="19.192">
+<failure message="onboarding-flow.spec.ts:22:7 Full user journey: Signup → Onboarding → Upload → Generate" type="FAILURE">
+<![CDATA[  [chromium] › onboarding-flow.spec.ts:22:7 › Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  locator('text=Welcome to My CV Buddy!')
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 5000ms
+      - waiting for locator('text=Welcome to My CV Buddy!')
+        8 × locator resolved to <h2 class="text-2xl font-bold text-white">Welcome to My CV Buddy!</h2>
+          - unexpected value "visible"
+
+
+       99 |     
+      100 |     // Wait for modal to close
+    > 101 |     await expect(page.locator('text=Welcome to My CV Buddy!')).not.toBeVisible({ timeout: 5000 })
+          |                                                                    ^
+      102 |     console.log('✅ Onboarding completed')
+      103 |
+      104 |     // ==========================================
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:101:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Step 1: Navigating to signup page...
+✅ Signup page loaded with usage limit banner
+📍 Step 2: Logging in...
+✅ Logged in successfully
+📍 Step 3: Checking onboarding modal...
+✅ Onboarding modal is mandatory (no skip/close buttons)
+📍 Step 4: Completing onboarding steps...
+  ✓ Selected goal: Get a new job
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify image-based PDF rejection" classname="onboarding-flow.spec.ts" time="2.979">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify onboarding cannot be skipped" classname="onboarding-flow.spec.ts" time="9.47">
+<system-out>
+<![CDATA[📍 Testing mandatory onboarding...
+✅ Onboarding is truly mandatory
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="onboarding-flow.spec.ts" timestamp="2026-03-20T16:17:28.581Z" hostname="firefox" tests="3" failures="1" skipped="1" time="65.518" errors="0">
+<testcase name="Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate" classname="onboarding-flow.spec.ts" time="23.85">
+<failure message="onboarding-flow.spec.ts:22:7 Full user journey: Signup → Onboarding → Upload → Generate" type="FAILURE">
+<![CDATA[  [firefox] › onboarding-flow.spec.ts:22:7 › Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('text=Welcome to My CV Buddy!')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=Welcome to My CV Buddy!')
+
+
+      56 |     
+      57 |     // Wait for onboarding modal to appear
+    > 58 |     await expect(page.locator('text=Welcome to My CV Buddy!')).toBeVisible({ timeout: 5000 })
+         |                                                                ^
+      59 |     
+      60 |     // Verify 3-step process is shown
+      61 |     await expect(page.locator('text=Upload → Generate → Download')).toBeVisible()
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:58:64
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Step 1: Navigating to signup page...
+✅ Signup page loaded with usage limit banner
+📍 Step 2: Logging in...
+✅ Logged in successfully
+📍 Step 3: Checking onboarding modal...
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-firefox\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify image-based PDF rejection" classname="onboarding-flow.spec.ts" time="8.523">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify onboarding cannot be skipped" classname="onboarding-flow.spec.ts" time="33.145">
+<system-out>
+<![CDATA[📍 Testing mandatory onboarding...
+✅ Onboarding is truly mandatory
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="onboarding-flow.spec.ts" timestamp="2026-03-20T16:17:28.581Z" hostname="webkit" tests="3" failures="2" skipped="1" time="55.116" errors="0">
+<testcase name="Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate" classname="onboarding-flow.spec.ts" time="22.249">
+<failure message="onboarding-flow.spec.ts:22:7 Full user journey: Signup → Onboarding → Upload → Generate" type="FAILURE">
+<![CDATA[  [webkit] › onboarding-flow.spec.ts:22:7 › Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('text=Welcome to My CV Buddy!')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('text=Welcome to My CV Buddy!')
+
+
+      56 |     
+      57 |     // Wait for onboarding modal to appear
+    > 58 |     await expect(page.locator('text=Welcome to My CV Buddy!')).toBeVisible({ timeout: 5000 })
+         |                                                                ^
+      59 |     
+      60 |     // Verify 3-step process is shown
+      61 |     await expect(page.locator('text=Upload → Generate → Download')).toBeVisible()
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:58:64
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Step 1: Navigating to signup page...
+✅ Signup page loaded with usage limit banner
+📍 Step 2: Logging in...
+✅ Logged in successfully
+📍 Step 3: Checking onboarding modal...
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify image-based PDF rejection" classname="onboarding-flow.spec.ts" time="2.989">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify onboarding cannot be skipped" classname="onboarding-flow.spec.ts" time="29.878">
+<failure message="onboarding-flow.spec.ts:271:7 Verify onboarding cannot be skipped" type="FAILURE">
+<![CDATA[  [webkit] › onboarding-flow.spec.ts:271:7 › Complete Onboarding Flow › Verify onboarding cannot be skipped 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "**/dashboard" until "load"
+    ============================================================
+
+      277 |     await page.click('button[type="submit"]')
+      278 |     
+    > 279 |     await page.waitForURL('**/dashboard', { timeout: 15000 })
+          |                ^
+      280 |     
+      281 |     // Verify onboarding modal appears
+      282 |     await expect(page.locator('text=Welcome to My CV Buddy!')).toBeVisible()
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:279:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Testing mandatory onboarding...
+
+[[ATTACHMENT|onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="onboarding-flow.spec.ts" timestamp="2026-03-20T16:17:28.581Z" hostname="Mobile Chrome" tests="3" failures="1" skipped="1" time="25.884" errors="0">
+<testcase name="Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate" classname="onboarding-flow.spec.ts" time="16.423">
+<failure message="onboarding-flow.spec.ts:22:7 Full user journey: Signup → Onboarding → Upload → Generate" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › onboarding-flow.spec.ts:22:7 › Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  locator('text=Welcome to My CV Buddy!')
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 5000ms
+      - waiting for locator('text=Welcome to My CV Buddy!')
+        8 × locator resolved to <h2 class="text-2xl font-bold text-white">Welcome to My CV Buddy!</h2>
+          - unexpected value "visible"
+
+
+       99 |     
+      100 |     // Wait for modal to close
+    > 101 |     await expect(page.locator('text=Welcome to My CV Buddy!')).not.toBeVisible({ timeout: 5000 })
+          |                                                                    ^
+      102 |     console.log('✅ Onboarding completed')
+      103 |
+      104 |     // ==========================================
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:101:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Step 1: Navigating to signup page...
+✅ Signup page loaded with usage limit banner
+📍 Step 2: Logging in...
+✅ Logged in successfully
+📍 Step 3: Checking onboarding modal...
+✅ Onboarding modal is mandatory (no skip/close buttons)
+📍 Step 4: Completing onboarding steps...
+  ✓ Selected goal: Get a new job
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify image-based PDF rejection" classname="onboarding-flow.spec.ts" time="3.483">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify onboarding cannot be skipped" classname="onboarding-flow.spec.ts" time="5.978">
+<system-out>
+<![CDATA[📍 Testing mandatory onboarding...
+✅ Onboarding is truly mandatory
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="onboarding-flow.spec.ts" timestamp="2026-03-20T16:17:28.581Z" hostname="Mobile Safari" tests="3" failures="1" skipped="1" time="23.496" errors="0">
+<testcase name="Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate" classname="onboarding-flow.spec.ts" time="15.499">
+<failure message="onboarding-flow.spec.ts:22:7 Full user journey: Signup → Onboarding → Upload → Generate" type="FAILURE">
+<![CDATA[  [Mobile Safari] › onboarding-flow.spec.ts:22:7 › Complete Onboarding Flow › Full user journey: Signup → Onboarding → Upload → Generate 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  locator('text=Welcome to My CV Buddy!')
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "not toBeVisible" with timeout 5000ms
+      - waiting for locator('text=Welcome to My CV Buddy!')
+        8 × locator resolved to <h2 class="text-2xl font-bold text-white">Welcome to My CV Buddy!</h2>
+          - unexpected value "visible"
+
+
+       99 |     
+      100 |     // Wait for modal to close
+    > 101 |     await expect(page.locator('text=Welcome to My CV Buddy!')).not.toBeVisible({ timeout: 5000 })
+          |                                                                    ^
+      102 |     console.log('✅ Onboarding completed')
+      103 |
+      104 |     // ==========================================
+        at C:\Users\jaket\Desktop\CV\cv-adapter\tests\e2e\onboarding-flow.spec.ts:101:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[📍 Step 1: Navigating to signup page...
+✅ Signup page loaded with usage limit banner
+📍 Step 2: Logging in...
+✅ Logged in successfully
+📍 Step 3: Checking onboarding modal...
+✅ Onboarding modal is mandatory (no skip/close buttons)
+📍 Step 4: Completing onboarding steps...
+  ✓ Selected goal: Get a new job
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify image-based PDF rejection" classname="onboarding-flow.spec.ts" time="1.386">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Complete Onboarding Flow › Verify onboarding cannot be skipped" classname="onboarding-flow.spec.ts" time="6.611">
+<system-out>
+<![CDATA[📍 Testing mandatory onboarding...
+✅ Onboarding is truly mandatory
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

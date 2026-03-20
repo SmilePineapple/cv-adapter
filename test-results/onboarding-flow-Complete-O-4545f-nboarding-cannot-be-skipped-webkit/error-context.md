@@ -37,19 +37,6 @@
         - link "Sign up" [ref=e46]:
           - /url: /auth/signup
   - region "Notifications alt+T"
-  - generic [ref=e51] [cursor=pointer]:
-    - button "Open Next.js Dev Tools" [ref=e52]:
-      - img [ref=e53]
-    - generic [ref=e58]:
-      - button "Open issues overlay" [ref=e59]:
-        - generic [ref=e60]:
-          - generic [ref=e61]: "1"
-          - generic [ref=e62]: "2"
-        - generic [ref=e63]:
-          - text: Issue
-          - generic [ref=e64]: s
-      - button "Collapse issues badge" [ref=e65]:
-        - img [ref=e66]
-  - alert [ref=e68]
-  - button "Open chat" [ref=e69] [cursor=pointer]
+  - alert [ref=e47]
+  - button "Open chat" [ref=e48] [cursor=pointer]
 ```
