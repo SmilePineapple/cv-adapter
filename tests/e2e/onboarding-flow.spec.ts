@@ -163,8 +163,10 @@ Requirements:
     // ==========================================
     console.log('📍 Step 7: Generating tailored CV...')
     
+    // Wait for generate button to be ready and click it
     const generateButton = page.locator('button[type="submit"]:has-text("Generate Tailored CV")')
-    await generateButton.click()
+    await generateButton.waitFor({ state: 'visible', timeout: 5000 })
+    await generateButton.click({ force: true })
     
     console.log('  ⏳ Clicked Generate button')
     
@@ -173,7 +175,9 @@ Requirements:
     console.log('  ✓ Upgrade modal appeared')
     
     // Click "Continue with Free (1 generation)" button to dismiss modal and start generation
-    await page.click('button:has-text("Continue with Free")')
+    const continueButton = page.locator('button:has-text("Continue with Free")')
+    await continueButton.waitFor({ state: 'visible', timeout: 5000 })
+    await continueButton.click({ force: true })
     console.log('  ✓ Clicked "Continue with Free (1 generation)"')
     
     console.log('  ⏳ AI is generating your CV (this may take 2-3 minutes)...')
@@ -203,17 +207,61 @@ Requirements:
     await page.screenshot({ path: 'test-results/review-page.png', fullPage: true })
     console.log('  ✓ Screenshot saved: review-page.png')
     
-    // Check for download button - use more specific selector to avoid strict mode violation
-    const downloadButton = page.locator('button:has-text("Download PDF"), a:has-text("Download PDF")').first()
-    const hasDownload = await downloadButton.isVisible().catch(() => false)
+    // ==========================================
+    // STEP 8a: Verify Review Page Elements
+    // ==========================================
+    console.log('📍 Step 8a: Verifying review page elements...')
     
-    if (hasDownload) {
-      console.log('  ✓ Download button found')
-    } else {
-      console.log('  ⚠️ Download button not immediately visible - checking for other elements')
+    // Check for success message
+    await expect(page.locator('text=CV Tailored Successfully!')).toBeVisible({ timeout: 5000 })
+    console.log('  ✓ Success message displayed')
+    
+    // Check for Download button
+    const downloadButton = page.locator('button:has-text("Download")').first()
+    await expect(downloadButton).toBeVisible({ timeout: 5000 })
+    console.log('  ✓ Download button found')
+    
+    // Check for Save button
+    const saveButton = page.locator('button:has-text("Save")').first()
+    await expect(saveButton).toBeVisible({ timeout: 5000 })
+    console.log('  ✓ Save button found')
+    
+    // Check for AI Review button (Pro feature)
+    const aiReviewButton = page.locator('button:has-text("AI Review")').first()
+    await expect(aiReviewButton).toBeVisible({ timeout: 5000 })
+    console.log('  ✓ AI Review button found')
+    
+    // Check for ATS score display
+    const atsScore = page.locator('text=ATS:').first()
+    const hasAtsScore = await atsScore.isVisible().catch(() => false)
+    if (hasAtsScore) {
+      console.log('  ✓ ATS score displayed')
     }
     
-    console.log('✅ Review page loaded successfully')
+    // Check for job title display
+    await expect(page.locator('text=Job Title')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('text=Senior Software Engineer')).toBeVisible({ timeout: 5000 })
+    console.log('  ✓ Job title displayed correctly')
+    
+    console.log('✅ Review page elements verified')
+    
+    // ==========================================
+    // STEP 8b: Test Download Button Click
+    // ==========================================
+    console.log('📍 Step 8b: Testing download functionality...')
+    
+    // Click download button - should redirect to /download page
+    await downloadButton.click()
+    console.log('  ✓ Clicked Download button')
+    
+    // Wait for redirect to download page
+    await page.waitForURL('**/download/**', { timeout: 10000 })
+    console.log('  ✓ Redirected to download page')
+    
+    const downloadPageUrl = page.url()
+    console.log(`  ✓ Download page URL: ${downloadPageUrl}`)
+    
+    console.log('✅ Download functionality working')
 
     // ==========================================
     // STEP 9: Verify Usage Tracking

@@ -63,7 +63,7 @@
       - generic [ref=e96]:
         - generic [ref=e97]:
           - heading "Welcome back, jake.rourke! 👋" [level=1] [ref=e98]
-          - paragraph [ref=e99]: You've created 5 amazing CVs. Ready for your next one?
+          - paragraph [ref=e99]: Let's create your first professional CV together!
         - button "Reset" [ref=e101]:
           - img [ref=e102]
           - generic [ref=e107]: Reset
@@ -71,7 +71,7 @@
         - generic [ref=e110]:
           - img [ref=e112]
           - generic [ref=e114]:
-            - heading "8 Free Generations Remaining" [level=3] [ref=e115]
+            - heading "10 Free Generations Remaining" [level=3] [ref=e115]
             - paragraph [ref=e116]: Make it count! Upgrade to Pro for unlimited CV generations.
         - link "Upgrade to Pro" [ref=e117]:
           - /url: /subscription
@@ -79,12 +79,12 @@
         - generic [ref=e119]:
           - generic [ref=e120]:
             - img [ref=e122]
-            - generic [ref=e125]: "4"
+            - generic [ref=e125]: "0"
           - paragraph [ref=e126]: Total CVs
         - generic [ref=e127]:
           - generic [ref=e128]:
             - img [ref=e130]
-            - generic [ref=e133]: "5"
+            - generic [ref=e133]: "0"
           - paragraph [ref=e134]: Generations
         - generic [ref=e135]:
           - generic [ref=e136]:
@@ -94,13 +94,14 @@
         - generic [ref=e143]:
           - generic [ref=e144]:
             - img [ref=e146]
-            - generic [ref=e148]: 2/10
+            - generic [ref=e148]: 0/10
           - paragraph [ref=e149]: This Month
-          - paragraph [ref=e153]: 8 remaining
-      - generic [ref=e154]:
-        - button "Generate your New CV" [ref=e155]:
-          - img [ref=e156]
-          - text: Generate your New CV
+          - paragraph [ref=e152]: 10 remaining
+      - generic [ref=e153]:
+        - link "Upload CV to Get Started" [ref=e154]:
+          - /url: /upload
+          - img [ref=e155]
+          - text: Upload CV to Get Started
         - generic [ref=e158]:
           - link "Upload CV" [ref=e159]:
             - /url: /upload
@@ -190,14 +191,14 @@
         - button "Overview" [ref=e272]:
           - img [ref=e273]
           - text: Overview
-        - button "CVs 4" [ref=e275]:
+        - button "CVs 0" [ref=e275]:
           - img [ref=e276]
           - generic [ref=e279]: CVs
-          - generic [ref=e280]: "4"
-        - button "Generations 5" [ref=e281]:
+          - generic [ref=e280]: "0"
+        - button "Generations 0" [ref=e281]:
           - img [ref=e282]
           - generic [ref=e285]: Generations
-          - generic [ref=e286]: "5"
+          - generic [ref=e286]: "0"
         - button "Cover Letters 0" [ref=e287]:
           - img [ref=e288]
           - generic [ref=e291]: Cover Letters
@@ -210,140 +211,74 @@
         - generic [ref=e299]:
           - heading "Recent Activity" [level=3] [ref=e301]
           - generic [ref=e303]:
-            - generic [ref=e304]:
-              - img [ref=e306]
-              - generic [ref=e309]:
-                - paragraph [ref=e310]: CV Generated
-                - paragraph [ref=e311]: Generated CV for Senior Software Engineer
-                - paragraph [ref=e312]: 20 Mar 2026
+            - img [ref=e304]
+            - paragraph [ref=e306]: No recent activity
+        - generic [ref=e307]:
+          - heading "Usage Analytics" [level=3] [ref=e309]
+          - generic [ref=e311]:
             - generic [ref=e313]:
-              - img [ref=e315]
+              - generic [ref=e314]: Monthly Usage
+              - generic [ref=e315]: 0/10
+            - generic [ref=e317]:
               - generic [ref=e318]:
-                - paragraph [ref=e319]: CV Generated
-                - paragraph [ref=e320]: Generated CV for Senior Software Engineer
-                - paragraph [ref=e321]: 20 Mar 2026
-            - generic [ref=e322]:
-              - img [ref=e324]
-              - generic [ref=e327]:
-                - paragraph [ref=e328]: CV Generated
-                - paragraph [ref=e329]: Generated CV for Senior Software Engineer
-                - paragraph [ref=e330]: 20 Mar 2026
-            - generic [ref=e331]:
-              - img [ref=e333]
-              - generic [ref=e336]:
-                - paragraph [ref=e337]: CV Generated
-                - paragraph [ref=e338]: Generated CV for Senior Software Engineer
-                - paragraph [ref=e339]: 20 Mar 2026
-            - generic [ref=e340]:
-              - img [ref=e342]
-              - generic [ref=e345]:
-                - paragraph [ref=e346]: CV Generated
-                - paragraph [ref=e347]: Generated CV for Senior Software Engineer
-                - paragraph [ref=e348]: 20 Mar 2026
-            - generic [ref=e349]:
-              - img [ref=e351]
-              - generic [ref=e354]:
-                - paragraph [ref=e355]: CV Uploaded
-                - paragraph [ref=e356]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e357]: 20 Mar 2026
+                - paragraph [ref=e319]: "0"
+                - paragraph [ref=e320]: CVs Uploaded
+              - generic [ref=e321]:
+                - paragraph [ref=e322]: "0"
+                - paragraph [ref=e323]: Generations
+            - generic [ref=e325]:
+              - img [ref=e326]
+              - generic [ref=e328]:
+                - paragraph [ref=e329]: Upgrade to Pro
+                - paragraph [ref=e330]: Unlimited generations and premium features
+      - generic [ref=e331]:
+        - heading "Unlock Pro Features" [level=3] [ref=e332]:
+          - img [ref=e333]
+          - text: Unlock Pro Features
+        - generic [ref=e336]:
+          - generic [ref=e337]:
+            - generic [ref=e338]:
+              - img [ref=e340]
+              - generic [ref=e343]: Free Tier
+            - list [ref=e344]:
+              - listitem [ref=e345]:
+                - generic [ref=e346]: •
+                - generic [ref=e347]: 1 CV generation
+              - listitem [ref=e348]:
+                - generic [ref=e349]: •
+                - generic [ref=e350]: PDF export only
+              - listitem [ref=e351]:
+                - generic [ref=e352]: •
+                - generic [ref=e353]: 2 templates
+              - listitem [ref=e354]:
+                - generic [ref=e355]: •
+                - generic [ref=e356]: Watermark on exports
+          - generic [ref=e357]:
             - generic [ref=e358]:
               - img [ref=e360]
-              - generic [ref=e363]:
-                - paragraph [ref=e364]: CV Uploaded
-                - paragraph [ref=e365]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e366]: 20 Mar 2026
-            - generic [ref=e367]:
-              - img [ref=e369]
-              - generic [ref=e372]:
-                - paragraph [ref=e373]: CV Uploaded
-                - paragraph [ref=e374]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e375]: 20 Mar 2026
-            - generic [ref=e376]:
-              - img [ref=e378]
-              - generic [ref=e381]:
-                - paragraph [ref=e382]: CV Uploaded
-                - paragraph [ref=e383]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e384]: 20 Mar 2026
-        - generic [ref=e385]:
-          - heading "Usage Analytics" [level=3] [ref=e387]
-          - generic [ref=e389]:
-            - generic [ref=e391]:
-              - generic [ref=e392]: Monthly Usage
-              - generic [ref=e393]: 2/10
-            - generic [ref=e396]:
-              - generic [ref=e397]:
-                - paragraph [ref=e398]: "4"
-                - paragraph [ref=e399]: CVs Uploaded
-              - generic [ref=e400]:
-                - paragraph [ref=e401]: "5"
-                - paragraph [ref=e402]: Generations
-            - generic [ref=e404]:
-              - img [ref=e405]
-              - generic [ref=e407]:
-                - paragraph [ref=e408]: Upgrade to Pro
-                - paragraph [ref=e409]: Unlimited generations and premium features
-      - generic [ref=e411]:
-        - heading "Profile Photo" [level=3] [ref=e412]:
-          - img [ref=e413]
-          - text: Profile Photo
-        - generic [ref=e416]:
-          - img [ref=e419]
-          - generic [ref=e422]:
-            - generic [ref=e424] [cursor=pointer]:
-              - img [ref=e425]
-              - text: Upload Photo
-            - generic [ref=e428]:
-              - paragraph [ref=e429]: "• Max size: 5MB"
-              - paragraph [ref=e430]: "• Formats: JPG, PNG, GIF"
-              - paragraph [ref=e431]: "• Recommended: Square image, 400x400px"
-      - generic [ref=e432]:
-        - heading "Unlock Pro Features" [level=3] [ref=e433]:
-          - img [ref=e434]
-          - text: Unlock Pro Features
-        - generic [ref=e437]:
-          - generic [ref=e438]:
-            - generic [ref=e439]:
-              - img [ref=e441]
-              - generic [ref=e444]: Free Tier
-            - list [ref=e445]:
-              - listitem [ref=e446]:
-                - generic [ref=e447]: •
-                - generic [ref=e448]: 1 CV generation
-              - listitem [ref=e449]:
-                - generic [ref=e450]: •
-                - generic [ref=e451]: PDF export only
-              - listitem [ref=e452]:
-                - generic [ref=e453]: •
-                - generic [ref=e454]: 2 templates
-              - listitem [ref=e455]:
-                - generic [ref=e456]: •
-                - generic [ref=e457]: Watermark on exports
-          - generic [ref=e458]:
-            - generic [ref=e459]:
-              - img [ref=e461]
-              - generic [ref=e463]: Pro Tier
-              - generic [ref=e464]: £2.99/month
-            - list [ref=e465]:
-              - listitem [ref=e466]:
-                - img [ref=e467]
-                - generic [ref=e469]: Unlimited generations
-              - listitem [ref=e470]:
-                - img [ref=e471]
-                - generic [ref=e473]: All export formats (PDF, DOCX, HTML, TXT)
-              - listitem [ref=e474]:
-                - img [ref=e475]
-                - generic [ref=e477]: 14 premium templates
-              - listitem [ref=e478]:
-                - img [ref=e479]
-                - generic [ref=e481]: No watermarks
-              - listitem [ref=e482]:
-                - img [ref=e483]
-                - generic [ref=e485]: AI Review & Cover Letters
-        - link "Upgrade to Pro - £2.99/month" [ref=e486]:
+              - generic [ref=e362]: Pro Tier
+              - generic [ref=e363]: £2.99/month
+            - list [ref=e364]:
+              - listitem [ref=e365]:
+                - img [ref=e366]
+                - generic [ref=e368]: Unlimited generations
+              - listitem [ref=e369]:
+                - img [ref=e370]
+                - generic [ref=e372]: All export formats (PDF, DOCX, HTML, TXT)
+              - listitem [ref=e373]:
+                - img [ref=e374]
+                - generic [ref=e376]: 14 premium templates
+              - listitem [ref=e377]:
+                - img [ref=e378]
+                - generic [ref=e380]: No watermarks
+              - listitem [ref=e381]:
+                - img [ref=e382]
+                - generic [ref=e384]: AI Review & Cover Letters
+        - link "Upgrade to Pro - £2.99/month" [ref=e385]:
           - /url: /subscription
-          - img [ref=e487]
+          - img [ref=e386]
           - text: Upgrade to Pro - £2.99/month
   - region "Notifications alt+T"
-  - alert [ref=e490]
-  - button "Open chat" [ref=e491] [cursor=pointer]
+  - alert [ref=e389]: Dashboard - Manage Your CVs | CV Adapter
+  - button "Open chat" [ref=e390] [cursor=pointer]
 ```

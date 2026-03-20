@@ -144,7 +144,7 @@
           "specs": [
             {
               "title": "Full user journey: Signup → Onboarding → Upload → Generate",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -157,28 +157,9 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 152272,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5",
-                        "location": {
-                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 64,
-                          "line": 218
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 64,
-                            "line": 218
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n\n\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\u001b[22m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5\u001b[22m"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 140096,
+                      "errors": [],
                       "stdout": [
                         {
                           "text": "📍 Step 1: Navigating to signup page...\n"
@@ -244,6 +225,15 @@
                           "text": "📍 Step 7: Generating tailored CV...\n"
                         },
                         {
+                          "text": "  ⏳ Clicked Generate button\n"
+                        },
+                        {
+                          "text": "  ✓ Upgrade modal appeared\n"
+                        },
+                        {
+                          "text": "  ✓ Clicked \"Continue with Free (1 generation)\"\n"
+                        },
+                        {
                           "text": "  ⏳ AI is generating your CV (this may take 2-3 minutes)...\n"
                         },
                         {
@@ -256,7 +246,7 @@
                           "text": "📍 Step 8: Testing review page...\n"
                         },
                         {
-                          "text": "  ✓ Current URL: https://www.mycvbuddy.com/review/a44ab4bf-cc5b-4252-8ee4-3a4ac15ea420\n"
+                          "text": "  ✓ Current URL: https://www.mycvbuddy.com/review/d1392fb6-13c8-4ee5-a0ae-8efd07d81a85\n"
                         },
                         {
                           "text": "  ✓ Confirmed on review page\n"
@@ -272,37 +262,52 @@
                         },
                         {
                           "text": "📍 Step 9: Verifying usage tracking...\n"
+                        },
+                        {
+                          "text": "✅ Usage tracking updated correctly\n"
+                        },
+                        {
+                          "text": "\n🎉 ========================================\n"
+                        },
+                        {
+                          "text": "🎉 COMPLETE ONBOARDING FLOW TEST PASSED!\n"
+                        },
+                        {
+                          "text": "🎉 ========================================\n"
+                        },
+                        {
+                          "text": "✅ Signup page shows usage limits\n"
+                        },
+                        {
+                          "text": "✅ Onboarding is mandatory (no skip)\n"
+                        },
+                        {
+                          "text": "✅ Dashboard shows correct empty state\n"
+                        },
+                        {
+                          "text": "✅ CV upload works correctly\n"
+                        },
+                        {
+                          "text": "✅ Dashboard updates after upload\n"
+                        },
+                        {
+                          "text": "✅ CV generation works end-to-end\n"
+                        },
+                        {
+                          "text": "✅ Usage tracking updates correctly\n"
+                        },
+                        {
+                          "text": "========================================\n\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.659Z",
+                      "startTime": "2026-03-20T16:54:56.331Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 64,
-                        "line": 218
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "b6a9ad3f1af3b775c25e-9c88f4c0432cb2aa7124",
@@ -322,7 +327,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 243,
+                        "line": 258,
                         "column": 10
                       }
                     }
@@ -335,7 +340,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "skipped",
-                      "duration": 1747,
+                      "duration": 2111,
                       "errors": [],
                       "stdout": [
                         {
@@ -344,13 +349,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.745Z",
+                      "startTime": "2026-03-20T16:54:56.450Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 243,
+                            "line": 258,
                             "column": 10
                           }
                         }
@@ -363,7 +368,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-b7452af8dd6683a0486e",
               "file": "onboarding-flow.spec.ts",
-              "line": 238,
+              "line": 253,
               "column": 7
             },
             {
@@ -382,7 +387,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 7652,
+                      "duration": 8653,
                       "errors": [],
                       "stdout": [
                         {
@@ -394,7 +399,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.708Z",
+                      "startTime": "2026-03-20T16:54:56.420Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -404,7 +409,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-f928ceea80ae1ab5eb19",
               "file": "onboarding-flow.spec.ts",
-              "line": 246,
+              "line": 261,
               "column": 7
             },
             {
@@ -423,7 +428,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "failed",
-                      "duration": 33091,
+                      "duration": 46654,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64",
@@ -463,7 +468,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.674Z",
+                      "startTime": "2026-03-20T16:54:56.015Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -509,7 +514,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 243,
+                        "line": 258,
                         "column": 10
                       }
                     }
@@ -522,7 +527,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 4,
                       "status": "skipped",
-                      "duration": 7988,
+                      "duration": 22128,
                       "errors": [],
                       "stdout": [
                         {
@@ -531,13 +536,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.532Z",
+                      "startTime": "2026-03-20T16:54:56.383Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 243,
+                            "line": 258,
                             "column": 10
                           }
                         }
@@ -550,12 +555,12 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-96f61d834df983ee96b9",
               "file": "onboarding-flow.spec.ts",
-              "line": 238,
+              "line": 253,
               "column": 7
             },
             {
               "title": "Verify onboarding cannot be skipped",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -568,30 +573,62 @@
                     {
                       "workerIndex": 5,
                       "parallelIndex": 5,
-                      "status": "passed",
-                      "duration": 19227,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 62333,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:272:64",
+                        "location": {
+                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                          "column": 64,
+                          "line": 272
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 270 |\u001b[39m     \n \u001b[90m 271 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 272 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 273 |\u001b[39m     \n \u001b[90m 274 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                            "column": 64,
+                            "line": 272
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 270 |\u001b[39m     \n \u001b[90m 271 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 272 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 273 |\u001b[39m     \n \u001b[90m 274 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:272:64\u001b[22m"
+                        }
+                      ],
                       "stdout": [
                         {
                           "text": "📍 Testing mandatory onboarding...\n"
-                        },
-                        {
-                          "text": "✅ Onboarding is truly mandatory\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:18.747Z",
+                      "startTime": "2026-03-20T16:54:56.524Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-4545f-nboarding-cannot-be-skipped-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "column": 64,
+                        "line": 272
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "b6a9ad3f1af3b775c25e-9f131593059b02a206d9",
               "file": "onboarding-flow.spec.ts",
-              "line": 246,
+              "line": 261,
               "column": 7
             },
             {
@@ -610,25 +647,25 @@
                       "workerIndex": 6,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 207786,
+                      "duration": 42155,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                           "column": 64,
-                          "line": 218
+                          "line": 58
                         },
-                        "snippet": "\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                             "column": 64,
-                            "line": 218
+                            "line": 58
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n\n\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\u001b[22m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5\u001b[22m"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 56 |\u001b[39m     \n \u001b[90m 57 |\u001b[39m     \u001b[90m// Wait for onboarding modal to appear\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 59 |\u001b[39m     \n \u001b[90m 60 |\u001b[39m     \u001b[90m// Verify 3-step process is shown\u001b[39m\n \u001b[90m 61 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upload → Generate → Download'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:58:64\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -646,89 +683,11 @@
                         },
                         {
                           "text": "📍 Step 3: Checking onboarding modal...\n"
-                        },
-                        {
-                          "text": "✅ Onboarding modal is mandatory (no skip/close buttons)\n"
-                        },
-                        {
-                          "text": "📍 Step 4: Completing onboarding...\n"
-                        },
-                        {
-                          "text": "  ✓ Selected goal: Get a new job\n"
-                        },
-                        {
-                          "text": "  ✓ Clicked Next\n"
-                        },
-                        {
-                          "text": "  ✓ Clicked Upload CV Now\n"
-                        },
-                        {
-                          "text": "✅ Redirected to upload page\n"
-                        },
-                        {
-                          "text": "📍 Step 5: Uploading CV file...\n"
-                        },
-                        {
-                          "text": "  ⏳ Uploading and parsing CV... (this takes ~60 seconds)\n"
-                        },
-                        {
-                          "text": "  ✓ CV parsed successfully\n"
-                        },
-                        {
-                          "text": "  ✓ Clicked \"Looks Good - Continue\"\n"
-                        },
-                        {
-                          "text": "✅ Redirected to generation page\n"
-                        },
-                        {
-                          "text": "📍 Step 6: Filling job details on generation page...\n"
-                        },
-                        {
-                          "text": "  ✓ Filled job title: Senior Software Engineer\n"
-                        },
-                        {
-                          "text": "  ⏳ Filling job description...\n"
-                        },
-                        {
-                          "text": "✅ Job description filled\n"
-                        },
-                        {
-                          "text": "📍 Step 7: Generating tailored CV...\n"
-                        },
-                        {
-                          "text": "  ⏳ AI is generating your CV (this may take 2-3 minutes)...\n"
-                        },
-                        {
-                          "text": "  ⏳ Please be patient - generation includes AI processing and redirect to review page\n"
-                        },
-                        {
-                          "text": "✅ CV generated successfully and redirected to review page\n"
-                        },
-                        {
-                          "text": "📍 Step 8: Testing review page...\n"
-                        },
-                        {
-                          "text": "  ✓ Current URL: https://www.mycvbuddy.com/review/1656e739-e31c-4360-ad18-46fb6dc08f3c\n"
-                        },
-                        {
-                          "text": "  ✓ Confirmed on review page\n"
-                        },
-                        {
-                          "text": "  ✓ Screenshot saved: review-page.png\n"
-                        },
-                        {
-                          "text": "  ⚠️ Download button not immediately visible - checking for other elements\n"
-                        },
-                        {
-                          "text": "✅ Review page loaded successfully\n"
-                        },
-                        {
-                          "text": "📍 Step 9: Verifying usage tracking...\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:37.319Z",
+                      "startTime": "2026-03-20T16:55:19.552Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -750,7 +709,7 @@
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                         "column": 64,
-                        "line": 218
+                        "line": 58
                       }
                     }
                   ],
@@ -774,7 +733,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 243,
+                        "line": 258,
                         "column": 10
                       }
                     }
@@ -787,7 +746,7 @@
                       "workerIndex": 7,
                       "parallelIndex": 2,
                       "status": "skipped",
-                      "duration": 3495,
+                      "duration": 8948,
                       "errors": [],
                       "stdout": [
                         {
@@ -796,13 +755,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:41.644Z",
+                      "startTime": "2026-03-20T16:55:23.025Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 243,
+                            "line": 258,
                             "column": 10
                           }
                         }
@@ -815,7 +774,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-443056649b75753f188a",
               "file": "onboarding-flow.spec.ts",
-              "line": 238,
+              "line": 253,
               "column": 7
             },
             {
@@ -831,28 +790,28 @@
                   "projectName": "webkit",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 9,
                       "parallelIndex": 4,
                       "status": "failed",
-                      "duration": 18653,
+                      "duration": 32647,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:257:64",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:272:64",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                           "column": 64,
-                          "line": 257
+                          "line": 272
                         },
-                        "snippet": "\u001b[0m \u001b[90m 255 |\u001b[39m     \n \u001b[90m 256 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 257 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 258 |\u001b[39m     \n \u001b[90m 259 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 260 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 270 |\u001b[39m     \n \u001b[90m 271 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 272 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 273 |\u001b[39m     \n \u001b[90m 274 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                             "column": 64,
-                            "line": 257
+                            "line": 272
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 255 |\u001b[39m     \n \u001b[90m 256 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 257 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 258 |\u001b[39m     \n \u001b[90m 259 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 260 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:257:64\u001b[22m"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Welcome to My CV Buddy!')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Welcome to My CV Buddy!')\u001b[22m\n\n\n\u001b[0m \u001b[90m 270 |\u001b[39m     \n \u001b[90m 271 |\u001b[39m     \u001b[90m// Verify onboarding modal appears\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 272 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Welcome to My CV Buddy!'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 273 |\u001b[39m     \n \u001b[90m 274 |\u001b[39m     \u001b[90m// Verify no escape routes\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'button:has-text(\"Skip\")'\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:272:64\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -862,7 +821,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:48.361Z",
+                      "startTime": "2026-03-20T16:56:03.824Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -884,7 +843,7 @@
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                         "column": 64,
-                        "line": 257
+                        "line": 272
                       }
                     }
                   ],
@@ -893,7 +852,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-6ec21e54f6334249f7d8",
               "file": "onboarding-flow.spec.ts",
-              "line": 246,
+              "line": 261,
               "column": 7
             },
             {
@@ -909,28 +868,28 @@
                   "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 10,
-                      "parallelIndex": 5,
+                      "workerIndex": 8,
+                      "parallelIndex": 2,
                       "status": "failed",
-                      "duration": 158007,
+                      "duration": 235373,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5",
+                        "message": "Error: page.click: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Continue with Free\")')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"block w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:border-gray-300 hover:bg-gray-50 transition-colors text-center\">Continue with Free (1 generation)</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <a href=\"/subscription\" class=\"block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-center\">Upgrade to £2.99/month for Unlimited Generations</a> intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\u001b[2m    - waiting for\" https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\"\u001b[22m\n",
+                        "stack": "Error: page.click: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Continue with Free\")')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"block w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:border-gray-300 hover:bg-gray-50 transition-colors text-center\">Continue with Free (1 generation)</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <a href=\"/subscription\" class=\"block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-center\">Upgrade to £2.99/month for Unlimited Generations</a> intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\u001b[2m    - waiting for\" https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\"\u001b[22m\n\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:176:16",
                         "location": {
                           "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                          "column": 64,
-                          "line": 218
+                          "column": 16,
+                          "line": 176
                         },
-                        "snippet": "\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 174 |\u001b[39m     \n \u001b[90m 175 |\u001b[39m     \u001b[90m// Click \"Continue with Free (1 generation)\" button to dismiss modal and start generation\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 176 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Continue with Free\")'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 177 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'  ✓ Clicked \"Continue with Free (1 generation)\"'\u001b[39m)\n \u001b[90m 178 |\u001b[39m     \n \u001b[90m 179 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'  ⏳ AI is generating your CV (this may take 2-3 minutes)...'\u001b[39m)\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "column": 64,
-                            "line": 218
+                            "column": 16,
+                            "line": 176
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Upgrade to Pro')\nExpected: visible\nError: strict mode violation: locator('text=Upgrade to Pro') resolved to 5 elements:\n    1) <p class=\"text-gray-300 text-sm\">Make it count! Upgrade to Pro for unlimited CV ge…</p> aka getByText('Make it count! Upgrade to Pro')\n    2) <a href=\"/subscription\" class=\"bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg\">Upgrade to Pro</a> aka getByRole('link', { name: 'Upgrade to Pro', exact: true })\n    3) <a href=\"/subscription\" class=\"flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).first()\n    4) <p class=\"text-sm font-bold text-white\">Upgrade to Pro</p> aka getByRole('paragraph').filter({ hasText: /^Upgrade to Pro$/ })\n    5) <a href=\"/subscription\" class=\"w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2 text-lg\">…</a> aka getByRole('link', { name: 'Upgrade to Pro - £2.99/month' }).nth(1)\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Upgrade to Pro')\u001b[22m\n\n\n\u001b[0m \u001b[90m 216 |\u001b[39m     \u001b[90m// Verify usage limit banner shows 0 remaining\u001b[39m\n \u001b[90m 217 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=0 Free Generation'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 218 |\u001b[39m       \u001b[33m.\u001b[39m\u001b[36mcatch\u001b[39m(() \u001b[33m=>\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=Upgrade to Pro'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible())\n \u001b[90m     |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 219 |\u001b[39m     \n \u001b[90m 220 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ Usage tracking updated correctly'\u001b[39m)\n \u001b[90m 221 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:218:64\u001b[22m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:217:5\u001b[22m"
+                          "message": "Error: page.click: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Continue with Free\")')\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"block w-full bg-white border-2 border-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:border-gray-300 hover:bg-gray-50 transition-colors text-center\">Continue with Free (1 generation)</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <a href=\"/subscription\" class=\"block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-center\">Upgrade to £2.99/month for Unlimited Generations</a> intercepts pointer events\u001b[22m\n\u001b[2m  3 × retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"space-y-3 mb-6\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\u001b[2m    - waiting for\" https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"https://www.mycvbuddy.com/review/0d143d34-7221-4071-b1cd-7845cd2ee461\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 174 |\u001b[39m     \n \u001b[90m 175 |\u001b[39m     \u001b[90m// Click \"Continue with Free (1 generation)\" button to dismiss modal and start generation\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 176 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Continue with Free\")'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 177 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'  ✓ Clicked \"Continue with Free (1 generation)\"'\u001b[39m)\n \u001b[90m 178 |\u001b[39m     \n \u001b[90m 179 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'  ⏳ AI is generating your CV (this may take 2-3 minutes)...'\u001b[39m)\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:176:16\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -998,61 +957,27 @@
                           "text": "📍 Step 7: Generating tailored CV...\n"
                         },
                         {
-                          "text": "  ⏳ AI is generating your CV (this may take 2-3 minutes)...\n"
+                          "text": "  ⏳ Clicked Generate button\n"
                         },
                         {
-                          "text": "  ⏳ Please be patient - generation includes AI processing and redirect to review page\n"
-                        },
-                        {
-                          "text": "✅ CV generated successfully and redirected to review page\n"
-                        },
-                        {
-                          "text": "📍 Step 8: Testing review page...\n"
-                        },
-                        {
-                          "text": "  ✓ Current URL: https://www.mycvbuddy.com/review/57f0d0a4-7bd4-4c76-9311-d7621fda6577\n"
-                        },
-                        {
-                          "text": "  ✓ Confirmed on review page\n"
-                        },
-                        {
-                          "text": "  ✓ Screenshot saved: review-page.png\n"
-                        },
-                        {
-                          "text": "  ⚠️ Download button not immediately visible - checking for other elements\n"
-                        },
-                        {
-                          "text": "✅ Review page loaded successfully\n"
-                        },
-                        {
-                          "text": "📍 Step 9: Verifying usage tracking...\n"
+                          "text": "  ✓ Upgrade modal appeared\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:49:08.731Z",
+                      "startTime": "2026-03-20T16:55:47.938Z",
                       "annotations": [],
                       "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\\test-failed-1.png"
-                        },
                         {
                           "name": "video",
                           "contentType": "video/webm",
                           "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Chrome\\error-context.md"
                         }
                       ],
                       "errorLocation": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "column": 64,
-                        "line": 218
+                        "column": 16,
+                        "line": 176
                       }
                     }
                   ],
@@ -1076,7 +1001,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 243,
+                        "line": 258,
                         "column": 10
                       }
                     }
@@ -1086,10 +1011,10 @@
                   "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 9,
-                      "parallelIndex": 2,
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
                       "status": "skipped",
-                      "duration": 2263,
+                      "duration": 6827,
                       "errors": [],
                       "stdout": [
                         {
@@ -1098,13 +1023,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:54.753Z",
+                      "startTime": "2026-03-20T16:56:29.447Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 243,
+                            "line": 258,
                             "column": 10
                           }
                         }
@@ -1117,7 +1042,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-659e8a3de374a32a3358",
               "file": "onboarding-flow.spec.ts",
-              "line": 238,
+              "line": 253,
               "column": 7
             },
             {
@@ -1133,10 +1058,10 @@
                   "projectName": "Mobile Chrome",
                   "results": [
                     {
-                      "workerIndex": 9,
-                      "parallelIndex": 2,
+                      "workerIndex": 11,
+                      "parallelIndex": 5,
                       "status": "passed",
-                      "duration": 6733,
+                      "duration": 13441,
                       "errors": [],
                       "stdout": [
                         {
@@ -1148,7 +1073,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:48:58.847Z",
+                      "startTime": "2026-03-20T16:56:46.824Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1158,7 +1083,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-4cf203b636db696dbe16",
               "file": "onboarding-flow.spec.ts",
-              "line": 246,
+              "line": 261,
               "column": 7
             },
             {
@@ -1174,25 +1099,28 @@
                   "projectName": "Mobile Safari",
                   "results": [
                     {
-                      "workerIndex": 11,
+                      "workerIndex": 12,
                       "parallelIndex": 3,
-                      "status": "timedOut",
-                      "duration": 241146,
+                      "status": "failed",
+                      "duration": 181904,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+                        "message": "Error: page.waitForURL: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for navigation to \"**/review/**\" until \"load\"\n============================================================",
+                        "stack": "Error: page.waitForURL: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for navigation to \"**/review/**\" until \"load\"\n============================================================\n    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:183:16",
+                        "location": {
+                          "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                          "column": 16,
+                          "line": 183
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 181 |\u001b[39m     \n \u001b[90m 182 |\u001b[39m     \u001b[90m// Wait for redirect to review page - this takes several minutes\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 183 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[32m'**/review/**'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m180000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 184 |\u001b[39m     \n \u001b[90m 185 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ CV generated successfully and redirected to review page'\u001b[39m)\n \u001b[90m 186 |\u001b[39m\u001b[0m"
                       },
                       "errors": [
-                        {
-                          "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
-                        },
                         {
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
                             "column": 16,
-                            "line": 173
+                            "line": 183
                           },
-                          "message": "Error: page.waitForURL: Test timeout of 240000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/review/**\" until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 171 |\u001b[39m     \n \u001b[90m 172 |\u001b[39m     \u001b[90m// Wait for redirect to review page - this takes several minutes\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 173 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[32m'**/review/**'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m180000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 174 |\u001b[39m     \n \u001b[90m 175 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ CV generated successfully and redirected to review page'\u001b[39m)\n \u001b[90m 176 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:173:16\u001b[22m"
+                          "message": "Error: page.waitForURL: Target page, context or browser has been closed\n=========================== logs ===========================\nwaiting for navigation to \"**/review/**\" until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 181 |\u001b[39m     \n \u001b[90m 182 |\u001b[39m     \u001b[90m// Wait for redirect to review page - this takes several minutes\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 183 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[32m'**/review/**'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m180000\u001b[39m })\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 184 |\u001b[39m     \n \u001b[90m 185 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ CV generated successfully and redirected to review page'\u001b[39m)\n \u001b[90m 186 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts:183:16\u001b[22m"
                         }
                       ],
                       "stdout": [
@@ -1260,6 +1188,15 @@
                           "text": "📍 Step 7: Generating tailored CV...\n"
                         },
                         {
+                          "text": "  ⏳ Clicked Generate button\n"
+                        },
+                        {
+                          "text": "  ✓ Upgrade modal appeared\n"
+                        },
+                        {
+                          "text": "  ✓ Clicked \"Continue with Free (1 generation)\"\n"
+                        },
+                        {
                           "text": "  ⏳ AI is generating your CV (this may take 2-3 minutes)...\n"
                         },
                         {
@@ -1268,25 +1205,20 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:49:10.909Z",
+                      "startTime": "2026-03-20T16:56:52.678Z",
                       "annotations": [],
                       "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\\test-failed-1.png"
-                        },
                         {
                           "name": "video",
                           "contentType": "video/webm",
                           "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\\video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\test-results\\onboarding-flow-Complete-O-70445-oarding-→-Upload-→-Generate-Mobile-Safari\\error-context.md"
                         }
-                      ]
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
+                        "column": 16,
+                        "line": 183
+                      }
                     }
                   ],
                   "status": "unexpected"
@@ -1309,7 +1241,7 @@
                       "type": "skip",
                       "location": {
                         "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                        "line": 243,
+                        "line": 258,
                         "column": 10
                       }
                     }
@@ -1320,9 +1252,9 @@
                   "results": [
                     {
                       "workerIndex": 13,
-                      "parallelIndex": 2,
+                      "parallelIndex": 4,
                       "status": "skipped",
-                      "duration": 2220,
+                      "duration": 5772,
                       "errors": [],
                       "stdout": [
                         {
@@ -1331,13 +1263,13 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:49:14.767Z",
+                      "startTime": "2026-03-20T16:56:59.449Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "location": {
                             "file": "C:\\Users\\jaket\\Desktop\\CV\\cv-adapter\\tests\\e2e\\onboarding-flow.spec.ts",
-                            "line": 243,
+                            "line": 258,
                             "column": 10
                           }
                         }
@@ -1350,7 +1282,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-a725b6a1dab65773280c",
               "file": "onboarding-flow.spec.ts",
-              "line": 238,
+              "line": 253,
               "column": 7
             },
             {
@@ -1366,10 +1298,10 @@
                   "projectName": "Mobile Safari",
                   "results": [
                     {
-                      "workerIndex": 12,
-                      "parallelIndex": 4,
+                      "workerIndex": 14,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 10032,
+                      "duration": 6976,
                       "errors": [],
                       "stdout": [
                         {
@@ -1381,7 +1313,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-03-20T16:49:14.686Z",
+                      "startTime": "2026-03-20T16:57:14.021Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1391,7 +1323,7 @@
               ],
               "id": "b6a9ad3f1af3b775c25e-0d2f7e56fde85504833a",
               "file": "onboarding-flow.spec.ts",
-              "line": 246,
+              "line": 261,
               "column": 7
             }
           ]
@@ -1401,8 +1333,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-03-20T16:48:15.419Z",
-    "duration": 297794.64400000003,
+    "startTime": "2026-03-20T16:54:49.364Z",
+    "duration": 307200.401,
     "expected": 4,
     "skipped": 5,
     "unexpected": 6,
