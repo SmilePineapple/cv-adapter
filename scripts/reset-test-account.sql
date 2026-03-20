@@ -13,6 +13,7 @@ BEGIN
 
     IF test_user_id IS NOT NULL THEN
         -- Delete all user data in reverse dependency order
+        -- Only deleting tables that actually exist in the database
         
         -- 1. Delete generations
         DELETE FROM generations WHERE user_id = test_user_id;
@@ -22,7 +23,7 @@ BEGIN
         DELETE FROM cover_letters WHERE user_id = test_user_id;
         RAISE NOTICE 'Deleted cover letters for user %', test_user_id;
         
-        -- 3. Delete interview preps
+        -- 3. Delete interview preps (if table exists)
         DELETE FROM interview_preps WHERE user_id = test_user_id;
         RAISE NOTICE 'Deleted interview preps for user %', test_user_id;
         
@@ -30,11 +31,7 @@ BEGIN
         DELETE FROM cvs WHERE user_id = test_user_id;
         RAISE NOTICE 'Deleted CVs for user %', test_user_id;
         
-        -- 5. Delete activity logs
-        DELETE FROM activity_logs WHERE user_id = test_user_id;
-        RAISE NOTICE 'Deleted activity logs for user %', test_user_id;
-        
-        -- 6. Reset usage tracking to fresh state
+        -- 5. Reset usage tracking to fresh state
         UPDATE usage_tracking
         SET 
             plan_type = 'free',
@@ -45,15 +42,15 @@ BEGIN
         WHERE user_id = test_user_id;
         RAISE NOTICE 'Reset usage tracking for user %', test_user_id;
         
-        -- 7. Delete subscriptions
+        -- 6. Delete subscriptions
         DELETE FROM subscriptions WHERE user_id = test_user_id;
         RAISE NOTICE 'Deleted subscriptions for user %', test_user_id;
         
-        -- 8. Delete purchases
+        -- 7. Delete purchases
         DELETE FROM purchases WHERE user_id = test_user_id;
         RAISE NOTICE 'Deleted purchases for user %', test_user_id;
         
-        -- 9. Reset profile
+        -- 8. Reset profile
         UPDATE profiles
         SET 
             onboarding_completed = FALSE,
