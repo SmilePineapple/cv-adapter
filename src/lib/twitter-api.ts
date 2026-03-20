@@ -113,102 +113,126 @@ function generateOAuthHeader(
 }
 
 /**
- * Post a tweet to Twitter using API v2
+ * Post a tweet to Twitter using API v2 with retry logic
  * v2 API is available on Free tier (1,500 tweets/month)
+ * Implements exponential backoff for 503 errors (Twitter API instability)
  */
 export async function postTweet(
   content: string,
   config: TwitterConfig
 ): Promise<{ success: boolean; tweetId?: string; tweetUrl?: string; error?: string }> {
-  try {
-    console.log('[Twitter POST] Starting tweet post with config:', {
-      api_key: config.api_key?.substring(0, 10) + '...',
-      api_key_length: config.api_key?.length,
-      access_token: config.access_token?.substring(0, 25) + '...',
-      access_token_length: config.access_token?.length,
-      api_secret_length: config.api_secret?.length,
-      token_secret_length: config.access_token_secret?.length,
-      content_length: content.length
-    })
-    
-    // Use v2 API which works with Free tier (1,500 tweets/month)
-    const url = 'https://api.twitter.com/2/tweets'
-    const method = 'POST'
-    
-    // v2 uses JSON body, not form parameters
-    const body = JSON.stringify({ text: content })
-
-    console.log('[Twitter POST] Generating OAuth signature for v2 API:', { method, url })
-
-    // Generate OAuth header WITHOUT body params (v2 uses JSON body)
-    const authHeader = generateOAuthHeader(method, url, config)
-    
-    console.log('[Twitter POST] OAuth header generated:', {
-      headerLength: authHeader.length,
-      headerPreview: authHeader.substring(0, 100) + '...'
-    })
-    
-    console.log('[Twitter POST] Request details:', {
-      url,
-      method,
-      bodyLength: body.length,
-      bodyPreview: body.substring(0, 100) + '...',
-      authHeaderPreview: authHeader.substring(0, 150) + '...'
-    })
-    
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Authorization': authHeader,
-        'Content-Type': 'application/json'
-      },
-      body
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      let errorData
-      try {
-        errorData = JSON.parse(errorText)
-      } catch {
-        errorData = { error: errorText }
+  const MAX_RETRIES = 3
+  const INITIAL_DELAY = 2000 // 2 seconds
+  
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      if (attempt > 1) {
+        console.log(`[Twitter POST] Retry attempt ${attempt}/${MAX_RETRIES}`)
+      } else {
+        console.log('[Twitter POST] Starting tweet post with config:', {
+          api_key: config.api_key?.substring(0, 10) + '...',
+          api_key_length: config.api_key?.length,
+          access_token: config.access_token?.substring(0, 25) + '...',
+          access_token_length: config.access_token?.length,
+          api_secret_length: config.api_secret?.length,
+          token_secret_length: config.access_token_secret?.length,
+          content_length: content.length
+        })
       }
-      console.error('[Twitter POST] API error response:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData,
-        requestUrl: url,
-        requestMethod: method,
-        body: body
+      
+      // Use v2 API which works with Free tier (1,500 tweets/month)
+      const url = 'https://api.twitter.com/2/tweets'
+      const method = 'POST'
+      
+      // v2 uses JSON body, not form parameters
+      const body = JSON.stringify({ text: content })
+
+      // Generate OAuth header WITHOUT body params (v2 uses JSON body)
+      const authHeader = generateOAuthHeader(method, url, config)
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/json'
+        },
+        body
       })
-      return {
-        success: false,
-        error: JSON.stringify(errorData)
+
+      // Handle 503 Service Unavailable with retry
+      if (response.status === 503 && attempt < MAX_RETRIES) {
+        const delay = INITIAL_DELAY * Math.pow(2, attempt - 1)
+        console.warn(`[Twitter POST] 503 Service Unavailable. Retrying in ${delay}ms... (attempt ${attempt}/${MAX_RETRIES})`)
+        await new Promise(resolve => setTimeout(resolve, delay))
+        continue // Retry
       }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        let errorData
+        try {
+          errorData = JSON.parse(errorText)
+        } catch {
+          errorData = { error: errorText }
+        }
+        console.error('[Twitter POST] API error response:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData,
+          attempt: `${attempt}/${MAX_RETRIES}`,
+          requestUrl: url,
+          requestMethod: method
+        })
+        
+        // If this was the last attempt or not a retryable error, return failure
+        if (attempt === MAX_RETRIES || response.status !== 503) {
+          return {
+            success: false,
+            error: JSON.stringify(errorData)
+          }
+        }
+      } else {
+        // Success!
+        const data = await response.json()
+        // v2 API returns { data: { id, text } }
+        const tweetId = data.data?.id || data.id
+        const username = 'JPicklejak5299' // v2 doesn't return username in response
+
+        console.log('[Twitter POST] Tweet posted successfully:', {
+          tweetId,
+          attempt: attempt > 1 ? `${attempt}/${MAX_RETRIES}` : '1/1',
+          response: data
+        })
+
+        return {
+          success: true,
+          tweetId,
+          tweetUrl: `https://twitter.com/${username}/status/${tweetId}`
+        }
+      }
+
+    } catch (error) {
+      console.error(`[Twitter POST] Error on attempt ${attempt}/${MAX_RETRIES}:`, error)
+      
+      // If this was the last attempt, return failure
+      if (attempt === MAX_RETRIES) {
+        return {
+          success: false,
+          error: String(error)
+        }
+      }
+      
+      // Otherwise, wait and retry
+      const delay = INITIAL_DELAY * Math.pow(2, attempt - 1)
+      console.log(`[Twitter POST] Retrying in ${delay}ms...`)
+      await new Promise(resolve => setTimeout(resolve, delay))
     }
-
-    const data = await response.json()
-    // v2 API returns { data: { id, text } }
-    const tweetId = data.data?.id || data.id
-    const username = 'JPicklejak5299' // v2 doesn't return username in response
-
-    console.log('[Twitter POST] Tweet posted successfully:', {
-      tweetId,
-      response: data
-    })
-
-    return {
-      success: true,
-      tweetId,
-      tweetUrl: `https://twitter.com/${username}/status/${tweetId}`
-    }
-
-  } catch (error) {
-    console.error('Error posting tweet:', error)
-    return {
-      success: false,
-      error: String(error)
-    }
+  }
+  
+  // Should never reach here, but just in case
+  return {
+    success: false,
+    error: 'Max retries exceeded'
   }
 }
 
