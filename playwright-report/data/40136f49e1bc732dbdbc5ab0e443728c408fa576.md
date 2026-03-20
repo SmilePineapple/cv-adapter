@@ -1,0 +1,107 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Back" [ref=e6]:
+          - /url: /dashboard
+          - img [ref=e7]
+          - generic [ref=e9]: Back
+        - generic [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e15]: CV Adapter
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e21]: "1"
+          - generic [ref=e26]: "2"
+          - generic [ref=e31]: "3"
+        - generic [ref=e32]:
+          - paragraph [ref=e33]: Upload CV
+          - paragraph [ref=e34]: Upload your existing CV
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - generic [ref=e41]:
+              - heading "CV Uploaded Successfully!" [level=1] [ref=e42]
+              - paragraph [ref=e43]: Your CV has been parsed and is ready for tailoring
+          - button "Upload different CV" [ref=e44]:
+            - img [ref=e45]
+        - generic [ref=e49]:
+          - img [ref=e50]
+          - generic [ref=e53]:
+            - paragraph [ref=e54]: Pamela Dale-Rourke CV.pdf
+            - paragraph [ref=e55]: 186 KB •11 sections detected
+        - generic [ref=e57]:
+          - img [ref=e58]
+          - generic [ref=e61]: Successfully parsed CV sections
+        - generic [ref=e62]:
+          - heading "Detected Sections" [level=3] [ref=e63]
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - img [ref=e66]
+              - generic [ref=e69]: name
+            - generic [ref=e70]:
+              - img [ref=e71]
+              - generic [ref=e74]: contact
+            - generic [ref=e75]:
+              - img [ref=e76]
+              - generic [ref=e79]: summary
+            - generic [ref=e80]:
+              - img [ref=e81]
+              - generic [ref=e84]: experience
+            - generic [ref=e85]:
+              - img [ref=e86]
+              - generic [ref=e89]: education
+            - generic [ref=e90]:
+              - img [ref=e91]
+              - generic [ref=e94]: skills
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - generic [ref=e99]: certifications
+            - generic [ref=e100]:
+              - img [ref=e101]
+              - generic [ref=e104]: hobbies
+            - generic [ref=e105]:
+              - img [ref=e106]
+              - generic [ref=e109]: groups
+            - generic [ref=e110]:
+              - img [ref=e111]
+              - generic [ref=e114]: strengths
+            - generic [ref=e115]:
+              - img [ref=e116]
+              - generic [ref=e119]: additional
+        - generic [ref=e121]:
+          - heading "Profile Photo" [level=3] [ref=e122]:
+            - img [ref=e123]
+            - text: Profile Photo
+          - generic [ref=e126]:
+            - img [ref=e129]
+            - generic [ref=e132]:
+              - generic [ref=e134] [cursor=pointer]:
+                - img [ref=e135]
+                - text: Upload Photo
+              - generic [ref=e138]:
+                - paragraph [ref=e139]: "• Max size: 5MB"
+                - paragraph [ref=e140]: "• Formats: JPG, PNG, GIF"
+                - paragraph [ref=e141]: "• Recommended: Square image, 400x400px"
+        - generic [ref=e142]:
+          - button "Continue to Job Matching" [ref=e143]
+          - button "Upload Different CV" [ref=e144]
+        - generic [ref=e145]:
+          - heading "📚 Helpful Resources" [level=3] [ref=e146]
+          - generic [ref=e147]:
+            - link "→ CV Writing Guide 2026" [ref=e148]:
+              - /url: /cv-writing-guide
+            - link "→ ATS Optimization Guide" [ref=e149]:
+              - /url: /ats-optimization-guide
+            - link "→ CV Examples by Industry" [ref=e150]:
+              - /url: /cv-examples
+            - link "→ Interview Preparation Guide" [ref=e151]:
+              - /url: /interview-prep
+  - region "Notifications alt+T"
+  - alert [ref=e152]: Upload CV - Free CV Upload & Analysis | CV Adapter
+```

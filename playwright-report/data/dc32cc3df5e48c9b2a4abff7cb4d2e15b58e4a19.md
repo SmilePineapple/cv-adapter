@@ -1,0 +1,183 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: "Your journey to a better CV:"
+        - generic [ref=e7]: Takes 2 minutes
+      - generic [ref=e8]:
+        - generic [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e14]: Upload
+        - generic [ref=e18]:
+          - generic [ref=e19]: "2"
+          - generic [ref=e20]: Generate
+        - generic [ref=e24]:
+          - generic [ref=e25]: "3"
+          - generic [ref=e26]: Review
+        - generic [ref=e30]:
+          - generic [ref=e31]: "4"
+          - generic [ref=e32]: Download
+    - banner [ref=e33]:
+      - generic [ref=e35]:
+        - link "Back to Dashboard" [ref=e36] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e37]
+          - text: Back to Dashboard
+        - generic [ref=e39]:
+          - generic [ref=e41]: CV
+          - generic [ref=e42]: CV Adapter
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Tailor Your CV with AI" [level=1] [ref=e46]
+        - paragraph [ref=e47]: Enter the job details and let AI optimize your CV for maximum impact
+      - generic [ref=e50]:
+        - img [ref=e51]
+        - generic [ref=e54]:
+          - paragraph [ref=e55]: "Selected CV: Pamela Dale-Rourke CV.pdf"
+          - paragraph [ref=e56]: 11 sections • Uploaded 3/20/2026
+      - generic [ref=e59]:
+        - img [ref=e60]
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: Output Language
+          - paragraph [ref=e65]:
+            - text: We detected your CV is in
+            - strong [ref=e66]: English
+            - text: . The AI will generate content in the same language, or you can override it below.
+          - button "🇬🇧 English" [ref=e68]:
+            - img [ref=e69]
+            - generic [ref=e72]: 🇬🇧 English
+            - img [ref=e73]
+      - generic [ref=e75]:
+        - generic [ref=e77]:
+          - img [ref=e79]
+          - generic [ref=e82]:
+            - heading "Auto-fill from Job Posting" [level=3] [ref=e83]
+            - paragraph [ref=e84]: Paste a job URL to extract details
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: Job Posting URL
+            - generic [ref=e88]:
+              - textbox "https://www.indeed.co.uk/viewjob?jk=..." [ref=e89]
+              - button "Extract" [disabled] [ref=e90]:
+                - img [ref=e91]
+                - text: Extract
+            - paragraph [ref=e95]: Supports Indeed, LinkedIn Jobs, Reed, Glassdoor, and more
+          - generic [ref=e96]:
+            - img [ref=e97]
+            - paragraph [ref=e99]:
+              - strong [ref=e100]: "Free users:"
+              - text: 3 job scrapes.
+              - strong [ref=e101]: "Pro users:"
+              - text: Unlimited scrapes.
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]: Job Title *
+          - generic [ref=e105]:
+            - img [ref=e106]
+            - textbox "Job Title *" [ref=e109]:
+              - /placeholder: e.g. Senior Software Engineer
+              - text: Senior Software Engineer
+        - generic [ref=e110]:
+          - generic [ref=e111]: Job Description *
+          - textbox "Job Description *" [ref=e112]:
+            - /placeholder: Paste the full job description here. Include requirements, responsibilities, and qualifications for best results.
+            - text: "Senior Software Engineer We're looking for an experienced software engineer to join our team. Requirements: - 5+ years of experience - Strong TypeScript/JavaScript skills - Experience with React and Node.js - Good communication skills"
+          - paragraph [ref=e113]: "Tip: Include the full job posting for better keyword matching and ATS optimization"
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - img [ref=e117]
+              - text: Rewrite Style
+            - combobox "Rewrite Style" [ref=e120]:
+              - option "Conservative - Minimal changes"
+              - option "Balanced - Moderate optimization" [selected]
+              - option "Bold - Maximum alignment"
+            - paragraph [ref=e121]: Good balance of optimization and authenticity
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - img [ref=e124]
+              - text: Tone
+            - combobox "Tone" [ref=e126]:
+              - option "Professional - Formal business language" [selected]
+              - option "Friendly - Warm yet professional"
+              - option "Creative - Dynamic and engaging"
+              - option "Technical - Precise technical language"
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - img [ref=e129]
+            - text: Custom Sections
+          - paragraph [ref=e130]: Add additional sections to make your CV stand out. AI will generate relevant content based on your background.
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: "💡 Popular section ideas:"
+            - generic [ref=e133]:
+              - button "+ Volunteer Work" [ref=e134]
+              - button "+ Publications" [ref=e135]
+              - button "+ Awards & Honors" [ref=e136]
+              - button "+ Certifications" [ref=e137]
+              - button "+ Projects" [ref=e138]
+              - button "+ Languages" [ref=e139]
+              - button "+ Professional Memberships" [ref=e140]
+              - button "+ Speaking Engagements" [ref=e141]
+              - button "+ Patents" [ref=e142]
+              - button "+ Research" [ref=e143]
+              - button "+ Teaching Experience" [ref=e144]
+              - button "+ Community Involvement" [ref=e145]
+          - button "Add Custom Section" [ref=e146]:
+            - img [ref=e147]
+            - text: Add Custom Section
+        - button "Generate Tailored CV" [active] [ref=e149]:
+          - img [ref=e150]
+          - text: Generate Tailored CV
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - img [ref=e155]
+          - heading "ATS Optimized" [level=3] [ref=e157]
+          - paragraph [ref=e158]: Keywords matched to job requirements
+        - generic [ref=e159]:
+          - img [ref=e161]
+          - heading "Format Preserved" [level=3] [ref=e164]
+          - paragraph [ref=e165]: Original structure maintained
+        - generic [ref=e166]:
+          - img [ref=e168]
+          - heading "Customizable" [level=3] [ref=e171]
+          - paragraph [ref=e172]: Review and edit before download
+    - generic [ref=e175]:
+      - button [ref=e176]:
+        - img [ref=e177]
+      - generic [ref=e180]:
+        - generic [ref=e181]:
+          - generic [ref=e182]: 🎉
+          - heading "You're About to Generate Your First CV!" [level=2] [ref=e183]
+          - paragraph [ref=e184]: Pro users get unlimited generations + ATS optimization
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - img [ref=e188]
+            - paragraph [ref=e190]: Unlimited CV generations for different jobs
+          - generic [ref=e191]:
+            - img [ref=e193]
+            - paragraph [ref=e196]: 95%+ ATS score guaranteed
+          - generic [ref=e197]:
+            - img [ref=e199]
+            - paragraph [ref=e202]: 20+ premium templates
+          - generic [ref=e203]:
+            - img [ref=e205]
+            - paragraph [ref=e208]: Cover letter generator included
+        - paragraph [ref=e210]: ✨ No credit card required for trial
+        - generic [ref=e211]:
+          - link "Try Pro Free for 7 Days" [ref=e212] [cursor=pointer]:
+            - /url: /subscription
+          - button "Continue with Free (1 generation)" [ref=e213]
+        - generic [ref=e214]:
+          - generic [ref=e215]:
+            - generic [ref=e216]: ⭐
+            - generic [ref=e217]: ⭐
+            - generic [ref=e218]: ⭐
+            - generic [ref=e219]: ⭐
+            - generic [ref=e220]: ⭐
+          - paragraph [ref=e221]: Rated 4.9/5 by 1,247 users
+  - region "Notifications alt+T"
+  - alert [ref=e222]
+```
