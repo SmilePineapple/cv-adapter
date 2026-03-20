@@ -35,9 +35,9 @@ BEGIN
         UPDATE usage_tracking
         SET 
             plan_type = 'free',
-            current_generations = 0,
+            lifetime_generation_count = 0,
+            generation_count = 0,
             max_lifetime_generations = 1,
-            last_generation_date = NULL,
             updated_at = NOW()
         WHERE user_id = test_user_id;
         RAISE NOTICE 'Reset usage tracking for user %', test_user_id;
