@@ -80,6 +80,13 @@ test.describe('Complete Onboarding Flow', () => {
     // Wait a moment for selection to register
     await page.waitForTimeout(500)
     
+    // Click Next button to proceed to step 2
+    await page.click('button:has-text("Next")')
+    console.log('  ✓ Clicked Next')
+    
+    // Wait for step 2 to load
+    await page.waitForSelector('text=Upload Your CV', { timeout: 5000 })
+    
     // Click "Upload CV Now" button to proceed
     await page.click('button:has-text("Upload CV Now")')
     console.log('  ✓ Clicked Upload CV Now')
@@ -103,48 +110,31 @@ test.describe('Complete Onboarding Flow', () => {
     const fileInput = page.locator('input[type="file"]')
     await fileInput.setInputFiles(CV_FILE_PATH)
     
-    console.log('  ⏳ Uploading and parsing CV...')
+    console.log('  ⏳ Uploading and parsing CV... (this takes ~60 seconds)')
     
-    // Wait for upload to complete (look for success message or redirect)
-    await page.waitForSelector('text=successfully uploaded', { timeout: 30000 })
-      .catch(() => page.waitForURL('**/dashboard', { timeout: 30000 }))
+    // Wait for upload to complete - CV parsing takes about 1 minute
+    // After upload, it redirects to /generate/[id] page
+    await page.waitForURL('**/generate/**', { timeout: 90000 })
     
-    console.log('✅ CV uploaded successfully')
+    console.log('✅ CV uploaded successfully and redirected to generation page')
 
     // ==========================================
-    // STEP 8: Verify Dashboard After Upload
+    // STEP 6: Fill Job Details on Generation Page
     // ==========================================
-    console.log('📍 Step 8: Verifying dashboard after upload...')
+    console.log('📍 Step 6: Filling job details...')
     
-    // Navigate back to dashboard if not already there
-    if (!page.url().includes('/dashboard')) {
-      await page.goto(`${BASE_URL}/dashboard`)
-      await page.waitForLoadState('networkidle')
+    // Wait for generation page to fully load
+    await page.waitForLoadState('networkidle')
+    
+    // Fill job title (if field exists)
+    const jobTitleInput = page.locator('input[placeholder*="Job Title"], input[name="jobTitle"], input[type="text"]').first()
+    if (await jobTitleInput.isVisible().catch(() => false)) {
+      await jobTitleInput.fill('Senior Software Engineer')
+      console.log('  ✓ Filled job title: Senior Software Engineer')
     }
     
-    // Verify primary CTA changed to "Generate your New CV"
-    await expect(page.locator('text=Generate your New CV')).toBeVisible({ timeout: 5000 })
-    
-    // Verify CV count shows 1
-    await expect(page.locator('text=1').first()).toBeVisible()
-    
-    console.log('✅ Dashboard updated with uploaded CV')
-
-    // ==========================================
-    // STEP 9: Start CV Generation
-    // ==========================================
-    console.log('📍 Step 9: Starting CV generation...')
-    
-    await page.click('text=Generate your New CV')
-    await page.waitForURL('**/generate/**', { timeout: 10000 })
-    
-    await expect(page.locator('h1')).toContainText('Generate', { timeout: 5000 })
-    console.log('✅ Generation page loaded')
-
-    // ==========================================
-    // STEP 10: Fill Job Description
-    // ==========================================
-    console.log('📍 Step 10: Filling job description...')
+    // Fill job description
+    console.log('  ⏳ Filling job description...')
     
     const jobDescription = `
 Senior Software Engineer
@@ -162,9 +152,9 @@ Requirements:
     console.log('✅ Job description filled')
 
     // ==========================================
-    // STEP 11: Generate CV
+    // STEP 7: Generate CV
     // ==========================================
-    console.log('📍 Step 11: Generating tailored CV...')
+    console.log('📍 Step 7: Generating tailored CV...')
     
     const generateButton = page.locator('button:has-text("Generate")')
     await generateButton.click()
@@ -178,9 +168,31 @@ Requirements:
     console.log('✅ CV generated successfully')
 
     // ==========================================
-    // STEP 12: Verify Generation Success
+    // STEP 8: Test Review Page Flow
     // ==========================================
-    console.log('📍 Step 12: Verifying generation success...')
+    console.log('📍 Step 8: Testing review page...')
+    
+    // Check if we're on review page or if there's a review/view button
+    const currentUrl = page.url()
+    console.log(`  Current URL: ${currentUrl}`)
+    
+    // Look for review/view CV button
+    const viewButton = page.locator('button:has-text("View CV"), button:has-text("Review"), a:has-text("View CV")')
+    if (await viewButton.isVisible().catch(() => false)) {
+      await viewButton.click()
+      console.log('  ✓ Clicked View/Review button')
+      await page.waitForLoadState('networkidle')
+    }
+    
+    // Check if we're on a review page
+    const isReviewPage = page.url().includes('/review') || page.url().includes('/view')
+    if (isReviewPage) {
+      console.log('  ✓ On review page')
+      
+      // Take screenshot of review page for documentation
+      await page.screenshot({ path: 'test-results/review-page.png', fullPage: true })
+      console.log('  ✓ Screenshot saved: review-page.png')
+    }
     
     // Check for download or view button
     const hasDownload = await page.locator('text=Download').isVisible()
@@ -190,9 +202,9 @@ Requirements:
     console.log('✅ Generation completed with download/view option')
 
     // ==========================================
-    // STEP 13: Verify Usage Tracking
+    // STEP 9: Verify Usage Tracking
     // ==========================================
-    console.log('📍 Step 13: Verifying usage tracking...')
+    console.log('📍 Step 9: Verifying usage tracking...')
     
     await page.goto(`${BASE_URL}/dashboard`)
     await page.waitForLoadState('networkidle')

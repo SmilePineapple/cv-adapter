@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e1]:
+- generic [active] [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e4]:
       - generic [ref=e6]:
@@ -11,34 +11,30 @@
           - paragraph [ref=e15]: Upload → Generate → Download - Get started in 3 easy steps
       - generic [ref=e21]:
         - generic [ref=e22]:
-          - heading "Upload Your CV" [level=3] [ref=e23]
-          - paragraph [ref=e24]: We'll use this as the foundation for your tailored CVs
-        - generic [ref=e26]:
-          - img [ref=e28]
-          - heading "Ready to upload your CV?" [level=4] [ref=e32]
-          - paragraph [ref=e33]: "Supported formats: PDF, DOCX (Max 5MB)"
-          - button "Upload CV Now" [ref=e34]
-        - generic [ref=e35]:
-          - heading "What happens next?" [level=5] [ref=e36]
-          - list [ref=e37]:
-            - listitem [ref=e38]:
-              - img [ref=e39]
-              - generic [ref=e42]: We'll parse your CV and extract all sections
-            - listitem [ref=e43]:
-              - img [ref=e44]
-              - generic [ref=e47]: You can then tailor it for any job description
-            - listitem [ref=e48]:
-              - img [ref=e49]
-              - generic [ref=e52]: Export in multiple formats (PDF, DOCX, HTML)
-      - generic [ref=e53]:
-        - generic [ref=e54]: Step 2 of 3
-        - generic [ref=e55]:
-          - button "Back" [ref=e56]:
-            - img [ref=e57]
-            - text: Back
-          - button "Next" [active] [ref=e60]:
-            - text: Next
-            - img [ref=e61]
+          - heading "What's your goal?" [level=3] [ref=e23]
+          - paragraph [ref=e24]: This helps us personalize your experience
+        - generic [ref=e25]:
+          - button "Get a New Job Tailor my CV for specific job applications" [ref=e26]:
+            - img [ref=e28]
+            - heading "Get a New Job" [level=4] [ref=e31]
+            - paragraph [ref=e32]: Tailor my CV for specific job applications
+          - button "Change Career Pivot to a new industry or role" [ref=e33]:
+            - img [ref=e35]
+            - heading "Change Career" [level=4] [ref=e38]
+            - paragraph [ref=e39]: Pivot to a new industry or role
+          - button "Work Abroad Apply for international opportunities" [ref=e40]:
+            - img [ref=e42]
+            - heading "Work Abroad" [level=4] [ref=e46]
+            - paragraph [ref=e47]: Apply for international opportunities
+          - button "Improve My CV Make my CV more professional and ATS-friendly" [ref=e48]:
+            - img [ref=e50]
+            - heading "Improve My CV" [level=4] [ref=e55]
+            - paragraph [ref=e56]: Make my CV more professional and ATS-friendly
+      - generic [ref=e57]:
+        - generic [ref=e58]: Step 1 of 3
+        - button "Next" [disabled] [ref=e60]:
+          - text: Next
+          - img [ref=e61]
     - banner [ref=e64]:
       - generic [ref=e66]:
         - generic [ref=e67]:
@@ -284,5 +280,4 @@
           - text: Upgrade to Pro - £2.99/month
   - region "Notifications alt+T"
   - alert [ref=e421]: Dashboard - Manage Your CVs | CV Adapter
-  - button "Open chat" [ref=e422] [cursor=pointer]
 ```
