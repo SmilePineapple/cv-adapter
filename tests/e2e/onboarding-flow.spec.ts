@@ -14,7 +14,7 @@ import path from 'path'
 const TEST_EMAIL = 'jake.rourke@btinternet.com'
 const TEST_PASSWORD = 'Fearnley09' // Update with actual password
 const CV_FILE_PATH = 'C:\\Users\\jaket\\Desktop\\Personal\\Pamela Dale-Rourke CV.pdf'
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+const BASE_URL = process.env.BASE_URL || 'https://www.mycvbuddy.com'
 
 test.describe('Complete Onboarding Flow', () => {
   test.setTimeout(120000) // 2 minutes for complete flow

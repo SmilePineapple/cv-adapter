@@ -1,0 +1,88 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [active]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - navigation [ref=e7]:
+            - button "previous" [disabled] [ref=e8]:
+              - img "previous" [ref=e9]
+            - generic [ref=e11]:
+              - generic [ref=e12]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e13]:
+              - img "next" [ref=e14]
+          - img
+        - generic [ref=e16]:
+          - link "Next.js 15.5.14 (outdated) Turbopack" [ref=e17] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e18]
+            - generic "An outdated version detected (latest is 16.2.0), upgrade is highly recommended!" [ref=e20]: Next.js 15.5.14 (outdated)
+            - generic [ref=e21]: Turbopack
+          - img
+      - dialog "Runtime Error" [ref=e23]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e30]: Runtime Error
+              - generic [ref=e31]:
+                - button "Copy Error Info" [ref=e32] [cursor=pointer]:
+                  - img [ref=e33]
+                - button "No related documentation found" [disabled] [ref=e35]:
+                  - img [ref=e36]
+                - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e38] [cursor=pointer]:
+                  - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                  - img [ref=e39]
+            - paragraph [ref=e48]: either NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY env variables or supabaseUrl and supabaseKey are required!
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - paragraph [ref=e52]:
+                - img [ref=e54]
+                - generic [ref=e58]: src/lib/supabase.ts (14:37) @ createSupabaseClient
+                - button "Open in editor" [ref=e59] [cursor=pointer]:
+                  - img [ref=e61]
+              - generic [ref=e64]:
+                - generic [ref=e65]: 12 | // Client component client (for use in client components)
+                - generic [ref=e66]: "13 | export const createSupabaseClient = () => {"
+                - generic [ref=e67]: "> 14 | return createClientComponentClient()"
+                - generic [ref=e68]: "| ^"
+                - generic [ref=e69]: "15 | }"
+                - generic [ref=e70]: 16 |
+            - generic [ref=e71]:
+              - generic [ref=e72]:
+                - paragraph [ref=e73]:
+                  - text: Call Stack
+                  - generic [ref=e74]: "60"
+                - button "Show 58 ignore-listed frame(s)" [ref=e75] [cursor=pointer]:
+                  - text: Show 58 ignore-listed frame(s)
+                  - img [ref=e76]
+              - generic [ref=e78]:
+                - generic [ref=e79]:
+                  - text: createSupabaseClient
+                  - button "Open createSupabaseClient in editor" [ref=e80] [cursor=pointer]:
+                    - img [ref=e81]
+                - text: src/lib/supabase.ts (14:37)
+              - generic [ref=e83]:
+                - generic [ref=e84]:
+                  - text: SignupPage
+                  - button "Open SignupPage in editor" [ref=e85] [cursor=pointer]:
+                    - img [ref=e86]
+                - text: src/app/auth/signup/page.tsx (18:40)
+        - generic [ref=e88]:
+          - generic [ref=e89]: "1"
+          - generic [ref=e90]: "2"
+    - generic [ref=e95] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e96]:
+        - img [ref=e97]
+      - generic [ref=e101]:
+        - button "Open issues overlay" [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]: "0"
+            - generic [ref=e105]: "1"
+          - generic [ref=e106]: Issue
+        - button "Collapse issues badge" [ref=e107]:
+          - img [ref=e108]
+  - 'heading "Application error: a client-side exception has occurred (see the browser console for more information)." [level=2] [ref=e113]'
+```

@@ -1,0 +1,79 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [active]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - navigation [ref=e7]:
+          - button "previous" [disabled] [ref=e8]:
+            - img "previous" [ref=e9]
+          - generic [ref=e11]:
+            - generic [ref=e12]: 1/
+            - text: "1"
+          - button "next" [disabled] [ref=e13]:
+            - img "next" [ref=e14]
+        - link "Next.js 15.5.14 (outdated) Turbopack" [ref=e17]:
+          - /url: https://nextjs.org/docs/messages/version-staleness
+          - img [ref=e18]
+          - generic "An outdated version detected (latest is 16.2.0), upgrade is highly recommended!" [ref=e20]: Next.js 15.5.14 (outdated)
+          - generic [ref=e21]: Turbopack
+      - dialog "Runtime Error" [ref=e23]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e30]: Runtime Error
+              - generic [ref=e31]:
+                - button "Copy Error Info" [ref=e32] [cursor=pointer]:
+                  - img [ref=e33]
+                - button "No related documentation found" [disabled] [ref=e35]:
+                  - img [ref=e36]
+                - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e38]:
+                  - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                  - img [ref=e39]
+            - paragraph [ref=e51]: either NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY env variables or supabaseUrl and supabaseKey are required!
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - paragraph [ref=e55]:
+                - img [ref=e57]
+                - generic [ref=e61]: src/app/auth/signup/page.tsx (18:40) @ SignupPage
+                - button "Open in editor" [ref=e62] [cursor=pointer]:
+                  - img [ref=e64]
+              - generic [ref=e67]:
+                - generic [ref=e68]: 16 | const [isLoading, setIsLoading] = useState(false)
+                - generic [ref=e69]: 17 | const router = useRouter()
+                - generic [ref=e70]: "> 18 | const supabase = createSupabaseClient()"
+                - generic [ref=e71]: "| ^"
+                - generic [ref=e72]: 19 |
+                - generic [ref=e73]: 20 | // Store tracking data on page load (referrer, UTM params)
+                - generic [ref=e74]: "21 | useEffect(() => {"
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - paragraph [ref=e77]:
+                  - text: Call Stack
+                  - generic [ref=e78]: "12"
+                - button "Show 11 ignore-listed frame(s)" [ref=e79] [cursor=pointer]:
+                  - text: Show 11 ignore-listed frame(s)
+                  - img [ref=e80]
+              - generic [ref=e82]:
+                - generic [ref=e83]:
+                  - text: SignupPage
+                  - button "Open SignupPage in editor" [ref=e84] [cursor=pointer]:
+                    - img [ref=e85]
+                - text: src/app/auth/signup/page.tsx (18:40)
+        - generic [ref=e87]:
+          - generic [ref=e88]: "1"
+          - generic [ref=e89]: "2"
+    - generic [ref=e94] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e95]:
+        - img [ref=e96]
+      - generic [ref=e101]:
+        - button "Open issues overlay" [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]: "0"
+            - generic [ref=e105]: "1"
+          - generic [ref=e106]: Issue
+        - button "Collapse issues badge" [ref=e107]:
+          - img [ref=e108]
+  - 'heading "Application error: a client-side exception has occurred (see the browser console for more information)." [level=2] [ref=e113]'
+```

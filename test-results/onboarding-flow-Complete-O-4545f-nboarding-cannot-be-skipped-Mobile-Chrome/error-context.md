@@ -1,0 +1,56 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link "CV My CV Buddy" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e7]: CV
+      - generic [ref=e8]: My CV Buddy
+    - generic [ref=e9]:
+      - heading "Welcome Back" [level=1] [ref=e10]
+      - button "Continue with Google" [ref=e12]:
+        - img [ref=e13]
+        - text: Continue with Google
+      - generic [ref=e22]: Or continue with email
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: Email
+          - generic [ref=e26]:
+            - img [ref=e27]
+            - textbox "Email" [ref=e30]:
+              - /placeholder: your@email.com
+              - text: jake.rourke@btinternet.com
+        - generic [ref=e31]:
+          - generic [ref=e32]: Password
+          - generic [ref=e33]:
+            - img [ref=e34]
+            - textbox "Password" [ref=e37]:
+              - /placeholder: Enter your password
+              - text: Fearnley09
+            - button [ref=e38]:
+              - img [ref=e39]
+        - button "Sign In" [active] [ref=e42]
+      - link "Forgot your password?" [ref=e44] [cursor=pointer]:
+        - /url: /auth/forgot-password
+      - generic [ref=e45]:
+        - text: Don't have an account?
+        - link "Sign up" [ref=e46] [cursor=pointer]:
+          - /url: /auth/signup
+  - region "Notifications alt+T"
+  - generic [ref=e51] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e52]:
+      - img [ref=e53]
+    - generic [ref=e56]:
+      - button "Open issues overlay" [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]: "1"
+          - generic [ref=e60]: "2"
+        - generic [ref=e61]:
+          - text: Issue
+          - generic [ref=e62]: s
+      - button "Collapse issues badge" [ref=e63]:
+        - img [ref=e64]
+  - alert [ref=e66]
+  - button "Open chat" [ref=e67] [cursor=pointer]
+```
