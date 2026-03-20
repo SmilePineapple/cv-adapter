@@ -2,7 +2,16 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+/**
+ * Lazy initialization of Resend client to avoid build-time errors
+ */
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is not configured')
+  }
+  return new Resend(apiKey)
+}
 
 /**
  * Webhook endpoint for Resend inbound emails
@@ -10,6 +19,8 @@ const resend = new Resend(process.env.RESEND_API_KEY)
  */
 export async function POST(req: NextRequest) {
   try {
+    const resend = getResendClient()
+    
     // Get raw request text to verify the webhook
     const payload = await req.text()
     const id = req.headers.get('svix-id')
