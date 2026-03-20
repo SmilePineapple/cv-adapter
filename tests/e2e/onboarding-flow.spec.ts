@@ -17,7 +17,7 @@ const CV_FILE_PATH = 'C:\\Users\\jaket\\Desktop\\CV\\Pamela Dale-Rourke CV.pdf'
 const BASE_URL = process.env.BASE_URL || 'https://www.mycvbuddy.com'
 
 test.describe('Complete Onboarding Flow', () => {
-  test.setTimeout(120000) // 2 minutes for complete flow
+  test.setTimeout(240000) // 4 minutes for complete flow (includes 2-3 min generation)
 
   test('Full user journey: Signup → Onboarding → Upload → Generate', async ({ page }) => {
     // ==========================================

@@ -40,9 +40,9 @@ export default function SmartUpgradeModal({ isOpen, onClose, trigger, userName }
             { icon: <Sparkles className="w-5 h-5" />, text: "20+ premium templates" },
             { icon: <CheckCircle className="w-5 h-5" />, text: "Cover letter generator included" }
           ],
-          cta: "Try Pro Free for 7 Days",
+          cta: "Upgrade to £2.99/month for Unlimited Generations",
           ctaSecondary: "Continue with Free (1 generation)",
-          highlight: "No credit card required for trial"
+          highlight: "Cancel anytime - no commitment"
         }
 
       case 'after_preview':
@@ -88,7 +88,7 @@ export default function SmartUpgradeModal({ isOpen, onClose, trigger, userName }
             { icon: <CheckCircle className="w-5 h-5" />, text: "Unlimited versions for different jobs" },
             { icon: <Zap className="w-5 h-5" />, text: "Interview prep included" }
           ],
-          cta: "Try Pro Free for 7 Days",
+          cta: "Upgrade to £2.99/month for Unlimited",
           ctaSecondary: "Continue Editing",
           highlight: "Cancel anytime - no commitment"
         }
