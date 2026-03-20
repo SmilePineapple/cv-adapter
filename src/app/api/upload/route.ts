@@ -136,8 +136,11 @@ export async function POST(request: NextRequest) {
         
         // Check if PDF is image-based (scanned)
         if (pdfData.text.length < 100 && pdfData.numpages > 0) {
-          console.warn('⚠️ PDF appears to be image-based (scanned). Text extraction yielded very little text.')
-          console.warn('Consider using OCR or asking user to upload a text-based PDF')
+          console.error('⚠️ PDF appears to be image-based (scanned). Text extraction yielded only', pdfData.text.length, 'characters.')
+          return NextResponse.json({ 
+            error: 'This appears to be a scanned PDF with very little extractable text. Please upload a text-based PDF or use OCR software to convert your scanned document first.',
+            details: `Only ${pdfData.text.length} characters could be extracted from ${pdfData.numpages} page(s).`
+          }, { status: 400 })
         }
       } else if (fileType.includes('word') || fileType.includes('document')) {
         console.log('Parsing Word document')

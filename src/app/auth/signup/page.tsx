@@ -115,9 +115,14 @@ export default function SignupPage() {
           <h1 className="text-4xl sm:text-5xl font-black text-white text-center mb-3 tracking-tight">
             Start Free
           </h1>
-          <p className="text-gray-300 text-center mb-8 text-lg">
+          <p className="text-gray-300 text-center mb-2 text-lg">
             Create better CVs in 2 minutes
           </p>
+          <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-3 mb-6">
+            <p className="text-blue-100 text-center text-sm font-semibold">
+              ✨ Start with 1 free CV generation • Upgrade anytime for unlimited
+            </p>
+          </div>
 
           {/* OAuth Buttons */}
           <div className="space-y-3 mb-8">

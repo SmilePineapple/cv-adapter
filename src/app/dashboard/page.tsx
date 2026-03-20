@@ -133,7 +133,7 @@ export default function DashboardPage() {
   const [usage, setUsage] = useState<UsageInfo | null>(null)
   const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters' | 'interview-prep'>('generations')
+  const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters' | 'interview-prep'>('overview')
   const [searchQuery, setSearchQuery] = useState('')
   const [ratingModalOpen, setRatingModalOpen] = useState(false)
   const [selectedCvForRating, setSelectedCvForRating] = useState<string | null>(null)
@@ -777,6 +777,33 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Usage Limit Banner for Free Users */}
+        {!isPro && currentUsage < maxGenerations && (
+          <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-400/30 rounded-2xl p-6 mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-orange-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white mb-1">
+                    {maxGenerations - currentUsage} Free Generation{maxGenerations - currentUsage !== 1 ? 's' : ''} Remaining
+                  </h3>
+                  <p className="text-gray-300 text-sm">
+                    Make it count! Upgrade to Pro for unlimited CV generations.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/subscription"
+                className="bg-white text-black px-6 py-3 rounded-full font-black hover:bg-gray-100 transition-all shadow-lg"
+              >
+                Upgrade to Pro
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* Stats Cards - Glass Morphism Design */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
@@ -833,8 +860,8 @@ export default function DashboardPage() {
 
         {/* Primary Actions - Minimalist CTAs */}
         <div className="space-y-4 mb-8">
-          {/* Hero Action - Generate CV (Full Width, Standalone) */}
-          {cvs.length > 0 && (
+          {/* Hero Action - Always visible, adapts based on whether user has CVs */}
+          {cvs.length > 0 ? (
             <button
               onClick={(e) => handleGenerateClick(e, cvs[0].id)}
               className="w-full flex items-center justify-center px-8 py-6 bg-white text-black rounded-full font-black text-xl hover:bg-gray-100 transition-all shadow-2xl gap-3"
@@ -842,6 +869,14 @@ export default function DashboardPage() {
               <Zap className="w-6 h-6" />
               Generate your New CV
             </button>
+          ) : (
+            <Link
+              href="/upload"
+              className="w-full flex items-center justify-center px-8 py-6 bg-white text-black rounded-full font-black text-xl hover:bg-gray-100 transition-all shadow-2xl gap-3"
+            >
+              <Upload className="w-6 h-6" />
+              Upload CV to Get Started
+            </Link>
           )}
 
           {/* Secondary Actions - Upload CV & Cover Letter (Same Row) */}

@@ -78,17 +78,7 @@ export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModal
     setStep(step - 1)
   }
 
-  const handleSkip = async () => {
-    // Mark onboarding as completed (skipped)
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({ onboarding_completed: true })
-        .eq('id', user.id)
-    }
-    onClose()
-  }
+  // Removed skip functionality - onboarding is now mandatory
 
   const handleUploadClick = () => {
     router.push('/upload')
@@ -115,19 +105,14 @@ export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModal
       <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-2xl relative">
-          <button
-            onClick={handleSkip}
-            className="absolute top-4 right-4 text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-all"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Close button removed - onboarding is mandatory */}
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">Welcome to CV Adapter!</h2>
-              <p className="text-blue-100 text-sm">Let's get you started in 3 easy steps</p>
+              <h2 className="text-2xl font-bold text-white">Welcome to My CV Buddy!</h2>
+              <p className="text-blue-100 text-sm">Upload → Generate → Download - Get started in 3 easy steps</p>
             </div>
           </div>
           
@@ -325,12 +310,9 @@ export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModal
         {/* Footer Navigation */}
         {step < 3 && (
           <div className="px-8 pb-8 flex items-center justify-between">
-            <button
-              onClick={handleSkip}
-              className="text-gray-600 hover:text-gray-800 font-medium text-sm"
-            >
-              Skip for now
-            </button>
+            <div className="text-gray-600 text-sm font-medium">
+              Step {step} of 3
+            </div>
             <div className="flex gap-3">
               {step > 1 && (
                 <button
