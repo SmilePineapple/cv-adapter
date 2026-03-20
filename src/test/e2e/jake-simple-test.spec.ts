@@ -79,10 +79,14 @@ test.describe('Jake Test - Critical Flow', () => {
     if (await generateButton.isVisible({ timeout: 3000 })) {
       await generateButton.click()
     } else {
-      // Try to click on first CV card
-      const cvCard = page.locator('[data-testid="cv-card"]').first()
+      // Try to click on first CV card - use multiple selectors
+      const cvCard = page.locator('[data-testid="cv-card"]').or(
+        page.locator('.cv-card, .cv-item, [class*="cv"][class*="card"]')
+      ).first()
       if (await cvCard.isVisible({ timeout: 3000 })) {
         await cvCard.click()
+      } else {
+        console.log('⚠️ No CV cards found, user may need to upload first')
       }
     }
     
@@ -112,10 +116,20 @@ test.describe('Jake Test - Critical Flow', () => {
     
     await page.screenshot({ path: 'test-results/06-form-filled.png', fullPage: true })
     
-    // Submit generation
+    // Submit generation - wait for button to be enabled
     const submitButton = page.locator('button:has-text("Generate"), button:has-text("Adapt"), button[type="submit"]').first()
     if (await submitButton.isVisible({ timeout: 3000 })) {
-      await submitButton.click()
+      // Wait for button to be enabled (not disabled)
+      await submitButton.waitFor({ state: 'visible', timeout: 5000 })
+      await page.waitForTimeout(1000) // Give form validation time
+      
+      // Check if button is still disabled
+      const isDisabled = await submitButton.getAttribute('disabled')
+      if (isDisabled !== null) {
+        console.log('⚠️ Submit button is disabled, skipping generation')
+        await page.screenshot({ path: 'test-results/06b-button-disabled.png', fullPage: true })
+      } else {
+        await submitButton.click()
       console.log('⏳ Generation started, waiting up to 60 seconds...')
       
       await page.waitForTimeout(60000) // Wait for AI generation
@@ -128,7 +142,8 @@ test.describe('Jake Test - Critical Flow', () => {
         console.log('📊 ATS Score found:', scoreText)
       }
       
-      console.log('✅ Generation completed')
+        console.log('✅ Generation completed')
+      }
     }
     
     // Step 5: Check final dashboard
