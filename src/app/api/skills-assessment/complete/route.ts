@@ -190,6 +190,8 @@ async function generateSkillGapAnalysis(
     return !answer?.is_correct
   })
 
+  const openai = getOpenAIClient()
+  
   const prompt = `You are a career development expert. Analyze this skills assessment result and provide actionable insights.
 
 Job Role: ${jobRole}

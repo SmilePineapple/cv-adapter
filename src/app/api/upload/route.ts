@@ -261,6 +261,8 @@ export async function POST(request: NextRequest) {
 
 // AI-powered CV parsing for better accuracy
 async function parseCVWithAI(text: string, languageCode: string): Promise<ParsedCV> {
+  const openai = getOpenAIClient()
+  
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',

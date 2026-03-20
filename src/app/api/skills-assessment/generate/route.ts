@@ -133,9 +133,11 @@ async function generateQuestionsWithAI(
   jobRole: string,
   jobDescription: string | undefined,
   difficultyLevel: DifficultyLevel,
-  totalQuestions: number
+  numQuestions: number
 ): Promise<AIGeneratedQuestion[]> {
-  const prompt = `You are an expert skills assessment creator. Generate ${totalQuestions} high-quality assessment questions for a ${jobRole} position.
+  const openai = getOpenAIClient()
+  
+  const prompt = `Generate ${numQuestions} multiple-choice skills assessment questions for a ${jobRole} position.
 
 ${jobDescription ? `Job Description:\n${jobDescription}\n\n` : ''}
 
