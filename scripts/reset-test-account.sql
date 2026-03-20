@@ -70,7 +70,8 @@ SELECT
     u.email,
     p.onboarding_completed,
     ut.plan_type,
-    ut.current_generations,
+    ut.lifetime_generation_count,
+    ut.generation_count,
     ut.max_lifetime_generations,
     (SELECT COUNT(*) FROM cvs WHERE user_id = u.id) as cv_count,
     (SELECT COUNT(*) FROM generations WHERE user_id = u.id) as generation_count
