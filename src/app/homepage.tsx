@@ -278,6 +278,161 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* FAQ Section - SEO Optimized */}
+        <section className="py-32 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
+                  Frequently Asked Questions
+                </h2>
+                <p className="text-xl text-gray-600">Everything you need to know about creating the perfect CV</p>
+              </div>
+              
+              <div className="space-y-6">
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">Is My CV Buddy really free?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Yes! My CV Buddy offers 2 free CV generations with no credit card required. Our free CV builder UK service lets you upload your CV, paste any job description, and get a perfectly tailored, ATS-optimized CV. For unlimited access to CV generation, cover letters, and interview prep tools, upgrade to Pro for just £2.99/month.</p>
+                </details>
+
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">How does AI CV tailoring work?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Our AI CV generator analyzes your existing CV and the job description you provide. It identifies key requirements, matches relevant experience from your background, and optimizes keywords for Applicant Tracking Systems (ATS). The AI rewrites your CV sections to highlight the most relevant skills and achievements for each specific role, dramatically increasing your chances of getting past ATS filters and landing interviews.</p>
+                </details>
+
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">Will my CV pass ATS systems?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Absolutely! My CV Buddy creates ATS-optimized CVs with a 95% pass rate. We use clean formatting, proper keyword placement, standard section headers, and ATS-friendly fonts that applicant tracking systems can easily parse. Our AI matches keywords from the job description and strategically places them throughout your CV to maximize your ATS score while keeping it natural and readable for human recruiters.</p>
+                </details>
+
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">How long does it take to generate a CV?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Our AI generates a fully tailored, ATS-optimized CV in just 30-60 seconds. Simply upload your existing CV (PDF or Word), paste the job description, and click generate. You can then review, edit, and download your new CV immediately. The entire process from upload to download takes about 2 minutes - perfect for applying to multiple jobs quickly.</p>
+                </details>
+
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">What file formats can I download?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">You can export your CV in multiple formats including PDF, DOCX (Microsoft Word), TXT, and HTML. All formats are ATS-friendly and professionally formatted. We recommend PDF for most applications as it preserves formatting across all devices, but DOCX is useful if employers specifically request Word documents.</p>
+                </details>
+
+                <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
+                  <summary className="flex justify-between items-center cursor-pointer list-none">
+                    <h3 className="text-xl font-black text-black">Do you offer professional CV templates?</h3>
+                    <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Yes! We offer 12+ professional CV templates optimized for UK and international job markets. All templates are ATS-friendly, modern, and can be customized to match your industry. Choose from minimalist, creative, executive, and traditional designs. Each template is designed by professional CV writers and tested with major ATS systems.</p>
+                </details>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Who Uses Section - SEO Optimized */}
+        <section className="py-32 bg-black text-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tight">
+                  Who Uses <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">My CV Buddy?</span>
+                </h2>
+                <p className="text-xl text-gray-400">Trusted by job seekers across all industries and career levels</p>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-2xl font-black mb-4">Recent Graduates</h3>
+                  <p className="text-gray-300 leading-relaxed">Create your first professional CV with no experience. Our AI helps you highlight education, projects, internships, and transferable skills to land your first job in the UK job market.</p>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-2xl font-black mb-4">Career Changers</h3>
+                  <p className="text-gray-300 leading-relaxed">Transitioning to a new industry? Our AI CV builder identifies transferable skills and reframes your experience to match new career paths. Perfect for professionals pivoting to tech, marketing, finance, or any field.</p>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-2xl font-black mb-4">Senior Professionals</h3>
+                  <p className="text-gray-300 leading-relaxed">Showcase executive leadership and strategic achievements. Our AI helps senior managers, directors, and C-suite professionals create compelling CVs that highlight impact, leadership, and business results.</p>
+                </div>
+              </div>
+
+              <div className="mt-12 text-center">
+                <p className="text-lg text-gray-400 mb-8">Popular for roles in: Software Engineering, Marketing, Finance, Healthcare, Education, Sales, Project Management, Data Science, HR, and more.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Deep Dive - SEO Content */}
+        <section className="py-32 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
+                  Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">My CV Buddy?</span>
+                </h2>
+                <p className="text-xl text-gray-600">The UK's most advanced AI-powered CV builder</p>
+              </div>
+
+              <div className="space-y-12">
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
+                    <Zap className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-black mb-3">ATS Optimization Technology</h3>
+                    <p className="text-gray-700 leading-relaxed">Over 75% of CVs are rejected by Applicant Tracking Systems before a human ever sees them. Our AI CV generator uses advanced natural language processing to analyze job descriptions, extract key requirements, and optimize your CV with the right keywords in the right places. We achieve a 95% ATS pass rate by using clean formatting, standard section headers, and strategic keyword placement that both ATS systems and human recruiters love.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-black mb-3">Intelligent Job Matching</h3>
+                    <p className="text-gray-700 leading-relaxed">Our AI doesn't just add keywords - it understands context. When you paste a job description, our system analyzes the role requirements, company culture, and industry standards. It then intelligently selects and highlights the most relevant experiences from your background, rewrites achievements to match the job's language, and ensures every section of your CV speaks directly to what the employer is looking for.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center">
+                    <Download className="w-8 h-8 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-black mb-3">Professional Templates & Formats</h3>
+                    <p className="text-gray-700 leading-relaxed">Choose from 12+ professionally designed CV templates created by expert CV writers and recruiters. Every template is ATS-compatible, mobile-responsive, and optimized for UK job applications. Whether you need a minimalist design for tech roles, a creative layout for marketing positions, or a traditional format for corporate jobs, we have the perfect template. Export in PDF, DOCX, or other formats with one click.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center">
+                    <Star className="w-8 h-8 text-pink-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-black mb-3">Cover Letters & Interview Prep</h3>
+                    <p className="text-gray-700 leading-relaxed">A great CV is just the start. My CV Buddy also generates personalized cover letters that complement your CV and address specific job requirements. Our interview preparation tools help you practice common questions, prepare compelling answers based on your experience, and build confidence for your interviews. It's a complete job application toolkit in one platform.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Final CTA - Dramatic */}
         <section className="py-32 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
           <div className="absolute inset-0">

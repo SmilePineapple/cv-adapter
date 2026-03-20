@@ -160,7 +160,9 @@ export function StructuredData() {
       "lowPrice": "0",
       "highPrice": "14.99",
       "priceCurrency": "GBP",
-      "availability": "https://schema.org/InStock"
+      "offerCount": "3",
+      "availability": "https://schema.org/InStock",
+      "url": "https://www.mycvbuddy.com/subscription"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
