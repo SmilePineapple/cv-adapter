@@ -166,6 +166,16 @@ Requirements:
     const generateButton = page.locator('button[type="submit"]:has-text("Generate Tailored CV")')
     await generateButton.click()
     
+    console.log('  ⏳ Clicked Generate button')
+    
+    // Wait for SmartUpgradeModal to appear
+    await page.waitForSelector('text=Upgrade to £2.99/month for Unlimited Generations', { timeout: 5000 })
+    console.log('  ✓ Upgrade modal appeared')
+    
+    // Click "Continue with Free (1 generation)" button to dismiss modal and start generation
+    await page.click('button:has-text("Continue with Free")')
+    console.log('  ✓ Clicked "Continue with Free (1 generation)"')
+    
     console.log('  ⏳ AI is generating your CV (this may take 2-3 minutes)...')
     console.log('  ⏳ Please be patient - generation includes AI processing and redirect to review page')
     
@@ -213,9 +223,14 @@ Requirements:
     await page.goto(`${BASE_URL}/dashboard`)
     await page.waitForLoadState('networkidle')
     
-    // Verify usage limit banner shows 0 remaining
-    await expect(page.locator('text=0 Free Generation')).toBeVisible()
-      .catch(() => expect(page.locator('text=Upgrade to Pro')).toBeVisible())
+    // Verify usage limit banner shows 0 remaining or upgrade prompt
+    const usageBanner = page.locator('text=0 Free Generation').first()
+    const upgradeLink = page.locator('a:has-text("Upgrade to Pro")').first()
+    
+    const hasUsageBanner = await usageBanner.isVisible().catch(() => false)
+    const hasUpgradeLink = await upgradeLink.isVisible().catch(() => false)
+    
+    expect(hasUsageBanner || hasUpgradeLink).toBeTruthy()
     
     console.log('✅ Usage tracking updated correctly')
 

@@ -4,296 +4,155 @@
 - generic [active] [ref=e1]:
   - generic [ref=e2]:
     - generic [ref=e4]:
-      - generic [ref=e6]:
-        - img [ref=e8]
-        - generic [ref=e11]:
-          - heading "Welcome to My CV Buddy!" [level=2] [ref=e12]
-          - paragraph [ref=e13]: Upload → Generate → Download - Get started in 3 easy steps
-      - generic [ref=e19]:
-        - generic [ref=e20]:
-          - heading "What's your goal?" [level=3] [ref=e21]
-          - paragraph [ref=e22]: This helps us personalize your experience
-        - generic [ref=e23]:
-          - button "Get a New Job Tailor my CV for specific job applications" [ref=e24]:
-            - img [ref=e26]
-            - heading "Get a New Job" [level=4] [ref=e29]
-            - paragraph [ref=e30]: Tailor my CV for specific job applications
-          - button "Change Career Pivot to a new industry or role" [ref=e31]:
-            - img [ref=e33]
-            - heading "Change Career" [level=4] [ref=e36]
-            - paragraph [ref=e37]: Pivot to a new industry or role
-          - button "Work Abroad Apply for international opportunities" [ref=e38]:
-            - img [ref=e40]
-            - heading "Work Abroad" [level=4] [ref=e43]
-            - paragraph [ref=e44]: Apply for international opportunities
-          - button "Improve My CV Make my CV more professional and ATS-friendly" [ref=e45]:
-            - img [ref=e47]
-            - heading "Improve My CV" [level=4] [ref=e52]
-            - paragraph [ref=e53]: Make my CV more professional and ATS-friendly
-      - generic [ref=e54]:
-        - generic [ref=e55]: Step 1 of 3
-        - button "Next" [disabled] [ref=e57]:
-          - text: Next
-          - img [ref=e58]
-    - banner [ref=e60]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: "Your journey to a better CV:"
+        - generic [ref=e7]: Takes 2 minutes
+      - generic [ref=e8]:
+        - generic [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e14]: Upload
+        - generic [ref=e18]:
+          - generic [ref=e19]: "2"
+          - generic [ref=e20]: Generate
+        - generic [ref=e24]:
+          - generic [ref=e25]: "3"
+          - generic [ref=e26]: Review
+        - generic [ref=e30]:
+          - generic [ref=e31]: "4"
+          - generic [ref=e32]: Download
+    - banner [ref=e33]:
+      - generic [ref=e35]:
+        - link "Back to Dashboard" [ref=e36]:
+          - /url: /dashboard
+          - img [ref=e37]
+          - text: Back to Dashboard
+        - generic [ref=e39]:
+          - generic [ref=e41]: CV
+          - generic [ref=e42]: CV Adapter
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Tailor Your CV with AI" [level=1] [ref=e46]
+        - paragraph [ref=e47]: Enter the job details and let AI optimize your CV for maximum impact
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - img [ref=e51]
+          - generic [ref=e54]:
+            - paragraph [ref=e55]: "Selected CV: Pamela Dale-Rourke CV.pdf"
+            - paragraph [ref=e56]: 11 sections • Uploaded 3/20/2026
+        - generic [ref=e57]:
+          - generic [ref=e58]: "Switch CV:"
+          - combobox [ref=e59]:
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)" [selected]
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)"
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)"
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)"
       - generic [ref=e62]:
-        - generic [ref=e63]:
-          - link "CV My CV Buddy" [ref=e64]:
-            - /url: /
-            - generic [ref=e66]: CV
-            - generic [ref=e67]: My CV Buddy
-          - generic [ref=e68]:
-            - img [ref=e70]
-            - generic [ref=e73]: FREE
-        - generic [ref=e74]:
-          - link "Pro" [ref=e75]:
-            - /url: /subscription
+        - img [ref=e63]
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: Output Language
+          - paragraph [ref=e68]:
+            - text: We detected your CV is in
+            - strong [ref=e69]: English
+            - text: . The AI will generate content in the same language, or you can override it below.
+          - button "🇬🇧 English" [ref=e71]:
+            - img [ref=e72]
+            - generic [ref=e75]: 🇬🇧 English
             - img [ref=e76]
-            - generic [ref=e79]: Pro
-          - link [ref=e80]:
-            - /url: /subscription
-            - img [ref=e81]
-          - button [ref=e84]:
-            - img [ref=e85]
-    - generic [ref=e88]:
-      - generic [ref=e93]:
-        - generic [ref=e94]:
-          - heading "Welcome back, jake.rourke! 👋" [level=1] [ref=e95]
-          - paragraph [ref=e96]: Let's create your first professional CV together!
-        - button "Reset" [ref=e98]:
-          - img [ref=e99]
-          - generic [ref=e104]: Reset
-      - generic [ref=e106]:
-        - generic [ref=e107]:
-          - img [ref=e109]
-          - generic [ref=e111]:
-            - heading "1 Free Generation Remaining" [level=3] [ref=e112]
-            - paragraph [ref=e113]: Make it count! Upgrade to Pro for unlimited CV generations.
-        - link "Upgrade to Pro" [ref=e114]:
-          - /url: /subscription
-      - generic [ref=e115]:
-        - generic [ref=e116]:
-          - generic [ref=e117]:
-            - img [ref=e119]
-            - generic [ref=e122]: "4"
-          - paragraph [ref=e123]: Total CVs
-        - generic [ref=e124]:
+      - generic [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e82]
+          - generic [ref=e85]:
+            - heading "Auto-fill from Job Posting" [level=3] [ref=e86]
+            - paragraph [ref=e87]: Paste a job URL to extract details
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: Job Posting URL
+            - generic [ref=e91]:
+              - textbox "https://www.indeed.co.uk/viewjob?jk=..." [ref=e92]
+              - button "Extract" [disabled] [ref=e93]:
+                - img [ref=e94]
+                - text: Extract
+            - paragraph [ref=e98]: Supports Indeed, LinkedIn Jobs, Reed, Glassdoor, and more
+          - generic [ref=e99]:
+            - img [ref=e100]
+            - paragraph [ref=e102]:
+              - strong [ref=e103]: "Free users:"
+              - text: 3 job scrapes.
+              - strong [ref=e104]: "Pro users:"
+              - text: Unlimited scrapes.
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: Job Title *
+          - generic [ref=e108]:
+            - img [ref=e109]
+            - textbox "Job Title *" [ref=e112]:
+              - /placeholder: e.g. Senior Software Engineer
+              - text: Senior Software Engineer
+        - generic [ref=e113]:
+          - generic [ref=e114]: Job Description *
+          - textbox "Job Description *" [ref=e115]:
+            - /placeholder: Paste the full job description here. Include requirements, responsibilities, and qualifications for best results.
+            - text: "Senior Software Engineer We're looking for an experienced software engineer to join our team. Requirements: - 5+ years of experience - Strong TypeScript/JavaScript skills - Experience with React and Node.js - Good communication skills"
+          - paragraph [ref=e116]: "Tip: Include the full job posting for better keyword matching and ATS optimization"
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - img [ref=e120]
+              - text: Rewrite Style
+            - combobox "Rewrite Style" [ref=e123]:
+              - option "Conservative - Minimal changes"
+              - option "Balanced - Moderate optimization" [selected]
+              - option "Bold - Maximum alignment"
+            - paragraph [ref=e124]: Good balance of optimization and authenticity
           - generic [ref=e125]:
-            - img [ref=e127]
-            - generic [ref=e130]: "0"
-          - paragraph [ref=e131]: Generations
-        - generic [ref=e132]:
-          - generic [ref=e133]:
-            - img [ref=e135]
-            - generic [ref=e138]: "0"
-          - paragraph [ref=e139]: Cover Letters
-        - generic [ref=e140]:
-          - generic [ref=e141]:
-            - img [ref=e143]
-            - generic [ref=e145]: 0/1
-          - paragraph [ref=e146]: This Month
-          - paragraph [ref=e149]: 1 remaining
-      - generic [ref=e150]:
-        - button "Generate your New CV" [ref=e151]:
-          - img [ref=e152]
-          - text: Generate your New CV
-        - generic [ref=e154]:
-          - link "Upload CV" [ref=e155]:
-            - /url: /upload
-            - img [ref=e156]
-            - text: Upload CV
-          - link "Cover Letter" [ref=e159]:
-            - /url: /cover-letter
-            - img [ref=e160]
-            - text: Cover Letter
-      - generic [ref=e163]:
-        - link "Skills Test Assess abilities" [ref=e164]:
-          - /url: /skills-assessment
-          - img [ref=e166]
-          - heading "Skills Test" [level=3] [ref=e170]
-          - paragraph [ref=e171]: Assess abilities
-        - link "PRO Interview Prep Practice questions" [ref=e172]:
-          - /url: /subscription
-          - generic [ref=e173]: PRO
-          - img [ref=e175]
-          - heading "Interview Prep" [level=3] [ref=e178]
-          - paragraph [ref=e179]: Practice questions
-        - link "PRO Career Coach Get guidance" [ref=e180]:
-          - /url: /subscription
-          - generic [ref=e181]: PRO
-          - img [ref=e183]
-          - heading "Career Coach" [level=3] [ref=e186]
-          - paragraph [ref=e187]: Get guidance
-        - link "Roast CV Get honest feedback" [ref=e188]:
-          - /url: /roast-cv
-          - img [ref=e190]
-          - heading "Roast CV" [level=3] [ref=e192]
-          - paragraph [ref=e193]: Get honest feedback
-      - generic [ref=e197]:
-        - generic [ref=e198]:
-          - img [ref=e200]
-          - generic [ref=e202]:
-            - heading "Unlock Your Full Potential" [level=2] [ref=e203]
-            - paragraph [ref=e204]: Join 1,000+ professionals using CV Adapter Pro
-        - generic [ref=e205]:
-          - generic [ref=e206]:
-            - generic [ref=e207]:
-              - img [ref=e209]
-              - generic [ref=e211]:
-                - paragraph [ref=e212]: Unlimited CV Generations
-                - paragraph [ref=e213]: Create as many CVs as you need
-            - generic [ref=e214]:
-              - img [ref=e216]
-              - generic [ref=e218]:
-                - paragraph [ref=e219]: AI Interview Prep
-                - paragraph [ref=e220]: Company research & practice questions
-            - generic [ref=e221]:
-              - img [ref=e223]
-              - generic [ref=e225]:
-                - paragraph [ref=e226]: Personal Career Coach
-                - paragraph [ref=e227]: AI-powered career guidance
-          - generic [ref=e228]:
-            - generic [ref=e229]:
-              - img [ref=e231]
-              - generic [ref=e233]:
-                - paragraph [ref=e234]: Advanced Templates
-                - paragraph [ref=e235]: Premium designs & customization
-            - generic [ref=e236]:
-              - img [ref=e238]
-              - generic [ref=e240]:
-                - paragraph [ref=e241]: Priority Support
-                - paragraph [ref=e242]: Get help when you need it
-            - generic [ref=e243]:
-              - img [ref=e245]
-              - generic [ref=e247]:
-                - paragraph [ref=e248]: Skills Assessments
-                - paragraph [ref=e249]: Test & improve your abilities
-        - generic [ref=e250]:
-          - link "Upgrade to Pro - £2.99/month" [ref=e251]:
-            - /url: /subscription
-            - img [ref=e252]
-            - text: Upgrade to Pro - £2.99/month
-          - link "See all features →" [ref=e254]:
-            - /url: /subscription
-      - generic [ref=e256]:
-        - generic [ref=e257]:
-          - img [ref=e258]
-          - textbox "Search documents..." [ref=e261]
-        - button "Filter" [ref=e262]:
-          - img [ref=e263]
-          - text: Filter
-      - combobox [ref=e267]:
-        - option "📊 Overview" [selected]
-        - option "📄 CVs (4)"
-        - option "✨ Generations (0)"
-        - option "✉️ Cover Letters (0)"
-      - generic [ref=e268]:
-        - generic [ref=e269]:
-          - heading "Recent Activity" [level=3] [ref=e271]
-          - generic [ref=e273]:
-            - generic [ref=e274]:
-              - img [ref=e276]
-              - generic [ref=e279]:
-                - paragraph [ref=e280]: CV Uploaded
-                - paragraph [ref=e281]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e282]: 20 Mar 2026
-            - generic [ref=e283]:
-              - img [ref=e285]
-              - generic [ref=e288]:
-                - paragraph [ref=e289]: CV Uploaded
-                - paragraph [ref=e290]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e291]: 20 Mar 2026
-            - generic [ref=e292]:
-              - img [ref=e294]
-              - generic [ref=e297]:
-                - paragraph [ref=e298]: CV Uploaded
-                - paragraph [ref=e299]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e300]: 20 Mar 2026
-            - generic [ref=e301]:
-              - img [ref=e303]
-              - generic [ref=e306]:
-                - paragraph [ref=e307]: CV Uploaded
-                - paragraph [ref=e308]: Uploaded Pamela Dale-Rourke CV.pdf
-                - paragraph [ref=e309]: 20 Mar 2026
-        - generic [ref=e310]:
-          - heading "Usage Analytics" [level=3] [ref=e312]
-          - generic [ref=e314]:
-            - generic [ref=e316]:
-              - generic [ref=e317]: Monthly Usage
-              - generic [ref=e318]: 0/1
-            - generic [ref=e320]:
-              - generic [ref=e321]:
-                - paragraph [ref=e322]: "4"
-                - paragraph [ref=e323]: CVs Uploaded
-              - generic [ref=e324]:
-                - paragraph [ref=e325]: "0"
-                - paragraph [ref=e326]: Generations
-            - generic [ref=e328]:
-              - img [ref=e329]
-              - generic [ref=e331]:
-                - paragraph [ref=e332]: Upgrade to Pro
-                - paragraph [ref=e333]: Unlimited generations and premium features
-      - generic [ref=e335]:
-        - heading "Profile Photo" [level=3] [ref=e336]:
-          - img [ref=e337]
-          - text: Profile Photo
-        - generic [ref=e340]:
-          - img [ref=e343]
-          - generic [ref=e346]:
-            - generic [ref=e348] [cursor=pointer]:
-              - img [ref=e349]
-              - text: Upload Photo
-            - generic [ref=e352]:
-              - paragraph [ref=e353]: "• Max size: 5MB"
-              - paragraph [ref=e354]: "• Formats: JPG, PNG, GIF"
-              - paragraph [ref=e355]: "• Recommended: Square image, 400x400px"
-      - generic [ref=e356]:
-        - heading "Unlock Pro Features" [level=3] [ref=e357]:
-          - img [ref=e358]
-          - text: Unlock Pro Features
-        - generic [ref=e361]:
-          - generic [ref=e362]:
-            - generic [ref=e363]:
-              - img [ref=e365]
-              - generic [ref=e368]: Free Tier
-            - list [ref=e369]:
-              - listitem [ref=e370]:
-                - generic [ref=e371]: •
-                - generic [ref=e372]: 1 CV generation
-              - listitem [ref=e373]:
-                - generic [ref=e374]: •
-                - generic [ref=e375]: PDF export only
-              - listitem [ref=e376]:
-                - generic [ref=e377]: •
-                - generic [ref=e378]: 2 templates
-              - listitem [ref=e379]:
-                - generic [ref=e380]: •
-                - generic [ref=e381]: Watermark on exports
-          - generic [ref=e382]:
-            - generic [ref=e383]:
-              - img [ref=e385]
-              - generic [ref=e387]: Pro Tier
-              - generic [ref=e388]: £2.99/month
-            - list [ref=e389]:
-              - listitem [ref=e390]:
-                - img [ref=e391]
-                - generic [ref=e393]: Unlimited generations
-              - listitem [ref=e394]:
-                - img [ref=e395]
-                - generic [ref=e397]: All export formats (PDF, DOCX, HTML, TXT)
-              - listitem [ref=e398]:
-                - img [ref=e399]
-                - generic [ref=e401]: 14 premium templates
-              - listitem [ref=e402]:
-                - img [ref=e403]
-                - generic [ref=e405]: No watermarks
-              - listitem [ref=e406]:
-                - img [ref=e407]
-                - generic [ref=e409]: AI Review & Cover Letters
-        - link "Upgrade to Pro - £2.99/month" [ref=e410]:
-          - /url: /subscription
-          - img [ref=e411]
-          - text: Upgrade to Pro - £2.99/month
+            - generic [ref=e126]:
+              - img [ref=e127]
+              - text: Tone
+            - combobox "Tone" [ref=e129]:
+              - option "Professional - Formal business language" [selected]
+              - option "Friendly - Warm yet professional"
+              - option "Creative - Dynamic and engaging"
+              - option "Technical - Precise technical language"
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - img [ref=e132]
+            - text: Custom Sections
+          - paragraph [ref=e133]: Add additional sections to make your CV stand out. AI will generate relevant content based on your background.
+          - generic [ref=e134]:
+            - paragraph [ref=e135]: "💡 Popular section ideas:"
+            - generic [ref=e136]:
+              - button "+ Volunteer Work" [ref=e137]
+              - button "+ Publications" [ref=e138]
+              - button "+ Awards & Honors" [ref=e139]
+              - button "+ Certifications" [ref=e140]
+              - button "+ Projects" [ref=e141]
+              - button "+ Languages" [ref=e142]
+              - button "+ Professional Memberships" [ref=e143]
+              - button "+ Speaking Engagements" [ref=e144]
+              - button "+ Patents" [ref=e145]
+              - button "+ Research" [ref=e146]
+              - button "+ Teaching Experience" [ref=e147]
+              - button "+ Community Involvement" [ref=e148]
+          - button "Add Custom Section" [ref=e149]:
+            - img [ref=e150]
+            - text: Add Custom Section
+        - button "Generate Tailored CV" [ref=e152]:
+          - img [ref=e153]
+          - text: Generate Tailored CV
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - img [ref=e158]
+          - heading "ATS Optimized" [level=3] [ref=e160]
+          - paragraph [ref=e161]: Keywords matched to job requirements
+        - generic [ref=e162]:
+          - img [ref=e164]
+          - heading "Format Preserved" [level=3] [ref=e167]
+          - paragraph [ref=e168]: Original structure maintained
+        - generic [ref=e169]:
+          - img [ref=e171]
+          - heading "Customizable" [level=3] [ref=e174]
+          - paragraph [ref=e175]: Review and edit before download
   - region "Notifications alt+T"
-  - alert [ref=e414]: Dashboard - Manage Your CVs | CV Adapter
+  - alert [ref=e176]
+  - button "Open chat" [ref=e177] [cursor=pointer]
 ```
