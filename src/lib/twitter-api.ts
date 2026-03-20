@@ -13,6 +13,19 @@ interface TwitterConfig {
 }
 
 /**
+ * RFC 3986 percent encoding (required by Twitter OAuth)
+ * Different from encodeURIComponent - encodes more characters
+ */
+function percentEncode(str: string): string {
+  return encodeURIComponent(str)
+    .replace(/!/g, '%21')
+    .replace(/'/g, '%27')
+    .replace(/\(/g, '%28')
+    .replace(/\)/g, '%29')
+    .replace(/\*/g, '%2A')
+}
+
+/**
  * Generate OAuth 1.0a signature for Twitter API
  */
 function generateOAuthSignature(
@@ -22,23 +35,23 @@ function generateOAuthSignature(
   consumerSecret: string,
   tokenSecret: string
 ): string {
-  // Sort parameters and encode using URLSearchParams format (spaces as +, not %20)
-  // This must match the body encoding exactly for OAuth signature to be valid
-  const urlParams = new URLSearchParams()
-  Object.keys(params).sort().forEach(key => {
-    urlParams.append(key, params[key])
-  })
-  const sortedParams = urlParams.toString()
+  // Sort parameters and encode using RFC 3986 (Twitter requirement)
+  // Each key and value must be percent encoded separately, then joined with =
+  const sortedParams = Object.keys(params)
+    .sort()
+    .map(key => `${percentEncode(key)}=${percentEncode(params[key])}`)
+    .join('&')
 
   // Create signature base string
+  // Method, URL, and parameter string must all be percent encoded
   const signatureBaseString = [
     method.toUpperCase(),
-    encodeURIComponent(url),
-    encodeURIComponent(sortedParams)
+    percentEncode(url),
+    percentEncode(sortedParams)
   ].join('&')
 
-  // Create signing key
-  const signingKey = `${encodeURIComponent(consumerSecret)}&${encodeURIComponent(tokenSecret)}`
+  // Create signing key (secrets must be percent encoded)
+  const signingKey = `${percentEncode(consumerSecret)}&${percentEncode(tokenSecret)}`
 
   console.log('[OAuth Signature Debug]', {
     method,
@@ -90,10 +103,10 @@ function generateOAuthHeader(
 
   oauthParams.oauth_signature = signature
 
-  // Build authorization header
+  // Build authorization header using RFC 3986 encoding
   const authHeader = 'OAuth ' + Object.keys(oauthParams)
     .sort()
-    .map(key => `${encodeURIComponent(key)}="${encodeURIComponent(oauthParams[key])}"`)
+    .map(key => `${percentEncode(key)}="${percentEncode(oauthParams[key])}"`)
     .join(', ')
 
   return authHeader
@@ -134,8 +147,10 @@ export async function postTweet(
       headerPreview: authHeader.substring(0, 100) + '...'
     })
 
-    // Post tweet using form data
-    const bodyString = new URLSearchParams(params).toString()
+    // Post tweet using RFC 3986 encoded form data (must match signature encoding)
+    const bodyString = Object.entries(params)
+      .map(([key, value]) => `${percentEncode(key)}=${percentEncode(value)}`)
+      .join('&')
     
     console.log('[Twitter POST] Request details:', {
       url,
