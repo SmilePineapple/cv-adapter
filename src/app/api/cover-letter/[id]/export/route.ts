@@ -9,6 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const supabase = createAdminClient()
     // Get the authorization header
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {

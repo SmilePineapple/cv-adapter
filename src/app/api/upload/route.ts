@@ -47,7 +47,7 @@ interface FileMetadata {
 const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15MB
 
 export async function POST(request: NextRequest) {
-  const supabase = createAdminClient()
+  const supabaseAdmin = createAdminClient()
   console.log('[UPLOAD API] Called at:', new Date().toISOString())
   console.log('[UPLOAD API] Request method:', request.method)
   console.log('[UPLOAD API] Request URL:', request.url)
