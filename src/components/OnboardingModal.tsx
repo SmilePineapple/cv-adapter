@@ -80,7 +80,20 @@ export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModal
 
   // Removed skip functionality - onboarding is now mandatory
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
+    // Mark onboarding as completed BEFORE redirecting
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({ 
+          onboarding_completed: true,
+          onboarding_goal: selectedGoal 
+        })
+        .eq('id', user.id)
+    }
+    
+    // Now redirect to upload page
     router.push('/upload')
     onComplete()
   }
