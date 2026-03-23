@@ -37,13 +37,13 @@ const nextConfig: NextConfig = {
         permanent: true, // 301 redirect
       },
       {
-        source: '/blog/cv-examples-by-industry-uk',
-        destination: '/cv-examples',
+        source: '/blog/cv-writing-tips',
+        destination: '/cv-writing-guide',
         permanent: true,
       },
       {
-        source: '/blog/cv-writing-tips',
-        destination: '/cv-writing-guide',
+        source: '/blog/ai-powered-cv-optimization-2025',
+        destination: '/ats-optimization-guide',
         permanent: true,
       },
       // Ensure non-www redirects to www for consistency
