@@ -1,0 +1,156 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: "Your journey to a better CV:"
+        - generic [ref=e7]: Takes 2 minutes
+      - generic [ref=e8]:
+        - generic [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e14]: Upload
+        - generic [ref=e18]:
+          - generic [ref=e19]: "2"
+          - generic [ref=e20]: Generate
+        - generic [ref=e24]:
+          - generic [ref=e25]: "3"
+          - generic [ref=e26]: Review
+        - generic [ref=e30]:
+          - generic [ref=e31]: "4"
+          - generic [ref=e32]: Download
+    - banner [ref=e33]:
+      - generic [ref=e35]:
+        - link "Back to Dashboard" [ref=e36]:
+          - /url: /dashboard
+          - img [ref=e37]
+          - text: Back to Dashboard
+        - generic [ref=e39]:
+          - generic [ref=e41]: CV
+          - generic [ref=e42]: CV Adapter
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Tailor Your CV with AI" [level=1] [ref=e46]
+        - paragraph [ref=e47]: Enter the job details and let AI optimize your CV for maximum impact
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - img [ref=e51]
+          - generic [ref=e54]:
+            - paragraph [ref=e55]: "Selected CV: Pamela Dale-Rourke CV.pdf"
+            - paragraph [ref=e56]: 11 sections • Uploaded 3/20/2026
+        - generic [ref=e57]:
+          - generic [ref=e58]: "Switch CV:"
+          - combobox [ref=e59]:
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)" [selected]
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)"
+            - option "Pamela Dale-Rourke CV.pdf (3/20/2026)"
+      - generic [ref=e62]:
+        - img [ref=e63]
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: Output Language
+          - paragraph [ref=e68]:
+            - text: We detected your CV is in
+            - strong [ref=e69]: English
+            - text: . The AI will generate content in the same language, or you can override it below.
+          - button "🇬🇧 English" [ref=e71]:
+            - img [ref=e72]
+            - generic [ref=e75]: 🇬🇧 English
+            - img [ref=e76]
+      - generic [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e82]
+          - generic [ref=e85]:
+            - heading "Auto-fill from Job Posting" [level=3] [ref=e86]
+            - paragraph [ref=e87]: Paste a job URL to extract details
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: Job Posting URL
+            - generic [ref=e91]:
+              - textbox "https://www.indeed.co.uk/viewjob?jk=..." [ref=e92]
+              - button "Extract" [disabled] [ref=e93]:
+                - img [ref=e94]
+                - text: Extract
+            - paragraph [ref=e98]: Supports Indeed, LinkedIn Jobs, Reed, Glassdoor, and more
+          - generic [ref=e99]:
+            - img [ref=e100]
+            - paragraph [ref=e102]:
+              - strong [ref=e103]: "Free users:"
+              - text: 3 job scrapes.
+              - strong [ref=e104]: "Pro users:"
+              - text: Unlimited scrapes.
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: Job Title *
+          - generic [ref=e108]:
+            - img [ref=e109]
+            - textbox "Job Title *" [ref=e112]:
+              - /placeholder: e.g. Senior Software Engineer
+              - text: Senior Software Engineer
+        - generic [ref=e113]:
+          - generic [ref=e114]: Job Description *
+          - textbox "Job Description *" [ref=e115]:
+            - /placeholder: Paste the full job description here. Include requirements, responsibilities, and qualifications for best results.
+            - text: "Senior Software Engineer We're looking for an experienced software engineer to join our team. Requirements: - 5+ years of experience - Strong TypeScript/JavaScript skills - Experience with React and Node.js - Good communication skills"
+          - paragraph [ref=e116]: "Tip: Include the full job posting for better keyword matching and ATS optimization"
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - img [ref=e120]
+              - text: Rewrite Style
+            - combobox "Rewrite Style" [ref=e123]:
+              - option "Conservative - Minimal changes"
+              - option "Balanced - Moderate optimization" [selected]
+              - option "Bold - Maximum alignment"
+            - paragraph [ref=e124]: Good balance of optimization and authenticity
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - img [ref=e127]
+              - text: Tone
+            - combobox "Tone" [ref=e129]:
+              - option "Professional - Formal business language" [selected]
+              - option "Friendly - Warm yet professional"
+              - option "Creative - Dynamic and engaging"
+              - option "Technical - Precise technical language"
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - img [ref=e132]
+            - text: Custom Sections
+          - paragraph [ref=e133]: Add additional sections to make your CV stand out. AI will generate relevant content based on your background.
+          - generic [ref=e134]:
+            - paragraph [ref=e135]: "💡 Popular section ideas:"
+            - generic [ref=e136]:
+              - button "+ Volunteer Work" [ref=e137]
+              - button "+ Publications" [ref=e138]
+              - button "+ Awards & Honors" [ref=e139]
+              - button "+ Certifications" [ref=e140]
+              - button "+ Projects" [ref=e141]
+              - button "+ Languages" [ref=e142]
+              - button "+ Professional Memberships" [ref=e143]
+              - button "+ Speaking Engagements" [ref=e144]
+              - button "+ Patents" [ref=e145]
+              - button "+ Research" [ref=e146]
+              - button "+ Teaching Experience" [ref=e147]
+              - button "+ Community Involvement" [ref=e148]
+          - button "Add Custom Section" [ref=e149]:
+            - img [ref=e150]
+            - text: Add Custom Section
+        - button "Generate Tailored CV" [ref=e152]:
+          - img [ref=e153]
+          - text: Generate Tailored CV
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - img [ref=e158]
+          - heading "ATS Optimized" [level=3] [ref=e160]
+          - paragraph [ref=e161]: Keywords matched to job requirements
+        - generic [ref=e162]:
+          - img [ref=e164]
+          - heading "Format Preserved" [level=3] [ref=e167]
+          - paragraph [ref=e168]: Original structure maintained
+        - generic [ref=e169]:
+          - img [ref=e171]
+          - heading "Customizable" [level=3] [ref=e174]
+          - paragraph [ref=e175]: Review and edit before download
+  - region "Notifications alt+T"
+  - alert [ref=e176]
+```

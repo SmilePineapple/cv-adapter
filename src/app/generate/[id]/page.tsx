@@ -216,16 +216,16 @@ export default function GeneratePage() {
 
     try {
       // Step 1: Preparing
-      await new Promise(resolve => setTimeout(resolve, 300))
-      setGenerateProgress(10)
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setGenerateProgress(15)
       setGenerateStep('📄 Extracting CV content...')
       
-      await new Promise(resolve => setTimeout(resolve, 400))
-      setGenerateProgress(20)
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setGenerateProgress(25)
       setGenerateStep('🎯 Matching skills to job description...')
       
       await new Promise(resolve => setTimeout(resolve, 500))
-      setGenerateProgress(30)
+      setGenerateProgress(35)
       setGenerateStep('🤖 AI is analyzing your experience...')
       
       // Start API call
@@ -245,60 +245,41 @@ export default function GeneratePage() {
         }),
       })
 
-      // Step 2: AI Processing
-      await new Promise(resolve => setTimeout(resolve, 600))
-      setGenerateProgress(45)
-      setGenerateStep('✍️ Rewriting work experience...')
+      // Step 2: AI Processing - spread progress more evenly
+      // Start progress updates that continue during API call
+      const progressInterval = setInterval(() => {
+        setGenerateProgress(prev => {
+          if (prev < 85) {
+            return prev + 2 // Increment by 2% every interval
+          }
+          return prev
+        })
+      }, 1500) // Update every 1.5 seconds
       
-      await new Promise(resolve => setTimeout(resolve, 700))
-      setGenerateProgress(55)
-      setGenerateStep('💼 Tailoring professional summary...')
-      
-      await new Promise(resolve => setTimeout(resolve, 800))
-      setGenerateProgress(65)
-      setGenerateStep('🎓 Optimizing skills section...')
-      
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setGenerateProgress(70)
-      setGenerateStep('🎯 Running ATS optimization...')
-      
-      await new Promise(resolve => setTimeout(resolve, 700))
-      setGenerateProgress(75)
-      setGenerateStep('🔍 Analyzing keyword density...')
-      
-      await new Promise(resolve => setTimeout(resolve, 600))
-      setGenerateProgress(80)
-      setGenerateStep('📊 Calculating ATS score...')
-      
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setGenerateProgress(85)
-      setGenerateStep('✨ Polishing final content...')
-      
-      await new Promise(resolve => setTimeout(resolve, 400))
-      setGenerateProgress(90)
-      setGenerateStep('🎨 Formatting sections...')
-      
-      // Add rotating messages while waiting for API
-      const formattingMessages = [
-        '✨ Adding final touches...',
-        '🎯 Perfecting the layout...',
-        '💫 Making it shine...',
+      const progressMessages = [
+        '✍️ Rewriting work experience...',
+        '💼 Tailoring professional summary...',
+        '🎓 Optimizing skills section...',
+        '🎯 Running ATS optimization...',
+        '🔍 Analyzing keyword density...',
+        '📊 Calculating ATS score...',
+        '✨ Polishing final content...',
+        '� Formatting sections...',
+        '💫 Adding final touches...',
         '🔥 Almost there...',
-        '⚡ Finalizing your masterpiece...',
-        '🌟 Polishing to perfection...',
-        '🎨 Applying professional styling...',
-        '✅ Just a few more seconds...'
+        '⚡ Finalizing your masterpiece...'
       ]
       
       let messageIndex = 0
       const messageInterval = setInterval(() => {
-        setGenerateStep(formattingMessages[messageIndex % formattingMessages.length])
+        setGenerateStep(progressMessages[messageIndex % progressMessages.length])
         messageIndex++
-      }, 2000)
+      }, 3000) // Change message every 3 seconds
       
       // Wait for API response
       const response = await responsePromise
       clearInterval(messageInterval)
+      clearInterval(progressInterval)
       
       // Check response status BEFORE parsing JSON
       if (!response.ok) {

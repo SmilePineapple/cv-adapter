@@ -1,0 +1,41 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link "CV My CV Buddy" [ref=e5]:
+      - /url: /
+      - generic [ref=e7]: CV
+      - generic [ref=e8]: My CV Buddy
+    - generic [ref=e9]:
+      - heading "Welcome Back" [level=1] [ref=e10]
+      - button "Continue with Google" [ref=e12]:
+        - img [ref=e13]
+        - text: Continue with Google
+      - generic [ref=e22]: Or continue with email
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: Email
+          - generic [ref=e26]:
+            - img [ref=e27]
+            - textbox "Email" [active] [ref=e30]:
+              - /placeholder: your@email.com
+        - generic [ref=e31]:
+          - generic [ref=e32]: Password
+          - generic [ref=e33]:
+            - img [ref=e34]
+            - textbox "Password" [ref=e37]:
+              - /placeholder: Enter your password
+              - text: Fearnley09
+            - button [ref=e38]:
+              - img [ref=e39]
+        - button "Sign In" [ref=e42]
+      - link "Forgot your password?" [ref=e44]:
+        - /url: /auth/forgot-password
+      - generic [ref=e45]:
+        - text: Don't have an account?
+        - link "Sign up" [ref=e46]:
+          - /url: /auth/signup
+  - region "Notifications alt+T"
+  - alert [ref=e47]
+```

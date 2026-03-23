@@ -129,10 +129,10 @@ const TEMPLATES = [
 ]
 
 const EXPORT_FORMATS = [
-  { id: 'pdf', name: 'PDF', description: 'Best for applications', icon: '📄', pro: false },
-  { id: 'docx', name: 'Word', description: 'Editable document', icon: '📝', pro: true },
-  { id: 'html', name: 'HTML', description: 'Web preview', icon: '🌐', pro: true },
-  { id: 'txt', name: 'Text', description: 'Plain text format', icon: '📋', pro: true }
+  { id: 'pdf', name: 'PDF', description: 'Best for applications', detail: 'Professional format accepted by all employers', icon: '📄', pro: false },
+  { id: 'docx', name: 'Word', description: 'Editable document', detail: 'Edit and customize in Microsoft Word', icon: '📝', pro: true },
+  { id: 'html', name: 'HTML', description: 'Web preview', detail: 'Share online or embed in websites', icon: '🌐', pro: true },
+  { id: 'txt', name: 'Text', description: 'Plain text format', detail: 'Copy & paste into online forms', icon: '📋', pro: true }
 ]
 
 // Helper function to safely get string content from section
@@ -959,8 +959,11 @@ export default function DownloadPage() {
 
         {/* Export Format Selection */}
         <div className="max-w-5xl mx-auto mb-8">
-          <h2 className="text-xl font-black text-white mb-4">Export Format</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-white mb-2">Choose Your Export Format</h2>
+            <p className="text-gray-400 text-sm">Select the format that works best for your needs. PDF is free and works everywhere.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {EXPORT_FORMATS.map((format) => {
               const isLocked = format.pro && !isPro
               return (
@@ -984,27 +987,39 @@ export default function DownloadPage() {
                     disabled={isLocked}
                   />
                   <div className={`
-                    p-4 rounded-lg border-2 transition-colors text-center relative
+                    p-5 rounded-xl border-2 transition-all text-center relative h-full flex flex-col
                     ${selectedFormat === format.id 
-                      ? 'border-blue-500 bg-blue-50' 
+                      ? 'border-blue-500 bg-gradient-to-br from-blue-500/10 to-purple-500/10 shadow-lg scale-105' 
                       : isLocked
-                      ? 'border-white/10 bg-white/5 opacity-60'
-                      : 'border-white/10 hover:border-white/20'
+                      ? 'border-white/10 bg-white/5 opacity-70 hover:opacity-80'
+                      : 'border-white/20 bg-white/5 hover:border-blue-400/50 hover:bg-white/10 hover:scale-102'
                     }
                   `}>
                     {format.pro && (
-                      <div className="absolute top-2 right-2">
-                        <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                      <div className="absolute top-3 right-3">
+                        <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs px-2.5 py-1 rounded-full font-bold shadow-md">
                           PRO
                         </span>
                       </div>
                     )}
-                    <div className="text-2xl mb-2">{format.icon}</div>
-                    <div className="font-black text-white">{format.name}</div>
-                    <div className="text-xs text-gray-400 mt-1">{format.description}</div>
+                    <div className="text-4xl mb-3">{format.icon}</div>
+                    <div className="font-black text-white text-lg mb-1">{format.name}</div>
+                    <div className="text-sm text-gray-300 font-semibold mb-2">{format.description}</div>
+                    <div className="text-xs text-gray-400 leading-relaxed">{format.detail}</div>
                     {isLocked && (
-                      <div className="text-xs text-purple-400 mt-2 font-semibold">
-                        🔒 Upgrade to unlock
+                      <div className="mt-3 pt-3 border-t border-white/10">
+                        <div className="text-xs text-purple-400 font-bold flex items-center justify-center gap-1">
+                          <span>🔒</span>
+                          <span>Upgrade to unlock</span>
+                        </div>
+                      </div>
+                    )}
+                    {selectedFormat === format.id && !isLocked && (
+                      <div className="mt-3 pt-3 border-t border-blue-400/30">
+                        <div className="text-xs text-blue-400 font-bold flex items-center justify-center gap-1">
+                          <span>✓</span>
+                          <span>Selected</span>
+                        </div>
                       </div>
                     )}
                   </div>

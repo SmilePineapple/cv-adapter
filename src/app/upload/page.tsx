@@ -53,7 +53,7 @@ export default function UploadPage() {
       console.log('[UPLOAD] Session found, user ID:', session.user.id)
 
       // Upload file to Supabase Storage first
-      setUploadProgress(20)
+      setUploadProgress(30)
       toast.info('Uploading file to storage...')
 
       const fileExt = file.name.split('.').pop()
@@ -74,7 +74,7 @@ export default function UploadPage() {
       }
 
       console.log('[UPLOAD] File uploaded to storage:', uploadData.path)
-      setUploadProgress(50)
+      setUploadProgress(60)
       toast.info('Processing CV...')
 
       // Now call API with storage path
@@ -93,7 +93,7 @@ export default function UploadPage() {
         }),
       })
 
-      setUploadProgress(70)
+      setUploadProgress(85)
       toast.info('Parsing CV content...')
 
       console.log('[UPLOAD] Response status:', response.status)
