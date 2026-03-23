@@ -124,7 +124,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    // Blog posts - High priority SEO content
+    // Blog posts - High priority SEO content (only non-redirected URLs)
     {
       url: `${baseUrl}/blog/best-free-cv-builders-uk-2025`,
       lastModified: new Date('2025-01-15'),
@@ -142,18 +142,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date('2025-01-08'),
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/blog/how-to-beat-ats-systems`,
-      lastModified: new Date('2025-10-15'),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/blog/cv-writing-tips`,
-      lastModified: new Date('2025-10-10'),
-      changeFrequency: 'monthly',
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/blog/resume-vs-cv-difference`,
