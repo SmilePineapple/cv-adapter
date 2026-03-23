@@ -1042,24 +1042,50 @@ export default function DownloadPage() {
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <button
-                  onClick={handleExport}
-                  disabled={isExporting}
-                  className="bg-white text-black px-6 py-3 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
-                >
-                  {isExporting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Exporting...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="w-5 h-5" />
-                      Download
-                    </>
-                  )}
-                </button>
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleExport}
+                    disabled={isExporting}
+                    className="bg-white text-black px-6 py-3 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
+                  >
+                    {isExporting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        {exportStep || 'Exporting...'}
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-5 h-5" />
+                        Download
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => router.push(`/edit/${generationData.id}`)}
+                    className="px-6 py-3 border-2 border-white/20 text-white rounded-full font-black font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
+                  >
+                    <Edit3 className="w-5 h-5" />
+                    Edit CV
+                  </button>
+                </div>
+                {isExporting && (
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs text-gray-300">
+                      <span>{exportStep}</span>
+                      <span>{exportProgress}%</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div 
+                        className="bg-white h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${exportProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* Removed duplicate Edit CV button */}
+              <div className="hidden">
                 
                 {generationData && generationData.cv_id && (
                   <Link

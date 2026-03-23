@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
         }
       ],
       temperature: 0.7,
-      max_tokens: 4000 // Increased to handle comprehensive CVs with multiple work experiences
+      max_tokens: 3000 // Optimized for faster generation
     })
 
     const aiResponse = completion.choices[0]?.message?.content
@@ -366,20 +366,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to save generation' }, { status: 500 })
     }
 
-    // Track analytics event
-    try {
-      await trackCVGeneration({
-        jobTitle: job_title,
-        outputLanguage: targetLanguage,
-        rewriteStyle: rewrite_style,
-        tone
-      })
-      // Track funnel stage - first generation
-      await trackFunnelStage('first_generation')
-    } catch (analyticsError) {
-      console.error('Analytics tracking failed:', analyticsError)
-      // Don't fail the generation if analytics fails
-    }
+    // Track analytics event (async - don't block response)
+    trackCVGeneration({
+      jobTitle: job_title,
+      outputLanguage: targetLanguage,
+      rewriteStyle: rewrite_style,
+      tone
+    }).catch(err => console.error('Analytics tracking failed:', err))
+    
+    trackFunnelStage('first_generation').catch(err => 
+      console.error('Funnel tracking failed:', err)
+    )
 
     // Update usage tracking - increment lifetime count
     const newCount = currentUsage + 1

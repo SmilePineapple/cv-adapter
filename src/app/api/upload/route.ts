@@ -200,15 +200,13 @@ export async function POST(request: NextRequest) {
     }
     console.log('CV saved successfully:', cvData.id)
 
-    // Track analytics event
-    try {
-      await trackCVUpload(languageResult.code, fileName)
-      // Track funnel stage - first CV upload
-      await trackFunnelStage('first_cv_upload')
-    } catch (analyticsError) {
-      console.error('Analytics tracking failed:', analyticsError)
-      // Don't fail the upload if analytics fails
-    }
+    // Track analytics event (async - don't block response)
+    trackCVUpload(languageResult.code, fileName).catch(err => 
+      console.error('Analytics tracking failed:', err)
+    )
+    trackFunnelStage('first_cv_upload').catch(err => 
+      console.error('Funnel tracking failed:', err)
+    )
 
     // Create CV sections for the editor
     console.log('Creating CV sections for editor...')
@@ -282,7 +280,7 @@ async function parseCVWithAI(text: string, languageCode: string): Promise<Parsed
         content: `Extract ALL sections from this CV. Language: ${languageCode}
 
 CV Text:
-${text.substring(0, 10000)} ${text.length > 10000 ? '...' : ''}
+${text.substring(0, 8000)} ${text.length > 8000 ? '...' : ''}
 
 IMPORTANT: Extract EVERY section you find, including:
 - Name, Contact, Profile/Summary
@@ -316,7 +314,7 @@ Return JSON:
 CRITICAL: Use EXACT content from CV. Do NOT summarize or skip anything. Include ALL details.`
       }],
       temperature: 0.1, // Low temperature for consistency
-      max_tokens: 5000 // Increased to handle larger CVs (10K chars input)
+      max_tokens: 3000 // Optimized for faster parsing
     })
 
     const response = completion.choices[0]?.message?.content
