@@ -29,7 +29,6 @@
         }
       ],
       "destination": "https://www.mycvbuddy.com/:path*",
-      "permanent": true,
       "statusCode": 301
     },
     {
@@ -46,7 +45,6 @@
         }
       ],
       "destination": "https://www.mycvbuddy.com/:path*",
-      "permanent": true,
       "statusCode": 301
     }
   ],
