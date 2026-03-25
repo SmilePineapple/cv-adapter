@@ -66,10 +66,10 @@ export default function ATSOptimizationGuidePage() {
               <span>75% of CVs Rejected by ATS</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              ATS Optimization Guide 2026
+              ATS CV Optimizer & Resume Adapter Guide 2026
             </h1>
             <p className="text-xl text-gray-400 mb-8">
-              Master the art of beating Applicant Tracking Systems. Learn how to format your CV, choose the right keywords, and get past the robots to reach human recruiters.
+              Master the art of beating Applicant Tracking Systems with our free ATS CV optimizer. Learn how to adapt your resume for ATS, format your CV correctly, choose the right keywords, and get past the robots to reach human recruiters.
             </p>
             <Link href="/auth/signup" className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
               Optimize My CV for ATS
