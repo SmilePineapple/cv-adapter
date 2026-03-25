@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes | My CV Buddy',
-  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Upload your CV, paste any job description, get a perfectly tailored CV that beats ATS systems. Free to try - no credit card needed.',
-  keywords: ['CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder'],
+  title: 'Free AI CV & Resume Adapter UK | ATS Optimizer | My CV Buddy',
+  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. AI-powered resume adapter & CV builder that beats ATS systems. Upload your CV, paste any job, get perfectly tailored results. Free to try.',
+  keywords: ['resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk'],
   openGraph: {
     title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
     description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
@@ -75,17 +75,17 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
-              Your CV.
+              AI Resume Adapter
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Optimized.</span>
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">& CV Builder UK</span>
               <br />
               In 2 Minutes.
             </h1>
             
             <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-12 max-w-3xl mx-auto font-light">
-              AI-powered CV tailoring that beats ATS systems.
+              AI-powered resume adapter & ATS CV optimizer that beats applicant tracking systems.
               <br className="hidden sm:block" />
-              <span className="text-white font-semibold">95% pass rate.</span> No fluff.
+              <span className="text-white font-semibold">95% pass rate.</span> Free to try.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -278,6 +278,62 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Resources Section - Internal Linking for SEO */}
+        <section className="py-32 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
+                  Free <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">CV Resources</span>
+                </h2>
+                <p className="text-xl text-gray-600">Expert guides to help you land your dream job</p>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-8">
+                <Link href="/ats-optimization-guide" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-blue-500">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors">
+                    <Zap className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-black text-black mb-3 group-hover:text-blue-600 transition-colors">ATS Optimization Guide</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">Learn how to beat applicant tracking systems and get your CV past the robots. Complete guide with examples and best practices.</p>
+                  <span className="text-blue-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    Read Guide <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+
+                <Link href="/cv-writing-guide" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-purple-500">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500 transition-colors">
+                    <CheckCircle className="w-6 h-6 text-purple-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-black text-black mb-3 group-hover:text-purple-600 transition-colors">CV Writing Guide</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">Master the art of CV writing with our comprehensive guide. From structure to content, learn what recruiters want to see.</p>
+                  <span className="text-purple-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    Read Guide <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+
+                <Link href="/cv-examples" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-pink-500">
+                  <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-500 transition-colors">
+                    <Star className="w-6 h-6 text-pink-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-black text-black mb-3 group-hover:text-pink-600 transition-colors">CV Examples by Industry</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">Browse real CV examples from successful candidates across different industries and career levels in the UK.</p>
+                  <span className="text-pink-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    View Examples <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              </div>
+
+              <div className="mt-12 text-center">
+                <Link href="/blog" className="inline-flex items-center gap-2 text-lg font-bold text-gray-700 hover:text-blue-600 transition-colors">
+                  <span>Browse All Career Resources</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section - SEO Optimized */}
         <section className="py-32 bg-white">
           <div className="container mx-auto px-4">
@@ -300,10 +356,10 @@ export default function LandingPage() {
 
                 <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
                   <summary className="flex justify-between items-center cursor-pointer list-none">
-                    <h3 className="text-xl font-black text-black">How does AI CV tailoring work?</h3>
+                    <h3 className="text-xl font-black text-black">How does the AI resume adapter work?</h3>
                     <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
                   </summary>
-                  <p className="mt-4 text-gray-700 leading-relaxed">Our AI CV generator analyzes your existing CV and the job description you provide. It identifies key requirements, matches relevant experience from your background, and optimizes keywords for Applicant Tracking Systems (ATS). The AI rewrites your CV sections to highlight the most relevant skills and achievements for each specific role, dramatically increasing your chances of getting past ATS filters and landing interviews.</p>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Our AI resume adapter and CV generator analyzes your existing CV and the job description you provide. It identifies key requirements, matches relevant experience from your background, and optimizes keywords for Applicant Tracking Systems (ATS). The AI rewrites your CV sections to highlight the most relevant skills and achievements for each specific role, dramatically increasing your chances of getting past ATS filters and landing interviews. This intelligent resume adaptation ensures every application is perfectly tailored.</p>
                 </details>
 
                 <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
@@ -477,6 +533,9 @@ export default function LandingPage() {
             
             <div className="flex flex-wrap justify-center gap-6 mb-8 text-sm">
               <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
+              <Link href="/ats-optimization-guide" className="hover:text-white transition-colors">ATS Guide</Link>
+              <Link href="/cv-writing-guide" className="hover:text-white transition-colors">CV Writing</Link>
+              <Link href="/cv-examples" className="hover:text-white transition-colors">Examples</Link>
               <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
