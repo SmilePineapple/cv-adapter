@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Free CV Builder UK 2026: AI Resume Adapter & ATS Optimizer',
-  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Free CV builder UK with AI resume adapter. 12 professional templates. Beat ATS systems. Upload your CV, paste any job, get perfectly tailored results. Free to try, no sign up required.',
-  keywords: ['free cv builder uk', 'cv builder uk', 'resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk', 'cv template uk free', 'professional cv builder uk', 'ats cv checker'],
+  title: 'Free Resume & CV Builder 2026: AI Adapter & ATS Optimizer',
+  description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Free resume builder & CV builder with AI adapter. 12 professional templates. Beat ATS systems. Upload your resume or CV, paste any job, get perfectly tailored results. Free to try, no sign up required.',
+  keywords: ['free resume builder', 'resume builder', 'resume maker', 'ats resume optimizer', 'professional resume builder', 'resume template free', 'ai resume builder', 'free cv builder uk', 'cv builder uk', 'resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk', 'cv template uk free', 'professional cv builder uk', 'ats cv checker', 'resume creator', 'ats friendly resume', 'free resume builder no sign up'],
   authors: [{ name: 'CV Buddy' }],
   creator: 'CV Buddy',
   publisher: 'CV Buddy',
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com',
   },
   openGraph: {
-    title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
+    title: 'Free AI Resume & CV Builder | Get More Interviews in 2 Minutes',
+    description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate. Upload your resume or CV, paste any job, get perfectly tailored results instantly.',
+    locale: 'en_US',
     type: 'website',
-    locale: 'en_GB',
-    siteName: 'My CV Buddy',
+    siteName: 'CV Buddy - Resume & CV Builder',
     url: 'https://www.mycvbuddy.com',
     images: [
       {
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
+    title: 'Free AI Resume & CV Builder | Get More Interviews in 2 Minutes',
+    description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate. Upload your resume or CV, paste any job, get perfectly tailored results instantly.',
     images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
@@ -120,7 +120,7 @@ export default function LandingPage() {
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
               AI Resume Adapter
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">& CV Builder UK</span>
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">& CV Builder</span>
               <br />
               In 2 Minutes.
             </h1>
