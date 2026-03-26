@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Upload, Zap, Download, CheckCircle, Star } from 'lucide-react'
+import { ArrowRight, Upload, Zap, Download, CheckCircle, Star, Target, FileText } from 'lucide-react'
 import type { Metadata } from 'next'
 import { StructuredData } from '@/components/StructuredData'
 import { OAuthHandler } from '@/components/OAuthHandler'
