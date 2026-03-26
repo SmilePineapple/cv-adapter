@@ -2,6 +2,20 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
+interface ResendWebhookData {
+  email_id: string
+  from: string
+  to: string[]
+  subject: string
+  html?: string
+  text?: string
+}
+
+interface ResendWebhookResult {
+  type: string
+  data: ResendWebhookData
+}
+
 /**
  * Lazy initialization of Resend client to avoid build-time errors
  */
@@ -36,7 +50,7 @@ export async function POST(req: NextRequest) {
       payload,
       headers: { id, timestamp, signature },
       webhookSecret: process.env.RESEND_WEBHOOK_SECRET!,
-    }) as any
+    }) as ResendWebhookResult
 
     // Only process email.received events
     if (result.type !== 'email.received') {

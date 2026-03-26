@@ -428,11 +428,14 @@ export default function DownloadPage() {
       }
       
       // Get skill scores if available
-      const skillScoresSection = sections.find(s => (s as any).type === 'skill_scores')
+      const skillScoresSection = sections.find(s => s.type === 'skills')
       const rawSkillScores = skillScoresSection?.content || null
 
-      const skillScores = Array.isArray(rawSkillScores)
-        ? rawSkillScores
+      const skillScores: { name: string; level: number }[] | null = Array.isArray(rawSkillScores)
+        ? rawSkillScores.map((item: any) => ({
+            name: typeof item === 'string' ? item : item.name || '',
+            level: typeof item === 'object' && item.level ? item.level : 3
+          }))
         : null
       
       // Prepare data for stunning templates
@@ -447,7 +450,7 @@ export default function DownloadPage() {
         education: getSectionContent(sections.find(s => s.type === 'education')?.content),
         skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
         skillScores: skillScores,
-        languages: getSectionContent(sections.find(s => (s as any).type === 'languages')?.content),
+        languages: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
         certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
         photoUrl: currentPhotoUrl || undefined,
@@ -1062,7 +1065,7 @@ export default function DownloadPage() {
                     )}
                   </button>
                   <button
-                    onClick={() => router.push(`/edit/${generationData.id}`)}
+                    onClick={() => generationData && router.push(`/edit/${generationData.id}`)}
                     className="px-6 py-3 border-2 border-white/20 text-white rounded-full font-black font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
                   >
                     <Edit3 className="w-5 h-5" />

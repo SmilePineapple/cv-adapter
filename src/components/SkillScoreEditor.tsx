@@ -63,13 +63,13 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
             
             if (Array.isArray(skillsSection.content)) {
               // Already an array of skill names
-              skillNames = skillsSection.content.map((s: unknown) => String(s).trim()).filter(Boolean)
+              skillNames = skillsSection.content.map((s: unknown) => String(s).trim()).filter((name: string) => Boolean(name))
             } else if (typeof skillsSection.content === 'string') {
               // Parse from comma/newline separated string
               skillNames = skillsSection.content
                 .split(/[,\n•]/)
                 .map((s: string) => s.trim())
-                .filter(Boolean)
+                .filter((name: string) => Boolean(name))
             }
             
             // Limit to 10 skills and create skill objects

@@ -1367,7 +1367,7 @@ export default function CVEditorPage() {
                 </div>
 
                 <div className="space-y-3">
-                  {userPlan === 'free' ? (
+                  {userPlan !== 'pro' ? (
                     <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
                       <div className="flex items-start space-x-3">
                         <Sparkles className="w-5 h-5 text-purple-600 mt-0.5" />
