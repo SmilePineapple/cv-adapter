@@ -3,28 +3,28 @@ import { Metadata } from 'next'
 import { ArrowRight, FileText, Briefcase, GraduationCap, Code, Heart, Building2, TrendingUp, Users, Wrench, ShoppingBag, Palette, Shield, FlaskConical, Plane, BookOpen } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'CV Examples by Industry: 15+ Real CV Templates UK 2026 | My CV Buddy',
-  description: 'Browse 15+ professional CV examples tailored for different UK industries. Real CV templates for marketing, IT, healthcare, finance, education, and more. Download free and customize for your job application.',
+  title: 'Free CV Builder UK Examples: Resume Adapter Templates by Industry 2026',
+  description: 'Browse 15+ professional CV examples with our free CV builder UK. Resume adapter templates for marketing, IT, healthcare, finance, and more. ATS-optimized CV templates you can customize instantly for UK job applications.',
   keywords: [
+    'free cv builder uk',
+    'cv builder uk',
+    'resume adapter',
     'CV examples',
     'CV examples UK',
+    'free cv builder no sign up',
+    'ai cv builder uk',
+    'ats cv optimizer',
     'CV templates by industry',
     'professional CV examples',
     'CV samples',
     'industry specific CV',
-    'CV examples for different jobs',
-    'real CV examples',
     'CV templates UK',
     'marketing CV example',
     'IT CV example',
     'healthcare CV example',
     'finance CV example',
-    'teaching CV example',
-    'engineering CV example',
-    'sales CV example',
-    'graduate CV example',
-    'manager CV example',
-    'CV format examples'
+    'ATS CV examples',
+    'free CV templates UK'
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/cv-examples',

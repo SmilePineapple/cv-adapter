@@ -31,6 +31,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <GoogleAnalytics />
+        {/* Trustpilot Widget Script */}
+        <script
+          type="text/javascript"
+          src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+          async
+        ></script>
       </head>
       <body
         className={`${inter.variable} font-sans antialiased`}

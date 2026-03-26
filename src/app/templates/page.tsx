@@ -1,5 +1,36 @@
 import Link from 'next/link'
 import { ArrowLeft, FileText, CheckCircle, Sparkles } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Free CV Templates UK 2026: 12 Professional ATS-Friendly Designs',
+  description: 'Download free CV templates UK for 2026. 12 professional, ATS-optimized CV templates for all industries. Modern, classic, creative designs. Free CV builder with resume adapter. No sign up required to preview.',
+  keywords: [
+    'cv template uk free',
+    'free cv templates uk',
+    'cv templates uk',
+    'professional cv templates',
+    'ats cv templates',
+    'free cv builder uk',
+    'cv builder uk',
+    'resume templates uk',
+    'cv format uk',
+    'cv design templates',
+    'modern cv template',
+    'creative cv template',
+    'professional cv template uk',
+    'ats friendly cv template'
+  ],
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com/templates',
+  },
+  openGraph: {
+    title: 'Free CV Templates UK 2026: 12 Professional Designs',
+    description: 'Download free ATS-optimized CV templates for all industries. Modern, classic, creative designs.',
+    url: 'https://www.mycvbuddy.com/templates',
+    type: 'website',
+  },
+}
 
 export default function TemplatesPage() {
   const templates = [
@@ -82,6 +113,22 @@ export default function TemplatesPage() {
       features: ['Bold typography', 'Creative layout', 'Visual elements'],
       bestFor: 'Graphic Design, UX/UI, Creative',
       preview: '🎨'
+    },
+    {
+      id: 'graduate',
+      name: 'Graduate',
+      description: 'Perfect for recent graduates and entry-level positions',
+      features: ['Education-focused', 'Skills highlight', 'Fresh and modern'],
+      bestFor: 'Graduates, Entry-level, Internships',
+      preview: '🎓'
+    },
+    {
+      id: 'professional',
+      name: 'Professional',
+      description: 'Versatile template suitable for any industry',
+      features: ['Balanced layout', 'Professional styling', 'Universal appeal'],
+      bestFor: 'All industries, Mid-level roles',
+      preview: '📋'
     }
   ]
 
@@ -101,7 +148,7 @@ export default function TemplatesPage() {
             <FileText className="w-8 h-8 text-blue-400" />
             <h1 className="text-4xl font-black text-white">CV Templates</h1>
           </div>
-          <p className="mt-2 text-gray-400">Choose from 10 professional templates designed for different industries and roles</p>
+          <p className="mt-2 text-gray-400">Choose from 12 professional, ATS-friendly CV templates designed for different industries and roles</p>
         </div>
       </header>
 
@@ -113,10 +160,10 @@ export default function TemplatesPage() {
           <div className="flex items-start space-x-4">
             <Sparkles className="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" />
             <div>
-              <h2 className="text-xl font-black text-white mb-2">How It Works</h2>
+              <h2 className="text-xl font-black text-white mb-2">Free CV Templates UK - How It Works</h2>
               <p className="text-gray-300 mb-4">
-                All templates are available when you export your CV. Simply upload your CV, tailor it to a job, 
-                and choose your preferred template at the download stage.
+                All 12 professional CV templates are completely free with our CV builder UK. Simply upload your CV, use our AI resume adapter to tailor it to any job, 
+                and choose your preferred template at the download stage. No sign up required to preview templates.
               </p>
               <div className="flex items-center space-x-2 text-sm text-gray-400">
                 <CheckCircle className="w-4 h-4 text-green-400" />
@@ -167,9 +214,9 @@ export default function TemplatesPage() {
 
         {/* CTA Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Create Your Perfect CV?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Create Your Perfect CV with Free Templates UK?</h2>
           <p className="text-xl mb-8 text-blue-100">
-            Upload your CV, tailor it with AI, and export with any template
+            Use our free CV builder UK with AI resume adapter. Upload your CV, tailor it to any job, and export with any of our 12 professional templates.
           </p>
           <div className="flex justify-center space-x-4">
             <Link 

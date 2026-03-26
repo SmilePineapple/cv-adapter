@@ -4,13 +4,18 @@ import { CheckCircle, ArrowRight, FileText, Target, Sparkles, Award, TrendingUp,
 import { CVWritingGuideSchema } from '@/components/CVWritingGuideSchema'
 
 export const metadata: Metadata = {
-  title: 'CV Writing Guide 2026: Complete Step-by-Step Tutorial | My CV Buddy',
-  description: 'Master CV writing with our comprehensive 2026 guide. Learn how to write a winning CV, optimize for ATS systems, and land more interviews. Includes examples, templates, and expert tips for UK job seekers.',
+  title: 'Free CV Builder UK Guide 2026: Resume Adapter & CV Writing Tips',
+  description: 'Master CV writing with our comprehensive 2026 guide. Free CV builder UK tips, resume adapter strategies, and ATS optimization. Learn how to write a winning CV and land more interviews with expert advice for UK job seekers.',
   keywords: [
+    'free cv builder uk',
+    'cv builder uk',
+    'resume adapter',
     'CV writing guide',
     'how to write a CV',
     'CV writing tips',
     'CV guide UK',
+    'free cv builder no sign up',
+    'ai cv builder uk',
     'CV writing tutorial',
     'professional CV writing',
     'CV writing help',
@@ -18,15 +23,10 @@ export const metadata: Metadata = {
     'best CV writing guide',
     'CV writing examples',
     'CV writing format',
-    'CV writing skills',
-    'CV writing service UK',
-    'CV writing checklist',
-    'CV writing mistakes',
+    'ats cv optimizer',
     'ATS CV writing',
     'CV writing for beginners',
-    'CV writing 2026',
-    'modern CV writing',
-    'effective CV writing'
+    'CV writing 2026'
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/cv-writing-guide',

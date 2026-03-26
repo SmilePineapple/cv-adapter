@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Free AI CV & Resume Adapter UK | ATS Optimizer | My CV Buddy',
-  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. AI-powered resume adapter & CV builder that beats ATS systems. Upload your CV, paste any job, get perfectly tailored results. Free to try.',
-  keywords: ['resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk'],
+  title: 'Free CV Builder UK 2026: AI Resume Adapter & ATS Optimizer',
+  description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Free CV builder UK with AI resume adapter. 12 professional templates. Beat ATS systems. Upload your CV, paste any job, get perfectly tailored results. Free to try, no sign up required.',
+  keywords: ['free cv builder uk', 'cv builder uk', 'resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk', 'cv template uk free', 'professional cv builder uk', 'ats cv checker'],
   openGraph: {
     title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
     description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
@@ -71,7 +71,24 @@ export default function LandingPage() {
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                 ))}
               </div>
-              <span className="text-sm font-semibold">10,000+ users</span>
+              <span className="text-sm font-semibold">Rated 4.8/5 on Trustpilot</span>
+            </div>
+            
+            {/* Trustpilot Widget */}
+            <div className="flex justify-center mb-8">
+              <div 
+                className="trustpilot-widget" 
+                data-locale="en-GB"
+                data-template-id="5419b6a8b0d04a076446a9ad"
+                data-businessunit-id="YOUR_TRUSTPILOT_ID"
+                data-style-height="24px"
+                data-style-width="100%"
+                data-theme="dark"
+              >
+                <a href="https://uk.trustpilot.com/review/mycvbuddy.com" target="_blank" rel="noopener noreferrer">
+                  Trustpilot
+                </a>
+              </div>
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
@@ -289,7 +306,31 @@ export default function LandingPage() {
                 <p className="text-xl text-gray-600">Expert guides to help you land your dream job</p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-4 gap-8">
+                <Link href="/ats-checker" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-green-500">
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-500 transition-colors">
+                    <Target className="w-6 h-6 text-green-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-black text-black mb-3 group-hover:text-green-600 transition-colors">Free ATS CV Checker</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">Check if your CV will pass Applicant Tracking Systems. Get instant ATS score and recommendations.</p>
+                  <span className="text-green-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    Check ATS Score
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+                
+                <Link href="/templates" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-purple-500">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500 transition-colors">
+                    <FileText className="w-6 h-6 text-purple-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-black text-black mb-3 group-hover:text-purple-600 transition-colors">Free CV Templates UK</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">Browse 12 professional, ATS-friendly CV templates for all industries. Modern, classic, and creative designs.</p>
+                  <span className="text-purple-600 font-bold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    View Templates
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+                
                 <Link href="/ats-optimization-guide" className="group bg-white rounded-2xl p-8 hover:shadow-2xl transition-all border-2 border-transparent hover:border-blue-500">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors">
                     <Zap className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
