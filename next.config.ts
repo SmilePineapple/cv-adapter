@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
     },
   },
   
+  // Disable static optimization for all pages (they all need runtime Supabase client)
+  output: 'standalone',
+  
   // Webpack configuration to fix pdf-parse issue on Vercel
   webpack: (config, { isServer }) => {
     if (isServer) {
