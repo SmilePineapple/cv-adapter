@@ -237,6 +237,43 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Infographic Section - Visual Explanation */}
+        <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
+                  The Complete
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Picture</span>
+                </h2>
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  See how CV Buddy solves the ATS problem in 2 minutes
+                </p>
+              </div>
+
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
+                <img 
+                  src="/graph.png" 
+                  alt="Beat the Robots: Optimize Your CV in 2 Minutes - Complete infographic showing ATS rejection problem, CV Buddy solution, and proven results"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="mt-12 text-center">
+                <Link 
+                  href="/auth/signup" 
+                  className="inline-flex items-center gap-3 bg-black text-white px-10 py-5 rounded-full text-lg font-black hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+                >
+                  <span>Try CV Buddy Free</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Social Proof - Bold Stats */}
         <section className="py-32 bg-black text-white">
           <div className="container mx-auto px-4">
