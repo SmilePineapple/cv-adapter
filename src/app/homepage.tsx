@@ -74,21 +74,16 @@ export default function LandingPage() {
               <span className="text-sm font-semibold">Rated 4.8/5 on Trustpilot</span>
             </div>
             
-            {/* Trustpilot Widget */}
+            {/* Trustpilot Widget - Client-side only to avoid hydration errors */}
             <div className="flex justify-center mb-8">
-              <div 
-                className="trustpilot-widget" 
-                data-locale="en-GB"
-                data-template-id="5419b6a8b0d04a076446a9ad"
-                data-businessunit-id="YOUR_TRUSTPILOT_ID"
-                data-style-height="24px"
-                data-style-width="100%"
-                data-theme="dark"
+              <a 
+                href="https://uk.trustpilot.com/review/mycvbuddy.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
               >
-                <a href="https://uk.trustpilot.com/review/mycvbuddy.com" target="_blank" rel="noopener noreferrer">
-                  Trustpilot
-                </a>
-              </div>
+                View our Trustpilot reviews
+              </a>
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
@@ -104,6 +99,23 @@ export default function LandingPage() {
               <br className="hidden sm:block" />
               <span className="text-white font-semibold">95% pass rate.</span> Free to try.
             </p>
+
+            {/* NotebookLLM Video - Hero */}
+            <div className="mb-12 max-w-4xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black/50 backdrop-blur-sm">
+                <video 
+                  controls 
+                  preload="metadata"
+                  className="w-full aspect-video"
+                >
+                  <source src="/videos/cv-makeover.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <p className="text-center text-sm text-gray-400 mt-4">
+                🎙️ Listen: Why 75% of CVs get rejected & how to fix it in 2 minutes
+              </p>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link 
@@ -133,6 +145,50 @@ export default function LandingPage() {
           
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <ArrowRight className="w-6 h-6 text-white/50 rotate-90" />
+          </div>
+        </section>
+
+        {/* Video Showcase Section */}
+        <section className="py-24 bg-gradient-to-b from-black to-gray-900">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
+                  The 2-Minute
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">CV Makeover</span>
+                </h2>
+                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                  Discover why 75% of CVs get rejected by robots—and how CV Buddy fixes it in 2 minutes.
+                </p>
+              </div>
+
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                <video 
+                  controls 
+                  preload="metadata"
+                  className="w-full aspect-video bg-black"
+                >
+                  <source src="/videos/cv-makeover.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                  <div className="text-3xl font-black text-white mb-2">75%</div>
+                  <div className="text-sm text-gray-400">CVs rejected by ATS systems</div>
+                </div>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                  <div className="text-3xl font-black text-white mb-2">2 mins</div>
+                  <div className="text-sm text-gray-400">To create a tailored CV</div>
+                </div>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                  <div className="text-3xl font-black text-white mb-2">95%</div>
+                  <div className="text-sm text-gray-400">ATS pass rate achieved</div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
