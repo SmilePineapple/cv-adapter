@@ -11,6 +11,23 @@ export const metadata: Metadata = {
   title: 'Free CV Builder UK 2026: AI Resume Adapter & ATS Optimizer',
   description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Free CV builder UK with AI resume adapter. 12 professional templates. Beat ATS systems. Upload your CV, paste any job, get perfectly tailored results. Free to try, no sign up required.',
   keywords: ['free cv builder uk', 'cv builder uk', 'resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'resume builder', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk', 'cv template uk free', 'professional cv builder uk', 'ats cv checker'],
+  authors: [{ name: 'CV Buddy' }],
+  creator: 'CV Buddy',
+  publisher: 'CV Buddy',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com',
+  },
   openGraph: {
     title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
     description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
@@ -18,6 +35,20 @@ export const metadata: Metadata = {
     locale: 'en_GB',
     siteName: 'My CV Buddy',
     url: 'https://www.mycvbuddy.com',
+    images: [
+      {
+        url: 'https://www.mycvbuddy.com/graph.png',
+        width: 1200,
+        height: 630,
+        alt: 'CV Buddy - Beat the Robots: Optimize Your CV in 2 Minutes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free AI CV Builder UK | Get More Interviews in 2 Minutes',
+    description: '✓ 10,000+ CVs created ✓ 95% ATS pass rate. Upload your CV, paste any job, get a perfectly tailored CV instantly.',
+    images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
 
@@ -99,23 +130,6 @@ export default function LandingPage() {
               <br className="hidden sm:block" />
               <span className="text-white font-semibold">95% pass rate.</span> Free to try.
             </p>
-
-            {/* NotebookLLM Video - Hero */}
-            <div className="mb-12 max-w-4xl mx-auto">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black/50 backdrop-blur-sm">
-                <video 
-                  controls 
-                  preload="metadata"
-                  className="w-full aspect-video"
-                >
-                  <source src="/videos/cv-makeover.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-              <p className="text-center text-sm text-gray-400 mt-4">
-                🎙️ Listen: Why 75% of CVs get rejected & how to fix it in 2 minutes
-              </p>
-            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link 

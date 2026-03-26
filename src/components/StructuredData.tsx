@@ -145,6 +145,51 @@ export function StructuredData() {
     "description": "AI-powered CV and resume builder helping job seekers create ATS-optimized applications"
   }
 
+  const videoSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "The 2-Minute CV Makeover",
+    "description": "Discover why 75% of CVs get rejected by robots—and how CV Buddy fixes it in 2 minutes. Learn about ATS systems and how to optimize your CV.",
+    "thumbnailUrl": "https://www.mycvbuddy.com/graph.png",
+    "uploadDate": "2026-03-26",
+    "duration": "PT2M30S",
+    "contentUrl": "https://www.mycvbuddy.com/videos/cv-makeover.mp4",
+    "embedUrl": "https://www.mycvbuddy.com/videos/cv-makeover.mp4",
+    "publisher": {
+      "@type": "Organization",
+      "name": "My CV Buddy",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.mycvbuddy.com/logo.png"
+      }
+    }
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.mycvbuddy.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Templates",
+        "item": "https://www.mycvbuddy.com/templates"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "ATS Checker",
+        "item": "https://www.mycvbuddy.com/ats-checker"
+      }
+    ]
+  }
+
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
