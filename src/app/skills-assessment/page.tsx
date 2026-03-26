@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'
 import { ArrowLeft, Sparkles, Target, TrendingUp, Award, Zap } from 'lucide-react'
 import { DifficultyLevel } from '@/types/skills-assessment'
