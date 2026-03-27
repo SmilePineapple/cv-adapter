@@ -11,5 +11,14 @@ export const supabase = supabaseUrl && supabaseAnonKey
 
 // Client component client (for use in client components)
 export const createSupabaseClient = () => {
+  // During build/prerender, env vars might not be available
+  // Return a client with placeholder values that will be replaced at runtime
+  if (typeof window === 'undefined' && (!supabaseUrl || !supabaseAnonKey)) {
+    // Server-side during build - return a dummy client
+    return createClient(
+      'https://placeholder.supabase.co',
+      'placeholder-key-for-build-only'
+    )
+  }
   return createClientComponentClient()
 }
