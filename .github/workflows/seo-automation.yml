@@ -1,0 +1,38 @@
+name: SEO Automation
+
+on:
+  schedule:
+    # Run every day at 10 AM UTC (11 AM UK time)
+    - cron: '0 10 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  automate-seo:
+    name: Run SEO Automation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run SEO Automation
+        run: npx tsx scripts/seo-automation.ts
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      
+      - name: Commit generated files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add public/sitemap.xml public/robots.txt || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: auto-update sitemap and robots.txt [skip ci]"
+          git push || true
