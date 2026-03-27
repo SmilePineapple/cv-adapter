@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { ArrowRight, CheckCircle, XCircle, AlertTriangle, Target, Zap, FileText, Search, Award, TrendingUp } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'ATS Optimization Guide 2026: Beat Applicant Tracking Systems | My CV Buddy',
+  title: 'ATS Optimization Guide 2026 | My CV Buddy',
   description: 'Complete guide to optimizing your CV for ATS systems. Learn how to beat applicant tracking systems, pass ATS scans, and get your CV seen by recruiters. Includes ATS-friendly formatting tips and keyword strategies.',
   keywords: [
     'ATS optimization',

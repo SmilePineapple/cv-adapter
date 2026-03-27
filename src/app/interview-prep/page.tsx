@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'AI Interview Prep | My CV Buddy',
+  description: 'Prepare for your job interview with AI-powered practice questions and answers.',
+}
 
 export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'

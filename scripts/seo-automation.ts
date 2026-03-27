@@ -290,6 +290,44 @@ async function optimizeMetaTags() {
   }
 }
 
+// 9. Submit to IndexNow for instant indexing
+async function submitToIndexNow() {
+  console.log('\n🔔 Submitting to IndexNow...')
+  
+  const INDEXNOW_KEY = '0d88c3e2afb46f36a115a179c0a61ff2'
+  const HOST = 'www.mycvbuddy.com'
+  const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`
+  
+  const urls = [
+    `https://${HOST}`,
+    `https://${HOST}/resume-builder-usa`,
+    `https://${HOST}/sitemap.xml`,
+  ]
+  
+  try {
+    const response = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({
+        host: HOST,
+        key: INDEXNOW_KEY,
+        keyLocation: KEY_LOCATION,
+        urlList: urls,
+      }),
+    })
+    
+    if (response.status === 200 || response.status === 202) {
+      await logAction('IndexNow Submission', 'success', `${urls.length} URLs submitted to Bing/Yandex`)
+    } else {
+      await logAction('IndexNow Submission', 'failed', `HTTP ${response.status}`)
+    }
+  } catch (error: any) {
+    await logAction('IndexNow Submission', 'failed', error.message)
+  }
+}
+
 // Main execution
 async function main() {
   console.log('🚀 Starting automated SEO optimization...\n')

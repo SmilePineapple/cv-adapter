@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Career Change CV: How to Switch Industries in the UK (2025) | CV Adapter',
+  title: 'Career Change CV Guide UK 2025 | My CV Buddy',
   description: 'Complete guide to writing a career change CV in the UK. Learn how to highlight transferable skills and land your dream role in a new industry.',
   keywords: 'career change CV UK, switching careers, transferable skills CV, career transition UK, change industry CV',
   openGraph: {
