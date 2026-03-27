@@ -6,12 +6,24 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
-import { writeFileSync } from 'fs'
+import { writeFileSync, existsSync } from 'fs'
 
-config({ path: resolve(process.cwd(), '.env.local') })
+// Load .env.local only if it exists (local development)
+const envPath = resolve(process.cwd(), '.env.local')
+if (existsSync(envPath)) {
+  config({ path: envPath })
+}
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Missing required environment variables!')
+  console.error('Required: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY')
+  console.error('In GitHub Actions, these should be set as secrets.')
+  process.exit(1)
+}
+
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 interface SEOAction {
