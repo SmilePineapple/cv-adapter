@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import CVProgressStepper from '@/components/CVProgressStepper'
 import { toast } from 'sonner'
 import { CVSection } from '@/types/database'

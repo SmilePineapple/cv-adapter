@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'
 import { ArrowLeft, Save, Sparkles } from 'lucide-react'
 import Link from 'next/link'

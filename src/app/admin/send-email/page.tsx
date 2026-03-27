@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { Mail, Send, ArrowLeft } from 'lucide-react'

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import { 
   getConversionFunnel, 
   getCohortRetention, 

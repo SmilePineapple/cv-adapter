@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
+
+export const dynamic = 'force-dynamic'
 import { Trophy, Crown, Check, RefreshCw, Award, Users, TrendingUp, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import confetti from 'canvas-confetti'
