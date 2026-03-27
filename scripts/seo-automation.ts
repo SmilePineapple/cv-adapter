@@ -81,7 +81,7 @@ ${pages.map(page => `  <url>
       `https://www.google.com/ping?sitemap=${encodeURIComponent(baseUrl + '/sitemap.xml')}`
     )
     
-    if (response.ok) {
+    if (response.status === 200 || response.status === 202) {
       await logAction('Submit Sitemap', 'success', 'Sitemap submitted to Google')
     } else {
       await logAction('Submit Sitemap', 'failed', `HTTP ${response.status}`)
@@ -303,6 +303,7 @@ async function main() {
   await generateBlogIdeas()
   await sendReengagementEmails()
   await optimizeMetaTags()
+  await submitToIndexNow()
   
   console.log('\n' + '═'.repeat(60))
   console.log('\n📊 Summary:')
