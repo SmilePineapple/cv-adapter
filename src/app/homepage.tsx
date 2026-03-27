@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Free Resume & CV Builder 2026: AI Adapter & ATS Optimizer',
-  description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate ✓ 2-minute setup. Free resume builder & CV builder with AI adapter. 12 professional templates. Beat ATS systems. Upload your resume or CV, paste any job, get perfectly tailored results. Free to try, no sign up required.',
-  keywords: ['free resume builder', 'resume builder', 'resume maker', 'ats resume optimizer', 'professional resume builder', 'resume template free', 'ai resume builder', 'free cv builder uk', 'cv builder uk', 'resume adapter', 'CV generator UK free', 'free CV builder', 'AI CV writer', 'ATS optimization', 'ats cv optimizer', 'free cv builder no sign up', 'ai cv builder uk', 'cv template uk free', 'professional cv builder uk', 'ats cv checker', 'resume creator', 'ats friendly resume', 'free resume builder no sign up'],
+  title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
+  description: 'Advanced AI CV builder and ATS CV checker for UK job seekers. Create professional resumes in 2 minutes. Free to try, no credit card required.',
+  keywords: ['cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'create a cv', 'free resume builder', 'cv templates uk', 'ats friendly cv', 'cv writing service', 'online cv creator', 'professional cv builder', 'ats resume checker', 'cv help'],
   authors: [{ name: 'CV Buddy' }],
   creator: 'CV Buddy',
   publisher: 'CV Buddy',
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com',
   },
   openGraph: {
-    title: 'Free AI Resume & CV Builder | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate. Upload your resume or CV, paste any job, get perfectly tailored results instantly.',
-    locale: 'en_US',
+    title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
+    description: 'Utilise our advanced AI CV builder and ATS CV checker to craft your professional resume. As a premier cv maker, we help you create a cv. Try our free cv builder today.',
+    locale: 'en_GB',
     type: 'website',
-    siteName: 'CV Buddy - Resume & CV Builder',
+    siteName: 'My CV Buddy - Professional CV Builder',
     url: 'https://www.mycvbuddy.com',
     images: [
       {
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI Resume & CV Builder | Get More Interviews in 2 Minutes',
-    description: '✓ 10,000+ resumes & CVs created ✓ 95% ATS pass rate. Upload your resume or CV, paste any job, get perfectly tailored results instantly.',
+    title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
+    description: 'Utilise our advanced AI CV builder and ATS CV checker to craft your professional resume. As a premier cv maker, we help you create a cv. Try our free cv builder today.',
     images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
@@ -118,17 +118,15 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
-              AI Resume Adapter
+              Craft Your Professional Future
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">& CV Builder</span>
-              <br />
-              In 2 Minutes.
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Premier CV Builder</span>
             </h1>
             
             <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-12 max-w-3xl mx-auto font-light">
-              AI-powered resume adapter & ATS CV optimizer that beats applicant tracking systems.
+              Advanced AI CV builder and ATS CV checker designed for the UK job market.
               <br className="hidden sm:block" />
-              <span className="text-white font-semibold">95% pass rate.</span> Free to try.
+              <span className="text-white font-semibold">Create a professional CV in 2 minutes.</span> Free to try.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -168,12 +166,12 @@ export default function LandingPage() {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
-                  The 2-Minute
+                  Free CV Builder:
                   <br />
-                  <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">CV Makeover</span>
+                  <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">2-Minute CV Makeover</span>
                 </h2>
                 <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Discover why 75% of CVs get rejected by robots—and how CV Buddy fixes it in 2 minutes.
+                  Discover why 75% of CVs get rejected by ATS systems—and how our free resume builder fixes it in 2 minutes.
                 </p>
               </div>
 
@@ -211,9 +209,9 @@ export default function LandingPage() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-20">
               <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-black mb-6 tracking-tight">
-                Three Steps.
+                How Our CV Builder Works:
                 <br />
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">That's It.</span>
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Three Simple Steps</span>
               </h2>
             </div>
             
@@ -223,8 +221,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">1</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Upload</h3>
-                  <p className="text-xl text-gray-600">Drop your CV. PDF or Word. Done.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Upload Your Resume</h3>
+                  <p className="text-xl text-gray-600">Drop your CV or resume. PDF or Word. Our free CV builder handles both.</p>
                 </div>
               </div>
               
@@ -233,8 +231,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">2</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Paste Job</h3>
-                  <p className="text-xl text-gray-600">Copy the job description. AI does the rest.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Paste Job Description</h3>
+                  <p className="text-xl text-gray-600">Copy the job description. Our AI CV builder tailors your resume automatically.</p>
                 </div>
               </div>
               
@@ -243,8 +241,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">3</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Download</h3>
-                  <p className="text-xl text-gray-600">Get your optimized CV. Apply with confidence.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Download Your CV</h3>
+                  <p className="text-xl text-gray-600">Get your ATS-optimized CV from our resume builder. Apply with confidence.</p>
                 </div>
               </div>
             </div>
@@ -257,12 +255,12 @@ export default function LandingPage() {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
-                  The Complete
+                  Why Choose Our
                   <br />
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Picture</span>
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Free CV Builder?</span>
                 </h2>
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  See how CV Buddy solves the ATS problem in 2 minutes
+                  See how our AI-powered resume builder solves the ATS problem in 2 minutes
                 </p>
               </div>
 
