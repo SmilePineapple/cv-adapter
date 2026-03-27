@@ -66,26 +66,26 @@ async function getMetrics(): Promise<SEOMetrics> {
     .select('*', { count: 'exact', head: true })
     .gte('created_at', sevenDaysAgo.toISOString())
 
-  // Get active users in last 30 days (users who generated CVs recently)
+  // Get active users in last 30 days (users who updated recently)
   const { count: activeUsers30d } = await supabase
     .from('usage_tracking')
     .select('*', { count: 'exact', head: true })
-    .gte('last_generation_at', thirtyDaysAgo.toISOString())
+    .gte('updated_at', thirtyDaysAgo.toISOString())
 
-  // Get total generations (sum of cv_generations_count from usage_tracking)
+  // Get total generations (sum of lifetime_generation_count from usage_tracking)
   const { data: usageData } = await supabase
     .from('usage_tracking')
-    .select('cv_generations_count')
+    .select('lifetime_generation_count')
   
-  const totalGenerations = usageData?.reduce((sum, row) => sum + (row.cv_generations_count || 0), 0) || 0
+  const totalGenerations = usageData?.reduce((sum, row) => sum + (row.lifetime_generation_count || 0), 0) || 0
 
-  // Get generations in last 7 days (count users who generated in last 7 days * their avg)
+  // Get generations in last 7 days (count users who updated in last 7 days)
   const { data: recentUsers } = await supabase
     .from('usage_tracking')
-    .select('cv_generations_count')
-    .gte('last_generation_at', sevenDaysAgo.toISOString())
+    .select('generation_count')
+    .gte('updated_at', sevenDaysAgo.toISOString())
   
-  const generations7d = recentUsers?.reduce((sum, row) => sum + (row.cv_generations_count || 0), 0) || 0
+  const generations7d = recentUsers?.reduce((sum, row) => sum + (row.generation_count || 0), 0) || 0
 
   // Get paying customers from subscriptions table
   const { count: payingCustomers } = await supabase
