@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
       {
         source: '/blog/how-to-beat-ats-systems',
         destination: '/ats-optimization-guide',
-        permanent: true, // 301 redirect
+        permanent: true,
       },
       {
         source: '/blog/cv-writing-tips',
@@ -49,13 +49,32 @@ const nextConfig: NextConfig = {
         destination: '/ats-optimization-guide',
         permanent: true,
       },
-      // Ensure non-www redirects to www for consistency
+      // Redirect non-www to www (handles both http and https at app level)
       {
         source: '/:path*',
         has: [
           {
             type: 'host',
             value: 'mycvbuddy.com',
+          },
+        ],
+        destination: 'https://www.mycvbuddy.com/:path*',
+        permanent: true,
+      },
+      // Redirect http://www to https://www (belt-and-braces for GSC crawls)
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.mycvbuddy.com',
+          },
+        ],
+        missing: [
+          {
+            type: 'header',
+            key: 'x-forwarded-proto',
+            value: 'https',
           },
         ],
         destination: 'https://www.mycvbuddy.com/:path*',

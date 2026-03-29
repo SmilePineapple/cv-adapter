@@ -8,12 +8,12 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
-  description: 'Advanced AI CV builder and ATS CV checker for UK job seekers. Create professional resumes in 2 minutes. Free to try, no credit card required.',
-  keywords: ['cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'create a cv', 'free resume builder', 'cv templates uk', 'ats friendly cv', 'cv writing service', 'online cv creator', 'professional cv builder', 'ats resume checker', 'cv help'],
-  authors: [{ name: 'CV Buddy' }],
-  creator: 'CV Buddy',
-  publisher: 'CV Buddy',
+  title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
+  description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. My CV Buddy is the leading AI CV adapter for UK job seekers and US resume builders. Free to try.',
+  keywords: ['cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk'],
+  authors: [{ name: 'My CV Buddy' }],
+  creator: 'My CV Buddy',
+  publisher: 'My CV Buddy',
   robots: {
     index: true,
     follow: true,
@@ -26,28 +26,28 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://www.mycvbuddy.com',
+    canonical: 'https://www.mycvbuddy.com/',
   },
   openGraph: {
-    title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
-    description: 'Utilise our advanced AI CV builder and ATS CV checker to craft your professional resume. As a premier cv maker, we help you create a cv. Try our free cv builder today.',
+    title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
+    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. Free to try.',
     locale: 'en_GB',
     type: 'website',
-    siteName: 'My CV Buddy - Professional CV Builder',
-    url: 'https://www.mycvbuddy.com',
+    siteName: 'My CV Buddy - AI CV Adapter',
+    url: 'https://www.mycvbuddy.com/',
     images: [
       {
         url: 'https://www.mycvbuddy.com/graph.png',
         width: 1200,
         height: 630,
-        alt: 'CV Buddy - Beat the Robots: Optimize Your CV in 2 Minutes',
+        alt: 'My CV Buddy - Tailor Your CV to Any Job Description in Seconds',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free CV Builder & Resume Builder | AI CV Builder | ATS CV Checker',
-    description: 'Utilise our advanced AI CV builder and ATS CV checker to craft your professional resume. As a premier cv maker, we help you create a cv. Try our free cv builder today.',
+    title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
+    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. Free to try.',
     images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
@@ -118,15 +118,15 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tighter">
-              Craft Your Professional Future
+              Tailor Your CV to Any
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Premier CV Builder</span>
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Job Description — in Seconds</span>
             </h1>
             
             <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-12 max-w-3xl mx-auto font-light">
-              Advanced AI CV builder and ATS CV checker designed for the UK job market.
+              Upload your CV, paste the job description, and let AI instantly adapt your application for ATS systems and recruiters.
               <br className="hidden sm:block" />
-              <span className="text-white font-semibold">Create a professional CV in 2 minutes.</span> Free to try.
+              <span className="text-white font-semibold">Works with UK CVs and US resumes.</span> Free to try.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -134,23 +134,27 @@ export default function LandingPage() {
                 href="/auth/signup" 
                 className="group bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center justify-center gap-3"
               >
-                <span>Start Free</span>
+                <span>Adapt My CV Free</span>
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>No credit card</span>
+                <span>Keeps your formatting</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>Free trial</span>
+                <span>PDF &amp; Word supported</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-400" />
-                <span>2 min setup</span>
+                <span>ATS keyword match</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>UK CVs + US resumes</span>
               </div>
             </div>
           </div>
@@ -166,12 +170,12 @@ export default function LandingPage() {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight">
-                  Free CV Builder:
+                  AI CV Adapter:
                   <br />
                   <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">2-Minute CV Makeover</span>
                 </h2>
                 <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Discover why 75% of CVs get rejected by ATS systems—and how our free resume builder fixes it in 2 minutes.
+                  Discover why 75% of CVs get rejected by ATS systems — and how our AI CV adapter tailors your application for that specific role in 2 minutes.
                 </p>
               </div>
 
@@ -204,12 +208,49 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Before / After Transformation */}
+        <section className="py-24 bg-gray-950">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+                  See the Difference
+                  <br />
+                  <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Before &amp; After Adaptation</span>
+                </h2>
+                <p className="text-xl text-gray-400">The same experience — adapted to match a specific job description</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-red-950/30 border border-red-500/30 rounded-2xl p-8">
+                  <div className="text-red-400 font-black text-sm uppercase tracking-wider mb-4">✗ Before — Generic CV</div>
+                  <p className="text-gray-300 text-lg leading-relaxed italic">&quot;Responsible for managing team projects and improving processes.&quot;</p>
+                  <div className="mt-4 text-xs text-gray-500">ATS match: low · No job-specific keywords · Vague impact</div>
+                </div>
+
+                <div className="bg-green-950/30 border border-green-500/30 rounded-2xl p-8">
+                  <div className="text-green-400 font-black text-sm uppercase tracking-wider mb-4">✓ After — Adapted CV</div>
+                  <p className="text-gray-300 text-lg leading-relaxed italic">&quot;Led cross-functional delivery of 12 client projects, reducing time-to-completion by 18% through Agile process improvements.&quot;</p>
+                  <div className="mt-4 text-xs text-gray-500">ATS match: high · Keywords matched · Quantified impact</div>
+                </div>
+              </div>
+
+              <div className="mt-10 text-center">
+                <Link href="/auth/signup" className="inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-black hover:bg-gray-100 transition-all shadow-xl hover:scale-105">
+                  <span>Adapt My CV Free</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* How It Works - Ultra Minimalist */}
         <section className="py-32 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-20">
               <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-black mb-6 tracking-tight">
-                How Our CV Builder Works:
+                How the CV Adapter Works:
                 <br />
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Three Simple Steps</span>
               </h2>
@@ -221,8 +262,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">1</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Upload Your Resume</h3>
-                  <p className="text-xl text-gray-600">Drop your CV or resume. PDF or Word. Our free CV builder handles both.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Upload Your Existing CV</h3>
+                  <p className="text-xl text-gray-600">Upload your PDF or Word CV — we extract all your sections automatically. No reformatting needed.</p>
                 </div>
               </div>
               
@@ -231,8 +272,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">2</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Paste Job Description</h3>
-                  <p className="text-xl text-gray-600">Copy the job description. Our AI CV builder tailors your resume automatically.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Paste the Job Description</h3>
+                  <p className="text-xl text-gray-600">Drop in the job ad and let the AI analyse keywords, requirements, and role fit for that specific position.</p>
                 </div>
               </div>
               
@@ -241,8 +282,8 @@ export default function LandingPage() {
                   <span className="text-3xl font-black">3</span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black text-black mb-3">Download Your CV</h3>
-                  <p className="text-xl text-gray-600">Get your ATS-optimized CV from our resume builder. Apply with confidence.</p>
+                  <h3 className="text-3xl font-black text-black mb-3">Get Your Tailored CV</h3>
+                  <p className="text-xl text-gray-600">See exactly what changed, edit if needed, and download in DOCX, PDF, or TXT. Ready to apply in minutes.</p>
                 </div>
               </div>
             </div>
@@ -255,12 +296,12 @@ export default function LandingPage() {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
-                  Why Choose Our
+                  Why Choose the
                   <br />
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Free CV Builder?</span>
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI CV Adapter?</span>
                 </h2>
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  See how our AI-powered resume builder solves the ATS problem in 2 minutes
+                  See how our AI-powered CV adapter tailors your application and solves the ATS problem in 2 minutes
                 </p>
               </div>
 
@@ -563,7 +604,7 @@ export default function LandingPage() {
 
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
                   <h3 className="text-2xl font-black mb-4">Career Changers</h3>
-                  <p className="text-gray-300 leading-relaxed">Transitioning to a new industry? Our AI CV builder identifies transferable skills and reframes your experience to match new career paths. Perfect for professionals pivoting to tech, marketing, finance, or any field.</p>
+                  <p className="text-gray-300 leading-relaxed">Transitioning to a new industry? Our AI CV adapter identifies transferable skills and reframes your existing experience to match new career paths — perfect for professionals pivoting to tech, marketing, finance, or any field.</p>
                 </div>
 
                 <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
@@ -587,7 +628,7 @@ export default function LandingPage() {
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-4 tracking-tight">
                   Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">My CV Buddy?</span>
                 </h2>
-                <p className="text-xl text-gray-600">The UK's most advanced AI-powered CV builder</p>
+                <p className="text-xl text-gray-600">The UK's most advanced AI-powered CV adapter and tailoring tool</p>
               </div>
 
               <div className="space-y-12">
