@@ -110,7 +110,7 @@ export function StructuredData() {
       "bestRating": "5",
       "worstRating": "1"
     },
-    "description": "AI-powered CV and resume generator that tailors your job application to any position. ATS-optimized and free to use for UK, US, and international job seekers.",
+    "description": "AI-powered CV adapter and tailoring tool. Upload your CV, paste a job description, and get a tailored ATS-optimised CV in seconds. Free for UK, US, and international job seekers.",
     "featureList": [
       "AI CV tailoring to job descriptions",
       "ATS optimization and keyword matching",
@@ -122,7 +122,7 @@ export function StructuredData() {
       "Interview preparation tools"
     ],
     "screenshot": "https://www.mycvbuddy.com/og-image.png",
-    "url": "https://www.mycvbuddy.com",
+    "url": "https://www.mycvbuddy.com/",
     "image": "https://www.mycvbuddy.com/logo.png"
   }
 
@@ -130,8 +130,8 @@ export function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "My CV Buddy",
-    "url": "https://mycvbuddy.com",
-    "logo": "https://mycvbuddy.com/logo.png",
+    "url": "https://www.mycvbuddy.com/",
+    "logo": "https://www.mycvbuddy.com/logo.png",
     "sameAs": [
       "https://twitter.com/mycvbuddy",
       "https://linkedin.com/company/mycvbuddy"
@@ -142,7 +142,7 @@ export function StructuredData() {
       "contactType": "Customer Support",
       "availableLanguage": ["English"]
     },
-    "description": "AI-powered CV and resume builder helping job seekers create ATS-optimized applications"
+    "description": "AI-powered CV adapter helping job seekers tailor their CV to any job description. ATS-optimised applications in seconds."
   }
 
   const videoSchema = {
@@ -193,8 +193,8 @@ export function StructuredData() {
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "My CV Buddy - AI CV Builder",
-    "description": "AI-powered CV and resume builder that tailors your job application to any position. ATS-optimized with 95% pass rate.",
+    "name": "My CV Buddy - AI CV Adapter",
+    "description": "AI-powered CV adapter that tailors your existing CV to any job description in seconds. ATS-optimised with 95% pass rate.",
     "image": "https://www.mycvbuddy.com/logo.png",
     "brand": {
       "@type": "Brand",
