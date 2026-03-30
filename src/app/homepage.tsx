@@ -128,6 +128,13 @@ export default function LandingPage() {
               <br className="hidden sm:block" />
               <span className="text-white font-semibold">Works with UK CVs and US resumes.</span> 1 free generation — no card needed.
             </p>
+
+            <div className="mb-8 flex justify-center">
+              <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 max-w-xl">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-sm sm:text-base text-gray-200">Built to adapt your existing CV — not invent fake experience.</span>
+              </div>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link 
@@ -165,6 +172,30 @@ export default function LandingPage() {
           
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
             <ArrowRight className="w-6 h-6 text-white/50 rotate-90" />
+          </div>
+        </section>
+
+        {/* Privacy Trust Strip */}
+        <section className="py-5 bg-gray-900 border-b border-white/5">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span>Your CV stays private</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span>Delete your data anytime</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span>Secure account storage</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span>No credit card to try</span>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -405,6 +436,7 @@ export default function LandingPage() {
               <div className="text-center">
                 <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">4.9</div>
                 <div className="text-lg text-gray-400">Rating</div>
+                <div className="text-xs text-gray-600 mt-1">Early user reviews</div>
               </div>
             </div>
           </div>
@@ -438,6 +470,7 @@ export default function LandingPage() {
                   <div className="text-gray-600">— Emma W., Product Designer</div>
                 </div>
               </div>
+              <p className="text-xs text-gray-400 mt-8 text-center">Testimonials are user-reported outcomes.</p>
             </div>
           </div>
         </section>
@@ -689,7 +722,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black text-black mb-3">ATS Optimization Technology</h3>
-                    <p className="text-gray-700 leading-relaxed">Over 75% of CVs are rejected by Applicant Tracking Systems before a human ever sees them. Our AI CV generator uses advanced natural language processing to analyze job descriptions, extract key requirements, and optimize your CV with the right keywords in the right places. We achieve a 95% ATS pass rate by using clean formatting, standard section headers, and strategic keyword placement that both ATS systems and human recruiters love.</p>
+                    <p className="text-gray-700 leading-relaxed">Over 75% of CVs are rejected by ATS before a human ever sees them. My CV Buddy analyses the job description, extracts what the recruiter actually cares about, and adapts your CV to match — with the right keywords in the right places. Clean formatting, standard headers, and content that passes the robots so recruiters can actually read it.</p>
                   </div>
                 </div>
 
@@ -699,7 +732,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black text-black mb-3">Intelligent Job Matching</h3>
-                    <p className="text-gray-700 leading-relaxed">Our AI doesn't just add keywords - it understands context. When you paste a job description, our system analyzes the role requirements, company culture, and industry standards. It then intelligently selects and highlights the most relevant experiences from your background, rewrites achievements to match the job's language, and ensures every section of your CV speaks directly to what the employer is looking for.</p>
+                    <p className="text-gray-700 leading-relaxed">Paste a job description and the AI reads what actually matters for that role. It selects the most relevant parts of your existing experience, rewrites your bullet points in the employer’s language, and makes sure every section answers the question they’re really asking: <em>can this person do this specific job?</em> No invented skills. No fluff.</p>
                   </div>
                 </div>
 
