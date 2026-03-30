@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
-  description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. My CV Buddy is the leading AI CV adapter for UK job seekers and US resume builders. Free to try.',
-  keywords: ['cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk'],
+  title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
+  description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. My CV Buddy is the leading AI CV adapter for UK job seekers and US resume builders. 1 free generation included.',
+  keywords: ['mycvbuddy', 'my cv buddy', 'mycv', 'cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk'],
   authors: [{ name: 'My CV Buddy' }],
   creator: 'My CV Buddy',
   publisher: 'My CV Buddy',
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com/',
   },
   openGraph: {
-    title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
-    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. Free to try.',
+    title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
+    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. 1 free generation included.',
     locale: 'en_GB',
     type: 'website',
     siteName: 'My CV Buddy - AI CV Adapter',
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI CV Adapter | Tailor Your CV to Any Job Description | My CV Buddy',
-    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. Free to try.',
+    title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
+    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. 1 free generation included.',
     images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
@@ -126,7 +126,7 @@ export default function LandingPage() {
             <p className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-12 max-w-3xl mx-auto font-light">
               Upload your CV, paste the job description, and let AI instantly adapt your application for ATS systems and recruiters.
               <br className="hidden sm:block" />
-              <span className="text-white font-semibold">Works with UK CVs and US resumes.</span> Free to try.
+              <span className="text-white font-semibold">Works with UK CVs and US resumes.</span> 1 free generation — no card needed.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -155,6 +155,10 @@ export default function LandingPage() {
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-400" />
                 <span>UK CVs + US resumes</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <span>Adapts your real CV — not invented</span>
               </div>
             </div>
           </div>
@@ -240,6 +244,51 @@ export default function LandingPage() {
                   <span>Adapt My CV Free</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Best For / Built to Adapt - Qualifier */}
+        <section className="py-20 bg-black border-t border-white/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 lg:gap-20">
+              <div>
+                <p className="text-blue-400 font-black text-sm uppercase tracking-widest mb-6">Best for</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>Applying to multiple roles from one base CV</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>Tailoring your CV to a specific job description</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>ATS keyword optimisation without the guesswork</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>UK CVs and US resumes — both fully supported</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-gray-300">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span>Faster applications without starting from scratch</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-purple-400 font-black text-sm uppercase tracking-widest mb-6">Built to adapt — not invent</p>
+                <p className="text-gray-200 text-xl leading-relaxed mb-5 font-medium">
+                  My CV Buddy is not a blank-slate CV generator.
+                </p>
+                <p className="text-gray-400 text-base leading-relaxed mb-5">
+                  It takes your <span className="text-white font-semibold">real, existing CV</span> and adapts it to match each job description — preserving your genuine experience while optimising keywords and language for that specific role.
+                </p>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  Your experience stays yours. The AI just makes sure it speaks the right language for each job.
+                </p>
               </div>
             </div>
           </div>
@@ -342,10 +391,12 @@ export default function LandingPage() {
               <div className="text-center">
                 <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">95%</div>
                 <div className="text-lg text-gray-400">ATS Pass Rate</div>
+                <div className="text-xs text-gray-600 mt-1">Internal ATS formatting tests</div>
               </div>
               <div className="text-center">
                 <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">10K+</div>
-                <div className="text-lg text-gray-400">Users</div>
+                <div className="text-lg text-gray-400">CVs Adapted</div>
+                <div className="text-xs text-gray-600 mt-1">Since launch</div>
               </div>
               <div className="text-center">
                 <div className="text-6xl sm:text-7xl font-black mb-4 bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">2min</div>
@@ -432,7 +483,7 @@ export default function LandingPage() {
                   href="/auth/signup" 
                   className="block w-full bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl"
                 >
-                  Start Free Trial
+                  Try 1 Free Generation
                 </Link>
                 
                 <p className="text-gray-400 mt-6">No credit card required</p>
@@ -538,7 +589,7 @@ export default function LandingPage() {
                     <h3 className="text-xl font-black text-black">Is My CV Buddy really free?</h3>
                     <span className="text-2xl text-gray-400 group-open:rotate-45 transition-transform">+</span>
                   </summary>
-                  <p className="mt-4 text-gray-700 leading-relaxed">Yes! My CV Buddy offers 2 free CV generations with no credit card required. Our free CV builder UK service lets you upload your CV, paste any job description, and get a perfectly tailored, ATS-optimized CV. For unlimited access to CV generation, cover letters, and interview prep tools, upgrade to Pro for just £2.99/month.</p>
+                  <p className="mt-4 text-gray-700 leading-relaxed">Yes! My CV Buddy includes 1 free CV adaptation with no credit card required. Simply upload your existing CV, paste any job description, and get a perfectly tailored, ATS-optimised CV. For unlimited adaptations, cover letters, and interview prep tools, upgrade to Pro for just £2.99/month.</p>
                 </details>
 
                 <details className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors">
@@ -698,11 +749,11 @@ export default function LandingPage() {
               href="/auth/signup" 
               className="inline-flex items-center gap-3 bg-white text-black px-12 py-6 rounded-full text-xl font-black hover:bg-gray-100 transition-all shadow-2xl hover:scale-105"
             >
-              <span>Start Free Trial</span>
+              <span>Get Your Free Generation</span>
               <ArrowRight className="w-6 h-6" />
             </Link>
             
-            <p className="text-gray-400 mt-6">No credit card • 2 minutes setup • Cancel anytime</p>
+            <p className="text-gray-400 mt-6">1 free generation included • No credit card • Cancel anytime</p>
           </div>
         </section>
 

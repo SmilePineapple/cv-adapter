@@ -391,7 +391,7 @@ export default function AIPoweredCVOptimizationPage() {
             </Link>
           </div>
           <p className="text-sm text-purple-200 mt-4">
-            No credit card required • 2 free CV generations • Upgrade anytime
+            1 free generation included • No credit card required • Upgrade anytime
           </p>
         </div>
       </article>

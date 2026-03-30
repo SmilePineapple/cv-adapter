@@ -17,7 +17,7 @@ export default function HelpCenterPage() {
         },
         {
           q: 'Is CV Adapter free to use?',
-          a: 'Yes! We offer 2 free CV generations to try the service. For 100 more generations, upgrade to Pro for £5 one-time payment.'
+          a: 'Yes! My CV Buddy includes 1 free CV generation with no credit card required. For unlimited generations, upgrade to Pro for just £2.99/month.'
         },
         {
           q: 'What file formats can I upload?',

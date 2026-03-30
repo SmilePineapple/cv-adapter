@@ -573,7 +573,7 @@ export default function SubscriptionPage() {
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="text-gray-700 text-sm">2 free CV generations</span>
+                    <span className="text-gray-700 text-sm">1 free CV generation</span>
                   </li>
                   <li className="flex items-center">
                     <Check className="w-5 h-5 text-green-600 mr-3" />

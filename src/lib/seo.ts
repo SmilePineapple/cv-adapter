@@ -69,6 +69,6 @@ export function generateMetadata({
 export const defaultMetadata = generateMetadata({
   title: 'AI-Powered CV Tailoring for Job Applications',
   description:
-    'Tailor your CV to any job description with AI in 2 minutes. Get ATS-optimized CVs, professional templates, and cover letters. Try free - no credit card required.',
+    'Tailor your CV to any job description with AI in 2 minutes. Get ATS-optimised CVs, professional templates, and cover letters. 1 free generation included — no credit card required.',
   path: '/',
 })

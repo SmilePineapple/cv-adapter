@@ -10,7 +10,7 @@ export function StructuredData() {
         "name": "Is My CV Buddy really free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! My CV Buddy offers 2 free CV generations with no credit card required. For unlimited access to CV generation, cover letters, and interview prep, upgrade to Pro for £2.99/month or £14.99/year (save 58%)."
+          "text": "Yes! My CV Buddy includes 1 free CV adaptation with no credit card required. For unlimited access to CV generation, cover letters, and interview prep, upgrade to Pro for £2.99/month or £14.99/year (save 58%)."
         }
       },
       {
@@ -18,7 +18,7 @@ export function StructuredData() {
         "name": "How do I create a CV for free in the UK?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Simply upload your existing CV or create one from scratch, paste a job description, and our AI will generate an ATS-optimized CV tailored to the role. No credit card required for your first 2 CVs."
+          "text": "Upload your existing CV, paste a job description, and our AI adapts it to match the role — ATS-optimised and tailored to that specific job. No credit card required. 1 free generation included."
         }
       },
       {
@@ -132,6 +132,7 @@ export function StructuredData() {
     "name": "My CV Buddy",
     "url": "https://www.mycvbuddy.com/",
     "logo": "https://www.mycvbuddy.com/logo.png",
+    "alternateName": ["MyCVBuddy", "My CV Buddy", "mycvbuddy.com", "mycvbuddy.co.uk"],
     "sameAs": [
       "https://twitter.com/mycvbuddy",
       "https://linkedin.com/company/mycvbuddy"
@@ -151,7 +152,7 @@ export function StructuredData() {
     "name": "The 2-Minute CV Makeover",
     "description": "Discover why 75% of CVs get rejected by robots—and how CV Buddy fixes it in 2 minutes. Learn about ATS systems and how to optimize your CV.",
     "thumbnailUrl": "https://www.mycvbuddy.com/graph.png",
-    "uploadDate": "2026-03-26",
+    "uploadDate": "2026-03-26T00:00:00Z",
     "duration": "PT2M30S",
     "contentUrl": "https://www.mycvbuddy.com/videos/cv-makeover.mp4",
     "embedUrl": "https://www.mycvbuddy.com/videos/cv-makeover.mp4",

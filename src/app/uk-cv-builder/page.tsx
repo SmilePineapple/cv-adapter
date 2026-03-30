@@ -74,7 +74,7 @@ export default function UKCVBuilder() {
           </div>
 
           <p className="text-gray-500 text-sm">
-            ✓ No credit card required  ✓ 2 free CV generations  ✓ Only £5 for lifetime access
+            ✓ No credit card required  ✓ 1 free generation  ✓ Only £5 for lifetime access
           </p>
         </div>
       </section>

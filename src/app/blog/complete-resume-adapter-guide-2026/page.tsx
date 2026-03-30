@@ -313,14 +313,14 @@ export default function CompleteResumeAdapterGuide() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/auth/signup" className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center hover:bg-gray-100">
-                  Start Free Trial
+                  Try 1 Free Generation
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
                 <Link href="/ats-optimization-guide" className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg inline-flex items-center justify-center hover:bg-white/10">
                   Learn More
                 </Link>
               </div>
-              <p className="mt-4 text-sm opacity-75">No credit card required • 2 free CV generations • Cancel anytime</p>
+              <p className="mt-4 text-sm opacity-75">1 free generation included • No credit card • Cancel anytime</p>
             </section>
 
             {/* Conclusion */}

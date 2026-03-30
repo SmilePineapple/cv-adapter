@@ -57,7 +57,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-sm text-gray-400">
-            ✨ 2 free CV generations • Then £5 one-time for 100 more
+            ✨ 1 free CV generation • Then £5 one-time for 100 more
           </div>
         </div>
       </section>

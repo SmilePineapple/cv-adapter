@@ -74,7 +74,7 @@ export default function USAResumeBuilder() {
           </div>
 
           <p className="text-gray-500 text-sm">
-            ✓ No credit card required  ✓ 2 free resume generations  ✓ Only $7 for lifetime access
+            ✓ No credit card required  ✓ 1 free generation  ✓ Only $7 for lifetime access
           </p>
         </div>
       </section>
