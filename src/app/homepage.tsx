@@ -193,7 +193,7 @@ export default function LandingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-                <span>No credit card to try</span>
+                <span>No AI training on your content</span>
               </div>
             </div>
           </div>
@@ -439,6 +439,7 @@ export default function LandingPage() {
                 <div className="text-xs text-gray-600 mt-1">Early user reviews</div>
               </div>
             </div>
+            <p className="text-xs text-gray-700 text-center mt-8">Based on internal formatting tests and early user feedback.</p>
           </div>
         </section>
 
