@@ -214,15 +214,57 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-                <video 
-                  controls 
-                  preload="metadata"
-                  className="w-full aspect-video bg-black"
-                >
-                  <source src="/videos/cv-makeover.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gray-900">
+                {/* Browser chrome */}
+                <div className="flex items-center gap-2 px-5 py-3 bg-gray-800 border-b border-white/10">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <div className="flex-1 mx-4 bg-gray-700 rounded-full px-4 py-1 text-xs text-gray-400 text-center">
+                    mycvbuddy.com/dashboard
+                  </div>
+                </div>
+                {/* Product UI mockup */}
+                <div className="p-6 md:p-8 grid md:grid-cols-3 gap-4">
+                  {/* Input: Your CV */}
+                  <div className="bg-gray-800 rounded-xl p-4 border border-white/10">
+                    <div className="text-xs text-blue-400 font-bold uppercase tracking-wider mb-2">Your CV</div>
+                    <div className="bg-gray-700 rounded-lg p-3 font-mono leading-relaxed">
+                      <div className="text-blue-300 text-xs font-bold mb-1">Sarah Mitchell</div>
+                      <div className="text-gray-500 text-xs mb-2">Software Engineer</div>
+                      <div className="text-gray-400 text-xs">• Responsible for code reviews</div>
+                      <div className="text-gray-400 text-xs">• Worked on backend tasks</div>
+                      <div className="text-gray-400 text-xs">• Collaborated with team members</div>
+                    </div>
+                    <div className="mt-2 text-xs text-gray-500">CV_2024.pdf ✓ uploaded</div>
+                  </div>
+                  {/* Input: Job Description */}
+                  <div className="bg-gray-800 rounded-xl p-4 border border-white/10">
+                    <div className="text-xs text-purple-400 font-bold uppercase tracking-wider mb-2">Job Description</div>
+                    <div className="bg-gray-700 rounded-lg p-3 text-xs text-gray-400 leading-relaxed">
+                      <div className="text-white font-semibold mb-1">Senior Developer @ Acme</div>
+                      <div>...Python, CI/CD pipelines, microservices, Agile delivery, team leadership...</div>
+                    </div>
+                    <div className="mt-3 w-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg py-2 text-xs text-white text-center font-black">
+                      Adapt My CV →
+                    </div>
+                  </div>
+                  {/* Output: Tailored CV */}
+                  <div className="bg-gray-800 rounded-xl p-4 border border-green-500/20">
+                    <div className="text-xs text-green-400 font-bold uppercase tracking-wider mb-2">Tailored CV ✓</div>
+                    <div className="bg-gray-700 rounded-lg p-3 font-mono leading-relaxed">
+                      <div className="text-blue-300 text-xs font-bold mb-1">Sarah Mitchell</div>
+                      <div className="text-gray-500 text-xs mb-2">Senior Python Developer</div>
+                      <div className="text-green-300 text-xs">• Led code reviews for 8-person Agile team, reducing defects by 40%</div>
+                      <div className="text-green-300 text-xs">• Built Python microservices cutting API latency by 25%</div>
+                      <div className="text-green-300 text-xs">• Delivered 12+ CI/CD sprints across distributed teams</div>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="text-xs text-green-400 font-bold">ATS Score: 94% ↑</div>
+                      <div className="text-xs text-gray-400">PDF · DOCX · TXT</div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">

@@ -83,7 +83,7 @@ export function StructuredData() {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "GBP",
-        "description": "Free tier with 2 CV generations",
+        "description": "Free tier with 1 CV generation",
         "availability": "https://schema.org/InStock"
       },
       {

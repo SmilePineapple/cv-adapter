@@ -61,6 +61,30 @@ const nextConfig: NextConfig = {
         destination: 'https://www.mycvbuddy.com/:path*',
         permanent: true,
       },
+      // Redirect .co.uk (non-www) to primary .com domain
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'mycvbuddy.co.uk',
+          },
+        ],
+        destination: 'https://www.mycvbuddy.com/:path*',
+        permanent: true,
+      },
+      // Redirect www.mycvbuddy.co.uk to primary .com domain
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.mycvbuddy.co.uk',
+          },
+        ],
+        destination: 'https://www.mycvbuddy.com/:path*',
+        permanent: true,
+      },
       // Redirect http://www to https://www (belt-and-braces for GSC crawls)
       {
         source: '/:path*',
