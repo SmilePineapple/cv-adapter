@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { TrendingUp, Send, RefreshCw, Settings, Twitter, Linkedin, Facebook, Instagram, CheckCircle2, Clock, ArrowLeft } from 'lucide-react'
+import { TrendingUp, Send, RefreshCw, Settings, Linkedin, CheckCircle2, Clock, ArrowLeft, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
@@ -35,6 +35,7 @@ export default function SocialBotDashboard() {
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [showScheduled, setShowScheduled] = useState(true)
+  const [cleaningUp, setCleaningUp] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -101,22 +102,35 @@ export default function SocialBotDashboard() {
     }
   }
 
+  const cleanUpNonLinkedIn = async () => {
+    if (!confirm('Delete all pending non-LinkedIn posts (Twitter, Facebook, Instagram)? This cannot be undone.')) return
+    setCleaningUp(true)
+    try {
+      const response = await fetch('/api/social-bot/posts', { method: 'DELETE' })
+      const result = await response.json()
+      if (result.success) {
+        toast.success(`Cleaned up pending non-LinkedIn posts`)
+        fetchData()
+      } else {
+        toast.error(result.error || 'Cleanup failed')
+      }
+    } catch (error) {
+      toast.error('Cleanup failed')
+    } finally {
+      setCleaningUp(false)
+    }
+  }
+
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
-      case 'twitter': return <Twitter className="w-5 h-5 text-blue-500" />
       case 'linkedin': return <Linkedin className="w-5 h-5 text-blue-700" />
-      case 'facebook': return <Facebook className="w-5 h-5 text-blue-600" />
-      case 'instagram': return <Instagram className="w-5 h-5 text-pink-600" />
       default: return <Send className="w-5 h-5" />
     }
   }
 
   const getPlatformColor = (platform: string) => {
     switch (platform) {
-      case 'twitter': return 'bg-blue-100 text-blue-700 border-blue-200'
       case 'linkedin': return 'bg-blue-100 text-blue-800 border-blue-300'
-      case 'facebook': return 'bg-blue-50 text-blue-600 border-blue-200'
-      case 'instagram': return 'bg-pink-100 text-pink-700 border-pink-200'
       default: return 'bg-gray-100 text-gray-700 border-gray-200'
     }
   }
@@ -153,6 +167,14 @@ export default function SocialBotDashboard() {
                 <ArrowLeft className="w-4 h-4" />
                 Back to Admin
               </Link>
+              <button
+                onClick={cleanUpNonLinkedIn}
+                disabled={cleaningUp}
+                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>{cleaningUp ? 'Cleaning...' : 'Delete Non-LinkedIn Posts'}</span>
+              </button>
               <button
                 onClick={fetchData}
                 className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

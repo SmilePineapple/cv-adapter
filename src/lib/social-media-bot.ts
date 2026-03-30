@@ -25,7 +25,7 @@ export type ContentType =
   | 'tool_feature'     // Highlight CV Adapter feature
 
 // Platform types
-export type Platform = 'twitter' | 'linkedin' | 'facebook' | 'instagram'
+export type Platform = 'linkedin'
 
 // Post template
 export interface SocialPost {
@@ -53,10 +53,7 @@ export async function generateSocialContent(
 ): Promise<{ content: string; hashtags: string[] }> {
   
   const characterLimits = {
-    twitter: 280,
-    linkedin: 3000,
-    facebook: 2000,
-    instagram: 2200
+    linkedin: 3000
   }
 
   const maxLength = characterLimits[platform]
@@ -70,7 +67,7 @@ Guidelines:
 - Include a clear call-to-action when appropriate
 - Use emojis strategically (not too many)
 - CRITICAL: Keep it under ${maxLength} characters TOTAL (including hashtags and link)
-${platform === 'linkedin' ? '- For LinkedIn: Aim for 400-600 characters for best engagement (not the full 3000)' : ''}
+- For LinkedIn: Aim for 400-600 characters for best engagement (not the full 3000)
 - Make it shareable and valuable
 - Focus on helping job seekers
 - Mention CV Adapter naturally when relevant
@@ -137,10 +134,7 @@ function generateHashtags(contentType: ContentType, platform: Platform): string[
   }
 
   const platformHashtags: Record<Platform, string[]> = {
-    twitter: ['Jobs', 'Careers', 'Hiring'],
-    linkedin: ['LinkedIn', 'Networking', 'ProfessionalGrowth'],
-    facebook: ['JobSearch', 'CareerAdvice', 'Employment'],
-    instagram: ['CareerGoals', 'JobSearchTips', 'ProfessionalLife']
+    linkedin: ['LinkedIn', 'Networking', 'ProfessionalGrowth']
   }
 
   // Combine and limit to 5-7 hashtags
@@ -152,7 +146,7 @@ function generateHashtags(contentType: ContentType, platform: Platform): string[
 
   // Remove duplicates and limit
   const uniqueHashtags = Array.from(new Set(allHashtags))
-  const maxHashtags = platform === 'instagram' ? 10 : 5
+  const maxHashtags = 5
   
   return uniqueHashtags.slice(0, maxHashtags)
 }
@@ -249,87 +243,25 @@ export function formatPostForPlatform(post: SocialPost): string {
     formattedContent = formattedContent.replace('[link]', link)
   }
 
-  // Add hashtags based on platform
-  if (platform === 'twitter') {
-    // Twitter: hashtags inline or at end
-    const hashtagString = `\n\n${hashtags.map(h => `#${h}`).join(' ')}`
-    formattedContent += hashtagString
-    
-    // Twitter has a 280 character limit - truncate if needed
-    if (formattedContent.length > 280) {
-      console.warn(`Tweet too long (${formattedContent.length} chars), truncating to 280`)
-      // Remove hashtags and try again
-      formattedContent = formattedContent.replace(hashtagString, '')
-      // If still too long, truncate content
-      if (formattedContent.length > 277) { // Leave room for "..."
-        formattedContent = formattedContent.substring(0, 277) + '...'
-      }
-      // Add back some hashtags if there's room
-      const remainingSpace = 280 - formattedContent.length - 2 // -2 for \n\n
-      if (remainingSpace > 10) {
-        const shortHashtags = hashtags.slice(0, 2).map(h => `#${h}`).join(' ')
-        if (shortHashtags.length <= remainingSpace) {
-          formattedContent += `\n\n${shortHashtags}`
-        }
-      }
-    }
-  } else if (platform === 'linkedin') {
-    // LinkedIn: hashtags at end, more professional
-    formattedContent += `\n\n${hashtags.map(h => `#${h}`).join(' ')}`
-  } else if (platform === 'instagram') {
-    // Instagram: lots of hashtags, separate section
-    formattedContent += `\n\n.\n.\n.\n${hashtags.map(h => `#${h}`).join(' ')}`
-  } else {
-    // Facebook: fewer hashtags
-    formattedContent += `\n\n${hashtags.slice(0, 3).map(h => `#${h}`).join(' ')}`
-  }
+  // LinkedIn: hashtags at end, professional style
+  formattedContent += `\n\n${hashtags.map(h => `#${h}`).join(' ')}`
 
   return formattedContent
 }
 
 /**
- * Get best posting times for each platform
+ * Get best posting times for LinkedIn
  */
 export function getBestPostingTime(platform: Platform, dayOfWeek: number): { hour: number; minute: number } {
-  // Based on engagement data research
-  const bestTimes: Record<Platform, Record<number, { hour: number; minute: number }>> = {
-    twitter: {
-      0: { hour: 9, minute: 0 },   // Sunday
-      1: { hour: 12, minute: 0 },  // Monday
-      2: { hour: 12, minute: 0 },  // Tuesday
-      3: { hour: 12, minute: 0 },  // Wednesday
-      4: { hour: 12, minute: 0 },  // Thursday
-      5: { hour: 11, minute: 0 },  // Friday
-      6: { hour: 10, minute: 0 }   // Saturday
-    },
-    linkedin: {
-      0: { hour: 10, minute: 0 },  // Sunday
-      1: { hour: 8, minute: 0 },   // Monday
-      2: { hour: 8, minute: 0 },   // Tuesday
-      3: { hour: 8, minute: 0 },   // Wednesday
-      4: { hour: 8, minute: 0 },   // Thursday
-      5: { hour: 9, minute: 0 },   // Friday
-      6: { hour: 10, minute: 0 }   // Saturday
-    },
-    facebook: {
-      0: { hour: 13, minute: 0 },  // Sunday
-      1: { hour: 13, minute: 0 },  // Monday
-      2: { hour: 13, minute: 0 },  // Tuesday
-      3: { hour: 13, minute: 0 },  // Wednesday
-      4: { hour: 13, minute: 0 },  // Thursday
-      5: { hour: 13, minute: 0 },  // Friday
-      6: { hour: 12, minute: 0 }   // Saturday
-    },
-    instagram: {
-      0: { hour: 11, minute: 0 },  // Sunday
-      1: { hour: 11, minute: 0 },  // Monday
-      2: { hour: 11, minute: 0 },  // Tuesday
-      3: { hour: 11, minute: 0 },  // Wednesday
-      4: { hour: 11, minute: 0 },  // Thursday
-      5: { hour: 11, minute: 0 },  // Friday
-      6: { hour: 11, minute: 0 }   // Saturday
-    }
+  const bestTimes: Record<number, { hour: number; minute: number }> = {
+    0: { hour: 10, minute: 0 },  // Sunday
+    1: { hour: 8, minute: 0 },   // Monday
+    2: { hour: 8, minute: 0 },   // Tuesday
+    3: { hour: 8, minute: 0 },   // Wednesday
+    4: { hour: 8, minute: 0 },   // Thursday
+    5: { hour: 9, minute: 0 },   // Friday
+    6: { hour: 10, minute: 0 }   // Saturday
   }
 
-  return bestTimes[platform][dayOfWeek]
+  return bestTimes[dayOfWeek]
 }

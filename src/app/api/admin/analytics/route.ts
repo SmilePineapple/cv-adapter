@@ -398,6 +398,30 @@ export async function GET(request: NextRequest) {
     const monthlyProUsers = monthlyProCount  // Already filtered for paying customers above
     const annualProUsers = annualProCount  // Already filtered for paying customers above
 
+    // Build upcoming payments list from active subscriptions with current_period_end
+    const now = new Date()
+    const upcomingPayments = subscriptions
+      .filter(s => s.status === 'active' && s.current_period_end && !adminUserIds.has(s.user_id))
+      .map(s => {
+        const user = users.find(u => u.id === s.user_id)
+        const usage = usageTracking.find(u => u.user_id === s.user_id)
+        const dueDate = new Date(s.current_period_end)
+        const daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+        const isAnnual = usage?.subscription_tier === 'pro_annual'
+        return {
+          user_id: s.user_id,
+          email: user?.email || 'Unknown',
+          due_date: s.current_period_end,
+          days_until_due: daysUntilDue,
+          plan: isAnnual ? 'annual' : 'monthly',
+          amount: isAnnual ? 29.99 : 2.99,
+          stripe_subscription_id: s.stripe_subscription_id
+        }
+      })
+      .filter(p => p.days_until_due >= 0) // Exclude already-passed dates
+      .sort((a, b) => a.days_until_due - b.days_until_due)
+      .slice(0, 20) // Top 20 upcoming
+
     return NextResponse.json({
       overview: {
         totalUsers,
@@ -430,7 +454,8 @@ export async function GET(request: NextRequest) {
       },
       users: userDetails,
       topUsers,
-      monthlyRevenueByMonth
+      monthlyRevenueByMonth,
+      upcomingPayments
     })
 
   } catch (error) {

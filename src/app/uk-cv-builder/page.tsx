@@ -1,38 +1,36 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { ArrowRight, CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'UK CV Builder - AI-Powered CV Generator for British Job Market | CV Adapter',
-  description: 'Create ATS-optimized CVs tailored for UK employers. AI-powered CV builder with British English, UK formatting, and templates trusted by UK professionals. Try 1 free generation!',
-  keywords: 'UK CV builder, CV generator UK, British CV template, ATS CV UK, professional CV UK, CV writing service UK, AI CV builder UK',
+  title: 'UK CV Builder — AI-Powered CV Adapter for British Job Market | My CV Buddy',
+  description: 'Upload your CV, paste a UK job description, and get an ATS-optimised CV tailored for British employers in 60 seconds. British English, UK formatting, 1 free generation.',
+  keywords: 'UK CV builder, CV builder UK, AI CV builder UK, ATS CV UK, British CV template, professional CV UK, CV writing service UK, free CV builder UK',
   openGraph: {
-    title: 'UK CV Builder - Professional CVs for the British Job Market',
-    description: 'AI-powered CV builder optimized for UK employers. ATS-friendly, British English, UK formatting. Only £5 for lifetime access.',
+    title: 'UK CV Builder — AI-Tailored CVs for British Employers | My CV Buddy',
+    description: 'AI adapts your existing CV for any UK job description. ATS-optimised, British English, 1 free generation.',
     type: 'website',
   }
 }
 
 export default function UKCVBuilder() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              CV Adapter
+    <div className="min-h-screen bg-black text-white">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-black text-lg">CV</span>
+              </div>
+              <span className="text-2xl font-black tracking-tight">My CV Buddy</span>
             </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/auth/login" className="text-gray-600 hover:text-gray-900">
-                Log In
-              </Link>
-              <Link 
-                href="/auth/signup"
-                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all"
-              >
-                Try Free
-              </Link>
-            </div>
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/#pricing" className="text-gray-400 hover:text-white font-medium transition-colors">Pricing</Link>
+              <Link href="/auth/login" className="text-gray-400 hover:text-white font-medium transition-colors">Login</Link>
+              <Link href="/auth/signup" className="bg-white text-black px-6 py-3 rounded-full hover:bg-gray-100 transition-all font-bold">Start Free</Link>
+            </nav>
+            <Link href="/auth/signup" className="md:hidden bg-white text-black px-5 py-2.5 rounded-full font-bold text-sm">Start Free</Link>
           </div>
         </div>
       </header>
@@ -63,7 +61,7 @@ export default function UKCVBuilder() {
               href="/auth/signup"
               className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-lg font-semibold rounded-lg hover:shadow-xl transition-all"
             >
-              Start Free (2 Generations) →
+              Adapt My UK CV Free →
             </Link>
             <Link
               href="#how-it-works"
@@ -140,7 +138,7 @@ export default function UKCVBuilder() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
+      <section id="how-it-works" className="bg-gray-950 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
             How It Works
@@ -222,11 +220,11 @@ export default function UKCVBuilder() {
       </section>
 
       {/* Pricing */}
-      <section className="bg-gradient-to-br from-purple-600 to-blue-600 text-white py-20">
+      <section className="py-20 bg-gradient-to-br from-black via-gray-900 to-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
-          <p className="text-xl mb-12 opacity-90">
-            No subscriptions. No hidden fees. Just £5 for lifetime access.
+          <h2 className="text-4xl font-black text-white mb-6 tracking-tight">Simple, Transparent Pricing</h2>
+          <p className="text-xl text-gray-300 mb-12">
+            Start free. Upgrade when you need more.
           </p>
 
           <div className="bg-white text-gray-900 rounded-2xl p-8 max-w-md mx-auto">
@@ -316,7 +314,7 @@ export default function UKCVBuilder() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-950 py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
             Frequently Asked Questions
@@ -366,65 +364,42 @@ export default function UKCVBuilder() {
       </section>
 
       {/* Final CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <h2 className="text-4xl font-bold text-gray-900 mb-6">
-          Ready to Land Your Dream Job in the UK?
+      <section className="py-20 text-center bg-black">
+        <h2 className="text-4xl font-black text-white mb-6 tracking-tight">
+          Get More UK Interviews.<br />
+          <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Start Free Today.</span>
         </h2>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Join thousands of UK professionals who've upgraded their CVs with CV Adapter. 
-          Start with 1 free generation today!
+        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          1 free CV adaptation. No credit card. Built for UK job seekers.
         </p>
         <Link
           href="/auth/signup"
-          className="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-lg font-semibold rounded-lg hover:shadow-xl transition-all"
+          className="inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-black hover:bg-gray-100 transition-all shadow-2xl hover:scale-105"
         >
-          Get Started Free →
+          <span>Build My UK CV Free</span>
+          <ArrowRight className="w-5 h-5" />
         </Link>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
-                CV Adapter
+      <footer className="py-12 bg-black text-gray-400 border-t border-white/10">
+        <div className="container mx-auto px-4 text-center">
+          <div className="mb-6">
+            <Link href="/" className="inline-flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-black text-lg">CV</span>
               </div>
-              <p className="text-gray-600 text-sm">
-                AI-powered CV builder for UK professionals
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-3">Product</h4>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/auth/signup">Sign Up</Link></li>
-                <li><Link href="/blog">Blog</Link></li>
-                <li><Link href="/subscription">Pricing</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-3">Resources</h4>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/blog/ats-cv-tips-uk-2025">ATS Tips</Link></li>
-                <li><Link href="/blog">CV Writing Guide</Link></li>
-                <li><Link href="/usa-resume-builder">USA Resume Builder</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-3">Legal</h4>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/privacy">Privacy Policy</Link></li>
-                <li><Link href="/terms">Terms of Service</Link></li>
-              </ul>
-            </div>
+              <span className="text-xl font-black text-white">My CV Buddy</span>
+            </Link>
           </div>
-          
-          <div className="border-t mt-8 pt-8 text-center text-gray-600 text-sm">
-            <p>© 2025 CV Adapter. All rights reserved. Made in the UK 🇬🇧</p>
+          <div className="flex flex-wrap justify-center gap-6 mb-8 text-sm">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/tailor-cv-to-job-description" className="hover:text-white transition-colors">Tailor CV</Link>
+            <Link href="/ats-friendly-cv-checklist" className="hover:text-white transition-colors">ATS Checklist</Link>
+            <Link href="/usa-resume-builder" className="hover:text-white transition-colors">US Resume Builder</Link>
+            <Link href="/cv-writing-guide" className="hover:text-white transition-colors">CV Guide</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
           </div>
+          <p className="text-sm">&copy; {new Date().getFullYear()} My CV Buddy. All rights reserved.</p>
         </div>
       </footer>
     </div>

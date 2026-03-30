@@ -7,7 +7,7 @@ import { generateWeeklyContent, Platform } from '@/lib/social-media-bot'
  * POST /api/social-bot/generate
  * 
  * Body: {
- *   platform: 'twitter' | 'linkedin' | 'facebook' | 'instagram'
+ *   platform: 'linkedin'
  *   startDate?: string (ISO date)
  * }
  */
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate platform
-    const validPlatforms: Platform[] = ['twitter', 'linkedin', 'facebook', 'instagram']
+    const validPlatforms: Platform[] = ['linkedin']
     if (!validPlatforms.includes(platform)) {
       return NextResponse.json(
         { error: 'Invalid platform' },

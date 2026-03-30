@@ -18,18 +18,31 @@ import {
   Calendar,
   BarChart3,
   UserCheck,
-  Twitter,
+  CreditCard,
   Download,
   Filter,
   RefreshCw,
   Send,
-  Trophy
+  Trophy,
+  Linkedin,
+  AlertCircle
 } from 'lucide-react'
 import { exportUsersToCSV } from '@/lib/csv-export'
 
 const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
+interface UpcomingPayment {
+  user_id: string
+  email: string
+  due_date: string
+  days_until_due: number
+  plan: 'monthly' | 'annual'
+  amount: number
+  stripe_subscription_id: string | null
+}
+
 interface AnalyticsData {
+  upcomingPayments?: UpcomingPayment[]
   overview: {
     totalUsers: number
     freeUsers: number
@@ -275,7 +288,7 @@ export default function AdminDashboard() {
                 href="/admin/social-bot"
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
-                <Twitter className="w-4 h-4" />
+                <Linkedin className="w-4 h-4" />
                 Social Bot
               </Link>
               <Link
@@ -341,6 +354,98 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Upcoming Payments Section */}
+        {analytics.upcomingPayments && analytics.upcomingPayments.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm border border-amber-200 mb-8">
+            <div className="px-6 py-4 border-b border-amber-100 bg-amber-50 rounded-t-lg flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-amber-600" />
+                Upcoming Payments
+              </h3>
+              <span className="text-sm text-amber-700 font-medium">
+                {analytics.upcomingPayments.length} upcoming renewal{analytics.upcomingPayments.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+
+            {/* Next Payment Highlight */}
+            {(() => {
+              const next = analytics.upcomingPayments![0]
+              const urgencyColor = next.days_until_due <= 3
+                ? 'bg-red-50 border-red-200'
+                : next.days_until_due <= 7
+                ? 'bg-amber-50 border-amber-200'
+                : 'bg-green-50 border-green-200'
+              const urgencyText = next.days_until_due <= 3
+                ? 'text-red-700'
+                : next.days_until_due <= 7
+                ? 'text-amber-700'
+                : 'text-green-700'
+              return (
+                <div className={`mx-6 mt-4 mb-3 p-4 rounded-lg border ${urgencyColor} flex items-center justify-between`}>
+                  <div className="flex items-center gap-3">
+                    <AlertCircle className={`w-5 h-5 ${urgencyText}`} />
+                    <div>
+                      <div className="font-semibold text-gray-900 text-sm">{next.email}</div>
+                      <div className={`text-xs font-medium ${urgencyText}`}>
+                        {next.days_until_due === 0 ? 'Due today' : `Due in ${next.days_until_due} day${next.days_until_due !== 1 ? 's' : ''}`}
+                        {' '}— {formatDate(next.due_date)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-gray-900">£{next.amount.toFixed(2)}</div>
+                    <div className="text-xs text-gray-500 capitalize">{next.plan}</div>
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* Remaining payments list */}
+            {analytics.upcomingPayments.length > 1 && (
+              <div className="px-6 pb-4">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Customer</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Due Date</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Days</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Plan</th>
+                        <th className="text-right py-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {analytics.upcomingPayments.slice(1).map((payment, i) => (
+                        <tr key={i} className="border-b border-gray-50 hover:bg-gray-50">
+                          <td className="py-2 px-3 text-sm text-gray-900">{payment.email}</td>
+                          <td className="py-2 px-3 text-sm text-gray-600">{formatDate(payment.due_date)}</td>
+                          <td className="py-2 px-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                              payment.days_until_due <= 3 ? 'bg-red-100 text-red-700' :
+                              payment.days_until_due <= 7 ? 'bg-amber-100 text-amber-700' :
+                              'bg-gray-100 text-gray-600'
+                            }`}>
+                              {payment.days_until_due}d
+                            </span>
+                          </td>
+                          <td className="py-2 px-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                              payment.plan === 'annual' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+                            }`}>
+                              {payment.plan}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3 text-sm font-semibold text-gray-900 text-right">£{payment.amount.toFixed(2)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Overview Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard

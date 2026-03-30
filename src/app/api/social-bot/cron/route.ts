@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import { formatPostForPlatform, SocialPost } from '@/lib/social-media-bot'
-import { postTweet } from '@/lib/twitter-api'
 
 /**
  * Cron Job API Route: Post scheduled content
@@ -170,65 +169,14 @@ async function postToPlatform(
   // You'll need to implement actual API calls for each platform
   
   switch (platform) {
-    case 'twitter':
-      return await postToTwitter(content, config)
-    
     case 'linkedin':
       return await postToLinkedIn(content, config)
-    
-    case 'facebook':
-      return await postToFacebook(content, config)
-    
-    case 'instagram':
-      return await postToInstagram(content, config)
     
     default:
       return {
         success: false,
         error: 'Unknown platform'
       }
-  }
-}
-
-/**
- * Post to Twitter/X
- * Requires: Twitter API v2 credentials
- */
-async function postToTwitter(
-  content: string,
-  config: any
-): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
-  try {
-    console.log('Posting to Twitter:', content.substring(0, 50) + '...')
-    console.log('Content length:', content.length)
-    console.log('Using credentials:', {
-      api_key: config.api_key?.substring(0, 10) + '...',
-      api_key_length: config.api_key?.length,
-      access_token: config.access_token?.substring(0, 15) + '...',
-      access_token_length: config.access_token?.length,
-    })
-    
-    // Use real Twitter API
-    const result = await postTweet(content, {
-      api_key: config.api_key,
-      api_secret: config.api_secret,
-      access_token: config.access_token,
-      access_token_secret: config.access_token_secret
-    })
-    
-    if (result.success) {
-      console.log('✅ Tweet posted successfully:', result.tweetUrl)
-    } else {
-      console.error('❌ Failed to post tweet:', result.error)
-    }
-    
-    return result
-  } catch (error) {
-    console.error('Error in postToTwitter:', error)
-    return {
-      success: false,
-      error: String(error)
-    }
   }
 }
 
@@ -300,52 +248,6 @@ async function postToLinkedIn(
     const result = await postResponse.json()
     console.log('✅ LinkedIn post created on personal profile:', result.id)
 
-    // If organization_id is set, also share to company page
-    if (config.organization_id) {
-      try {
-        console.log('Also sharing to company page:', config.organization_id)
-        
-        // Share the personal post to the organization page
-        const shareData = {
-          author: `urn:li:organization:${config.organization_id}`,
-          lifecycleState: 'PUBLISHED',
-          specificContent: {
-            'com.linkedin.ugc.ShareContent': {
-              shareCommentary: {
-                text: content
-              },
-              shareMediaCategory: 'NONE'
-            }
-          },
-          visibility: {
-            'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'
-          }
-        }
-
-        const shareResponse = await fetch('https://api.linkedin.com/v2/ugcPosts', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${config.access_token}`,
-            'Content-Type': 'application/json',
-            'X-Restli-Protocol-Version': '2.0.0'
-          },
-          body: JSON.stringify(shareData)
-        })
-
-        if (shareResponse.ok) {
-          const shareResult = await shareResponse.json()
-          console.log('✅ Also posted to company page:', shareResult.id)
-        } else {
-          const errorText = await shareResponse.text()
-          console.warn('⚠️ Could not post to company page (will continue with personal post):', errorText)
-          // Don't fail the whole operation if company post fails
-        }
-      } catch (orgError) {
-        console.warn('⚠️ Company page posting failed (continuing with personal post):', orgError)
-        // Don't fail the whole operation
-      }
-    }
-
     return {
       success: true,
       postId: result.id,
@@ -360,52 +262,3 @@ async function postToLinkedIn(
   }
 }
 
-/**
- * Post to Facebook
- * Requires: Facebook Graph API credentials
- */
-async function postToFacebook(
-  content: string,
-  config: any
-): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
-  try {
-    // TODO: Implement Facebook Graph API posting
-    console.log('Would post to Facebook:', content.substring(0, 50))
-    
-    return {
-      success: true,
-      postId: 'facebook-' + Date.now(),
-      postUrl: `https://www.facebook.com/${config.account_id}/posts/123456789`
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: String(error)
-    }
-  }
-}
-
-/**
- * Post to Instagram
- * Requires: Instagram Graph API credentials
- */
-async function postToInstagram(
-  content: string,
-  config: any
-): Promise<{ success: boolean; postId?: string; postUrl?: string; error?: string }> {
-  try {
-    // TODO: Implement Instagram Graph API posting
-    console.log('Would post to Instagram:', content.substring(0, 50))
-    
-    return {
-      success: true,
-      postId: 'instagram-' + Date.now(),
-      postUrl: `https://www.instagram.com/p/123456789`
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: String(error)
-    }
-  }
-}
