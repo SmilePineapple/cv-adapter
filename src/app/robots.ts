@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://www.mycvbuddy.com'
-
   return {
     rules: [
       {
@@ -20,6 +18,9 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      'https://www.mycvbuddy.com/sitemap.xml',
+      'https://www.mycvbuddy.co.uk/sitemap.xml',
+    ],
   }
 }

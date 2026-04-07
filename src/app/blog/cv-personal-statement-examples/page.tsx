@@ -3,17 +3,19 @@ import { ArrowLeft, User, CheckCircle, Star } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Personal Statement: 15 Examples & Writing Guide (UK 2025)',
-  description: 'Professional CV personal statement examples for all industries and experience levels. Learn how to write a compelling personal statement that gets interviews.',
-  keywords: ['CV personal statement', 'personal statement examples', 'CV profile', 'professional summary', 'CV opening statement UK'],
+  title: 'CV Personal Statement Examples 2026: 15 Proven Templates (UK)',
+  description: '15 ready-to-use CV personal statement examples for every career level — graduates, career changers & senior professionals. Copy, adapt, and land more interviews. Updated 2026.',
+  keywords: ['CV personal statement', 'personal statement examples', 'CV personal statement examples', 'CV profile examples', 'professional summary CV', 'CV opening statement UK', 'personal statement for CV examples', 'cv templates personal statement examples'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/blog/cv-personal-statement-examples'
   },
   openGraph: {
-    title: 'CV Personal Statement: 15 Examples & Writing Guide (2025)',
-    description: 'Expert guide to writing CV personal statements with real examples for UK jobs.',
+    title: 'CV Personal Statement Examples 2026: 15 Proven Templates',
+    description: '15 ready-to-use CV personal statement examples. Copy, adapt, and land more interviews.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
+    modifiedTime: '2026-04-07T00:00:00Z',
+    url: 'https://www.mycvbuddy.com/blog/cv-personal-statement-examples',
   },
 }
 
@@ -34,7 +36,7 @@ export default function CVPersonalStatementExamples() {
             CV Writing
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            CV Personal Statement: 15 Examples & Writing Guide (2025)
+            CV Personal Statement Examples 2026: 15 Proven Templates (UK)
           </h1>
           <div className="flex items-center space-x-6 text-gray-600 text-sm">
             <span>January 8, 2025</span>

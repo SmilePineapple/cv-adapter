@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 const SITE_URL = 'https://www.mycvbuddy.com'
-const SITE_NAME = 'CV Adapter'
+const SITE_NAME = 'My CV Buddy'
 
 export function generateMetadata({
   title,

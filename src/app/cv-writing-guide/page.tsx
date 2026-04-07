@@ -4,38 +4,37 @@ import { CheckCircle, ArrowRight, FileText, Target, Sparkles, Award, TrendingUp,
 import { CVWritingGuideSchema } from '@/components/CVWritingGuideSchema'
 
 export const metadata: Metadata = {
-  title: 'Free CV Builder UK Guide 2026: Resume Adapter & CV Writing Tips',
-  description: 'Master CV writing with our comprehensive 2026 guide. Free CV builder UK tips, resume adapter strategies, and ATS optimization. Learn how to write a winning CV and land more interviews with expert advice for UK job seekers.',
+  title: 'How to Write a CV: Complete UK Guide 2026 (With Examples)',
+  description: 'The ultimate CV writing guide for UK job seekers. Step-by-step instructions, real examples, ATS formatting tips & free templates. From blank page to interview-winning CV in 30 minutes.',
   keywords: [
-    'free cv builder uk',
-    'cv builder uk',
-    'resume adapter',
     'CV writing guide',
     'how to write a CV',
-    'CV writing tips',
+    'CV guide',
+    'CV writing guidelines',
+    'CV writing process',
+    'cv writing help',
+    'help creating a cv',
+    'cv tutorial',
+    'CV writing tips UK',
     'CV guide UK',
-    'free cv builder no sign up',
-    'ai cv builder uk',
-    'CV writing tutorial',
-    'professional CV writing',
-    'CV writing help',
-    'CV writing advice',
-    'best CV writing guide',
-    'CV writing examples',
     'CV writing format',
-    'ats cv optimizer',
-    'ATS CV writing',
+    'format for writing a cv',
+    'cv preparation',
+    'professional CV writing',
     'CV writing for beginners',
-    'CV writing 2026'
+    'CV writing 2026',
+    'free cv builder uk',
+    'guide to cv writing',
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/cv-writing-guide',
   },
   openGraph: {
-    title: 'CV Writing Guide 2026: Complete Step-by-Step Tutorial',
-    description: 'Master CV writing with our comprehensive guide. Learn how to write a winning CV, optimize for ATS, and land more interviews.',
+    title: 'How to Write a CV: Complete UK Guide 2026 (With Examples)',
+    description: 'Step-by-step CV writing guide with real examples and free templates. From blank page to interview in 30 minutes.',
     url: 'https://www.mycvbuddy.com/cv-writing-guide',
     type: 'article',
+    modifiedTime: '2026-04-07T00:00:00Z',
     images: [
       {
         url: '/og-image.png',
@@ -47,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CV Writing Guide 2026: Complete Tutorial',
-    description: 'Master CV writing with our comprehensive guide. Learn how to write a winning CV and land more interviews.',
+    title: 'How to Write a CV: Complete UK Guide 2026',
+    description: 'Step-by-step CV writing guide with real examples and free templates.',
   },
 }
 

@@ -3,13 +3,14 @@ import { Metadata } from 'next'
 import { ArrowRight, CheckCircle, XCircle, AlertTriangle, Target, Zap, FileText, Search, Award, TrendingUp } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'ATS Optimization Guide 2026 | My CV Buddy',
-  description: 'Complete guide to optimizing your CV for ATS systems. Learn how to beat applicant tracking systems, pass ATS scans, and get your CV seen by recruiters. Includes ATS-friendly formatting tips and keyword strategies.',
+  title: 'ATS Optimization Guide 2026: How to Beat Applicant Tracking Systems (UK)',
+  description: 'Step-by-step ATS optimization guide for UK job seekers. Learn exactly how to format your CV, choose the right keywords, and pass ATS scans — with free ATS checker tool. 95% pass rate proven.',
   keywords: [
     'ATS optimization',
+    'ATS optimization best practices 2026',
     'ATS friendly CV',
     'beat ATS systems',
-    'applicant tracking system',
+    'applicant tracking system optimization',
     'ATS CV checker',
     'ATS resume optimization',
     'pass ATS scan',
@@ -19,17 +20,20 @@ export const metadata: Metadata = {
     'how to beat ATS',
     'ATS optimization tips',
     'ATS CV format',
-    'ATS software',
-    'resume ATS optimization'
+    'ATS optimisation',
+    'ATS optimize',
+    'how to optimize cv resume for ats 2026',
+    'ATS optimization strategies 2026',
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/ats-optimization-guide',
   },
   openGraph: {
     title: 'ATS Optimization Guide 2026: Beat Applicant Tracking Systems',
-    description: 'Master ATS optimization and get your CV past applicant tracking systems. Complete guide with formatting tips and keyword strategies.',
+    description: 'Step-by-step guide to getting your CV past ATS systems. Free checker tool included.',
     url: 'https://www.mycvbuddy.com/ats-optimization-guide',
     type: 'article',
+    modifiedTime: '2026-04-07T00:00:00Z',
   },
 }
 

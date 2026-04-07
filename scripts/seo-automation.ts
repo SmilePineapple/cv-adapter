@@ -99,14 +99,16 @@ async function generateRobotsTxt() {
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /edit/
+Disallow: /generate/
+Disallow: /review/
+Disallow: /download/
 Disallow: /history/
-Disallow: /_next/
+Disallow: /auto-cv/
 
 Sitemap: https://www.mycvbuddy.com/sitemap.xml
-
-# Crawl-delay for polite bots
-Crawl-delay: 1`
+Sitemap: https://www.mycvbuddy.co.uk/sitemap.xml`
 
   writeFileSync(resolve(process.cwd(), 'public/robots.txt'), robotsTxt)
   await logAction('Generate Robots.txt', 'success', 'robots.txt updated')

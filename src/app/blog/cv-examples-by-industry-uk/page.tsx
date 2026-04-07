@@ -3,17 +3,19 @@ import { ArrowLeft, Briefcase, CheckCircle, Download } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Examples: 15 Winning CVs by Industry (UK 2025)',
-  description: 'Real CV examples for UK jobs across 15 industries. See what works and adapt these proven templates for your applications.',
-  keywords: ['CV examples', 'CV examples UK', 'CV samples', 'professional CV examples', 'CV templates by industry', 'winning CV examples'],
+  title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
+  description: '15 real UK CV examples across every major industry — IT, marketing, healthcare, finance & more. Copy proven formats that beat ATS systems and land interviews. Updated for 2026.',
+  keywords: ['CV examples UK', 'CV examples', 'best CV examples UK', 'CV samples UK', 'professional CV examples', 'CV templates by industry', 'British CV examples', 'CV example UK 2026', 'business CV example', 'cv examples 2026'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk'
   },
   openGraph: {
-    title: 'CV Examples: 15 Winning CVs by Industry (UK 2025)',
-    description: 'Real CV examples for UK jobs. See what works across 15 industries.',
+    title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
+    description: '15 real UK CV examples across every major industry. Copy proven formats that beat ATS and land interviews.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
+    modifiedTime: '2026-04-07T00:00:00Z',
+    url: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk',
   },
 }
 
@@ -33,7 +35,7 @@ export default function CVExamplesByIndustry() {
             CV Examples
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            CV Examples: 15 Winning CVs by Industry (UK 2025)
+            CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews
           </h1>
           <div className="flex items-center space-x-6 text-gray-600 text-sm">
             <span>January 8, 2025</span>

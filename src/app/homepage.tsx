@@ -638,6 +638,21 @@ export default function LandingPage() {
                 </Link>
               </div>
 
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <Link href="/blog/cv-examples-by-industry-uk" className="group bg-white rounded-xl p-6 hover:shadow-lg transition-all border border-gray-200 hover:border-blue-400">
+                  <h3 className="text-lg font-bold text-black mb-2 group-hover:text-blue-600 transition-colors">15 CV Examples by Industry (UK)</h3>
+                  <p className="text-gray-500 text-sm">Real CV examples across IT, marketing, healthcare, finance & more.</p>
+                </Link>
+                <Link href="/blog/cv-personal-statement-examples" className="group bg-white rounded-xl p-6 hover:shadow-lg transition-all border border-gray-200 hover:border-indigo-400">
+                  <h3 className="text-lg font-bold text-black mb-2 group-hover:text-indigo-600 transition-colors">CV Personal Statement Examples</h3>
+                  <p className="text-gray-500 text-sm">15 proven personal statement templates for every career level.</p>
+                </Link>
+                <Link href="/blog/graduate-cv-no-experience-uk" className="group bg-white rounded-xl p-6 hover:shadow-lg transition-all border border-gray-200 hover:border-green-400">
+                  <h3 className="text-lg font-bold text-black mb-2 group-hover:text-green-600 transition-colors">Graduate CV: No Experience Guide</h3>
+                  <p className="text-gray-500 text-sm">How to write a compelling CV when you have no work experience.</p>
+                </Link>
+              </div>
+
               <div className="mt-12 text-center">
                 <Link href="/blog" className="inline-flex items-center gap-2 text-lg font-bold text-gray-700 hover:text-blue-600 transition-colors">
                   <span>Browse All Career Resources</span>

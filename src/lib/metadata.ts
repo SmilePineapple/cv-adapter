@@ -15,16 +15,16 @@ export function generateMetadata(path: string, customMetadata?: Partial<Metadata
 // Homepage metadata
 export const homeMetadata: Metadata = {
   ...generateMetadata('/'),
-  title: 'CV Buddy - Free AI CV Generator & Builder | Create Professional CVs',
+  title: 'My CV Buddy - Free AI CV Generator & Builder | Create Professional CVs',
   description: 'Create professional, ATS-friendly CVs in minutes with AI. Free CV builder supporting 50+ languages. Tailor your CV for any job, generate cover letters, and export in multiple formats.',
   keywords: ['CV generator', 'CV builder', 'AI CV maker', 'free CV builder', 'professional CV', 'ATS CV', 'cover letter generator', 'resume builder', 'CV tailoring', 'job application'],
   openGraph: {
     type: 'website',
     locale: 'en_GB',
     url: baseUrl,
-    title: 'CV Buddy - AI-Powered CV Generator',
+    title: 'My CV Buddy - AI-Powered CV Generator',
     description: 'Create professional CVs in minutes with AI. Tailor your CV for any job instantly.',
-    siteName: 'CV Buddy',
+    siteName: 'My CV Buddy',
     images: [
       {
         url: '/og-image.png',
@@ -36,7 +36,7 @@ export const homeMetadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CV Buddy - AI-Powered CV Generator',
+    title: 'My CV Buddy - AI-Powered CV Generator',
     description: 'Create professional CVs in minutes with AI',
     images: ['/twitter-image.png'],
   },
@@ -56,7 +56,7 @@ export const homeMetadata: Metadata = {
 // Privacy page metadata
 export const privacyMetadata: Metadata = {
   ...generateMetadata('/privacy'),
-  title: 'Privacy Policy | CV Buddy',
+  title: 'Privacy Policy | My CV Buddy',
   description: 'Learn how CV Buddy protects your data and privacy. We are committed to keeping your personal information secure.',
   robots: {
     index: true,
@@ -67,7 +67,7 @@ export const privacyMetadata: Metadata = {
 // Signup page metadata
 export const signupMetadata: Metadata = {
   ...generateMetadata('/auth/signup'),
-  title: 'Sign Up | CV Buddy - Start Creating Professional CVs',
+  title: 'Sign Up | My CV Buddy - Start Creating Professional CVs',
   description: 'Create your My CV Buddy account and start adapting your CV to any job description with AI. Includes 1 free generation — no credit card required.',
   robots: {
     index: true,
@@ -78,7 +78,7 @@ export const signupMetadata: Metadata = {
 // Login page metadata
 export const loginMetadata: Metadata = {
   ...generateMetadata('/auth/login'),
-  title: 'Log In | CV Buddy',
+  title: 'Log In | My CV Buddy',
   description: 'Log in to your CV Buddy account to access your CVs, generations, and cover letters.',
   robots: {
     index: true,
@@ -89,7 +89,7 @@ export const loginMetadata: Metadata = {
 // Upload page metadata
 export const uploadMetadata: Metadata = {
   ...generateMetadata('/upload'),
-  title: 'Upload CV | CV Buddy',
+  title: 'Upload CV | My CV Buddy',
   description: 'Upload your CV to get started with AI-powered tailoring. Supports PDF, DOCX, and TXT formats.',
   robots: {
     index: true,
@@ -100,7 +100,7 @@ export const uploadMetadata: Metadata = {
 // Subscription page metadata
 export const subscriptionMetadata: Metadata = {
   ...generateMetadata('/subscription'),
-  title: 'Upgrade to Pro | CV Buddy',
+  title: 'Upgrade to Pro | My CV Buddy',
   description: 'Upgrade to CV Buddy Pro for £9.99/month. Get unlimited CV generations, premium templates, and priority support.',
   robots: {
     index: true,
@@ -111,7 +111,7 @@ export const subscriptionMetadata: Metadata = {
 // Cover letter page metadata
 export const coverLetterMetadata: Metadata = {
   ...generateMetadata('/cover-letter'),
-  title: 'Cover Letter Generator | CV Buddy',
+  title: 'Cover Letter Generator | My CV Buddy',
   description: 'Generate personalized cover letters with AI. Complement your CV with a professional cover letter tailored to any job.',
   robots: {
     index: true,
@@ -122,7 +122,7 @@ export const coverLetterMetadata: Metadata = {
 // Dashboard metadata (no index)
 export const dashboardMetadata: Metadata = {
   ...generateMetadata('/dashboard'),
-  title: 'Dashboard | CV Buddy',
+  title: 'Dashboard | My CV Buddy',
   description: 'Manage your CVs, generations, and cover letters.',
   robots: {
     index: false,
@@ -133,7 +133,7 @@ export const dashboardMetadata: Metadata = {
 // Contact page metadata
 export const contactMetadata: Metadata = {
   ...generateMetadata('/contact'),
-  title: 'Contact Us | CV Buddy',
+  title: 'Contact Us | My CV Buddy',
   description: 'Get in touch with the CV Buddy team. We\'re here to help with any questions or feedback.',
   robots: {
     index: true,
@@ -144,7 +144,7 @@ export const contactMetadata: Metadata = {
 // Terms page metadata
 export const termsMetadata: Metadata = {
   ...generateMetadata('/terms'),
-  title: 'Terms of Service | CV Buddy',
+  title: 'Terms of Service | My CV Buddy',
   description: 'Read our terms of service and understand how to use CV Buddy responsibly.',
   robots: {
     index: true,
