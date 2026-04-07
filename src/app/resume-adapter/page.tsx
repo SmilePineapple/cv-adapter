@@ -3,13 +3,17 @@ import { Metadata } from 'next'
 import { ArrowRight, CheckCircle, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'AI Resume Adapter — Tailor Your Resume for Every Application | My CV Buddy',
-  description: 'The AI resume adapter that rewrites your existing resume for each job description. ATS-optimised, keyword-matched, ready in 60 seconds. Adapts your real experience — no made-up content.',
-  keywords: 'resume adapter, ai resume adapter, resume tailoring tool, customize resume for job, job specific resume, resume optimizer, resume rewriter',
+  title: 'AI Resume Adapter: Tailor Your Resume to Any Job in 60 Seconds | My CV Buddy',
+  description: 'The #1 AI resume adapter for UK and US job seekers. Upload your resume, paste any job description — get a perfectly tailored, ATS-optimised resume in 60 seconds. No made-up content. Free to try.',
+  keywords: ['resume adapter', 'ai resume adapter', 'resume adapter ai', 'resume adapter.com', 'resume tailoring tool', 'customize resume for job', 'job specific resume', 'resume optimizer', 'resume rewriter', 'tailor resume to job description', 'cv adapter uk', 'resume buddy'],
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com/resume-adapter',
+  },
   openGraph: {
-    title: 'AI Resume Adapter: One Resume, Tailored for Every Job | My CV Buddy',
-    description: 'Upload your resume once, adapt it for every job description with AI. ATS-ready in 60 seconds.',
+    title: 'AI Resume Adapter: Tailor Your Resume to Any Job in 60 Seconds',
+    description: 'Upload your resume once, paste any job description — get a perfectly tailored, ATS-ready resume in 60 seconds. Free to try.',
     type: 'website',
+    url: 'https://www.mycvbuddy.com/resume-adapter',
   },
 }
 

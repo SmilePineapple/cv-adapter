@@ -300,5 +300,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/fix-my-cv`,
+      lastModified: new Date('2026-04-07'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
   ]
 }

@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
   description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. My CV Buddy is the leading AI CV adapter for UK job seekers and US resume builders. 1 free generation included.',
-  keywords: ['mycvbuddy', 'my cv buddy', 'mycv', 'cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk'],
+  keywords: ['mycvbuddy', 'my cv buddy', 'mycv', 'cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'resume buddy', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk', 'fix my cv', 'fix my cv free', 'cv fixer', 'optimize my cv', 'improve my cv'],
   authors: [{ name: 'My CV Buddy' }],
   creator: 'My CV Buddy',
   publisher: 'My CV Buddy',
