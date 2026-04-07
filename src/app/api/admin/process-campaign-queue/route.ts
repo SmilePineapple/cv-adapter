@@ -18,10 +18,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-
-    if (authError || !user || user.id !== ADMIN_USER_ID) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Accept either admin user JWT or the cron secret
+    const isCronRequest = token === process.env.CRON_SECRET
+    if (!isCronRequest) {
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+      if (authError || !user || user.id !== ADMIN_USER_ID) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
     }
 
     // Initialize Resend client at runtime
@@ -32,6 +35,32 @@ export async function POST(request: NextRequest) {
 
     if (!campaignId) {
       return NextResponse.json({ error: 'campaignId is required' }, { status: 400 })
+    }
+
+    // Check daily send quota (80/day across all campaigns)
+    const DAILY_LIMIT = 80
+    const todayStart = new Date()
+    todayStart.setUTCHours(0, 0, 0, 0)
+
+    const { count: sentTodayCount } = await supabase
+      .from('campaign_recipients')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'sent')
+      .gte('sent_at', todayStart.toISOString())
+
+    const sentToday = sentTodayCount || 0
+    const remainingQuota = DAILY_LIMIT - sentToday
+
+    console.log(`Daily quota: ${sentToday}/${DAILY_LIMIT} sent today, ${remainingQuota} remaining`)
+
+    if (remainingQuota <= 0) {
+      console.log('Daily send limit reached. Will resume tomorrow.')
+      return NextResponse.json({
+        success: true,
+        message: `Daily limit of ${DAILY_LIMIT} reached. Campaign will continue tomorrow.`,
+        processed: 0,
+        dailyLimitReached: true
+      })
     }
 
     // Get campaign
@@ -53,8 +82,8 @@ export async function POST(request: NextRequest) {
         .eq('id', campaignId)
     }
 
-    // Process in batches of 50 to avoid timeout (50 emails * 1 second = 50 seconds)
-    const BATCH_SIZE = 50
+    // Process up to remainingQuota emails (capped at 50 per run to avoid timeout)
+    const BATCH_SIZE = Math.min(remainingQuota, 50)
     const { data: pendingRecipients } = await supabase
       .rpc('get_pending_recipients', { 
         p_campaign_id: campaignId, 
@@ -135,8 +164,12 @@ export async function POST(request: NextRequest) {
 
     const hasMore = remainingRecipients && remainingRecipients.length > 0
 
-    if (hasMore) {
-      // Trigger next batch asynchronously
+    // Recalculate how much quota remains after this batch
+    const newSentToday = sentToday + sent
+    const quotaExhausted = newSentToday >= DAILY_LIMIT
+
+    if (hasMore && !quotaExhausted) {
+      // Trigger next batch asynchronously (still within today's quota)
       console.log(`Triggering next batch for campaign ${campaignId}`)
       fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mycvbuddy.com'}/api/admin/process-campaign-queue`, {
         method: 'POST',
@@ -146,6 +179,16 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({ campaignId })
       }).catch(err => console.error('Error triggering next batch:', err))
+    } else if (hasMore && quotaExhausted) {
+      console.log(`Daily quota reached after this batch. Campaign ${campaignId} will continue tomorrow via cron.`)
+    }
+
+    // Mark campaign complete if no pending recipients remain
+    if (!hasMore) {
+      await supabase
+        .from('email_campaigns')
+        .update({ status: 'completed', completed_at: new Date().toISOString() })
+        .eq('id', campaignId)
     }
 
     return NextResponse.json({
@@ -154,7 +197,8 @@ export async function POST(request: NextRequest) {
       sent,
       failed,
       hasMore,
-      message: `Processed ${processed} recipients. ${hasMore ? 'More batches queued.' : 'Campaign complete.'}`
+      dailyLimitReached: quotaExhausted,
+      message: `Processed ${processed} recipients. ${!hasMore ? 'Campaign complete.' : quotaExhausted ? 'Daily limit reached — resumes tomorrow.' : 'More batches queued.'}`
     })
 
   } catch (error: any) {

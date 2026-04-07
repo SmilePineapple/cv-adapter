@@ -22,6 +22,7 @@ export default function EmailCampaignPage() {
   const [excludeProUsers, setExcludeProUsers] = useState(false)
   const [excludedEmails, setExcludedEmails] = useState<string[]>([])
   const [unsubscribedUsers, setUnsubscribedUsers] = useState<Array<{email: string, unsubscribed_at: string}>>([])
+  const [segment, setSegment] = useState<'no_upload' | 'no_generation' | 'no_conversion' | null>(null)
   // const [activeCampaign, setActiveCampaign] = useState<any>(null)
   const [campaignProgress, setCampaignProgress] = useState<{sent: number, failed: number, total: number} | null>(null)
 
@@ -217,6 +218,151 @@ export default function EmailCampaignPage() {
 </body>
 </html>`)
     toast.success('Template loaded!')
+  }
+
+  const loadSegmentTemplate = (seg: 'no_upload' | 'no_generation' | 'no_conversion') => {
+    setSegment(seg)
+    setExcludeProUsers(true)
+
+    if (seg === 'no_upload') {
+      setSubject("Your CV is waiting — get started with My CV Buddy in 2 minutes")
+      setHtmlContent(`<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background-color:#f6f9fc;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+        <tr><td style="background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 100%);padding:40px;text-align:center;">
+          <h1 style="color:#ffffff;font-size:28px;margin:0 0 8px 0;font-weight:800;">👋 Hi {name}!</h1>
+          <p style="color:#e0e7ff;font-size:16px;margin:0;">You signed up — now let's get your CV working for you</p>
+        </td></tr>
+        <tr><td style="padding:40px;">
+          <p style="font-size:16px;line-height:26px;color:#374151;margin:0 0 20px 0;">
+            You created your My CV Buddy account but haven't uploaded your CV yet. That's the first step — and it only takes 2 minutes!
+          </p>
+          <div style="background:#f0f9ff;border-left:4px solid #4F46E5;padding:24px;border-radius:8px;margin:0 0 28px 0;">
+            <p style="font-size:16px;font-weight:700;color:#1e40af;margin:0 0 12px 0;">🚀 Here's what happens when you upload your CV:</p>
+            <p style="font-size:15px;line-height:24px;color:#1f2937;margin:8px 0;">✅ Our AI reads and understands your experience</p>
+            <p style="font-size:15px;line-height:24px;color:#1f2937;margin:8px 0;">✅ You paste a job description</p>
+            <p style="font-size:15px;line-height:24px;color:#1f2937;margin:8px 0;">✅ We rewrite your CV tailored to that exact role — in seconds</p>
+            <p style="font-size:15px;line-height:24px;color:#1f2937;margin:8px 0;">✅ Download it as a professional PDF or Word doc</p>
+          </div>
+          <p style="font-size:16px;line-height:26px;color:#374151;margin:0 0 28px 0;">
+            Tailoring your CV to each job is one of the <strong>biggest factors</strong> in getting through ATS filters and landing interviews. Most people don't bother — now you can do it effortlessly.
+          </p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px 0;">
+            <tr><td align="center">
+              <a href="https://www.mycvbuddy.com/upload" style="display:inline-block;background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 100%);color:#ffffff;text-decoration:none;padding:16px 40px;border-radius:10px;font-size:17px;font-weight:700;">Upload My CV Now →</a>
+            </td></tr>
+          </table>
+          <p style="font-size:15px;line-height:24px;color:#6b7280;margin:0;">Takes 2 minutes. Free to start.</p>
+          <p style="font-size:15px;line-height:26px;color:#6b7280;margin:24px 0 0 0;">Best,<br><strong style="color:#1f2937;">The My CV Buddy Team</strong></p>
+        </td></tr>
+        <tr><td style="padding:24px 40px;border-top:1px solid #e5e7eb;background-color:#f9fafb;text-align:center;">
+          <p style="font-size:13px;color:#9ca3af;margin:0 0 6px 0;">My CV Buddy — AI-Powered CV Tailoring</p>
+          <a href="https://www.mycvbuddy.com/unsubscribe" style="font-size:12px;color:#9ca3af;">Unsubscribe</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`)
+    }
+
+    if (seg === 'no_generation') {
+      setSubject("Your CV is uploaded — now tailor it to a job in 60 seconds")
+      setHtmlContent(`<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background-color:#f6f9fc;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+        <tr><td style="background:linear-gradient(135deg,#059669 0%,#0284c7 100%);padding:40px;text-align:center;">
+          <h1 style="color:#ffffff;font-size:28px;margin:0 0 8px 0;font-weight:800;">⚡ You're one step away, {name}</h1>
+          <p style="color:#d1fae5;font-size:16px;margin:0;">Your CV is uploaded — now make it work for you</p>
+        </td></tr>
+        <tr><td style="padding:40px;">
+          <p style="font-size:16px;line-height:26px;color:#374151;margin:0 0 20px 0;">
+            You've uploaded your CV to My CV Buddy — great first step! But the magic happens when you <strong>generate a tailored version</strong> for a specific job role.
+          </p>
+          <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;padding:24px;text-align:center;margin:0 0 28px 0;">
+            <p style="font-size:18px;font-weight:700;color:#92400e;margin:0 0 8px 0;">🎁 You have a free generation waiting</p>
+            <p style="font-size:15px;color:#78350f;margin:0;">No payment needed — try it right now</p>
+          </div>
+          <p style="font-size:16px;font-weight:700;color:#1f2937;margin:0 0 12px 0;">Here's all you do:</p>
+          <p style="font-size:15px;line-height:24px;color:#374151;margin:8px 0;"><strong>1.</strong> Find a job you want to apply for</p>
+          <p style="font-size:15px;line-height:24px;color:#374151;margin:8px 0;"><strong>2.</strong> Copy the job description</p>
+          <p style="font-size:15px;line-height:24px;color:#374151;margin:8px 0;"><strong>3.</strong> Paste it into My CV Buddy</p>
+          <p style="font-size:15px;line-height:24px;color:#374151;margin:24px 0 28px 0;"><strong>4.</strong> Get a perfectly tailored CV in under 60 seconds ✅</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px 0;">
+            <tr><td align="center">
+              <a href="https://www.mycvbuddy.com/dashboard" style="display:inline-block;background:linear-gradient(135deg,#059669 0%,#0284c7 100%);color:#ffffff;text-decoration:none;padding:16px 40px;border-radius:10px;font-size:17px;font-weight:700;">Generate My Tailored CV →</a>
+            </td></tr>
+          </table>
+          <p style="font-size:14px;line-height:22px;color:#6b7280;margin:0;">Your uploaded CV is saved and ready. This literally takes 60 seconds.</p>
+          <p style="font-size:15px;line-height:26px;color:#6b7280;margin:24px 0 0 0;">Best,<br><strong style="color:#1f2937;">The My CV Buddy Team</strong></p>
+        </td></tr>
+        <tr><td style="padding:24px 40px;border-top:1px solid #e5e7eb;background-color:#f9fafb;text-align:center;">
+          <p style="font-size:13px;color:#9ca3af;margin:0 0 6px 0;">My CV Buddy — AI-Powered CV Tailoring</p>
+          <a href="https://www.mycvbuddy.com/unsubscribe" style="font-size:12px;color:#9ca3af;">Unsubscribe</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`)
+    }
+
+    if (seg === 'no_conversion') {
+      setSubject("You've seen what My CV Buddy can do — unlock unlimited for £2.99/month")
+      setHtmlContent(`<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background-color:#f6f9fc;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+        <tr><td style="background:linear-gradient(135deg,#dc2626 0%,#9333ea 100%);padding:40px;text-align:center;">
+          <h1 style="color:#ffffff;font-size:28px;margin:0 0 8px 0;font-weight:800;">🎯 You already know it works, {name}</h1>
+          <p style="color:#fce7f3;font-size:16px;margin:0;">Now get unlimited access for less than a coffee</p>
+        </td></tr>
+        <tr><td style="padding:40px;">
+          <p style="font-size:16px;line-height:26px;color:#374151;margin:0 0 20px 0;">
+            You've already used My CV Buddy to generate a tailored CV. You've seen first-hand how it transforms a generic CV into one that's perfectly matched to a job description.
+          </p>
+          <div style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:3px solid #f59e0b;border-radius:12px;padding:28px;text-align:center;margin:0 0 28px 0;">
+            <p style="font-size:14px;color:#92400e;font-weight:600;margin:0 0 8px 0;">🔥 PRO PLAN</p>
+            <p style="font-size:42px;font-weight:900;color:#dc2626;margin:0 0 4px 0;">£2.99<span style="font-size:18px;font-weight:400;">/month</span></p>
+            <p style="font-size:15px;color:#92400e;margin:0;">Less than a coffee ☕</p>
+          </div>
+          <p style="font-size:16px;font-weight:700;color:#1f2937;margin:0 0 16px 0;">What you unlock with Pro:</p>
+          <p style="font-size:15px;line-height:26px;color:#374151;margin:6px 0;">♾️ <strong>Unlimited CV generations</strong> — apply to as many jobs as you want</p>
+          <p style="font-size:15px;line-height:26px;color:#374151;margin:6px 0;">✉️ <strong>AI cover letters</strong> — tailored cover letter for every application</p>
+          <p style="font-size:15px;line-height:26px;color:#374151;margin:6px 0;">🎤 <strong>Interview prep</strong> — AI practice questions for your target role</p>
+          <p style="font-size:15px;line-height:26px;color:#374151;margin:6px 0;">🎨 <strong>14 professional templates</strong> — stand out from the crowd</p>
+          <p style="font-size:15px;line-height:26px;color:#374151;margin:6px 0 28px 0;">🚫 <strong>No watermarks</strong> — clean professional exports every time</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px 0;">
+            <tr><td align="center">
+              <a href="https://www.mycvbuddy.com/subscription" style="display:inline-block;background:linear-gradient(135deg,#dc2626 0%,#9333ea 100%);color:#ffffff;text-decoration:none;padding:16px 40px;border-radius:10px;font-size:17px;font-weight:700;">Upgrade to Pro for £2.99/month →</a>
+            </td></tr>
+          </table>
+          <p style="font-size:14px;line-height:22px;color:#6b7280;margin:0;text-align:center;">Cancel anytime. No hidden fees.</p>
+          <p style="font-size:15px;line-height:26px;color:#6b7280;margin:24px 0 0 0;">Best,<br><strong style="color:#1f2937;">The My CV Buddy Team</strong></p>
+        </td></tr>
+        <tr><td style="padding:24px 40px;border-top:1px solid #e5e7eb;background-color:#f9fafb;text-align:center;">
+          <p style="font-size:13px;color:#9ca3af;margin:0 0 6px 0;">My CV Buddy — AI-Powered CV Tailoring</p>
+          <a href="https://www.mycvbuddy.com/unsubscribe" style="font-size:12px;color:#9ca3af;">Unsubscribe</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`)
+    }
+
+    toast.success(`Loaded template for segment: ${seg}`)
   }
 
   // Load pricing announcement template with Pro user filtering
@@ -467,7 +613,8 @@ export default function EmailCampaignPage() {
           subject,
           htmlContent,
           excludeProUsers,
-          excludedEmails
+          excludedEmails,
+          segment
         })
       })
 
@@ -656,20 +803,81 @@ export default function EmailCampaignPage() {
               </label>
             </div>
 
+            {/* Segment Selector */}
+            <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+              <p className="font-semibold text-gray-900 mb-3">Target Segment <span className="text-xs font-normal text-gray-500">(excludes paying users + unsubscribed)</span></p>
+              <div className="grid grid-cols-1 gap-2">
+                {[
+                  { value: 'no_upload', label: '👤 Never Uploaded', desc: 'Signed up but haven\'t uploaded a CV yet' },
+                  { value: 'no_generation', label: '📄 Uploaded, Never Generated', desc: 'Has uploaded a CV but never generated a tailored one' },
+                  { value: 'no_conversion', label: '⚡ Generated, Not Paying', desc: 'Has generated a CV but never subscribed' },
+                ] .map(s => (
+                  <label key={s.value} className={`flex items-start space-x-3 p-3 rounded-lg border cursor-pointer transition ${
+                    segment === s.value ? 'bg-indigo-100 border-indigo-400' : 'bg-white border-gray-200 hover:border-indigo-300'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="segment"
+                      value={s.value}
+                      checked={segment === s.value}
+                      onChange={() => setSegment(s.value as typeof segment)}
+                      className="mt-1"
+                    />
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">{s.label}</p>
+                      <p className="text-xs text-gray-500">{s.desc}</p>
+                    </div>
+                  </label>
+                ))}
+                <label className={`flex items-start space-x-3 p-3 rounded-lg border cursor-pointer transition ${
+                  segment === null ? 'bg-indigo-100 border-indigo-400' : 'bg-white border-gray-200 hover:border-indigo-300'
+                }`}>
+                  <input
+                    type="radio"
+                    name="segment"
+                    value=""
+                    checked={segment === null}
+                    onChange={() => setSegment(null)}
+                    className="mt-1"
+                  />
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">📢 All Users</p>
+                    <p className="text-xs text-gray-500">No segment filter — send to all eligible users</p>
+                  </div>
+                </label>
+              </div>
+              {segment && (
+                <div className="mt-3 p-2 bg-blue-50 rounded text-xs text-blue-700">
+                  ⏱ At 80/day, ~{Math.ceil(userCount / 80)} day(s) to send to all users in this segment
+                </div>
+              )}
+            </div>
+
             {/* Load Template Buttons */}
             <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={loadTemplate}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-              >
-                Load Update Template
-              </button>
-              <button
-                onClick={loadPricingTemplate}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-              >
-                Load Pricing Template
-              </button>
+              {segment ? (
+                <button
+                  onClick={() => loadSegmentTemplate(segment)}
+                  className="col-span-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold"
+                >
+                  ✨ Load Template for Selected Segment
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={loadTemplate}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+                  >
+                    Load Update Template
+                  </button>
+                  <button
+                    onClick={loadPricingTemplate}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                  >
+                    Load Pricing Template
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Filtering Options */}
@@ -788,7 +996,7 @@ export default function EmailCampaignPage() {
                 <>
                   <Send className="w-5 h-5" />
                   <span>
-                    {testMode ? 'Send Test Email' : `Send to ${userCount} Users`}
+                    {testMode ? 'Send Test Email' : segment ? `Queue Campaign (80/day)` : `Send to ${userCount} Users`}
                   </span>
                 </>
               )}

@@ -24,7 +24,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { subject, htmlContent, excludeProUsers = false, excludedEmails = [] } = body
+    const { subject, htmlContent, excludeProUsers = false, excludedEmails = [], segment = null } = body
+
+    // segment: 'no_upload' | 'no_generation' | 'no_conversion' | null (all)
 
     if (!subject || !htmlContent) {
       return NextResponse.json(
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('Creating campaign with filters:', { excludeProUsers, excludedEmails: excludedEmails.length })
+    console.log('Creating campaign with filters:', { excludeProUsers, excludedEmails: excludedEmails.length, segment })
 
     // Fetch ALL users with pagination
     const allUsers: any[] = []
@@ -67,6 +69,31 @@ export async function POST(request: NextRequest) {
 
     const profilesMap = new Map(profiles?.map(p => [p.id, p.full_name]) || [])
 
+    // Build segment-based user ID sets
+    let usersWithUpload = new Set<string>()
+    let usersWithGeneration = new Set<string>()
+    let usersWithPaidSub = new Set<string>()
+
+    if (segment) {
+      // Users who have uploaded a CV
+      const { data: cvsData } = await supabase.from('cvs').select('user_id')
+      usersWithUpload = new Set((cvsData || []).map((r: any) => r.user_id))
+
+      // Users who have generated a CV
+      const { data: gensData } = await supabase.from('generations').select('user_id')
+      usersWithGeneration = new Set((gensData || []).map((r: any) => r.user_id))
+
+      // Paying users (any subscription tier that is not free)
+      const { data: usageAll } = await supabase.from('usage_tracking').select('user_id, subscription_tier')
+      usersWithPaidSub = new Set(
+        (usageAll || [])
+          .filter((u: any) => u.subscription_tier && u.subscription_tier !== 'free')
+          .map((u: any) => u.user_id)
+      )
+
+      console.log(`Segment data: ${usersWithUpload.size} uploads, ${usersWithGeneration.size} generations, ${usersWithPaidSub.size} paid`)
+    }
+
     // Get Pro users if filtering is enabled
     let proUserIds = new Set<string>()
     if (excludeProUsers) {
@@ -92,6 +119,23 @@ export async function POST(request: NextRequest) {
         if (u.user_metadata?.email_unsubscribed === true) return false
         if (excludeProUsers && proUserIds.has(u.id)) return false
         if (normalizedExcludedEmails.includes(u.email.toLowerCase())) return false
+
+        // Always exclude currently paying users from segmented campaigns
+        if (segment && usersWithPaidSub.has(u.id)) return false
+
+        if (segment === 'no_upload') {
+          // Signed up but never uploaded a CV
+          return !usersWithUpload.has(u.id)
+        }
+        if (segment === 'no_generation') {
+          // Uploaded but never generated
+          return usersWithUpload.has(u.id) && !usersWithGeneration.has(u.id)
+        }
+        if (segment === 'no_conversion') {
+          // Generated but never paid
+          return usersWithGeneration.has(u.id)
+        }
+
         return true
       })
       .map(u => ({
@@ -119,7 +163,8 @@ export async function POST(request: NextRequest) {
         status: 'queued',
         total_recipients: recipients.length,
         exclude_pro_users: excludeProUsers,
-        excluded_emails: excludedEmails
+        excluded_emails: excludedEmails,
+        segment: segment || null
       })
       .select()
       .single()
