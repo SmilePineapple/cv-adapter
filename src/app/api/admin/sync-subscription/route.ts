@@ -191,10 +191,12 @@ export async function POST(request: NextRequest) {
       const isAnnual = interval === 'year'
       const subscriptionTier = isAnnual ? 'pro_annual' : 'pro_monthly'
 
-      // Calculate period end
+      // Calculate period end - cast to any to access Stripe's current_period_end
       let currentPeriodEnd: Date
-      if (stripeSubscription.current_period_end) {
-        currentPeriodEnd = new Date(stripeSubscription.current_period_end * 1000)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const periodEnd = (stripeSubscription as any).current_period_end
+      if (periodEnd) {
+        currentPeriodEnd = new Date(periodEnd * 1000)
       } else {
         currentPeriodEnd = new Date()
         if (isAnnual) {

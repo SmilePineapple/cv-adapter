@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useDropzone } from 'react-dropzone'
@@ -265,7 +265,7 @@ export default function UploadPage() {
 
             {/* Upload Area - Mobile Optimized */}
             <div
-              {...getRootProps()}
+              {...(getRootProps() as React.HTMLAttributes<HTMLDivElement>)}
               className={`
                 border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300
                 min-h-[200px] sm:min-h-[280px] flex items-center justify-center
@@ -277,10 +277,7 @@ export default function UploadPage() {
                 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
-              <input 
-                {...getInputProps()} 
-                onChange={handleFileChange}
-              />
+              <input {...(getInputProps() as React.InputHTMLAttributes<HTMLInputElement>)} />
               
               {isUploading ? (
                 <div className="space-y-4">
