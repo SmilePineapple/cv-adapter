@@ -504,6 +504,150 @@ export async function POST(request: NextRequest) {
         break
       }
 
+      case 'invoice.payment_succeeded': {
+        const invoice = event.data.object as Stripe.Invoice
+        const invoiceData = invoice as any
+        const customerId = invoice.customer as string
+        const subscriptionId = typeof invoiceData.subscription === 'string' ? invoiceData.subscription : invoiceData.subscription?.id
+
+        console.log('[Webhook] Invoice payment succeeded:', {
+          invoiceId: invoice.id,
+          customerId,
+          subscriptionId,
+          amountPaid: invoice.amount_paid,
+          billingReason: invoice.billing_reason
+        })
+
+        // Get customer to find user_id
+        const customer = await stripe.customers.retrieve(customerId)
+
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
+          break
+        }
+
+        let userId = customer.metadata?.supabase_user_id
+
+        // Fallback: try to find user via subscriptions table
+        if (!userId) {
+          const { data: subRecords } = await supabase
+            .from('subscriptions')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (subRecords && subRecords.length > 0) {
+            userId = subRecords[0].user_id
+          }
+        }
+
+        // Fallback: try to find user via purchases table
+        if (!userId) {
+          const { data: purchases } = await supabase
+            .from('purchases')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (purchases && purchases.length > 0) {
+            userId = purchases[0].user_id
+          }
+        }
+
+        if (!userId) {
+          console.error('[Webhook] No user found for payment customer:', customerId)
+          break
+        }
+
+        // Check if subscription is active and ensure user is Pro
+        if (subscriptionId) {
+          try {
+            const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+
+            if (subscription.status === 'active') {
+              // Calculate new period end
+              const subData = subscription as any
+              const currentPeriodEnd = new Date(subData.current_period_end * 1000)
+
+              // Get user email for logging
+              const { data: userData } = await supabase.auth.admin.getUserById(userId)
+              const userEmail = userData?.user?.email || 'unknown'
+
+              console.log('[Webhook] Ensuring user has Pro access after successful payment:', {
+                userId,
+                email: userEmail,
+                subscriptionId,
+                periodEnd: currentPeriodEnd.toISOString()
+              })
+
+              // Determine plan type from subscription
+              const interval = subscription.items.data[0]?.price?.recurring?.interval
+              const isAnnual = interval === 'year'
+              const subscriptionTier = isAnnual ? 'pro_annual' : 'pro_monthly'
+
+              // Upgrade or ensure user is Pro
+              const { data: existingUsage } = await supabase
+                .from('usage_tracking')
+                .select('plan_type')
+                .eq('user_id', userId)
+                .maybeSingle()
+
+              if (existingUsage?.plan_type !== 'pro') {
+                // User was downgraded but payment succeeded - re-upgrade them
+                console.log('[Webhook] Re-upgrading user after successful payment:', userEmail)
+
+                const { error: upgradeError } = await supabase
+                  .from('usage_tracking')
+                  .update({
+                    plan_type: 'pro',
+                    subscription_tier: subscriptionTier,
+                    subscription_end_date: currentPeriodEnd.toISOString(),
+                    max_lifetime_generations: 999999,
+                    updated_at: new Date().toISOString()
+                  })
+                  .eq('user_id', userId)
+
+                if (upgradeError) {
+                  console.error('[Webhook] Failed to re-upgrade user:', upgradeError)
+                  throw upgradeError
+                }
+
+                console.log('[Webhook] User re-upgraded to Pro:', userEmail)
+              } else {
+                // User is already Pro, just update the subscription end date
+                const { error: updateError } = await supabase
+                  .from('usage_tracking')
+                  .update({
+                    subscription_end_date: currentPeriodEnd.toISOString(),
+                    updated_at: new Date().toISOString()
+                  })
+                  .eq('user_id', userId)
+
+                if (updateError) {
+                  console.error('[Webhook] Failed to update subscription dates:', updateError)
+                } else {
+                  console.log('[Webhook] Subscription dates updated for user:', userEmail)
+                }
+              }
+
+              // Update subscription status in subscriptions table
+              await supabase
+                .from('subscriptions')
+                .update({
+                  status: 'active',
+                  current_period_end: currentPeriodEnd.toISOString(),
+                  updated_at: new Date().toISOString()
+                })
+                .eq('stripe_subscription_id', subscriptionId)
+            }
+          } catch (error) {
+            console.error('[Webhook] Error processing payment success:', error)
+          }
+        }
+
+        break
+      }
+
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
         const invoiceData = invoice as any

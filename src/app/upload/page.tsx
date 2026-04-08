@@ -19,7 +19,9 @@ import {
   AlertCircle,
   ArrowLeft,
   X,
-  Sparkles
+  Sparkles,
+  ScanLine,
+  FileWarning
 } from 'lucide-react'
 
 export default function UploadPage() {
@@ -28,6 +30,7 @@ export default function UploadPage() {
   const [parseResult, setParseResult] = useState<any>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [showVerification, setShowVerification] = useState(false)
+  const [uploadError, setUploadError] = useState<{ message: string; details?: string } | null>(null)
   const router = useRouter()
   const supabase = createSupabaseClient()
 
@@ -43,6 +46,7 @@ export default function UploadPage() {
     setUploadedFile(file)
     setIsUploading(true)
     setUploadProgress(0)
+    setUploadError(null)
 
     try {
       // Get session first
@@ -103,6 +107,10 @@ export default function UploadPage() {
       if (!response.ok) {
         const result = await response.json().catch(() => ({ error: 'Upload failed' }))
         console.log('[UPLOAD] Error result:', result)
+        setUploadError({
+          message: result.error || 'Upload failed',
+          details: result.details
+        })
         throw new Error(result.error || 'Upload failed')
       }
       
@@ -118,7 +126,7 @@ export default function UploadPage() {
       console.error('[UPLOAD] Upload error:', error)
       console.error('[UPLOAD] Error stack:', error.stack)
       toast.error(error.message || 'Failed to upload CV')
-      setUploadedFile(null)
+      // Don't clear uploadedFile on error so user can see what failed
     } finally {
       setIsUploading(false)
     }
@@ -206,6 +214,7 @@ export default function UploadPage() {
     setUploadedFile(null)
     setParseResult(null)
     setShowVerification(false)
+    setUploadError(null)
   }
 
   return (
@@ -328,6 +337,84 @@ export default function UploadPage() {
                 </div>
               )}
             </div>
+
+            {/* Upload Error Display */}
+            {uploadError && (
+              <div className="mt-6 p-6 bg-red-500/10 border border-red-500/30 rounded-xl">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <FileWarning className="w-6 h-6 text-red-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-black text-white mb-2">Unable to Process This File</h3>
+                    <p className="text-white/80 mb-4">{uploadError.message}</p>
+                    {uploadError.details && (
+                      <p className="text-sm text-white/60 mb-4">{uploadError.details}</p>
+                    )}
+                    
+                    {/* Scanned PDF Help Section */}
+                    {uploadError.message.toLowerCase().includes('scanned') && (
+                      <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <ScanLine className="w-5 h-5 text-amber-400" />
+                          <h4 className="font-bold text-white">How to Fix This</h4>
+                        </div>
+                        <p className="text-sm text-white/70 mb-3">
+                          This appears to be a scanned document (image-based PDF). Here are your options:
+                        </p>
+                        <ul className="space-y-2 text-sm text-white/70">
+                          <li className="flex items-start space-x-2">
+                            <span className="text-green-400 mt-0.5">1.</span>
+                            <span><strong>Upload the original file</strong> - If you have the original Word document or text-based PDF, use that instead.</span>
+                          </li>
+                          <li className="flex items-start space-x-2">
+                            <span className="text-green-400 mt-0.5">2.</span>
+                            <span><strong>Use OCR software</strong> - Convert your scanned PDF using free tools like:</span>
+                          </li>
+                        </ul>
+                        <div className="mt-3 ml-6 flex flex-wrap gap-2">
+                          <a 
+                            href="https://www.adobe.com/acrobat/online/ocr.html" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500/30 transition-colors"
+                          >
+                            Adobe OCR (Free)
+                          </a>
+                          <a 
+                            href="https://smallpdf.com/ocr-pdf" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500/30 transition-colors"
+                          >
+                            Smallpdf OCR
+                          </a>
+                          <a 
+                            href="https://docs.google.com/document/create" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500/30 transition-colors"
+                          >
+                            Google Docs (Open PDF → Download as DOCX)
+                          </a>
+                        </div>
+                        <p className="mt-3 text-xs text-white/50">
+                          After converting, upload the new file here.
+                        </p>
+                      </div>
+                    )}
+                    
+                    <button
+                      onClick={handleReset}
+                      className="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>Try a Different File</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* What Happens Next */}
             <div className="mt-8 sm:mt-10 p-4 sm:p-6 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">

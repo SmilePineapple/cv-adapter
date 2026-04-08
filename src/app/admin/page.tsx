@@ -7,12 +7,12 @@ import { createSupabaseClient } from '@/lib/supabase'
 export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'
 import Link from 'next/link'
-import { 
-  Users, 
-  TrendingUp, 
-  FileText, 
-  Mail, 
-  DollarSign, 
+import {
+  Users,
+  TrendingUp,
+  FileText,
+  Mail,
+  DollarSign,
   Activity,
   Crown,
   Calendar,
@@ -25,7 +25,8 @@ import {
   Send,
   Trophy,
   Linkedin,
-  AlertCircle
+  AlertCircle,
+  RefreshCw as SyncIcon
 } from 'lucide-react'
 import { exportUsersToCSV } from '@/lib/csv-export'
 
@@ -296,6 +297,13 @@ export default function AdminDashboard() {
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Upgrade User
+              </Link>
+              <Link
+                href="/admin/sync-subscription"
+                className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              >
+                <SyncIcon className="w-4 h-4" />
+                Sync Subscription
               </Link>
               <Link
                 href="/admin/email-campaign"
