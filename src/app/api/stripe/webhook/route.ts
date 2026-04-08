@@ -389,19 +389,46 @@ export async function POST(request: NextRequest) {
 
         console.log('[Webhook] Subscription updated:', subscription.id)
 
-        // Find user by customer ID
-        const { data: purchases } = await supabase
-          .from('purchases')
-          .select('user_id')
-          .eq('stripe_customer_id', customerId)
-          .limit(1)
-
-        if (!purchases || purchases.length === 0) {
-          console.error('[Webhook] No user found for customer:', customerId)
+        // Get customer to find user_id
+        const customer = await stripe.customers.retrieve(customerId)
+        
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
           break
         }
 
-        const userId = purchases[0].user_id
+        let userId = customer.metadata?.supabase_user_id
+
+        // Fallback: try to find user via subscriptions table
+        if (!userId) {
+          const { data: subRecords } = await supabase
+            .from('subscriptions')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (subRecords && subRecords.length > 0) {
+            userId = subRecords[0].user_id
+          }
+        }
+
+        // Fallback: try to find user via purchases table
+        if (!userId) {
+          const { data: purchases } = await supabase
+            .from('purchases')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (purchases && purchases.length > 0) {
+            userId = purchases[0].user_id
+          }
+        }
+
+        if (!userId) {
+          console.error('[Webhook] No user found for customer:', customerId)
+          break
+        }
         
         // Access subscription properties safely
         const subData = subscription as any
@@ -439,19 +466,46 @@ export async function POST(request: NextRequest) {
 
         console.log('[Webhook] Subscription cancelled:', subscription.id)
 
-        // Find user by customer ID
-        const { data: purchases } = await supabase
-          .from('purchases')
-          .select('user_id')
-          .eq('stripe_customer_id', customerId)
-          .limit(1)
-
-        if (!purchases || purchases.length === 0) {
-          console.error('[Webhook] No user found for customer:', customerId)
+        // Get customer to find user_id
+        const customer = await stripe.customers.retrieve(customerId)
+        
+        if (customer.deleted) {
+          console.error('[Webhook] Customer was deleted:', customerId)
           break
         }
 
-        const userId = purchases[0].user_id
+        let userId = customer.metadata?.supabase_user_id
+
+        // Fallback: try to find user via subscriptions table
+        if (!userId) {
+          const { data: subRecords } = await supabase
+            .from('subscriptions')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (subRecords && subRecords.length > 0) {
+            userId = subRecords[0].user_id
+          }
+        }
+
+        // Fallback: try to find user via purchases table
+        if (!userId) {
+          const { data: purchases } = await supabase
+            .from('purchases')
+            .select('user_id')
+            .eq('stripe_customer_id', customerId)
+            .limit(1)
+
+          if (purchases && purchases.length > 0) {
+            userId = purchases[0].user_id
+          }
+        }
+
+        if (!userId) {
+          console.error('[Webhook] No user found for customer:', customerId)
+          break
+        }
 
         // Downgrade user to free tier
         await supabase
