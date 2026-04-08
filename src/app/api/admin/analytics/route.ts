@@ -206,6 +206,41 @@ export async function GET(request: NextRequest) {
           if (!startingAfter) break
         }
 
+        // Also calculate revenue from subscriptions table (for manually upgraded users)
+        // This ensures revenue is counted even if Stripe invoice wasn't generated
+        const now = new Date()
+        for (const sub of subscriptions) {
+          if (sub.status !== 'active' || adminUserIds.has(sub.user_id)) continue
+          
+          // Get user's subscription tier from usage_tracking
+          const userUsage = usageTracking.find(u => u.user_id === sub.user_id)
+          const tier = userUsage?.subscription_tier || 'pro_monthly'
+          
+          // Calculate amount based on tier
+          const amount = tier === 'pro_annual' ? 2999 : 299 // in cents (29.99 or 2.99)
+          
+          // Use subscription_end_date or current_period_end to determine which month
+          const periodEnd = sub.current_period_end || userUsage?.subscription_end_date
+          if (!periodEnd) continue
+          
+          const endDate = new Date(periodEnd)
+          // For monthly: subscription started ~1 month before period end
+          // For annual: subscription started ~1 year before period end
+          const monthsToSubtract = tier === 'pro_annual' ? 12 : 1
+          const startDateSub = new Date(endDate)
+          startDateSub.setMonth(startDateSub.getMonth() - monthsToSubtract)
+          
+          // Only count if subscription started within our date range
+          if (startDateSub >= startDate && startDateSub <= endDate) {
+            const key = `${startDateSub.getUTCFullYear()}-${String(startDateSub.getUTCMonth() + 1).padStart(2, '0')}`
+            const current = monthTotals.get(key) || { amountMinor: 0, currencies: new Set<string>() }
+            current.amountMinor += amount
+            current.currencies.add('gbp')
+            monthTotals.set(key, current)
+            console.log(`[Analytics] Added subscription revenue for ${key}: £${amount / 100} (user: ${sub.user_id})`)
+          }
+        }
+
         monthlyRevenueByMonth = Array.from(monthTotals.entries())
           .map(([month, v]) => {
             const currencies = Array.from(v.currencies)
