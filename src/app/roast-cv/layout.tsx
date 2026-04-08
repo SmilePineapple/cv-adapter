@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.mycvbuddy.com/roast-cv',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: 'Roast My CV - AI CV Roasting | CV Adapter',
     description: 'Get brutally honest AI feedback on your CV with humor and actionable tips.',

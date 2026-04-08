@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     description: '50+ questions, STAR method, and expert tips to ace your interview.',
   },
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
 }
 

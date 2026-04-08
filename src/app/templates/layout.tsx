@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.mycvbuddy.com/templates',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: 'Professional CV Templates UK | CV Adapter',
     description: 'Browse 12+ professional CV templates optimized for UK job applications. ATS-friendly and modern designs.',

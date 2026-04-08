@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.mycvbuddy.com/upload',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: 'Upload CV - Free CV Analysis | CV Adapter',
     description: 'Upload your CV for free AI-powered analysis. Supports PDF and Word documents.',

@@ -22,30 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/upload`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/templates`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/cover-letter`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/interview-prep`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
+    // Note: /upload, /templates, /cover-letter, /interview-prep require authentication
+    // and are excluded from sitemap to prevent "Crawled - currently not indexed" issues
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
@@ -64,12 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
-    {
-      url: `${baseUrl}/subscription`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
+    // Note: /subscription requires authentication and is excluded from sitemap
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
@@ -82,12 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
-    {
-      url: `${baseUrl}/roast-cv`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
+    // Note: /roast-cv requires authentication and is excluded from sitemap
     {
       url: `${baseUrl}/pricing-comparison`,
       lastModified: new Date(),

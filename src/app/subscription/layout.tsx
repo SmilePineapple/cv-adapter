@@ -7,8 +7,8 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com/subscription'
   },
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
 }
 
