@@ -255,8 +255,9 @@ export default function CVTemplateUK2025() {
                 </div>
               </div>
             </div>
+          </div>
 
-            <ul className="list-disc pl-6 space-y-2 text-slate-300 mb-8">
+          <ul className="list-disc pl-6 space-y-2 text-slate-300 mb-8">
               <li>✅ Use standard section headings (Work Experience, Education, Skills)</li>
               <li>✅ Avoid tables, text boxes, and columns</li>
               <li>✅ Don't put important information in headers/footers</li>
