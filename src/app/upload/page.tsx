@@ -270,8 +270,8 @@ export default function UploadPage() {
                 border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300
                 min-h-[200px] sm:min-h-[280px] flex items-center justify-center
                 touch-manipulation
-                ${isDragActive 
-                  ? 'border-blue-500 bg-blue-500/10 scale-105 shadow-lg' 
+                ${isDragActive
+                  ? 'border-blue-500 bg-blue-500/10 scale-105 shadow-lg'
                   : 'border-white/20 hover:border-blue-400 hover:bg-white/5 hover:shadow-md'
                 }
                 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}

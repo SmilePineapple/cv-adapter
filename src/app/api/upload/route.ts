@@ -46,6 +46,24 @@ interface FileMetadata {
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15MB
 
+// Sanitize strings for PostgreSQL by removing null bytes
+function sanitizeForPostgres(obj: any): any {
+  if (typeof obj === 'string') {
+    return obj.replace(/\u0000/g, '')
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeForPostgres)
+  }
+  if (obj && typeof obj === 'object') {
+    const sanitized: any = {}
+    for (const key of Object.keys(obj)) {
+      sanitized[key] = sanitizeForPostgres(obj[key])
+    }
+    return sanitized
+  }
+  return obj
+}
+
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createAdminClient()
   console.log('[UPLOAD API] Called at:', new Date().toISOString())
@@ -178,15 +196,20 @@ export async function POST(request: NextRequest) {
       upload_date: new Date().toISOString()
     }
 
+    // Sanitize data for PostgreSQL (remove null bytes)
+    const sanitizedText = sanitizeForPostgres(extractedText)
+    const sanitizedSections = sanitizeForPostgres(parsedSections)
+    const sanitizedMetadata = sanitizeForPostgres(fileMetadata)
+
     // Save to database
     console.log('Saving to database...')
     const { data: cvData, error: dbError } = await supabaseAdmin
       .from('cvs')
       .insert({
         user_id: userId,
-        original_text: extractedText,
-        parsed_sections: parsedSections,
-        file_meta: fileMetadata,
+        original_text: sanitizedText,
+        parsed_sections: sanitizedSections,
+        file_meta: sanitizedMetadata,
         detected_language: languageResult.code
       })
       .select()
@@ -210,18 +233,20 @@ export async function POST(request: NextRequest) {
 
     // Create CV sections for the editor
     console.log('Creating CV sections for editor...')
-    const sectionsToInsert = parsedSections.sections.map((section, index) => {
-      const mappedType = mapSectionType(section.type)
-      console.log(`Mapping section: "${section.type}" → "${mappedType}"`)
-      return {
-        cv_id: cvData.id,
-        section_type: mappedType,
-        title: mappedType.charAt(0).toUpperCase() + mappedType.slice(1).replace('_', ' '),
-        content: section.content,
-        order_index: index
-        // Removed user_id, raw_content, and layout fields - don't exist in database
-      }
-    })
+    const sectionsToInsert = sanitizeForPostgres(
+      parsedSections.sections.map((section, index) => {
+        const mappedType = mapSectionType(section.type)
+        console.log(`Mapping section: "${section.type}" → "${mappedType}"`)
+        return {
+          cv_id: cvData.id,
+          section_type: mappedType,
+          title: mappedType.charAt(0).toUpperCase() + mappedType.slice(1).replace('_', ' '),
+          content: section.content,
+          order_index: index
+          // Removed user_id, raw_content, and layout fields - don't exist in database
+        }
+      })
+    )
 
     if (sectionsToInsert.length > 0) {
       console.log('Sections to insert:', sectionsToInsert.map(s => ({ type: s.section_type, title: s.title })))
