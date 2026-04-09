@@ -141,7 +141,7 @@ export default function DashboardPage() {
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
-  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
+  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'manual' | 'first_generation' | 'dashboard'>('manual')
   const [isAdmin, setIsAdmin] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [isResettingGenerations, setIsResettingGenerations] = useState(false)
@@ -780,6 +780,103 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Pro Upgrade Section - Compelling & Clear - Moved to top for visibility */}
+        {!isPro && (
+          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-2xl p-8 mb-8 text-white shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                  <Crown className="w-6 h-6 text-yellow-300" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">Unlock Your Full Potential</h2>
+                  <p className="text-blue-100">Join 1,000+ professionals using CV Adapter Pro</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 my-6">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Unlimited CV Generations</p>
+                      <p className="text-sm text-blue-100">Create as many CVs as you need</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">AI Interview Prep</p>
+                      <p className="text-sm text-blue-100">Company research & practice questions</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Personal Career Coach</p>
+                      <p className="text-sm text-blue-100">AI-powered career guidance</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Advanced Templates</p>
+                      <p className="text-sm text-blue-100">Premium designs & customization</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Priority Support</p>
+                      <p className="text-sm text-blue-100">Get help when you need it</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Skills Assessments</p>
+                      <p className="text-sm text-blue-100">Test & improve your abilities</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <Link
+                  href="/subscription"
+                  className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto"
+                >
+                  <Crown className="w-5 h-5" />
+                  Upgrade to Pro - £2.99/month
+                </Link>
+                <Link
+                  href="/subscription"
+                  className="text-white hover:text-blue-100 font-medium underline"
+                >
+                  See all features →
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Usage Limit Banner for Free Users */}
         {!isPro && currentUsage < maxGenerations && (
           <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-400/30 rounded-2xl p-6 mb-8">
@@ -958,103 +1055,6 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-400">Get honest feedback</p>
           </Link>
         </div>
-
-        {/* Pro Upgrade Section - Compelling & Clear */}
-        {!isPro && (
-          <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-2xl p-8 mb-8 text-white shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
-            
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                  <Crown className="w-6 h-6 text-yellow-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Unlock Your Full Potential</h2>
-                  <p className="text-blue-100">Join 1,000+ professionals using CV Adapter Pro</p>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 my-6">
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Unlimited CV Generations</p>
-                      <p className="text-sm text-blue-100">Create as many CVs as you need</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">AI Interview Prep</p>
-                      <p className="text-sm text-blue-100">Company research & practice questions</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Personal Career Coach</p>
-                      <p className="text-sm text-blue-100">AI-powered career guidance</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Advanced Templates</p>
-                      <p className="text-sm text-blue-100">Premium designs & customization</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Priority Support</p>
-                      <p className="text-sm text-blue-100">Get help when you need it</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Skills Assessments</p>
-                      <p className="text-sm text-blue-100">Test & improve your abilities</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 items-center">
-                <Link
-                  href="/subscription"
-                  className="flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl text-lg w-full sm:w-auto"
-                >
-                  <Crown className="w-5 h-5" />
-                  Upgrade to Pro - £2.99/month
-                </Link>
-                <Link
-                  href="/subscription"
-                  className="text-white hover:text-blue-100 font-medium underline"
-                >
-                  See all features →
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Usage Tracker - Subtle Display for Pro Users */}
         {usage && isPro && (

@@ -21,7 +21,8 @@ import {
   X,
   Sparkles,
   ScanLine,
-  FileWarning
+  FileWarning,
+  Loader2
 } from 'lucide-react'
 
 export default function UploadPage() {
@@ -29,6 +30,7 @@ export default function UploadPage() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [parseResult, setParseResult] = useState<any>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploadStep, setUploadStep] = useState('')
   const [showVerification, setShowVerification] = useState(false)
   const [uploadError, setUploadError] = useState<{ message: string; details?: string } | null>(null)
   const router = useRouter()
@@ -46,7 +48,12 @@ export default function UploadPage() {
     setUploadedFile(file)
     setIsUploading(true)
     setUploadProgress(0)
+    setUploadStep('📄 Preparing file upload...')
     setUploadError(null)
+
+    // Progress animation intervals
+    let progressInterval: NodeJS.Timeout | null = null
+    let messageInterval: NodeJS.Timeout | null = null
 
     try {
       // Get session first
@@ -59,7 +66,8 @@ export default function UploadPage() {
       console.log('[UPLOAD] Session found, user ID:', session.user.id)
 
       // Upload file to Supabase Storage first
-      setUploadProgress(30)
+      setUploadProgress(10)
+      setUploadStep('☁️ Uploading file to cloud storage...')
       toast.info('Uploading file to storage...')
 
       const fileExt = file.name.split('.').pop()
@@ -80,12 +88,37 @@ export default function UploadPage() {
       }
 
       console.log('[UPLOAD] File uploaded to storage:', uploadData.path)
-      setUploadProgress(60)
-      toast.info('Processing CV...')
+      setUploadProgress(40)
+      setUploadStep('🔍 Processing document...')
+
+      // Start progress animation for API processing phase
+      const progressMessages = [
+        '🔍 Processing document...',
+        '🤖 AI is extracting text...',
+        '📊 Analyzing CV structure...',
+        '📝 Parsing sections...',
+        '✨ Optimizing content...',
+        '💾 Saving to database...'
+      ]
+
+      let messageIndex = 0
+      progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev < 85) {
+            return prev + 1.5 // Increment by 1.5% every interval
+          }
+          return prev
+        })
+      }, 400) // Update every 400ms
+
+      messageInterval = setInterval(() => {
+        setUploadStep(progressMessages[messageIndex % progressMessages.length])
+        messageIndex++
+      }, 2500) // Change message every 2.5 seconds
 
       // Now call API with storage path
       console.log('[UPLOAD] Sending request to /api/upload...')
-      const response = await fetch('/api/upload', {
+      const responsePromise = fetch('/api/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
@@ -99,8 +132,12 @@ export default function UploadPage() {
         }),
       })
 
-      setUploadProgress(85)
-      toast.info('Parsing CV content...')
+      // Wait for API response
+      const response = await responsePromise
+
+      // Clear intervals
+      if (progressInterval) clearInterval(progressInterval)
+      if (messageInterval) clearInterval(messageInterval)
 
       console.log('[UPLOAD] Response status:', response.status)
       
@@ -117,7 +154,13 @@ export default function UploadPage() {
       const result = await response.json()
       console.log('[UPLOAD] Response result:', result)
 
+      setUploadProgress(95)
+      setUploadStep('✨ Finalizing...')
+      
+      await new Promise(resolve => setTimeout(resolve, 300))
+
       setUploadProgress(100)
+      setUploadStep('Complete!')
       setParseResult(result)
       setShowVerification(true)
       toast.success('CV uploaded and parsed successfully!')
@@ -126,6 +169,9 @@ export default function UploadPage() {
       console.error('[UPLOAD] Upload error:', error)
       console.error('[UPLOAD] Error stack:', error.stack)
       toast.error(error.message || 'Failed to upload CV')
+      // Clear intervals on error
+      if (progressInterval) clearInterval(progressInterval)
+      if (messageInterval) clearInterval(messageInterval)
       // Don't clear uploadedFile on error so user can see what failed
     } finally {
       setIsUploading(false)
@@ -280,24 +326,55 @@ export default function UploadPage() {
               <input {...(getInputProps() as React.InputHTMLAttributes<HTMLInputElement>)} />
               
               {isUploading ? (
-                <div className="space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                  <div>
-                    <p className="text-lg font-medium text-white">Processing your CV...</p>
-                    <p className="text-white">This may take a few moments</p>
+                <div className="space-y-6">
+                  {/* Enhanced Loading Animation */}
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="relative">
+                      <Loader2 className="w-16 h-16 text-blue-500 animate-spin" />
+                      <div className="absolute inset-0 w-16 h-16 border-4 border-blue-500/30 rounded-full"></div>
+                    </div>
+                    
+                    {/* Step Message */}
+                    <div className="text-center space-y-2">
+                      <p className="text-lg font-semibold text-white animate-pulse">
+                        {uploadStep}
+                      </p>
+                      <p className="text-sm text-white/60">This may take 30-60 seconds</p>
+                    </div>
                   </div>
                   
-                  {/* Progress Bar */}
-                  <div className="w-full max-w-md mx-auto">
-                    <div className="flex justify-between text-sm text-white mb-2">
-                      <span>Progress</span>
-                      <span>{uploadProgress}%</span>
+                  {/* Enhanced Progress Bar */}
+                  <div className="w-full max-w-md mx-auto space-y-3">
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-white/80">Processing CV</span>
+                      <span className="text-blue-400">{Math.round(uploadProgress)}%</span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
+                    <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300 ease-out"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
+                    </div>
+                    
+                    {/* Step indicators */}
+                    <div className="flex justify-center space-x-2 pt-2">
+                      {['Upload', 'Process', 'Parse', 'Save'].map((step, index) => {
+                        const stepProgress = (index + 1) * 25
+                        const isActive = uploadProgress >= stepProgress - 25
+                        const isComplete = uploadProgress >= stepProgress
+                        return (
+                          <div key={step} className="flex items-center space-x-1">
+                            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                              isComplete ? 'bg-green-400 w-4' : isActive ? 'bg-blue-400 animate-pulse' : 'bg-white/20'
+                            }`} />
+                            <span className={`text-xs transition-colors duration-300 ${
+                              isActive ? 'text-white/80' : 'text-white/40'
+                            }`}>
+                              {step}
+                            </span>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
