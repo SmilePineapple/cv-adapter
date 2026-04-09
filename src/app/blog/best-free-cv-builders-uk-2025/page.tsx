@@ -9,14 +9,13 @@ export const metadata: Metadata = {
 
 export default function BestFreeCVBuildersPage() {
   return (
-    <div className="min-h-screen bg-white py-12 px-4">
-      <article className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-          Best Free CV Builders UK 2025
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Expert comparison of the top free CV builders available in the UK
-        </p>
+    <>
+      <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
+        Best Free CV Builders UK 2025
+      </h1>
+      <p className="text-xl text-slate-300 mb-8">
+        Expert comparison of the top free CV builders available in the UK
+      </p>
 
         <div className="prose prose-lg max-w-none">
           <h2>Why Use a Free CV Builder?</h2>
@@ -39,7 +38,7 @@ export default function BestFreeCVBuildersPage() {
             <li>✅ Completely free to start</li>
           </ul>
           <p>
-            <Link href="/" className="text-blue-600 hover:text-blue-700 font-bold">
+            <Link href="/" className="text-blue-400 hover:text-blue-300 font-bold">
               Try My CV Buddy Free →
             </Link>
           </p>
@@ -82,9 +81,9 @@ export default function BestFreeCVBuildersPage() {
             or an experienced professional, having the right CV builder can make all the difference.
           </p>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Build Your CV?</h3>
-            <p className="text-gray-700 mb-4">
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6 my-8">
+            <h3 className="text-xl font-bold text-white mb-2">Ready to Build Your CV?</h3>
+            <p className="text-slate-300 mb-4">
               Create a professional, ATS-optimized CV in just 2 minutes with My CV Buddy.
             </p>
             <Link 
@@ -95,7 +94,6 @@ export default function BestFreeCVBuildersPage() {
             </Link>
           </div>
         </div>
-      </article>
-    </div>
+    </>
   )
 }

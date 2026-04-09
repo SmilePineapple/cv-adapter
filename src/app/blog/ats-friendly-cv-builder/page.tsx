@@ -24,38 +24,33 @@ export const metadata: Metadata = {
 
 export default function ATSFriendlyCVBuilder() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link 
-          href="/blog"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Blog
-        </Link>
+    <>
+      <Link 
+        href="/blog"
+        className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 group"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+        Back to Blog
+      </Link>
 
-        <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-8 sm:p-12">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
-                <span>January 15, 2025</span>
-                <span>•</span>
-                <span>14 min read</span>
-                <span>•</span>
-                <span className="text-blue-400 font-black">ATS Guide</span>
-              </div>
-              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
-                ATS-Friendly CV Builder UK: Best Tools for 2025
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                75% of CVs are rejected by Applicant Tracking Systems before a human sees them. Here's how to choose an ATS-friendly CV builder that actually gets you interviews.
-              </p>
-            </div>
+      <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
+        <span>January 15, 2025</span>
+        <span>•</span>
+        <span>14 min read</span>
+        <span>•</span>
+        <span className="text-blue-400 font-black">ATS Guide</span>
+      </div>
+      <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
+        ATS-Friendly CV Builder UK: Best Tools for 2025
+      </h1>
+      <p className="text-xl text-slate-300 leading-relaxed mb-8">
+        75% of CVs are rejected by Applicant Tracking Systems before a human sees them. Here's how to choose an ATS-friendly CV builder that actually gets you interviews.
+      </p>
 
-            <div className="prose prose-invert prose-lg max-w-none">
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
-                <h3 className="text-lg font-bold text-gray-900 mt-0 mb-3">🚨 Critical Stat</h3>
-                <p className="mb-0 text-lg">
+      <div className="prose prose-invert prose-lg max-w-none text-slate-300">
+              <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-8">
+                <h3 className="text-lg font-bold text-white mt-0 mb-3">🚨 Critical Stat</h3>
+                <p className="mb-0 text-lg text-slate-300">
                   <strong>75% of CVs never reach a human recruiter</strong> because they're rejected by ATS software. 
                   Using the wrong CV builder means your application is automatically discarded, no matter how qualified you are.
                 </p>
@@ -77,26 +72,26 @@ export default function ATSFriendlyCVBuilder() {
               <h2>ATS Compatibility Scores: CV Builders Compared</h2>
               <div className="overflow-x-auto -mx-4 sm:mx-0 mb-8">
                 <table className="min-w-full divide-y divide-white/10">
-                  <thead className="bg-white/5">
+                  <thead className="bg-white/10">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">CV Builder</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">ATS Score</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">AI Keywords</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Price</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Verdict</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">CV Builder</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">ATS Score</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">AI Keywords</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">Price</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">Verdict</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white/5 divide-y divide-white/10">
-                    <tr className="bg-green-50">
-                      <td className="px-4 py-4 font-medium text-gray-900">My CV Buddy</td>
+                  <tbody className="bg-white/10 divide-y divide-white/10">
+                    <tr className="bg-green-900/20">
+                      <td className="px-4 py-4 font-medium text-white">My CV Buddy</td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-300">
                           95% ⭐
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-green-600 font-semibold">✓ Yes</td>
-                      <td className="px-4 py-4 text-sm">Free (2 CVs)</td>
-                      <td className="px-4 py-4 text-sm font-medium text-green-700">Best for ATS</td>
+                      <td className="px-4 py-4 text-green-400 font-semibold">✓ Yes</td>
+                      <td className="px-4 py-4 text-sm text-slate-300">Free (2 CVs)</td>
+                      <td className="px-4 py-4 text-sm font-medium text-green-400">Best for ATS</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-4 font-medium text-gray-900">Resume.io</td>
@@ -306,9 +301,6 @@ export default function ATSFriendlyCVBuilder() {
                 </Link>
               </div>
             </div>
-          </div>
-        </article>
-      </div>
-    </div>
+    </>
   )
 }
