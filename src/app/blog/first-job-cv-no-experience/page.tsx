@@ -29,13 +29,13 @@ export default function FirstJobCVGuide() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          <div className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-green-900/30 text-green-200 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             Entry Level
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             First Job CV: How to Write One with No Experience (2025)
           </h1>
-          <div className="flex items-center space-x-6 text-gray-600 text-sm">
+          <div className="flex items-center space-x-6 text-slate-300 text-sm">
             <span>January 8, 2025</span>
             <span>•</span>
             <span>13 min read</span>
@@ -47,8 +47,8 @@ export default function FirstJobCVGuide() {
         <div className="prose prose-invert prose-lg max-w-none">
           
           <div className="bg-gradient-to-r from-green-50 to-blue-50 border-l-4 border-green-600 p-6 mb-8 rounded-r-lg">
-            <p className="text-lg text-gray-800 font-medium mb-0">
-              <GraduationCap className="w-6 h-6 text-green-600 inline mr-2" />
+            <p className="text-lg text-slate-300 font-medium mb-0">
+              <GraduationCap className="w-6 h-6 text-green-400 inline mr-2" />
               Writing your first CV with no work experience can feel daunting, but everyone starts somewhere. This guide shows you exactly what to include, how to highlight your strengths, and provides real examples to help you land your first job.
             </p>
           </div>
@@ -58,9 +58,9 @@ export default function FirstJobCVGuide() {
             Employers hiring for entry-level positions <strong>don't expect extensive work experience</strong>. They're looking for potential, enthusiasm, transferable skills, and the right attitude. Your education, projects, volunteering, and part-time work all count as valuable experience.
           </p>
 
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 my-8">
-            <p className="text-blue-900 font-semibold mb-2">💡 Remember</p>
-            <p className="text-blue-800">
+          <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 my-8">
+            <p className="text-blue-300 font-semibold mb-2">💡 Remember</p>
+            <p className="text-blue-200">
               <strong>78% of employers</strong> say they value transferable skills and attitude over direct work experience for entry-level roles.
             </p>
           </div>
@@ -68,7 +68,7 @@ export default function FirstJobCVGuide() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">First Job CV Structure</h2>
 
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border-l-4 border-green-500">
-            <h3 className="font-bold text-gray-900 mb-4">Recommended Order for First CV:</h3>
+            <h3 className="font-bold text-white mb-4">Recommended Order for First CV:</h3>
             <ol className="space-y-2 list-decimal pl-6">
               <li className="text-gray-300"><strong>Contact Information</strong> - Name, phone, email, location, LinkedIn</li>
               <li className="text-gray-300"><strong>Personal Statement</strong> - 3-4 sentences about your goals and strengths</li>
@@ -82,15 +82,15 @@ export default function FirstJobCVGuide() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Section-by-Section Guide</h2>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">1. Personal Statement for First Job</h3>
-          <div className="bg-gray-50 border-l-4 border-purple-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-purple-500 p-6 mb-6">
             <p className="text-gray-300 mb-4">Your personal statement should focus on:</p>
-            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+            <ul className="list-disc pl-6 text-slate-400 space-y-2 mb-4">
               <li>What you're studying/studied</li>
               <li>Key skills you've developed</li>
               <li>Your career goals and enthusiasm</li>
               <li>What you can offer the employer</li>
             </ul>
-            <div className="bg-purple-50 rounded p-4">
+            <div className="bg-purple-900/20 rounded p-4">
               <p className="text-purple-900 font-semibold mb-2">✅ Example:</p>
               <p className="text-purple-800 italic text-sm">
                 "Motivated Business Management graduate from University of Manchester with First Class Honours. Developed strong analytical and communication skills through group projects and a 6-month internship at Deloitte. Passionate about pursuing a career in management consulting and eager to apply my problem-solving abilities and business acumen to support client success."
@@ -99,7 +99,7 @@ export default function FirstJobCVGuide() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">2. Education Section (Your Strongest Asset)</h3>
-          <div className="bg-gray-50 border-l-4 border-blue-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-blue-500 p-6 mb-6">
             <p className="text-gray-300 mb-4">For your first CV, education is your main selling point. Include MORE detail than you would later in your career:</p>
             
             <div className="bg-white rounded p-4 mb-4 font-mono text-sm">
@@ -119,9 +119,9 @@ export default function FirstJobCVGuide() {
               <p className="text-xs">Business Studies (A*), Mathematics (A), Economics (A)</p>
             </div>
 
-            <div className="bg-blue-50 rounded p-4">
-              <p className="text-blue-900 font-semibold mb-2">💡 What to Include:</p>
-              <ul className="text-blue-800 space-y-1 text-sm">
+            <div className="bg-blue-900/20 rounded p-4">
+              <p className="text-blue-300 font-semibold mb-2">💡 What to Include:</p>
+              <ul className="text-blue-200 space-y-1 text-sm">
                 <li>• Degree classification and subject</li>
                 <li>• Relevant modules with high grades</li>
                 <li>• Dissertation/final project topic</li>
@@ -134,12 +134,12 @@ export default function FirstJobCVGuide() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">3. Work Experience (Even Without "Real" Jobs)</h3>
-          <div className="bg-gray-50 border-l-4 border-orange-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-orange-500 p-6 mb-6">
             <p className="text-gray-300 mb-4">Include ANY of these - they all count as experience:</p>
             
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className="bg-white rounded p-4">
-                <p className="font-semibold text-gray-900 mb-2">✅ Counts as Experience:</p>
+                <p className="font-semibold text-white mb-2">✅ Counts as Experience:</p>
                 <ul className="text-gray-300 text-sm space-y-1">
                   <li>• Internships (paid or unpaid)</li>
                   <li>• Part-time jobs (retail, hospitality)</li>
@@ -178,7 +178,7 @@ export default function FirstJobCVGuide() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">4. Skills Section for Entry-Level</h3>
-          <div className="bg-gray-50 border-l-4 border-green-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-green-500 p-6 mb-6">
             <p className="text-gray-300 mb-4">Focus on skills you've gained through education, projects, and any work experience:</p>
             
             <div className="bg-white rounded p-4 font-mono text-sm">
@@ -201,7 +201,7 @@ export default function FirstJobCVGuide() {
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
               <h4 className="text-2xl font-black text-white mb-3">University Projects</h4>
               <p className="text-gray-300 mb-3">Showcase academic projects that demonstrate relevant skills:</p>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-1">Marketing Campaign Project</p>
                 <ul className="list-disc pl-6 text-xs">
                   <li>Led team of 4 to create comprehensive marketing strategy for local startup</li>
@@ -215,7 +215,7 @@ export default function FirstJobCVGuide() {
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
               <h4 className="text-2xl font-black text-white mb-3">Volunteering & Extracurricular</h4>
               <p className="text-gray-300 mb-3">Demonstrates initiative, commitment, and transferable skills:</p>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-1">Volunteer Tutor | Local Community Centre | Sep 2023 - Present</p>
                 <ul className="list-disc pl-6 text-xs">
                   <li>Tutor GCSE Maths to 5 students weekly, improving their grades by average of 2 levels</li>
@@ -228,7 +228,7 @@ export default function FirstJobCVGuide() {
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500">
               <h4 className="text-2xl font-black text-white mb-3">Achievements & Awards</h4>
               <p className="text-gray-300 mb-3">Any recognition you've received:</p>
-              <ul className="list-disc pl-6 text-gray-700 text-sm space-y-1">
+              <ul className="list-disc pl-6 text-slate-400 text-sm space-y-1">
                 <li>Dean's List for Academic Excellence (2023, 2024)</li>
                 <li>Winner, University Business Plan Competition (£1,000 prize)</li>
                 <li>Duke of Edinburgh Gold Award</li>
@@ -239,7 +239,7 @@ export default function FirstJobCVGuide() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Complete First Job CV Example</h2>
           
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8 border border-gray-200">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8 border border-white/20">
             <div className="font-mono text-sm">
               <div className="text-center mb-6">
                 <p className="text-2xl font-bold mb-2">EMILY JOHNSON</p>
@@ -306,70 +306,70 @@ export default function FirstJobCVGuide() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Top Tips for First Job CVs</h2>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-green-50 border-l-4 border-green-500 p-4">
-              <p className="text-green-900 font-semibold mb-1">✅ Keep It to 1-2 Pages</p>
-              <p className="text-green-800 text-sm">One page is fine if you're truly entry-level. Two pages if you have internships and substantial university activities.</p>
+            <div className="bg-green-900/20 border-l-4 border-green-500 p-4">
+              <p className="text-green-300 font-semibold mb-1">✅ Keep It to 1-2 Pages</p>
+              <p className="text-green-200 text-sm">One page is fine if you're truly entry-level. Two pages if you have internships and substantial university activities.</p>
             </div>
 
-            <div className="bg-green-50 border-l-4 border-green-500 p-4">
-              <p className="text-green-900 font-semibold mb-1">✅ Tailor to Each Job</p>
-              <p className="text-green-800 text-sm">Customize your personal statement and highlight relevant skills for each application. Use keywords from the job description.</p>
+            <div className="bg-green-900/20 border-l-4 border-green-500 p-4">
+              <p className="text-green-300 font-semibold mb-1">✅ Tailor to Each Job</p>
+              <p className="text-green-200 text-sm">Customize your personal statement and highlight relevant skills for each application. Use keywords from the job description.</p>
             </div>
 
-            <div className="bg-green-50 border-l-4 border-green-500 p-4">
-              <p className="text-green-900 font-semibold mb-1">✅ Use Numbers Wherever Possible</p>
-              <p className="text-green-800 text-sm">Even in part-time jobs: "Served 100+ customers daily", "Managed £5,000 daily till", "Trained 3 new staff"</p>
+            <div className="bg-green-900/20 border-l-4 border-green-500 p-4">
+              <p className="text-green-300 font-semibold mb-1">✅ Use Numbers Wherever Possible</p>
+              <p className="text-green-200 text-sm">Even in part-time jobs: "Served 100+ customers daily", "Managed £5,000 daily till", "Trained 3 new staff"</p>
             </div>
 
-            <div className="bg-green-50 border-l-4 border-green-500 p-4">
-              <p className="text-green-900 font-semibold mb-1">✅ Emphasize Transferable Skills</p>
-              <p className="text-green-800 text-sm">Communication, teamwork, problem-solving, time management - these matter more than you think.</p>
+            <div className="bg-green-900/20 border-l-4 border-green-500 p-4">
+              <p className="text-green-300 font-semibold mb-1">✅ Emphasize Transferable Skills</p>
+              <p className="text-green-200 text-sm">Communication, teamwork, problem-solving, time management - these matter more than you think.</p>
             </div>
 
-            <div className="bg-green-50 border-l-4 border-green-500 p-4">
-              <p className="text-green-900 font-semibold mb-1">✅ Proofread Multiple Times</p>
-              <p className="text-green-800 text-sm">Typos are especially damaging on a first CV. Ask friends, family, or career services to review it.</p>
+            <div className="bg-green-900/20 border-l-4 border-green-500 p-4">
+              <p className="text-green-300 font-semibold mb-1">✅ Proofread Multiple Times</p>
+              <p className="text-green-200 text-sm">Typos are especially damaging on a first CV. Ask friends, family, or career services to review it.</p>
             </div>
           </div>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">What NOT to Include on Your First CV</h2>
 
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-            <h3 className="text-red-900 font-semibold mb-4">❌ Avoid These:</h3>
+          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 mb-8">
+            <h3 className="text-red-300 font-semibold mb-4">❌ Avoid These:</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <span className="text-red-600 mr-2">✗</span>
+                <span className="text-red-400 mr-2">✗</span>
                 <div>
-                  <p className="text-red-900 font-semibold">Photo</p>
-                  <p className="text-red-800 text-sm">Unless applying for acting/modeling, don't include a photo on UK CVs</p>
+                  <p className="text-red-300 font-semibold">Photo</p>
+                  <p className="text-red-200 text-sm">Unless applying for acting/modeling, don't include a photo on UK CVs</p>
                 </div>
               </li>
               <li className="flex items-start">
-                <span className="text-red-600 mr-2">✗</span>
+                <span className="text-red-400 mr-2">✗</span>
                 <div>
-                  <p className="text-red-900 font-semibold">Personal Details</p>
-                  <p className="text-red-800 text-sm">No date of birth, marital status, or National Insurance number</p>
+                  <p className="text-red-300 font-semibold">Personal Details</p>
+                  <p className="text-red-200 text-sm">No date of birth, marital status, or National Insurance number</p>
                 </div>
               </li>
               <li className="flex items-start">
-                <span className="text-red-600 mr-2">✗</span>
+                <span className="text-red-400 mr-2">✗</span>
                 <div>
-                  <p className="text-red-900 font-semibold">Irrelevant Hobbies</p>
-                  <p className="text-red-800 text-sm">"Watching Netflix" or "Socializing with friends" add no value</p>
+                  <p className="text-red-300 font-semibold">Irrelevant Hobbies</p>
+                  <p className="text-red-200 text-sm">"Watching Netflix" or "Socializing with friends" add no value</p>
                 </div>
               </li>
               <li className="flex items-start">
-                <span className="text-red-600 mr-2">✗</span>
+                <span className="text-red-400 mr-2">✗</span>
                 <div>
-                  <p className="text-red-900 font-semibold">Lies or Exaggerations</p>
-                  <p className="text-red-800 text-sm">Be honest - employers will verify qualifications and references</p>
+                  <p className="text-red-300 font-semibold">Lies or Exaggerations</p>
+                  <p className="text-red-200 text-sm">Be honest - employers will verify qualifications and references</p>
                 </div>
               </li>
               <li className="flex items-start">
-                <span className="text-red-600 mr-2">✗</span>
+                <span className="text-red-400 mr-2">✗</span>
                 <div>
-                  <p className="text-red-900 font-semibold">"References Available Upon Request"</p>
-                  <p className="text-red-800 text-sm">This is assumed - don't waste space stating it</p>
+                  <p className="text-red-300 font-semibold">"References Available Upon Request"</p>
+                  <p className="text-red-200 text-sm">This is assumed - don't waste space stating it</p>
                 </div>
               </li>
             </ul>
@@ -388,7 +388,7 @@ export default function FirstJobCVGuide() {
             <div className="flex flex-wrap gap-4">
               <Link 
                 href="/auth/signup"
-                className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition inline-block"
+                className="bg-white text-green-400 px-6 py-3 rounded-lg font-semibold hover:bg-green-900/20 transition inline-block"
               >
                 Try Free (1 Generation)
               </Link>
@@ -405,41 +405,41 @@ export default function FirstJobCVGuide() {
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Education is your strength</strong> - include detailed information</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>All experience counts</strong> - part-time jobs, volunteering, projects</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Focus on transferable skills</strong> - communication, teamwork, problem-solving</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Quantify achievements</strong> - use numbers even for small accomplishments</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Tailor for each job</strong> - customize your personal statement and skills</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Keep it professional</strong> - proofread carefully and use a clean format</span>
               </li>
             </ul>
           </div>
 
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link href="/blog/graduate-cv-no-experience-uk" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">Graduate CV with No Experience</h4>
+              <Link href="/blog/graduate-cv-no-experience-uk" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">Graduate CV with No Experience</h4>
                 <p className="text-gray-400 text-sm">Complete guide for recent graduates</p>
               </Link>
-              <Link href="/blog/cv-personal-statement-examples" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">CV Personal Statement Examples</h4>
+              <Link href="/blog/cv-personal-statement-examples" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">CV Personal Statement Examples</h4>
                 <p className="text-gray-400 text-sm">15 examples including entry-level</p>
               </Link>
             </div>

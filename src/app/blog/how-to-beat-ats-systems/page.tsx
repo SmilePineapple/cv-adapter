@@ -32,13 +32,13 @@ export default function BeatATSSystemsPost() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-blue-900/30 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             ATS Optimization
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
             How to Beat ATS Systems: Complete Guide for 2025
           </h1>
-          <div className="flex items-center text-gray-600 space-x-4 text-sm">
+          <div className="flex items-center text-slate-300 space-x-4 text-sm">
             <span>October 15, 2025</span>
             <span>•</span>
             <span>8 min read</span>
@@ -50,16 +50,16 @@ export default function BeatATSSystemsPost() {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         {/* Key Takeaway Box */}
-        <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8">
-          <h2 className="text-xl font-bold text-blue-900 mb-3">📌 Key Takeaway</h2>
-          <p className="text-blue-900">
+        <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 mb-8">
+          <h2 className="text-xl font-bold text-blue-300 mb-3">📌 Key Takeaway</h2>
+          <p className="text-blue-300">
             <strong>75% of CVs are rejected by ATS before a human ever sees them.</strong> This guide will show you exactly how to optimize your CV to beat the bots and land more interviews.
           </p>
         </div>
 
         {/* Introduction */}
         <div className="prose prose-lg max-w-none mb-12">
-          <p className="text-xl text-gray-700 leading-relaxed mb-4">
+          <p className="text-xl text-slate-400 leading-relaxed mb-4">
             You've spent hours perfecting your CV, tailoring it to the job description, and highlighting your best achievements. You hit submit... and hear nothing back. Sound familiar?
           </p>
           <p className="text-gray-300 leading-relaxed mb-4">
@@ -73,15 +73,15 @@ export default function BeatATSSystemsPost() {
         {/* What is ATS */}
         <section className="mb-12">
           <h2 className="text-4xl font-black text-white mb-6 flex items-center">
-            <Search className="w-8 h-8 text-blue-600 mr-3" />
+            <Search className="w-8 h-8 text-blue-400 mr-3" />
             What is an ATS?
           </h2>
           <p className="text-gray-300 leading-relaxed mb-4">
             An <strong>Applicant Tracking System (ATS)</strong> is software used by 99% of Fortune 500 companies and 75% of all employers to manage job applications. Think of it as a gatekeeper that filters CVs before they reach human recruiters.
           </p>
           <div className="bg-gray-100 rounded-lg p-6 mb-6">
-            <h3 className="font-bold text-gray-900 mb-3">Popular ATS Systems:</h3>
-            <ul className="grid md:grid-cols-2 gap-2 text-gray-700">
+            <h3 className="font-bold text-white mb-3">Popular ATS Systems:</h3>
+            <ul className="grid md:grid-cols-2 gap-2 text-slate-400">
               <li>• Workday</li>
               <li>• Taleo (Oracle)</li>
               <li>• Greenhouse</li>
@@ -103,21 +103,21 @@ export default function BeatATSSystemsPost() {
           
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-600">
-              <h3 className="font-bold text-gray-900 mb-2">Step 1: Parsing</h3>
+              <h3 className="font-bold text-white mb-2">Step 1: Parsing</h3>
               <p className="text-gray-300">
                 The ATS scans your CV and extracts information into structured fields. <strong>Poor formatting breaks this process.</strong>
               </p>
             </div>
             
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-600">
-              <h3 className="font-bold text-gray-900 mb-2">Step 2: Keyword Matching</h3>
+              <h3 className="font-bold text-white mb-2">Step 2: Keyword Matching</h3>
               <p className="text-gray-300">
                 The system compares your CV against the job description, looking for specific keywords and phrases.
               </p>
             </div>
             
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-600">
-              <h3 className="font-bold text-gray-900 mb-2">Step 3: Ranking</h3>
+              <h3 className="font-bold text-white mb-2">Step 3: Ranking</h3>
               <p className="text-gray-300">
                 Candidates are ranked by match score. Typically, only the top 25% are reviewed by humans.
               </p>
@@ -128,13 +128,13 @@ export default function BeatATSSystemsPost() {
         {/* Why CVs Get Rejected */}
         <section className="mb-12">
           <h2 className="text-4xl font-black text-white mb-6 flex items-center">
-            <AlertTriangle className="w-8 h-8 text-red-600 mr-3" />
+            <AlertTriangle className="w-8 h-8 text-red-400 mr-3" />
             Why CVs Get Rejected by ATS
           </h2>
           
-          <div className="bg-red-50 border-l-4 border-red-600 p-6">
-            <h3 className="font-bold text-red-900 mb-4">❌ Top 10 ATS Rejection Reasons</h3>
-            <ol className="space-y-2 text-red-900">
+          <div className="bg-red-900/20 border-l-4 border-red-600 p-6">
+            <h3 className="font-bold text-red-300 mb-4">❌ Top 10 ATS Rejection Reasons</h3>
+            <ol className="space-y-2 text-red-300">
               <li><strong>1. Missing keywords</strong> – Not using exact terms from the job description</li>
               <li><strong>2. Complex formatting</strong> – Tables, columns, text boxes</li>
               <li><strong>3. Graphics and images</strong> – Photos, logos, charts</li>
@@ -152,7 +152,7 @@ export default function BeatATSSystemsPost() {
         {/* Optimization Strategies */}
         <section className="mb-12">
           <h2 className="text-4xl font-black text-white mb-6 flex items-center">
-            <Target className="w-8 h-8 text-green-600 mr-3" />
+            <Target className="w-8 h-8 text-green-400 mr-3" />
             10 Proven ATS Optimization Strategies
           </h2>
           
@@ -169,8 +169,8 @@ export default function BeatATSSystemsPost() {
               <p className="text-gray-300 mb-4">
                 If the job posting says "Project Management," don't write "Managing Projects."
               </p>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-blue-900">
+              <div className="bg-blue-900/20 p-4 rounded-lg">
+                <p className="text-sm text-blue-300">
                   <strong>💡 Pro Tip:</strong> Use <Link href="/auth/signup" className="underline font-semibold">My CV Buddy's AI CV builder</Link> to automatically match keywords from any job description.
                 </p>
               </div>
@@ -208,7 +208,7 @@ export default function BeatATSSystemsPost() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
               href="/auth/signup"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
+              className="bg-white text-blue-400 px-6 py-3 rounded-lg font-semibold hover:bg-blue-900/20 transition text-center"
             >
               Try Free Now
             </Link>
@@ -222,20 +222,20 @@ export default function BeatATSSystemsPost() {
         </div>
 
         {/* Related Articles */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
           <h2 className="text-3xl font-black text-white mb-6">📚 Related Articles</h2>
           <div className="space-y-4">
-            <Link href="/blog/cv-writing-tips" className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-              <h3 className="font-bold text-gray-900 mb-1">CV Writing Tips & Best Practices</h3>
-              <p className="text-sm text-gray-600">Learn the 6-second rule and proven strategies</p>
+            <Link href="/blog/cv-writing-tips" className="block p-4 bg-white/10 rounded-lg hover:bg-gray-100 transition">
+              <h3 className="font-bold text-white mb-1">CV Writing Tips & Best Practices</h3>
+              <p className="text-sm text-slate-300">Learn the 6-second rule and proven strategies</p>
             </Link>
-            <Link href="/upload" className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-              <h3 className="font-bold text-gray-900 mb-1">Upload Your CV for Free ATS Check</h3>
-              <p className="text-sm text-gray-600">Get instant feedback on your ATS compatibility</p>
+            <Link href="/upload" className="block p-4 bg-white/10 rounded-lg hover:bg-gray-100 transition">
+              <h3 className="font-bold text-white mb-1">Upload Your CV for Free ATS Check</h3>
+              <p className="text-sm text-slate-300">Get instant feedback on your ATS compatibility</p>
             </Link>
-            <Link href="/templates" className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-              <h3 className="font-bold text-gray-900 mb-1">ATS-Friendly CV Templates</h3>
-              <p className="text-sm text-gray-600">Choose from 10 professionally designed templates</p>
+            <Link href="/templates" className="block p-4 bg-white/10 rounded-lg hover:bg-gray-100 transition">
+              <h3 className="font-bold text-white mb-1">ATS-Friendly CV Templates</h3>
+              <p className="text-sm text-slate-300">Choose from 10 professionally designed templates</p>
             </Link>
           </div>
         </div>

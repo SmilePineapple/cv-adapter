@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function ATSCVTipsUK2025() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -35,11 +35,11 @@ export default function ATSCVTipsUK2025() {
       {/* Article */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           How to Beat ATS Systems in the UK (2025 Guide)
         </h1>
         
-        <div className="flex items-center gap-4 text-gray-600 mb-8">
+        <div className="flex items-center gap-4 text-slate-300 mb-8">
           <time dateTime="2025-10-27">October 27, 2025</time>
           <span>•</span>
           <span>8 min read</span>
@@ -52,7 +52,7 @@ export default function ATSCVTipsUK2025() {
 
         {/* Content */}
         <div className="prose prose-invert prose-lg max-w-none">
-          <p className="text-xl text-gray-700 leading-relaxed mb-6">
+          <p className="text-xl text-slate-400 leading-relaxed mb-6">
             Did you know that <strong>92% of UK recruiters use Applicant Tracking Systems (ATS)</strong> to screen CVs? 
             If your CV isn't optimized for these systems, it might never reach human eyes—no matter how qualified you are.
           </p>
@@ -63,20 +63,20 @@ export default function ATSCVTipsUK2025() {
             In the UK, companies like Taleo, Workday, and Greenhouse are commonly used to manage hundreds or thousands of applications.
           </p>
 
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 my-8">
-            <p className="text-blue-900 font-semibold mb-2">💡 Quick Stat</p>
-            <p className="text-blue-800">
+          <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 my-8">
+            <p className="text-blue-300 font-semibold mb-2">💡 Quick Stat</p>
+            <p className="text-blue-200">
               75% of CVs are rejected by ATS before a human ever sees them. Don't let yours be one of them!
             </p>
           </div>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">10 ATS Optimization Tips for UK Job Seekers</h2>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">1. Use Standard Section Headings</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">1. Use Standard Section Headings</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             ATS systems look for specific section names. Use these UK-standard headings:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>Personal Details</strong> or <strong>Contact Information</strong></li>
             <li><strong>Professional Summary</strong> or <strong>Personal Statement</strong></li>
             <li><strong>Work Experience</strong> or <strong>Employment History</strong></li>
@@ -88,22 +88,22 @@ export default function ATSCVTipsUK2025() {
             ❌ Avoid creative headings like "My Journey" or "What I Bring to the Table"
           </p>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">2. Include Keywords from the Job Description</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">2. Include Keywords from the Job Description</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             ATS systems scan for specific keywords. Read the job posting carefully and include relevant terms naturally throughout your CV.
           </p>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-            <p className="text-green-900 font-semibold mb-2">✅ Example:</p>
-            <p className="text-green-800">
+          <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4 mb-6">
+            <p className="text-green-300 font-semibold mb-2">✅ Example:</p>
+            <p className="text-green-200">
               If the job requires "project management" and "stakeholder engagement," make sure these exact phrases appear in your CV.
             </p>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Use a Simple, Clean Format</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">3. Use a Simple, Clean Format</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             ATS systems struggle with complex formatting. Follow these rules:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li>Use standard fonts (Arial, Calibri, Times New Roman)</li>
             <li>Avoid tables, text boxes, and columns</li>
             <li>Don't use headers/footers for important information</li>
@@ -111,24 +111,24 @@ export default function ATSCVTipsUK2025() {
             <li>Avoid images, graphics, and logos</li>
           </ul>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">4. Spell Out Acronyms</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">4. Spell Out Acronyms</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             Always spell out acronyms the first time, then use the abbreviation. For example: 
             "Bachelor of Science (BSc)" or "Chartered Institute of Personnel and Development (CIPD)".
           </p>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">5. Include UK-Specific Qualifications</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">5. Include UK-Specific Qualifications</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             If you have UK qualifications, make them prominent:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li>A-Levels, GCSEs</li>
             <li>NVQs, BTECs</li>
             <li>Degree classifications (First Class, 2:1, 2:2)</li>
             <li>Professional certifications (ACCA, CIMA, CIPD, etc.)</li>
           </ul>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">6. Use Action Verbs</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">6. Use Action Verbs</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Start bullet points with strong action verbs that ATS systems recognize:
           </p>
@@ -141,26 +141,26 @@ export default function ATSCVTipsUK2025() {
             <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded">Coordinated</span>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">7. Quantify Your Achievements</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">7. Quantify Your Achievements</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             ATS systems love numbers. Include metrics wherever possible: "Increased sales by 35%" or "Managed team of 12 staff members".
           </p>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">8. Include a Skills Section</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">8. Include a Skills Section</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Create a dedicated "Skills" section with both hard and soft skills:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>Technical Skills:</strong> Microsoft Excel, Salesforce, Python, Adobe Creative Suite</li>
             <li><strong>Soft Skills:</strong> Leadership, Communication, Problem-solving, Time management</li>
           </ul>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">9. Avoid Unusual Characters</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">9. Avoid Unusual Characters</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             Stick to standard punctuation. Avoid symbols like ★, ●, or → as they can confuse ATS parsers.
           </p>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">10. Test Your CV</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">10. Test Your CV</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             Before applying, test your CV with an ATS checker or upload it to a job board to see how it parses. 
             Better yet, use an AI-powered tool like <strong>CV Adapter</strong> to automatically optimize your CV for ATS systems.
@@ -168,9 +168,9 @@ export default function ATSCVTipsUK2025() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Common ATS Mistakes to Avoid</h2>
           
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-            <h4 className="text-red-900 font-semibold mb-3">❌ Don't Do This:</h4>
-            <ul className="list-disc pl-6 text-red-800 space-y-2">
+          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 mb-6">
+            <h4 className="text-red-300 font-semibold mb-3">❌ Don't Do This:</h4>
+            <ul className="list-disc pl-6 text-red-200 space-y-2">
               <li>Using creative CV templates with graphics and colors</li>
               <li>Putting important information in headers/footers</li>
               <li>Using tables or text boxes for layout</li>
@@ -184,7 +184,7 @@ export default function ATSCVTipsUK2025() {
           <p className="text-gray-300 leading-relaxed mb-4">
             If you're applying to UK companies, remember these differences:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>Length:</strong> UK CVs are typically 2 pages (USA resumes are 1 page)</li>
             <li><strong>Personal Details:</strong> UK CVs may include date of birth, nationality (USA resumes don't)</li>
             <li><strong>Terminology:</strong> Use "CV" not "resume," "mobile" not "cell phone"</li>
@@ -195,7 +195,7 @@ export default function ATSCVTipsUK2025() {
           <p className="text-gray-300 leading-relaxed mb-6">
             CV Adapter uses AI to automatically optimize your CV for ATS systems. Our tool:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li>✅ Formats your CV with ATS-friendly structure</li>
             <li>✅ Suggests relevant keywords from job descriptions</li>
             <li>✅ Removes problematic formatting</li>
@@ -226,7 +226,7 @@ export default function ATSCVTipsUK2025() {
             modern recruitment technology while still showcasing your unique value.
           </p>
 
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in AI-powered 
               CV optimization for the UK job market. We help thousands of job seekers get past ATS systems every month.
@@ -247,7 +247,7 @@ export default function ATSCVTipsUK2025() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-300">
           <p>© 2025 CV Adapter. All rights reserved.</p>
         </div>
       </footer>

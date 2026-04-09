@@ -244,7 +244,7 @@ export default function FreeCVBuilderNoSignUp() {
                 </p>
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-white text-blue-400 font-semibold rounded-lg hover:bg-blue-900/20 transition-colors"
                 >
                   Get Started Free (30 sec)
                   <Zap className="w-4 h-4 ml-2" />

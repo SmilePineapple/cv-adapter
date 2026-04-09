@@ -94,46 +94,46 @@ export default function ATSFriendlyCVBuilder() {
                       <td className="px-4 py-4 text-sm font-medium text-green-400">Best for ATS</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">Resume.io</td>
+                      <td className="px-4 py-4 font-medium text-white">Resume.io</td>
                       <td className="px-4 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           75%
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
                       <td className="px-4 py-4 text-sm">£2.95/mo</td>
                       <td className="px-4 py-4 text-sm">Good</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">Novoresume</td>
+                      <td className="px-4 py-4 font-medium text-white">Novoresume</td>
                       <td className="px-4 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           70%
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
                       <td className="px-4 py-4 text-sm">£16/mo</td>
                       <td className="px-4 py-4 text-sm">Average</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">CV Library</td>
+                      <td className="px-4 py-4 font-medium text-white">CV Library</td>
                       <td className="px-4 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           60%
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
                       <td className="px-4 py-4 text-sm">Free</td>
                       <td className="px-4 py-4 text-sm">Basic</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">Canva</td>
+                      <td className="px-4 py-4 font-medium text-white">Canva</td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-200">
                           45% ⚠️
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
                       <td className="px-4 py-4 text-sm">£10.99/mo</td>
                       <td className="px-4 py-4 text-sm font-medium text-red-700">Avoid for ATS</td>
                     </tr>
@@ -143,45 +143,45 @@ export default function ATSFriendlyCVBuilder() {
 
               <h2>Why My CV Buddy Has the Highest ATS Score (95%)</h2>
               <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <Target className="w-6 h-6 text-blue-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">AI Keyword Matching</h3>
+                    <Target className="w-6 h-6 text-blue-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">AI Keyword Matching</h3>
                   </div>
-                  <p className="text-sm text-gray-700 mb-0">
+                  <p className="text-sm text-slate-400 mb-0">
                     Our AI analyzes job descriptions and automatically optimizes your CV with the exact keywords ATS systems are scanning for. 
                     This alone increases your ATS score by 30-40%.
                   </p>
                 </div>
 
-                <div className="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <CheckCircle className="w-6 h-6 text-blue-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">Clean Formatting</h3>
+                    <CheckCircle className="w-6 h-6 text-blue-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">Clean Formatting</h3>
                   </div>
-                  <p className="text-sm text-gray-700 mb-0">
+                  <p className="text-sm text-slate-400 mb-0">
                     We use ATS-approved formatting: standard fonts, simple layouts, no graphics or tables. 
                     Every template is tested against major ATS systems (Workday, Taleo, Greenhouse).
                   </p>
                 </div>
 
-                <div className="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <Award className="w-6 h-6 text-blue-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">Standard Section Headers</h3>
+                    <Award className="w-6 h-6 text-blue-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">Standard Section Headers</h3>
                   </div>
-                  <p className="text-sm text-gray-700 mb-0">
+                  <p className="text-sm text-slate-400 mb-0">
                     We use headers that ATS systems recognize: "Work Experience", "Education", "Skills". 
                     Creative headers like "My Journey" confuse ATS and get rejected.
                   </p>
                 </div>
 
-                <div className="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <TrendingUp className="w-6 h-6 text-blue-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">UK-Specific Optimization</h3>
+                    <TrendingUp className="w-6 h-6 text-blue-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">UK-Specific Optimization</h3>
                   </div>
-                  <p className="text-sm text-gray-700 mb-0">
+                  <p className="text-sm text-slate-400 mb-0">
                     Optimized for UK ATS systems and job boards. We understand UK CV formatting standards 
                     and ensure compatibility with major UK employers' systems.
                   </p>
@@ -205,46 +205,46 @@ export default function ATSFriendlyCVBuilder() {
               </p>
 
               <h2>Red Flags: CV Builders That Kill Your ATS Score</h2>
-              <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Avoid These Features:</h3>
+              <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6 my-6">
+                <h3 className="text-lg font-bold text-white mb-4">Avoid These Features:</h3>
                 <ul className="space-y-2 mb-0">
                   <li className="flex items-start">
-                    <span className="text-red-600 mr-2 font-bold">✗</span>
+                    <span className="text-red-400 mr-2 font-bold">✗</span>
                     <span><strong>Graphics & Icons:</strong> ATS can't read images (Canva is terrible for this)</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-red-600 mr-2 font-bold">✗</span>
+                    <span className="text-red-400 mr-2 font-bold">✗</span>
                     <span><strong>Tables & Columns:</strong> Confuse ATS parsing, content gets jumbled</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-red-600 mr-2 font-bold">✗</span>
+                    <span className="text-red-400 mr-2 font-bold">✗</span>
                     <span><strong>Custom Fonts:</strong> Decorative fonts are unreadable to ATS</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-red-600 mr-2 font-bold">✗</span>
+                    <span className="text-red-400 mr-2 font-bold">✗</span>
                     <span><strong>Headers/Footers:</strong> Often ignored or misread by ATS</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-red-600 mr-2 font-bold">✗</span>
+                    <span className="text-red-400 mr-2 font-bold">✗</span>
                     <span><strong>Text Boxes:</strong> Content inside text boxes is invisible to ATS</span>
                   </li>
                 </ul>
               </div>
 
               <h2>Real Results: ATS Score Improvements</h2>
-              <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Users Report:</h3>
+              <div className="bg-green-900/20 border border-green-500/30 rounded-xl p-6 my-8">
+                <h3 className="text-lg font-bold text-white mb-4">Users Report:</h3>
                 <ul className="space-y-3 mb-0">
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>"My ATS score went from 32% (Canva) to 91% (CV Buddy). Got 3 interviews in one week!" - Sarah M.</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>"Applied to 50 jobs with my old CV: 0 responses. Applied to 15 with CV Buddy: 6 interviews." - James T.</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>"The AI keyword optimization is incredible. My CV now matches job descriptions perfectly." - Emma P.</span>
                   </li>
                 </ul>
@@ -294,7 +294,7 @@ export default function ATSFriendlyCVBuilder() {
                 </p>
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-white text-blue-400 font-semibold rounded-lg hover:bg-blue-900/20 transition-colors"
                 >
                   Start Free ATS-Optimized CV
                   <Zap className="w-4 h-4 ml-2" />

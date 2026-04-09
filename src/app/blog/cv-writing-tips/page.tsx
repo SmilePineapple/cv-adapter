@@ -46,14 +46,14 @@ export default function CVWritingTipsPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-blue-900/30 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             CV Writing
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
             CV Writing Tips & Best Practices
           </h1>
           <p className="text-xl text-gray-300 mb-4">Expert advice to create a winning CV that gets you interviews</p>
-          <div className="flex items-center text-gray-600 space-x-4 text-sm">
+          <div className="flex items-center text-slate-300 space-x-4 text-sm">
             <span>October 10, 2025</span>
             <span>•</span>
             <span>6 min read</span>
@@ -94,9 +94,9 @@ export default function CVWritingTipsPage() {
         <div className="space-y-8 mb-12">
           
           {/* Tip 1 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 rounded-lg p-3">
+              <div className="bg-blue-900/30 rounded-lg p-3">
                 <Target className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
@@ -104,22 +104,22 @@ export default function CVWritingTipsPage() {
                 <p className="text-gray-400 mb-4">
                   Generic CVs get rejected. Customize your CV for each application by:
                 </p>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-slate-400">
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Using keywords from the job description</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Highlighting relevant experience first</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Matching your skills to their requirements</span>
                   </li>
                 </ul>
-                <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-                  <p className="text-sm text-blue-900">
+                <div className="mt-4 bg-blue-900/20 p-4 rounded-lg">
+                  <p className="text-sm text-blue-300">
                     <strong>💡 Pro Tip:</strong> Use <Link href="/auth/signup" className="underline">My CV Buddy</Link> to automatically tailor your CV to any job description in seconds!
                   </p>
                 </div>
@@ -128,10 +128,10 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 2 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
-              <div className="bg-green-100 rounded-lg p-3">
-                <TrendingUp className="w-6 h-6 text-green-600" />
+              <div className="bg-green-900/30 rounded-lg p-3">
+                <TrendingUp className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
                 <h3 className="text-2xl font-black text-white mb-3">2. Quantify Your Achievements</h3>
@@ -153,7 +153,7 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 3 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-purple-100 rounded-lg p-3">
                 <Zap className="w-6 h-6 text-purple-600" />
@@ -163,7 +163,7 @@ export default function CVWritingTipsPage() {
                 <p className="text-gray-400 mb-4">
                   Start bullet points with powerful action verbs to show impact:
                 </p>
-                <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                <div className="grid grid-cols-2 gap-4 text-sm text-slate-400">
                   <div>
                     <p className="font-semibold mb-2">Leadership:</p>
                     <p>Led, Directed, Managed, Coordinated</p>
@@ -178,7 +178,7 @@ export default function CVWritingTipsPage() {
           </div>
 
           {/* Tip 4 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-yellow-100 rounded-lg p-3">
                 <Star className="w-6 h-6 text-yellow-600" />
@@ -188,21 +188,21 @@ export default function CVWritingTipsPage() {
                 <p className="text-gray-400 mb-4">
                   75% of CVs are rejected by ATS before a human sees them. Beat the bots:
                 </p>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-slate-400">
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Use standard headings: "Work Experience" not "My Journey"</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Include keywords from job posting</span>
                   </li>
                   <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                     <span>Save as .docx or PDF</span>
                   </li>
                 </ul>
-                <div className="mt-4 bg-yellow-50 p-4 rounded-lg">
+                <div className="mt-4 bg-yellow-900/20 p-4 rounded-lg">
                   <p className="text-sm text-yellow-900">
                     <strong>🎯 Read our complete guide:</strong> <Link href="/blog/how-to-beat-ats-systems" className="underline">How to Beat ATS Systems</Link>
                   </p>
@@ -215,45 +215,45 @@ export default function CVWritingTipsPage() {
         {/* CV Structure Guide */}
         <div className="bg-white rounded-lg shadow-sm p-8 mb-12">
           <h2 className="text-3xl font-black text-white mb-6 flex items-center">
-            <Award className="w-6 h-6 text-blue-600 mr-3" />
+            <Award className="w-6 h-6 text-blue-400 mr-3" />
             Perfect CV Structure
           </h2>
           <div className="space-y-4">
             <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">1. Contact Information</h3>
-              <p className="text-sm text-gray-600">Name, phone, email, LinkedIn, location</p>
+              <h3 className="font-bold text-white">1. Contact Information</h3>
+              <p className="text-sm text-slate-300">Name, phone, email, LinkedIn, location</p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">2. Professional Summary</h3>
-              <p className="text-sm text-gray-600">3-4 lines tailored to the role</p>
+              <h3 className="font-bold text-white">2. Professional Summary</h3>
+              <p className="text-sm text-slate-300">3-4 lines tailored to the role</p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">3. Key Skills</h3>
-              <p className="text-sm text-gray-600">6-12 relevant skills</p>
+              <h3 className="font-bold text-white">3. Key Skills</h3>
+              <p className="text-sm text-slate-300">6-12 relevant skills</p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">4. Work Experience</h3>
-              <p className="text-sm text-gray-600">Reverse chronological, 3-5 bullets per role</p>
+              <h3 className="font-bold text-white">4. Work Experience</h3>
+              <p className="text-sm text-slate-300">Reverse chronological, 3-5 bullets per role</p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6 py-2">
-              <h3 className="font-bold text-gray-900">5. Education</h3>
-              <p className="text-sm text-gray-600">Degree, institution, year</p>
+              <h3 className="font-bold text-white">5. Education</h3>
+              <p className="text-sm text-slate-300">Degree, institution, year</p>
             </div>
           </div>
         </div>
 
         {/* Common Mistakes */}
-        <div className="bg-red-50 border-l-4 border-red-600 p-8 mb-12">
-          <h2 className="text-2xl font-bold text-red-900 mb-4">❌ Common CV Mistakes to Avoid</h2>
+        <div className="bg-red-900/20 border-l-4 border-red-600 p-8 mb-12">
+          <h2 className="text-2xl font-bold text-red-300 mb-4">❌ Common CV Mistakes to Avoid</h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <ul className="space-y-2 text-red-800">
+            <ul className="space-y-2 text-red-200">
               <li>• Spelling and grammar errors</li>
               <li>• Using personal pronouns (I, me, my)</li>
               <li>• Including a photo (unless required)</li>
               <li>• Listing references on CV</li>
               <li>• Using unprofessional email addresses</li>
             </ul>
-            <ul className="space-y-2 text-red-800">
+            <ul className="space-y-2 text-red-200">
               <li>• Making it too long (&gt;2 pages)</li>
               <li>• Including irrelevant information</li>
               <li>• Using fancy fonts or colors</li>
@@ -272,7 +272,7 @@ export default function CVWritingTipsPage() {
           <div className="flex justify-center space-x-4">
             <Link 
               href="/auth/signup"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+              className="bg-white text-blue-400 px-8 py-3 rounded-lg font-semibold hover:bg-blue-900/20 transition"
             >
               Get Started
             </Link>

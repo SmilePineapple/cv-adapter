@@ -233,8 +233,8 @@ export default function BlogIndexPage() {
           >
             <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-white/10 rounded-3xl p-8 md:p-12 hover:border-white/20 transition-all relative overflow-hidden">
               <div className="absolute inset-0">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-900/200/10 rounded-full filter blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-900/200/10 rounded-full filter blur-3xl"></div>
               </div>
               <div className="relative z-10">
                 <div className="inline-block bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-black mb-4">
@@ -273,12 +273,12 @@ export default function BlogIndexPage() {
             <Link 
               key={post.slug}
               href={post.date === 'Coming Soon' ? '#' : `/blog/${post.slug}`}
-              className={`block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 transition-all overflow-hidden ${
+              className={`block bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 transition-all overflow-hidden ${
                 post.date === 'Coming Soon' ? 'opacity-60 cursor-not-allowed' : 'group'
               }`}
             >
               <div className="p-6">
-                <div className="inline-block bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-black mb-4">
+                <div className="inline-block bg-blue-900/200/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-black mb-4">
                   {post.category}
                 </div>
                 <h3 className="text-xl font-black text-white mb-3 group-hover:text-gray-300 transition-colors">
@@ -304,7 +304,7 @@ export default function BlogIndexPage() {
                   </div>
                 )}
                 {post.date === 'Coming Soon' && (
-                  <div className="mt-4 text-gray-600 font-bold">
+                  <div className="mt-4 text-slate-300 font-bold">
                     Coming Soon
                   </div>
                 )}
@@ -313,28 +313,28 @@ export default function BlogIndexPage() {
           ))}
         </div>
         {/* Quick Tips Section */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-12">
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8 mb-12">
           <h2 className="text-3xl font-black text-white mb-6 flex items-center">
             <Lightbulb className="w-6 h-6 text-yellow-400 mr-3" />
             Quick CV Tips
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-blue-900/200/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="w-8 h-8 text-blue-400" />
               </div>
               <h3 className="font-black text-white mb-2">Tailor Every CV</h3>
               <p className="text-sm text-gray-400">Customize for each job application</p>
             </div>
             <div className="text-center">
-              <div className="bg-green-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-green-900/200/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="w-8 h-8 text-green-400" />
               </div>
               <h3 className="font-black text-white mb-2">Use Numbers</h3>
               <p className="text-sm text-gray-400">Quantify your achievements</p>
             </div>
             <div className="text-center">
-              <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-purple-900/200/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="w-8 h-8 text-purple-400" />
               </div>
               <h3 className="font-black text-white mb-2">Beat ATS</h3>
@@ -346,8 +346,8 @@ export default function BlogIndexPage() {
         {/* CTA */}
         <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-white/10 rounded-3xl p-12 text-center relative overflow-hidden">
           <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-900/200/10 rounded-full filter blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-900/200/10 rounded-full filter blur-3xl"></div>
           </div>
           <div className="relative z-10">
             <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Ready to Create Your Perfect CV?</h2>

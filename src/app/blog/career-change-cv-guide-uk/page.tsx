@@ -126,7 +126,7 @@ export default function CareerChangeCVGuide() {
             <p className="text-purple-800">Google UX Design Professional Certificate, Nielsen Norman Group UX Certification</p>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Work Experience (Reframed for Relevance)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">3. Work Experience (Reframed for Relevance)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Don't hide your previous career—reframe it! For each role, emphasize responsibilities and achievements 
             that align with your target industry.
@@ -135,7 +135,7 @@ export default function CareerChangeCVGuide() {
           <p className="text-gray-300 leading-relaxed mb-4">
             <strong>The STAR Method for Career Changers:</strong>
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>Situation:</strong> Brief context</li>
             <li><strong>Task:</strong> What you needed to achieve</li>
             <li><strong>Action:</strong> Transferable skills you used</li>
@@ -148,8 +148,8 @@ export default function CareerChangeCVGuide() {
             <p className="text-blue-200 italic mb-4">
               "Sold software solutions to enterprise clients. Met quarterly targets and built strong client relationships."
             </p>
-            <p className="text-blue-800 mb-2"><strong>After (Data-focused):</strong></p>
-            <p className="text-blue-800 italic">
+            <p className="text-blue-200 mb-2"><strong>After (Data-focused):</strong></p>
+            <p className="text-blue-200 italic">
               "Analyzed customer data using Salesforce and Excel to identify high-value prospects, resulting in 35% increase 
               in conversion rates. Created weekly performance dashboards tracking 15+ KPIs to optimize sales strategy. 
               Collaborated with product team to interpret customer feedback data, influencing 3 major feature releases."
@@ -174,45 +174,45 @@ export default function CareerChangeCVGuide() {
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">1. Project Management</h4>
-              <p className="text-sm text-gray-600">Planning, organizing, and delivering projects on time and budget</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">1. Project Management</h4>
+              <p className="text-sm text-slate-300">Planning, organizing, and delivering projects on time and budget</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">2. Data Analysis</h4>
-              <p className="text-sm text-gray-600">Interpreting data to make informed business decisions</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">2. Data Analysis</h4>
+              <p className="text-sm text-slate-300">Interpreting data to make informed business decisions</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">3. Communication</h4>
-              <p className="text-sm text-gray-600">Written and verbal communication with diverse stakeholders</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">3. Communication</h4>
+              <p className="text-sm text-slate-300">Written and verbal communication with diverse stakeholders</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">4. Problem-Solving</h4>
-              <p className="text-sm text-gray-600">Identifying issues and implementing creative solutions</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">4. Problem-Solving</h4>
+              <p className="text-sm text-slate-300">Identifying issues and implementing creative solutions</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">5. Leadership</h4>
-              <p className="text-sm text-gray-600">Managing teams, mentoring, and driving results</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">5. Leadership</h4>
+              <p className="text-sm text-slate-300">Managing teams, mentoring, and driving results</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">6. Budget Management</h4>
-              <p className="text-sm text-gray-600">Financial planning and resource allocation</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">6. Budget Management</h4>
+              <p className="text-sm text-slate-300">Financial planning and resource allocation</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">7. Customer Service</h4>
-              <p className="text-sm text-gray-600">Understanding and meeting client/user needs</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">7. Customer Service</h4>
+              <p className="text-sm text-slate-300">Understanding and meeting client/user needs</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">8. Process Improvement</h4>
-              <p className="text-sm text-gray-600">Streamlining workflows and increasing efficiency</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">8. Process Improvement</h4>
+              <p className="text-sm text-slate-300">Streamlining workflows and increasing efficiency</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">9. Stakeholder Management</h4>
-              <p className="text-sm text-gray-600">Building relationships and managing expectations</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">9. Stakeholder Management</h4>
+              <p className="text-sm text-slate-300">Building relationships and managing expectations</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-2">10. Adaptability</h4>
-              <p className="text-sm text-gray-600">Learning quickly and thriving in changing environments</p>
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-2">10. Adaptability</h4>
+              <p className="text-sm text-slate-300">Learning quickly and thriving in changing environments</p>
             </div>
           </div>
 
@@ -227,25 +227,25 @@ export default function CareerChangeCVGuide() {
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #2: Using Generic Job Descriptions</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #2: Using Generic Job Descriptions</h4>
+              <p className="text-red-200">
                 Don't copy-paste your old job descriptions. Rewrite every bullet point to highlight skills 
                 relevant to your target industry.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #3: Ignoring Keywords</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #3: Ignoring Keywords</h4>
+              <p className="text-red-200">
                 Career changers must be extra careful with ATS optimization. Study job descriptions and 
                 include relevant keywords naturally throughout your CV.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #4: Sending the Same CV Everywhere</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #4: Sending the Same CV Everywhere</h4>
+              <p className="text-red-200">
                 Career changers need hyper-targeted CVs. Customize your CV for each application, emphasizing 
                 different transferable skills based on the job requirements.
               </p>
@@ -260,42 +260,42 @@ export default function CareerChangeCVGuide() {
               <p className="text-green-200 mb-3">
                 <strong>Sarah, 34, London</strong>
               </p>
-              <p className="text-green-800 mb-3">
+              <p className="text-green-200 mb-3">
                 "I taught secondary school maths for 10 years. I highlighted my problem-solving skills, 
                 logical thinking, and experience breaking down complex concepts. I completed a coding bootcamp 
                 and built 3 portfolio projects. Within 2 months, I landed a junior developer role at £45K."
               </p>
-              <p className="text-green-800 text-sm italic">
+              <p className="text-green-200 text-sm italic">
                 Key transferable skills: Problem-solving, communication, patience, continuous learning
               </p>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h4 className="text-green-900 font-bold mb-2">🏥 Nurse → HR Manager</h4>
-              <p className="text-green-800 mb-3">
+            <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+              <h4 className="text-green-300 font-bold mb-2">🏥 Nurse → HR Manager</h4>
+              <p className="text-green-200 mb-3">
                 <strong>James, 41, Manchester</strong>
               </p>
-              <p className="text-green-800 mb-3">
+              <p className="text-green-200 mb-3">
                 "After 15 years in nursing, I wanted better work-life balance. I reframed my experience: 
                 patient care became 'stakeholder management,' shift coordination became 'resource planning,' 
                 and training junior nurses became 'talent development.' I got my CIPD Level 5 and now earn £52K in HR."
               </p>
-              <p className="text-green-800 text-sm italic">
+              <p className="text-green-200 text-sm italic">
                 Key transferable skills: People management, conflict resolution, compliance, training
               </p>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h4 className="text-green-900 font-bold mb-2">💼 Accountant → Product Manager</h4>
-              <p className="text-green-800 mb-3">
+            <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+              <h4 className="text-green-300 font-bold mb-2">💼 Accountant → Product Manager</h4>
+              <p className="text-green-200 mb-3">
                 <strong>Priya, 29, Birmingham</strong>
               </p>
-              <p className="text-green-800 mb-3">
+              <p className="text-green-200 mb-3">
                 "I was bored with spreadsheets and wanted to build products. I emphasized my analytical skills, 
                 stakeholder communication, and project management. I took a Product Management course and 
                 volunteered to help a startup with their roadmap. Now I'm a PM at a fintech company earning £65K."
               </p>
-              <p className="text-green-800 text-sm italic">
+              <p className="text-green-200 text-sm italic">
                 Key transferable skills: Data analysis, strategic thinking, cross-functional collaboration
               </p>
             </div>

@@ -32,10 +32,10 @@ export default function CVSkillsSectionGuide() {
           <div className="inline-block bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             CV Writing
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             CV Skills Section: What to Include + Examples (2025)
           </h1>
-          <div className="flex items-center space-x-6 text-gray-600 text-sm">
+          <div className="flex items-center space-x-6 text-slate-300 text-sm">
             <span>January 8, 2025</span>
             <span>•</span>
             <span>11 min read</span>
@@ -47,7 +47,7 @@ export default function CVSkillsSectionGuide() {
         <div className="prose prose-invert prose-lg max-w-none">
           
           <div className="bg-gradient-to-r from-teal-50 to-blue-50 border-l-4 border-teal-600 p-6 mb-8 rounded-r-lg">
-            <p className="text-lg text-gray-800 font-medium mb-0">
+            <p className="text-lg text-slate-300 font-medium mb-0">
               <Target className="w-6 h-6 text-teal-600 inline mr-2" />
               Your CV skills section is crucial for passing ATS systems and catching recruiters' attention. This guide shows you exactly which skills to include, how to format them, and provides real examples for different industries.
             </p>
@@ -58,9 +58,9 @@ export default function CVSkillsSectionGuide() {
             The skills section is one of the first places recruiters and ATS systems look. It provides a quick snapshot of your capabilities and helps match you to job requirements. <strong>92% of recruiters</strong> use ATS systems that scan for specific skills keywords.
           </p>
 
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 my-8">
-            <p className="text-blue-900 font-semibold mb-2">📊 Research Shows</p>
-            <p className="text-blue-800">
+          <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 my-8">
+            <p className="text-blue-300 font-semibold mb-2">📊 Research Shows</p>
+            <p className="text-blue-200">
               CVs with a well-structured skills section are <strong>40% more likely to pass ATS screening</strong> and get reviewed by human recruiters.
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function CVSkillsSectionGuide() {
             <p className="text-gray-300 mb-4">Specific, teachable abilities that can be measured and verified:</p>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <p className="font-semibold text-gray-900 mb-2">Technology:</p>
+                <p className="font-semibold text-white mb-2">Technology:</p>
                 <ul className="text-gray-300 text-sm space-y-1">
                   <li>• Programming languages (Python, JavaScript, Java)</li>
                   <li>• Software (Excel, Salesforce, Adobe Creative Suite)</li>
@@ -81,7 +81,7 @@ export default function CVSkillsSectionGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-900 mb-2">Professional:</p>
+                <p className="font-semibold text-white mb-2">Professional:</p>
                 <ul className="text-gray-300 text-sm space-y-1">
                   <li>• Data analysis & visualization</li>
                   <li>• Financial modeling & forecasting</li>
@@ -95,9 +95,9 @@ export default function CVSkillsSectionGuide() {
           <h3 className="text-3xl font-black text-white mt-8 mb-4">2. Soft Skills (Transferable Skills)</h3>
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
             <p className="text-gray-300 mb-4">Personal attributes and interpersonal abilities:</p>
-            <div className="bg-green-50 rounded p-4 mb-4">
-              <p className="text-green-900 font-semibold mb-2">✅ Include These (with evidence):</p>
-              <ul className="text-green-800 space-y-1 text-sm">
+            <div className="bg-green-900/20 rounded p-4 mb-4">
+              <p className="text-green-300 font-semibold mb-2">✅ Include These (with evidence):</p>
+              <ul className="text-green-200 space-y-1 text-sm">
                 <li>• Leadership & team management</li>
                 <li>• Communication & presentation skills</li>
                 <li>• Problem-solving & critical thinking</li>
@@ -105,9 +105,9 @@ export default function CVSkillsSectionGuide() {
                 <li>• Time management & organization</li>
               </ul>
             </div>
-            <div className="bg-red-50 rounded p-4">
-              <p className="text-red-900 font-semibold mb-2">❌ Avoid Generic Claims:</p>
-              <ul className="text-red-800 space-y-1 text-sm">
+            <div className="bg-red-900/20 rounded p-4">
+              <p className="text-red-300 font-semibold mb-2">❌ Avoid Generic Claims:</p>
+              <ul className="text-red-200 space-y-1 text-sm">
                 <li>• "Hard worker" - too vague</li>
                 <li>• "Team player" - overused cliché</li>
                 <li>• "Fast learner" - everyone says this</li>
@@ -120,20 +120,20 @@ export default function CVSkillsSectionGuide() {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-orange-500">
             <p className="text-gray-300 mb-4">Skills unique to your field or sector:</p>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-gray-50 rounded p-4">
-                <p className="font-semibold text-gray-900 mb-2">Healthcare:</p>
+              <div className="bg-white/10 rounded p-4">
+                <p className="font-semibold text-white mb-2">Healthcare:</p>
                 <p className="text-gray-300 text-sm">Patient assessment, medication administration, clinical documentation, infection control</p>
               </div>
-              <div className="bg-gray-50 rounded p-4">
-                <p className="font-semibold text-gray-900 mb-2">Finance:</p>
+              <div className="bg-white/10 rounded p-4">
+                <p className="font-semibold text-white mb-2">Finance:</p>
                 <p className="text-gray-300 text-sm">Financial reporting, audit, UK GAAP, IFRS, VAT compliance, risk management</p>
               </div>
-              <div className="bg-gray-50 rounded p-4">
-                <p className="font-semibold text-gray-900 mb-2">Marketing:</p>
+              <div className="bg-white/10 rounded p-4">
+                <p className="font-semibold text-white mb-2">Marketing:</p>
                 <p className="text-gray-300 text-sm">SEO/SEM, content marketing, marketing automation, Google Analytics, A/B testing</p>
               </div>
-              <div className="bg-gray-50 rounded p-4">
-                <p className="font-semibold text-gray-900 mb-2">Education:</p>
+              <div className="bg-white/10 rounded p-4">
+                <p className="font-semibold text-white mb-2">Education:</p>
                 <p className="text-gray-300 text-sm">Curriculum planning, differentiation, behavior management, assessment, safeguarding</p>
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function CVSkillsSectionGuide() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">How to Format Your Skills Section</h2>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">Format Option 1: Categorized List (Recommended)</h3>
-          <div className="bg-gray-50 border-l-4 border-blue-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-blue-500 p-6 mb-6">
             <div className="font-mono text-sm">
               <p className="font-bold mb-3">SKILLS</p>
               
@@ -155,9 +155,9 @@ export default function CVSkillsSectionGuide() {
               <p className="font-semibold mb-1">Languages:</p>
               <p>English (Native), French (Fluent - C1), Spanish (Conversational - B1)</p>
             </div>
-            <div className="bg-blue-50 rounded p-4 mt-4">
-              <p className="text-blue-900 font-semibold mb-2">✅ Why This Works:</p>
-              <ul className="text-blue-800 space-y-1 text-sm">
+            <div className="bg-blue-900/20 rounded p-4 mt-4">
+              <p className="text-blue-300 font-semibold mb-2">✅ Why This Works:</p>
+              <ul className="text-blue-200 space-y-1 text-sm">
                 <li>• Easy for ATS to scan</li>
                 <li>• Clear organization by category</li>
                 <li>• Highlights most relevant skills first</li>
@@ -167,14 +167,14 @@ export default function CVSkillsSectionGuide() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">Format Option 2: Simple List</h3>
-          <div className="bg-gray-50 border-l-4 border-green-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-green-500 p-6 mb-6">
             <div className="font-mono text-sm">
               <p className="font-bold mb-3">KEY SKILLS</p>
               <p>JavaScript • React • Node.js • AWS • Docker • PostgreSQL • Git • CI/CD • Agile • TDD</p>
             </div>
-            <div className="bg-green-50 rounded p-4 mt-4">
-              <p className="text-green-900 font-semibold mb-2">✅ Best For:</p>
-              <ul className="text-green-800 space-y-1 text-sm">
+            <div className="bg-green-900/20 rounded p-4 mt-4">
+              <p className="text-green-300 font-semibold mb-2">✅ Best For:</p>
+              <ul className="text-green-200 space-y-1 text-sm">
                 <li>• Technical roles with many tools/technologies</li>
                 <li>• When space is limited</li>
                 <li>• Skills that don't need categorization</li>
@@ -183,7 +183,7 @@ export default function CVSkillsSectionGuide() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">Format Option 3: Skills with Context</h3>
-          <div className="bg-gray-50 border-l-4 border-purple-500 p-6 mb-6">
+          <div className="bg-white/10 border-l-4 border-purple-500 p-6 mb-6">
             <div className="font-mono text-sm">
               <p className="font-bold mb-3">CORE COMPETENCIES</p>
               
@@ -196,7 +196,7 @@ export default function CVSkillsSectionGuide() {
               <p className="font-semibold mb-1">• Team Leadership</p>
               <p className="text-xs ml-2">Managed cross-functional teams of up to 25 people across 3 countries</p>
             </div>
-            <div className="bg-purple-50 rounded p-4 mt-4">
+            <div className="bg-purple-900/20 rounded p-4 mt-4">
               <p className="text-purple-900 font-semibold mb-2">✅ Best For:</p>
               <ul className="text-purple-800 space-y-1 text-sm">
                 <li>• Senior-level positions</li>
@@ -211,7 +211,7 @@ export default function CVSkillsSectionGuide() {
           <div className="space-y-6 mb-8">
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
               <h3 className="text-2xl font-black text-white mb-3">Software Developer</h3>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-2">Technical Skills:</p>
                 <p className="mb-3">JavaScript, TypeScript, React, Node.js, Python, Java, SQL, PostgreSQL, MongoDB, AWS, Docker, Kubernetes, Git, CI/CD</p>
                 
@@ -225,7 +225,7 @@ export default function CVSkillsSectionGuide() {
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
               <h3 className="text-2xl font-black text-white mb-3">Marketing Manager</h3>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-2">Digital Marketing:</p>
                 <p className="mb-3">SEO, SEM, PPC, Content Marketing, Email Marketing, Social Media Marketing, Marketing Automation</p>
                 
@@ -239,7 +239,7 @@ export default function CVSkillsSectionGuide() {
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
               <h3 className="text-2xl font-black text-white mb-3">Accountant</h3>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-2">Accounting:</p>
                 <p className="mb-3">Financial Reporting, Management Accounts, Audit, Budgeting & Forecasting, Cash Flow Management</p>
                 
@@ -253,7 +253,7 @@ export default function CVSkillsSectionGuide() {
 
             <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500">
               <h3 className="text-2xl font-black text-white mb-3">Project Manager</h3>
-              <div className="bg-gray-50 rounded p-4 font-mono text-sm">
+              <div className="bg-white/10 rounded p-4 font-mono text-sm">
                 <p className="font-semibold mb-2">Methodologies:</p>
                 <p className="mb-3">Agile, Scrum, Waterfall, PRINCE2, Lean, Six Sigma</p>
                 
@@ -275,7 +275,7 @@ export default function CVSkillsSectionGuide() {
                   <span className="text-teal-600 font-bold">1</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Read the Job Description Carefully</h3>
+                  <h3 className="font-bold text-white mb-2">Read the Job Description Carefully</h3>
                   <p className="text-gray-400">Highlight all skills mentioned. These are your ATS keywords - include them if you have them.</p>
                 </div>
               </div>
@@ -284,7 +284,7 @@ export default function CVSkillsSectionGuide() {
                   <span className="text-teal-600 font-bold">2</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Prioritize Relevant Skills</h3>
+                  <h3 className="font-bold text-white mb-2">Prioritize Relevant Skills</h3>
                   <p className="text-gray-400">List skills most relevant to the target role first. Less relevant skills go at the end or are omitted.</p>
                 </div>
               </div>
@@ -293,7 +293,7 @@ export default function CVSkillsSectionGuide() {
                   <span className="text-teal-600 font-bold">3</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Be Honest About Proficiency</h3>
+                  <h3 className="font-bold text-white mb-2">Be Honest About Proficiency</h3>
                   <p className="text-gray-400">Only include skills you can confidently discuss in an interview. Don't lie - you'll be found out.</p>
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function CVSkillsSectionGuide() {
                   <span className="text-teal-600 font-bold">4</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Remove Outdated Skills</h3>
+                  <h3 className="font-bold text-white mb-2">Remove Outdated Skills</h3>
                   <p className="text-gray-400">Delete obsolete technologies (Windows XP, Flash, outdated programming languages) unless specifically requested.</p>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default function CVSkillsSectionGuide() {
                   <span className="text-teal-600 font-bold">5</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Include Certifications</h3>
+                  <h3 className="font-bold text-white mb-2">Include Certifications</h3>
                   <p className="text-gray-400">Professional qualifications add credibility: PMP, ACCA, AWS Certified, CIPD, etc.</p>
                 </div>
               </div>
@@ -321,25 +321,25 @@ export default function CVSkillsSectionGuide() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Common Skills Section Mistakes</h2>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4">
-              <p className="text-red-900 font-semibold mb-1">❌ Using Skill Rating Bars</p>
-              <p className="text-red-800 text-sm">ATS systems can't read graphics. Use text only: "Advanced", "Intermediate", "Proficient"</p>
+            <div className="bg-red-900/20 border-l-4 border-red-500 p-4">
+              <p className="text-red-300 font-semibold mb-1">❌ Using Skill Rating Bars</p>
+              <p className="text-red-200 text-sm">ATS systems can't read graphics. Use text only: "Advanced", "Intermediate", "Proficient"</p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-500 p-4">
-              <p className="text-red-900 font-semibold mb-1">❌ Listing Too Many Skills</p>
-              <p className="text-red-800 text-sm">Quality over quantity. 10-15 relevant skills is better than 50 generic ones.</p>
+            <div className="bg-red-900/20 border-l-4 border-red-500 p-4">
+              <p className="text-red-300 font-semibold mb-1">❌ Listing Too Many Skills</p>
+              <p className="text-red-200 text-sm">Quality over quantity. 10-15 relevant skills is better than 50 generic ones.</p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-500 p-4">
-              <p className="text-red-900 font-semibold mb-1">❌ Being Too Vague</p>
-              <p className="text-red-800 text-sm mb-2"><strong>Bad:</strong> "Computer skills"</p>
-              <p className="text-green-800 text-sm"><strong>Good:</strong> "Excel (Advanced), Salesforce, SQL, Python"</p>
+            <div className="bg-red-900/20 border-l-4 border-red-500 p-4">
+              <p className="text-red-300 font-semibold mb-1">❌ Being Too Vague</p>
+              <p className="text-red-200 text-sm mb-2"><strong>Bad:</strong> "Computer skills"</p>
+              <p className="text-green-200 text-sm"><strong>Good:</strong> "Excel (Advanced), Salesforce, SQL, Python"</p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-500 p-4">
-              <p className="text-red-900 font-semibold mb-1">❌ Including Obvious Skills</p>
-              <p className="text-red-800 text-sm">Don't list "Microsoft Word" or "Email" unless it's a very entry-level role. These are assumed.</p>
+            <div className="bg-red-900/20 border-l-4 border-red-500 p-4">
+              <p className="text-red-300 font-semibold mb-1">❌ Including Obvious Skills</p>
+              <p className="text-red-200 text-sm">Don't list "Microsoft Word" or "Email" unless it's a very entry-level role. These are assumed.</p>
             </div>
           </div>
 
@@ -349,24 +349,24 @@ export default function CVSkillsSectionGuide() {
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h3 className="font-bold text-green-900 mb-3 flex items-center">
+            <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+              <h3 className="font-bold text-green-300 mb-3 flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2" />
                 Good Approach:
               </h3>
-              <p className="text-green-800 text-sm mb-3">List soft skills in your skills section, then prove them in work experience:</p>
+              <p className="text-green-200 text-sm mb-3">List soft skills in your skills section, then prove them in work experience:</p>
               <div className="bg-white rounded p-3">
                 <p className="text-gray-300 text-sm mb-2"><strong>Skills:</strong> Leadership, Stakeholder Management</p>
                 <p className="text-gray-300 text-sm"><strong>Experience:</strong> "Led cross-functional team of 12 across 3 departments, managing C-suite stakeholders for £5M project"</p>
               </div>
             </div>
 
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-              <h3 className="font-bold text-red-900 mb-3">❌ Bad Approach:</h3>
-              <p className="text-red-800 text-sm mb-3">Listing generic soft skills with no evidence:</p>
+            <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6">
+              <h3 className="font-bold text-red-300 mb-3">❌ Bad Approach:</h3>
+              <p className="text-red-200 text-sm mb-3">Listing generic soft skills with no evidence:</p>
               <div className="bg-white rounded p-3">
                 <p className="text-gray-300 text-sm">Hard worker, Team player, Fast learner, Detail-oriented, Self-motivated</p>
-                <p className="text-red-600 text-xs mt-2 italic">These are clichés that everyone claims. Prove them instead.</p>
+                <p className="text-red-400 text-xs mt-2 italic">These are clichés that everyone claims. Prove them instead.</p>
               </div>
             </div>
           </div>
@@ -401,41 +401,41 @@ export default function CVSkillsSectionGuide() {
           <div className="bg-gray-100 rounded-lg p-6 mb-8">
             <ul className="space-y-3">
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Match job description keywords</strong> for ATS optimization</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300">Use <strong>categorized format</strong> for clarity and scannability</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300">Include <strong>technical skills, industry skills, and relevant soft skills</strong></span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Be specific</strong> - "Python, SQL" not "computer skills"</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Prove soft skills</strong> with evidence in work experience</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Update regularly</strong> - remove outdated skills, add new ones</span>
               </li>
             </ul>
           </div>
 
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link href="/blog/professional-cv-how-to-create" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">Professional CV: How to Create One</h4>
+              <Link href="/blog/professional-cv-how-to-create" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">Professional CV: How to Create One</h4>
                 <p className="text-gray-400 text-sm">Complete guide to creating a professional CV</p>
               </Link>
-              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
+              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">How to Beat ATS Systems</h4>
                 <p className="text-gray-400 text-sm">Optimize your CV for applicant tracking systems</p>
               </Link>
             </div>

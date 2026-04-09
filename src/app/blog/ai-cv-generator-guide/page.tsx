@@ -30,13 +30,13 @@ export default function AIGeneratorGuidePage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-blue-900/30 text-blue-200 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             AI & Technology
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             AI CV Generator: The Complete Guide for 2025
           </h1>
-          <div className="flex items-center space-x-6 text-gray-600 text-sm">
+          <div className="flex items-center space-x-6 text-slate-300 text-sm">
             <span>October 21, 2025</span>
             <span>•</span>
             <span>10 min read</span>
@@ -50,8 +50,8 @@ export default function AIGeneratorGuidePage() {
           
           {/* Introduction */}
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 p-6 mb-8 rounded-r-lg">
-            <p className="text-lg text-gray-800 font-medium mb-0">
-              <Sparkles className="w-6 h-6 text-blue-600 inline mr-2" />
+            <p className="text-lg text-slate-300 font-medium mb-0">
+              <Sparkles className="w-6 h-6 text-blue-400 inline mr-2" />
               In 2025, AI CV generators are transforming how job seekers create professional CVs. This comprehensive guide explains everything you need to know about using AI to create winning job applications.
             </p>
           </div>
@@ -65,38 +65,38 @@ export default function AIGeneratorGuidePage() {
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="space-y-4">
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">1</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">1</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Upload Your Existing CV</h3>
+                  <h3 className="font-bold text-white mb-2">Upload Your Existing CV</h3>
                   <p className="text-gray-400">The AI analyzes your current CV, extracting key information about your experience, skills, and achievements.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">2</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">2</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Input Job Description</h3>
+                  <h3 className="font-bold text-white mb-2">Input Job Description</h3>
                   <p className="text-gray-400">Paste the job description you're applying for. The AI identifies key requirements, skills, and keywords.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">3</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">3</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">AI Optimization</h3>
+                  <h3 className="font-bold text-white mb-2">AI Optimization</h3>
                   <p className="text-gray-400">Advanced algorithms rewrite your CV to highlight relevant experience, incorporate job-specific keywords, and optimize for ATS systems.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">4</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">4</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Download & Apply</h3>
+                  <h3 className="font-bold text-white mb-2">Download & Apply</h3>
                   <p className="text-gray-400">Get a perfectly tailored CV in multiple formats (PDF, DOCX) ready to submit.</p>
                 </div>
               </div>
@@ -105,24 +105,24 @@ export default function AIGeneratorGuidePage() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Benefits of Using AI for CV Creation</h2>
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <CheckCircle className="w-8 h-8 text-green-600 mb-3" />
-              <h3 className="font-bold text-gray-900 mb-2">Save 90% of Your Time</h3>
+            <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+              <CheckCircle className="w-8 h-8 text-green-400 mb-3" />
+              <h3 className="font-bold text-white mb-2">Save 90% of Your Time</h3>
               <p className="text-gray-300">What used to take hours now takes minutes. AI handles the heavy lifting of tailoring your CV for each application.</p>
             </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <Target className="w-8 h-8 text-blue-600 mb-3" />
-              <h3 className="font-bold text-gray-900 mb-2">ATS Optimization</h3>
+            <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6">
+              <Target className="w-8 h-8 text-blue-400 mb-3" />
+              <h3 className="font-bold text-white mb-2">ATS Optimization</h3>
               <p className="text-gray-300">AI ensures your CV passes Applicant Tracking Systems by incorporating the right keywords and formatting.</p>
             </div>
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+            <div className="bg-purple-900/20 border border-purple-200 rounded-lg p-6">
               <TrendingUp className="w-8 h-8 text-purple-600 mb-3" />
-              <h3 className="font-bold text-gray-900 mb-2">3x More Interviews</h3>
+              <h3 className="font-bold text-white mb-2">3x More Interviews</h3>
               <p className="text-gray-300">Tailored CVs significantly increase your chances of getting interview callbacks.</p>
             </div>
             <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
               <Zap className="w-8 h-8 text-orange-600 mb-3" />
-              <h3 className="font-bold text-gray-900 mb-2">Professional Quality</h3>
+              <h3 className="font-bold text-white mb-2">Professional Quality</h3>
               <p className="text-gray-300">AI uses best practices and industry standards to create polished, professional CVs.</p>
             </div>
           </div>
@@ -130,23 +130,23 @@ export default function AIGeneratorGuidePage() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Key Features to Look For</h2>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
               <span className="text-gray-300"><strong>Multi-language Support:</strong> Generate CVs in 50+ languages for international applications</span>
             </li>
             <li className="flex items-start">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
               <span className="text-gray-300"><strong>ATS Score:</strong> Real-time feedback on how well your CV will perform with tracking systems</span>
             </li>
             <li className="flex items-start">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
               <span className="text-gray-300"><strong>Multiple Templates:</strong> Professional designs optimized for different industries</span>
             </li>
             <li className="flex items-start">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
               <span className="text-gray-300"><strong>Export Options:</strong> Download in PDF, DOCX, or TXT formats</span>
             </li>
             <li className="flex items-start">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
               <span className="text-gray-300"><strong>Cover Letter Generation:</strong> AI-powered cover letters to complement your CV</span>
             </li>
           </ul>
@@ -171,17 +171,17 @@ export default function AIGeneratorGuidePage() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Common Concerns About AI CV Generators</h2>
           
           <div className="bg-gray-100 rounded-lg p-6 mb-6">
-            <h3 className="font-bold text-gray-900 mb-2">❓ Will employers know I used AI?</h3>
+            <h3 className="font-bold text-white mb-2">❓ Will employers know I used AI?</h3>
             <p className="text-gray-300">No. AI-generated CVs are indistinguishable from manually created ones. The AI simply helps you present your real experience more effectively.</p>
           </div>
 
           <div className="bg-gray-100 rounded-lg p-6 mb-6">
-            <h3 className="font-bold text-gray-900 mb-2">❓ Is it ethical to use AI for job applications?</h3>
+            <h3 className="font-bold text-white mb-2">❓ Is it ethical to use AI for job applications?</h3>
             <p className="text-gray-300">Absolutely. AI CV generators don't fabricate experience—they help you communicate your genuine qualifications more effectively. It's no different from hiring a professional CV writer.</p>
           </div>
 
           <div className="bg-gray-100 rounded-lg p-6 mb-6">
-            <h3 className="font-bold text-gray-900 mb-2">❓ Can AI replace human CV writers?</h3>
+            <h3 className="font-bold text-white mb-2">❓ Can AI replace human CV writers?</h3>
             <p className="text-gray-300">AI is a powerful tool, but it works best when combined with human judgment. Use AI for efficiency, then add your personal touch for authenticity.</p>
           </div>
 
@@ -209,7 +209,7 @@ export default function AIGeneratorGuidePage() {
             <div className="flex flex-wrap gap-4">
               <Link 
                 href="/auth/signup"
-                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition inline-block"
+                className="bg-white text-blue-400 px-6 py-3 rounded-lg font-semibold hover:bg-blue-900/20 transition inline-block"
               >
                 Get Started
               </Link>
@@ -231,15 +231,15 @@ export default function AIGeneratorGuidePage() {
           </p>
 
           {/* Related Articles */}
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
+              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">How to Beat ATS Systems</h4>
                 <p className="text-gray-400 text-sm">Complete guide to optimizing your CV for Applicant Tracking Systems</p>
               </Link>
-              <Link href="/blog/cv-writing-tips" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">CV Writing Tips & Best Practices</h4>
+              <Link href="/blog/cv-writing-tips" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">CV Writing Tips & Best Practices</h4>
                 <p className="text-gray-400 text-sm">Expert advice to create a winning CV that gets interviews</p>
               </Link>
             </div>

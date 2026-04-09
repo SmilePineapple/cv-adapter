@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function GraduateCVNoExperience() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -35,11 +35,11 @@ export default function GraduateCVNoExperience() {
       {/* Article */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           Graduate CV with No Experience: Complete UK Guide (2025)
         </h1>
         
-        <div className="flex items-center gap-4 text-gray-600 mb-8">
+        <div className="flex items-center gap-4 text-slate-300 mb-8">
           <time dateTime="2025-11-09">November 9, 2025</time>
           <span>•</span>
           <span>10 min read</span>
@@ -52,7 +52,7 @@ export default function GraduateCVNoExperience() {
 
         {/* Content */}
         <div className="prose prose-invert prose-lg max-w-none">
-          <p className="text-xl text-gray-700 leading-relaxed mb-6">
+          <p className="text-xl text-slate-400 leading-relaxed mb-6">
             Just graduated from university and staring at a blank CV? You're not alone. <strong>78% of UK graduates</strong> 
             struggle with the same question: <em>"How do I write a CV when I have no work experience?"</em>
           </p>
@@ -63,9 +63,9 @@ export default function GraduateCVNoExperience() {
             university years into a compelling graduate CV that gets interviews.
           </p>
 
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 my-8">
-            <p className="text-blue-900 font-semibold mb-2">💡 Key Insight</p>
-            <p className="text-blue-800">
+          <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 my-8">
+            <p className="text-blue-300 font-semibold mb-2">💡 Key Insight</p>
+            <p className="text-blue-200">
               Employers hiring graduates aren't expecting 10 years of experience. They're looking for <strong>potential, 
               enthusiasm, and transferable skills</strong>. Your CV needs to showcase these qualities, not apologize for 
               lack of experience.
@@ -78,8 +78,8 @@ export default function GraduateCVNoExperience() {
           </p>
 
           <div className="bg-white border-2 border-purple-200 rounded-lg p-6 mb-8">
-            <h4 className="font-bold text-gray-900 mb-4">📄 Optimal Graduate CV Structure:</h4>
-            <ol className="list-decimal pl-6 space-y-2 text-gray-700">
+            <h4 className="font-bold text-white mb-4">📄 Optimal Graduate CV Structure:</h4>
+            <ol className="list-decimal pl-6 space-y-2 text-slate-400">
               <li><strong>Contact Information</strong> (Name, phone, email, LinkedIn, location)</li>
               <li><strong>Personal Statement</strong> (3-4 lines highlighting your degree, skills, and career goals)</li>
               <li><strong>Education</strong> (Your degree, A-Levels, relevant modules, dissertation)</li>
@@ -93,27 +93,27 @@ export default function GraduateCVNoExperience() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Section-by-Section Breakdown</h2>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">1. Personal Statement (Your Elevator Pitch)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">1. Personal Statement (Your Elevator Pitch)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Your personal statement is crucial when you lack experience. It should include:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li>Your degree and classification (if 2:1 or First)</li>
             <li>2-3 key skills or strengths</li>
             <li>What type of role you're seeking</li>
             <li>Your unique value proposition</li>
           </ul>
 
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-            <p className="text-green-900 font-semibold mb-3">✅ Strong Graduate Personal Statement:</p>
-            <p className="text-green-800 italic mb-4">
+          <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6 mb-6">
+            <p className="text-green-300 font-semibold mb-3">✅ Strong Graduate Personal Statement:</p>
+            <p className="text-green-200 italic mb-4">
               "Recent Computer Science graduate from University of Manchester (First Class Honours) with strong programming 
               skills in Python, Java, and React. Led a team of 5 students to develop an award-winning mobile app for mental 
               health support. Seeking a Graduate Software Developer role where I can apply my technical skills and passion 
               for user-centered design to create impactful solutions."
             </p>
-            <p className="text-green-900 font-semibold mb-2">Why it works:</p>
-            <ul className="list-disc pl-6 text-green-800 space-y-1">
+            <p className="text-green-300 font-semibold mb-2">Why it works:</p>
+            <ul className="list-disc pl-6 text-green-200 space-y-1">
               <li>Highlights strong degree classification</li>
               <li>Lists specific technical skills</li>
               <li>Mentions concrete achievement (award-winning project)</li>
@@ -122,14 +122,14 @@ export default function GraduateCVNoExperience() {
             </ul>
           </div>
 
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-            <p className="text-red-900 font-semibold mb-3">❌ Weak Graduate Personal Statement:</p>
-            <p className="text-red-800 italic mb-4">
+          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 mb-6">
+            <p className="text-red-300 font-semibold mb-3">❌ Weak Graduate Personal Statement:</p>
+            <p className="text-red-200 italic mb-4">
               "Recent graduate looking for entry-level opportunities. Hard-working and eager to learn. Good team player 
               with excellent communication skills."
             </p>
-            <p className="text-red-900 font-semibold mb-2">Why it fails:</p>
-            <ul className="list-disc pl-6 text-red-800 space-y-1">
+            <p className="text-red-300 font-semibold mb-2">Why it fails:</p>
+            <ul className="list-disc pl-6 text-red-200 space-y-1">
               <li>No mention of degree or university</li>
               <li>Generic buzzwords with no evidence</li>
               <li>No specific skills or achievements</li>
@@ -137,12 +137,12 @@ export default function GraduateCVNoExperience() {
             </ul>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">2. Education (Your Strongest Asset)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">2. Education (Your Strongest Asset)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             As a graduate, your education section should be detailed and prominent. Include:
           </p>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-6">
+          <div className="bg-purple-900/20 border border-purple-200 rounded-lg p-6 mb-6">
             <p className="text-purple-900 font-semibold mb-3">🎓 What to Include:</p>
             <p className="text-purple-800 mb-2"><strong>University Degree:</strong></p>
             <ul className="list-disc pl-6 mb-4 text-purple-800">
@@ -159,32 +159,32 @@ export default function GraduateCVNoExperience() {
             </ul>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-            <p className="text-blue-900 font-semibold mb-3">📚 Example Education Section:</p>
-            <p className="text-blue-800 mb-2"><strong>BSc (Hons) Marketing, University of Bristol — First Class (2021-2024)</strong></p>
-            <p className="text-blue-800 mb-3">
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6 mb-6">
+            <p className="text-blue-300 font-semibold mb-3">📚 Example Education Section:</p>
+            <p className="text-blue-200 mb-2"><strong>BSc (Hons) Marketing, University of Bristol — First Class (2021-2024)</strong></p>
+            <p className="text-blue-200 mb-3">
               <strong>Relevant Modules:</strong> Digital Marketing Strategy (85%), Consumer Behavior (82%), Data Analytics 
               for Marketing (88%), Social Media Marketing (90%), Brand Management (84%)
             </p>
-            <p className="text-blue-800 mb-3">
+            <p className="text-blue-200 mb-3">
               <strong>Dissertation:</strong> "The Impact of TikTok Influencer Marketing on Gen Z Purchase Decisions" — 
               Conducted primary research with 300+ participants, analyzed data using SPSS, achieved 78% grade
             </p>
-            <p className="text-blue-800">
+            <p className="text-blue-200">
               <strong>Achievements:</strong> Marketing Society President (2023-24), Dean's List for Academic Excellence (2023)
             </p>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">3. Skills Section (Show What You Can Do)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">3. Skills Section (Show What You Can Do)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Organize your skills into clear categories:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-3">💻 Technical Skills</h4>
-              <p className="text-sm text-gray-600 mb-2">Software, tools, and platforms you can use:</p>
-              <ul className="text-sm text-gray-700 space-y-1">
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-3">💻 Technical Skills</h4>
+              <p className="text-sm text-slate-300 mb-2">Software, tools, and platforms you can use:</p>
+              <ul className="text-sm text-slate-400 space-y-1">
                 <li>• Microsoft Office Suite (Excel, PowerPoint, Word)</li>
                 <li>• Programming languages (Python, Java, SQL)</li>
                 <li>• Design tools (Adobe Creative Suite, Figma, Canva)</li>
@@ -192,10 +192,10 @@ export default function GraduateCVNoExperience() {
                 <li>• CRM systems (Salesforce, HubSpot)</li>
               </ul>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h4 className="font-bold text-gray-900 mb-3">🤝 Soft Skills</h4>
-              <p className="text-sm text-gray-600 mb-2">Transferable skills with evidence:</p>
-              <ul className="text-sm text-gray-700 space-y-1">
+            <div className="bg-white border border-white/20 rounded-lg p-4">
+              <h4 className="font-bold text-white mb-3">🤝 Soft Skills</h4>
+              <p className="text-sm text-slate-300 mb-2">Transferable skills with evidence:</p>
+              <ul className="text-sm text-slate-400 space-y-1">
                 <li>• Leadership (Society President, team projects)</li>
                 <li>• Communication (Presentations, customer service)</li>
                 <li>• Problem-solving (Dissertation research)</li>
@@ -205,21 +205,21 @@ export default function GraduateCVNoExperience() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">4. Experience (Reframe Everything You've Done)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">4. Experience (Reframe Everything You've Done)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Even if you've only worked in retail or hospitality, you've developed valuable skills. The key is reframing:
           </p>
 
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-            <p className="text-green-900 font-semibold mb-3">✅ Reframing Part-Time Jobs:</p>
-            <p className="text-green-800 mb-2"><strong>Retail Assistant → Customer Service & Sales</strong></p>
-            <p className="text-green-800 italic mb-4">
+          <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-6 mb-6">
+            <p className="text-green-300 font-semibold mb-3">✅ Reframing Part-Time Jobs:</p>
+            <p className="text-green-200 mb-2"><strong>Retail Assistant → Customer Service & Sales</strong></p>
+            <p className="text-green-200 italic mb-4">
               "Delivered exceptional customer service to 50+ customers daily, achieving 95% satisfaction rating. 
               Processed transactions using POS system with 100% accuracy. Trained 3 new team members on store procedures 
               and product knowledge. Managed inventory and restocking, reducing stock discrepancies by 15%."
             </p>
-            <p className="text-green-800 mb-2"><strong>Waiter/Waitress → Hospitality & Operations</strong></p>
-            <p className="text-green-800 italic">
+            <p className="text-green-200 mb-2"><strong>Waiter/Waitress → Hospitality & Operations</strong></p>
+            <p className="text-green-200 italic">
               "Managed service for 20+ tables simultaneously in fast-paced environment, maintaining 4.8/5 customer rating. 
               Collaborated with kitchen staff to ensure timely order delivery. Handled cash and card payments, balancing 
               till with 100% accuracy. Resolved customer complaints diplomatically, turning negative experiences into 
@@ -227,32 +227,32 @@ export default function GraduateCVNoExperience() {
             </p>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">5. Projects (Your Secret Weapon)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">5. Projects (Your Secret Weapon)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Projects demonstrate initiative and practical skills. Include:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>University projects:</strong> Group projects, dissertations, case studies</li>
             <li><strong>Personal projects:</strong> Websites, apps, blogs, portfolios</li>
             <li><strong>Hackathons:</strong> Any coding competitions or challenges</li>
             <li><strong>Freelance work:</strong> Even small paid projects count</li>
           </ul>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-            <p className="text-blue-900 font-semibold mb-3">💡 Project Example:</p>
-            <p className="text-blue-800 mb-2"><strong>E-Commerce Website Development (Personal Project)</strong></p>
-            <p className="text-blue-800">
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6 mb-6">
+            <p className="text-blue-300 font-semibold mb-3">💡 Project Example:</p>
+            <p className="text-blue-200 mb-2"><strong>E-Commerce Website Development (Personal Project)</strong></p>
+            <p className="text-blue-200">
               Built a fully functional e-commerce website using React, Node.js, and MongoDB. Implemented user authentication, 
               shopping cart functionality, and payment integration with Stripe. Deployed on Vercel with 99.9% uptime. 
               Gained 200+ users within first month through social media marketing.
             </p>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-3">6. Extracurricular Activities (Show You're Well-Rounded)</h3>
+          <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">6. Extracurricular Activities (Show You're Well-Rounded)</h3>
           <p className="text-gray-300 leading-relaxed mb-4">
             Employers love candidates who are engaged and proactive. Include:
           </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>University societies:</strong> Especially leadership roles (President, Treasurer, Events Coordinator)</li>
             <li><strong>Sports teams:</strong> Shows teamwork and commitment</li>
             <li><strong>Volunteering:</strong> Demonstrates social responsibility</li>
@@ -265,7 +265,7 @@ export default function GraduateCVNoExperience() {
           </p>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+            <div className="bg-purple-900/20 border-l-4 border-purple-600 p-4">
               <h4 className="text-purple-900 font-semibold mb-2">1. Start a Personal Project (This Week)</h4>
               <p className="text-purple-800">
                 Build something relevant to your target role. Marketing grad? Start a blog or Instagram page. 
@@ -273,7 +273,7 @@ export default function GraduateCVNoExperience() {
               </p>
             </div>
 
-            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+            <div className="bg-purple-900/20 border-l-4 border-purple-600 p-4">
               <h4 className="text-purple-900 font-semibold mb-2">2. Volunteer (Next Week)</h4>
               <p className="text-purple-800">
                 Find local charities or organizations that need help. Even 5 hours a week gives you real experience 
@@ -281,7 +281,7 @@ export default function GraduateCVNoExperience() {
               </p>
             </div>
 
-            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+            <div className="bg-purple-900/20 border-l-4 border-purple-600 p-4">
               <h4 className="text-purple-900 font-semibold mb-2">3. Get Certified (This Month)</h4>
               <p className="text-purple-800">
                 Free certifications from Google, HubSpot, LinkedIn Learning, and Coursera can fill gaps and show 
@@ -289,7 +289,7 @@ export default function GraduateCVNoExperience() {
               </p>
             </div>
 
-            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+            <div className="bg-purple-900/20 border-l-4 border-purple-600 p-4">
               <h4 className="text-purple-900 font-semibold mb-2">4. Network on LinkedIn (Ongoing)</h4>
               <p className="text-purple-800">
                 Connect with alumni, recruiters, and professionals in your target industry. Engage with their content, 
@@ -301,41 +301,41 @@ export default function GraduateCVNoExperience() {
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Common Graduate CV Mistakes</h2>
           
           <div className="space-y-4 mb-8">
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #1: Making It Too Long</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #1: Making It Too Long</h4>
+              <p className="text-red-200">
                 Graduate CVs should be <strong>1-2 pages maximum</strong>. If you have limited experience, 1 page is perfect. 
                 Don't pad it with irrelevant information.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #2: Using a Generic CV for Every Application</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #2: Using a Generic CV for Every Application</h4>
+              <p className="text-red-200">
                 Tailor your CV for each role. Highlight different modules, projects, or skills based on the job description. 
                 This is crucial for getting past ATS systems.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #3: Listing Responsibilities Instead of Achievements</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #3: Listing Responsibilities Instead of Achievements</h4>
+              <p className="text-red-200">
                 Don't write "Responsible for serving customers." Write "Served 50+ customers daily, achieving 95% satisfaction 
                 rating." Always quantify and show impact.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #4: Poor Formatting</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #4: Poor Formatting</h4>
+              <p className="text-red-200">
                 Use a clean, professional template. Avoid graphics, photos, and creative fonts that confuse ATS systems. 
                 Stick to Arial, Calibri, or Times New Roman, 10-12pt font.
               </p>
             </div>
 
-            <div className="bg-red-50 border-l-4 border-red-600 p-4">
-              <h4 className="text-red-900 font-semibold mb-2">❌ Mistake #5: Typos and Grammar Errors</h4>
-              <p className="text-red-800">
+            <div className="bg-red-900/20 border-l-4 border-red-600 p-4">
+              <h4 className="text-red-300 font-semibold mb-2">❌ Mistake #5: Typos and Grammar Errors</h4>
+              <p className="text-red-200">
                 Proofread multiple times. Ask friends, family, or your university careers service to review it. 
                 One typo can cost you the interview.
               </p>
@@ -344,7 +344,7 @@ export default function GraduateCVNoExperience() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Graduate CV Template (Copy & Customize)</h2>
           
-          <div className="bg-gray-50 border border-gray-300 rounded-lg p-6 mb-8 font-mono text-sm">
+          <div className="bg-white/10 border border-gray-300 rounded-lg p-6 mb-8 font-mono text-sm">
             <p className="text-white font-bold mb-4">[YOUR NAME]</p>
             <p className="text-gray-300 mb-4">
               [Phone] | [Email] | [LinkedIn URL] | [City, UK]
@@ -386,9 +386,9 @@ export default function GraduateCVNoExperience() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Final Checklist</h2>
           
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h4 className="text-blue-900 font-semibold mb-4">✅ Before You Apply:</h4>
-            <ul className="space-y-2 text-blue-800">
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6 mb-8">
+            <h4 className="text-blue-300 font-semibold mb-4">✅ Before You Apply:</h4>
+            <ul className="space-y-2 text-blue-200">
               <li>✓ Personal statement is tailored to the specific role</li>
               <li>✓ Education section includes relevant modules and dissertation</li>
               <li>✓ Skills section lists both technical and soft skills</li>
@@ -412,7 +412,7 @@ export default function GraduateCVNoExperience() {
             your willingness to learn. With a well-crafted CV and genuine enthusiasm, you'll land that first graduate role.
           </p>
 
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <p className="text-gray-400 text-sm">
               <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in helping 
               UK graduates create compelling CVs that get interviews. We've helped thousands of university leavers land 
@@ -434,7 +434,7 @@ export default function GraduateCVNoExperience() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-300">
           <p>© 2025 CV Adapter. All rights reserved.</p>
         </div>
       </footer>

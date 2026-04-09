@@ -49,11 +49,11 @@ export default function AIPoweredCVOptimizationPage() {
           <div className="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             AI & Technology
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
             AI-Powered CV Optimization: The Future of Job Applications in 2025
           </h1>
           <p className="text-xl text-gray-300 mb-4">How artificial intelligence is transforming the way we create and tailor CVs for maximum impact</p>
-          <div className="flex items-center text-gray-600 space-x-4 text-sm">
+          <div className="flex items-center text-slate-300 space-x-4 text-sm">
             <span>October 29, 2025</span>
             <span>•</span>
             <span>8 min read</span>
@@ -110,9 +110,9 @@ export default function AIPoweredCVOptimizationPage() {
         <div className="space-y-8 mb-12">
           
           {/* Section 1 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
-              <div className="bg-blue-100 rounded-lg p-3">
+              <div className="bg-blue-900/30 rounded-lg p-3">
                 <Brain className="w-6 h-6 text-blue-400" />
               </div>
               <div className="flex-1">
@@ -122,34 +122,34 @@ export default function AIPoweredCVOptimizationPage() {
                   automatically tailor your CV to match specific requirements. It's like having a professional 
                   CV writer working for you 24/7.
                 </p>
-                <div className="bg-blue-50 p-6 rounded-lg space-y-3">
-                  <h4 className="font-semibold text-gray-900 mb-3">How It Works:</h4>
+                <div className="bg-blue-900/20 p-6 rounded-lg space-y-3">
+                  <h4 className="font-semibold text-white mb-3">How It Works:</h4>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-gray-900">1. Intelligent Analysis</p>
-                      <p className="text-sm text-gray-600">AI scans the job description to identify key requirements, skills, and keywords</p>
+                      <p className="font-semibold text-white">1. Intelligent Analysis</p>
+                      <p className="text-sm text-slate-300">AI scans the job description to identify key requirements, skills, and keywords</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-gray-900">2. Smart Matching</p>
-                      <p className="text-sm text-gray-600">Matches your experience with job requirements and highlights relevant achievements</p>
+                      <p className="font-semibold text-white">2. Smart Matching</p>
+                      <p className="text-sm text-slate-300">Matches your experience with job requirements and highlights relevant achievements</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-gray-900">3. Automatic Optimization</p>
-                      <p className="text-sm text-gray-600">Rewrites sections to use industry-specific language and quantifiable achievements</p>
+                      <p className="font-semibold text-white">3. Automatic Optimization</p>
+                      <p className="text-sm text-slate-300">Rewrites sections to use industry-specific language and quantifiable achievements</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-semibold text-gray-900">4. ATS Optimization</p>
-                      <p className="text-sm text-gray-600">Ensures your CV passes automated screening systems with the right keywords</p>
+                      <p className="font-semibold text-white">4. ATS Optimization</p>
+                      <p className="text-sm text-slate-300">Ensures your CV passes automated screening systems with the right keywords</p>
                     </div>
                   </div>
                 </div>
@@ -158,10 +158,10 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 2 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
-              <div className="bg-green-100 rounded-lg p-3">
-                <Sparkles className="w-6 h-6 text-green-600" />
+              <div className="bg-green-900/30 rounded-lg p-3">
+                <Sparkles className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
                 <h3 className="text-3xl font-black text-white mb-3">The Benefits of AI-Powered CVs</h3>
@@ -170,25 +170,25 @@ export default function AIPoweredCVOptimizationPage() {
                 </p>
                 <div className="space-y-4">
                   <div className="border-l-4 border-green-500 pl-4">
-                    <h4 className="font-bold text-gray-900 mb-1">⚡ Speed & Efficiency</h4>
+                    <h4 className="font-bold text-white mb-1">⚡ Speed & Efficiency</h4>
                     <p className="text-gray-400">
                       What used to take 2-3 hours per application now takes 30 seconds. Apply to more jobs without sacrificing quality.
                     </p>
                   </div>
                   <div className="border-l-4 border-blue-500 pl-4">
-                    <h4 className="font-bold text-gray-900 mb-1">🎯 Perfect Keyword Matching</h4>
+                    <h4 className="font-bold text-white mb-1">🎯 Perfect Keyword Matching</h4>
                     <p className="text-gray-400">
                       AI identifies and incorporates the exact keywords recruiters and ATS systems are scanning for.
                     </p>
                   </div>
                   <div className="border-l-4 border-purple-500 pl-4">
-                    <h4 className="font-bold text-gray-900 mb-1">📈 Data-Driven Improvements</h4>
+                    <h4 className="font-bold text-white mb-1">📈 Data-Driven Improvements</h4>
                     <p className="text-gray-400">
                       Learn from thousands of successful CVs to understand what works and what doesn't.
                     </p>
                   </div>
                   <div className="border-l-4 border-yellow-500 pl-4">
-                    <h4 className="font-bold text-gray-900 mb-1">🔄 Consistency Across Applications</h4>
+                    <h4 className="font-bold text-white mb-1">🔄 Consistency Across Applications</h4>
                     <p className="text-gray-400">
                       Maintain professional quality across all your applications without manual effort.
                     </p>
@@ -199,7 +199,7 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 3 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-purple-100 rounded-lg p-3">
                 <Target className="w-6 h-6 text-purple-600" />
@@ -211,24 +211,24 @@ export default function AIPoweredCVOptimizationPage() {
                 </p>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">3x</div>
+                    <div className="text-4xl font-bold text-blue-400 mb-2">3x</div>
                     <p className="text-white font-semibold mb-1">More Interview Invitations</p>
-                    <p className="text-sm text-gray-600">Compared to generic CVs</p>
+                    <p className="text-sm text-slate-300">Compared to generic CVs</p>
                   </div>
                   <div className="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-lg">
-                    <div className="text-4xl font-bold text-green-600 mb-2">95%</div>
+                    <div className="text-4xl font-bold text-green-400 mb-2">95%</div>
                     <p className="text-white font-semibold mb-1">ATS Pass Rate</p>
-                    <p className="text-sm text-gray-600">Successfully screened by automated systems</p>
+                    <p className="text-sm text-slate-300">Successfully screened by automated systems</p>
                   </div>
                   <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-purple-600 mb-2">10x</div>
                     <p className="text-white font-semibold mb-1">Faster Application Process</p>
-                    <p className="text-sm text-gray-600">From hours to seconds per application</p>
+                    <p className="text-sm text-slate-300">From hours to seconds per application</p>
                   </div>
                   <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-lg">
                     <div className="text-4xl font-bold text-orange-600 mb-2">67%</div>
                     <p className="text-white font-semibold mb-1">Reduction in Job Search Time</p>
-                    <p className="text-sm text-gray-600">Land offers faster with optimized CVs</p>
+                    <p className="text-sm text-slate-300">Land offers faster with optimized CVs</p>
                   </div>
                 </div>
               </div>
@@ -236,7 +236,7 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 4 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-yellow-100 rounded-lg p-3">
                 <Award className="w-6 h-6 text-yellow-600" />
@@ -248,38 +248,38 @@ export default function AIPoweredCVOptimizationPage() {
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-white/5">
+                    <thead className="bg-white/10">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Feature</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Traditional</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">AI-Powered</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-white">Feature</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-white">Traditional</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-white">AI-Powered</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-900">Time per application</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">2-3 hours</td>
-                        <td className="px-4 py-3 text-sm text-green-600 font-semibold">30 seconds</td>
+                        <td className="px-4 py-3 text-sm text-white">Time per application</td>
+                        <td className="px-4 py-3 text-sm text-slate-300">2-3 hours</td>
+                        <td className="px-4 py-3 text-sm text-green-400 font-semibold">30 seconds</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-900">Keyword optimization</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">Manual guesswork</td>
-                        <td className="px-4 py-3 text-sm text-green-600 font-semibold">Automatic & precise</td>
+                        <td className="px-4 py-3 text-sm text-white">Keyword optimization</td>
+                        <td className="px-4 py-3 text-sm text-slate-300">Manual guesswork</td>
+                        <td className="px-4 py-3 text-sm text-green-400 font-semibold">Automatic & precise</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-900">ATS compatibility</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">Hit or miss</td>
-                        <td className="px-4 py-3 text-sm text-green-600 font-semibold">95% pass rate</td>
+                        <td className="px-4 py-3 text-sm text-white">ATS compatibility</td>
+                        <td className="px-4 py-3 text-sm text-slate-300">Hit or miss</td>
+                        <td className="px-4 py-3 text-sm text-green-400 font-semibold">95% pass rate</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-900">Consistency</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">Varies by effort</td>
-                        <td className="px-4 py-3 text-sm text-green-600 font-semibold">Always professional</td>
+                        <td className="px-4 py-3 text-sm text-white">Consistency</td>
+                        <td className="px-4 py-3 text-sm text-slate-300">Varies by effort</td>
+                        <td className="px-4 py-3 text-sm text-green-400 font-semibold">Always professional</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-3 text-sm text-gray-900">Cost</td>
-                        <td className="px-4 py-3 text-sm text-gray-600">£50-200 per CV</td>
-                        <td className="px-4 py-3 text-sm text-green-600 font-semibold">£5 for 100 CVs</td>
+                        <td className="px-4 py-3 text-sm text-white">Cost</td>
+                        <td className="px-4 py-3 text-sm text-slate-300">£50-200 per CV</td>
+                        <td className="px-4 py-3 text-sm text-green-400 font-semibold">£5 for 100 CVs</td>
                       </tr>
                     </tbody>
                   </table>
@@ -289,7 +289,7 @@ export default function AIPoweredCVOptimizationPage() {
           </div>
 
           {/* Section 5 */}
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8">
+          <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-8">
             <div className="flex items-start space-x-4">
               <div className="bg-indigo-100 rounded-lg p-3">
                 <Clock className="w-6 h-6 text-indigo-600" />
@@ -303,28 +303,28 @@ export default function AIPoweredCVOptimizationPage() {
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">1</div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Upload Your Current CV</h4>
+                      <h4 className="font-semibold text-white mb-1">Upload Your Current CV</h4>
                       <p className="text-gray-400">Start with your existing CV—AI will analyze and understand your background</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">2</div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Paste the Job Description</h4>
+                      <h4 className="font-semibold text-white mb-1">Paste the Job Description</h4>
                       <p className="text-gray-400">Copy the job posting you're applying for—AI will identify key requirements</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">3</div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Let AI Work Its Magic</h4>
+                      <h4 className="font-semibold text-white mb-1">Let AI Work Its Magic</h4>
                       <p className="text-gray-400">In 30 seconds, get a perfectly tailored CV optimized for that specific role</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">4</div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Review & Download</h4>
+                      <h4 className="font-semibold text-white mb-1">Review & Download</h4>
                       <p className="text-gray-400">Review the changes, make any tweaks, and download in your preferred format</p>
                     </div>
                   </div>
@@ -335,10 +335,10 @@ export default function AIPoweredCVOptimizationPage() {
         </div>
 
         {/* Best Practices */}
-        <div className="bg-blue-50 border-l-4 border-blue-600 p-8 mb-12">
-          <h2 className="text-2xl font-bold text-blue-900 mb-4">💡 Pro Tips for AI CV Optimization</h2>
+        <div className="bg-blue-900/20 border-l-4 border-blue-600 p-8 mb-12">
+          <h2 className="text-2xl font-bold text-blue-300 mb-4">💡 Pro Tips for AI CV Optimization</h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <ul className="space-y-2 text-blue-800">
+            <ul className="space-y-2 text-blue-200">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
                 <span>Always start with an up-to-date base CV</span>
@@ -352,7 +352,7 @@ export default function AIPoweredCVOptimizationPage() {
                 <span>Review AI suggestions before sending</span>
               </li>
             </ul>
-            <ul className="space-y-2 text-blue-800">
+            <ul className="space-y-2 text-blue-200">
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
                 <span>Customize for each application—don't reuse</span>
@@ -379,7 +379,7 @@ export default function AIPoweredCVOptimizationPage() {
           <div className="flex justify-center space-x-4">
             <Link 
               href="/auth/signup"
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition"
+              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-900/20 transition"
             >
               Start Optimizing Free
             </Link>

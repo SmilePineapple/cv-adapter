@@ -17,7 +17,7 @@ export default function ResumeVsCVPage() {
           <div className="flex items-center justify-between py-4">
             <Link 
               href="/blog"
-              className="flex items-center text-gray-600 hover:text-gray-900"
+              className="flex items-center text-slate-300 hover:text-white"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Blog
@@ -37,14 +37,14 @@ export default function ResumeVsCVPage() {
         {/* Title */}
         <div className="mb-8">
           <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">Career Advice</span>
+            <span className="bg-blue-900/30 text-blue-200 px-3 py-1 rounded-full font-medium">Career Advice</span>
             <span>•</span>
             <span>October 21, 2025</span>
             <span>•</span>
             <span>7 min read</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Resume vs CV: What's the Difference?
           </h1>
           
@@ -57,8 +57,8 @@ export default function ResumeVsCVPage() {
         <div className="prose prose-invert prose-lg max-w-none">
           
           {/* Quick Answer Box */}
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8 not-prose">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Quick Answer</h3>
+          <div className="bg-blue-900/20 border-l-4 border-blue-600 p-6 mb-8 not-prose">
+            <h3 className="text-lg font-bold text-white mb-2">Quick Answer</h3>
             <p className="text-gray-300">
               <strong>Resume:</strong> 1-2 pages, used in the US, focuses on relevant experience<br/>
               <strong>CV:</strong> 2+ pages, used in UK/Europe, comprehensive career history
@@ -81,26 +81,26 @@ export default function ResumeVsCVPage() {
 
           <div className="bg-white border rounded-lg p-6 mb-6 not-prose">
             <div className="flex items-start gap-4">
-              <div className="bg-blue-100 p-3 rounded-lg">
+              <div className="bg-blue-900/30 p-3 rounded-lg">
                 <FileText className="w-6 h-6 text-blue-400" />
               </div>
               <div>
                 <h3 className="text-2xl font-black text-white mb-2">Resume (US)</h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-slate-400">
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Length:</strong> 1-2 pages maximum</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Content:</strong> Tailored to specific job</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Focus:</strong> Relevant experience only</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Used in:</strong> United States, Canada</span>
                   </li>
                 </ul>
@@ -128,21 +128,21 @@ export default function ResumeVsCVPage() {
               </div>
               <div>
                 <h3 className="text-2xl font-black text-white mb-2">CV (Curriculum Vitae)</h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-slate-400">
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Length:</strong> 2+ pages (no limit)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Content:</strong> Complete career history</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Focus:</strong> All experience and achievements</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                     <span><strong>Used in:</strong> UK, Europe, Asia, Australia</span>
                   </li>
                 </ul>
@@ -166,36 +166,36 @@ export default function ResumeVsCVPage() {
             <table className="w-full border-collapse bg-white rounded-lg overflow-hidden not-prose">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-bold text-gray-900">Feature</th>
-                  <th className="px-6 py-3 text-left text-sm font-bold text-gray-900">Resume (US)</th>
-                  <th className="px-6 py-3 text-left text-sm font-bold text-gray-900">CV (UK/Europe)</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white">Feature</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white">Resume (US)</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white">CV (UK/Europe)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900">Length</td>
-                  <td className="px-6 py-4 text-gray-700">1-2 pages</td>
-                  <td className="px-6 py-4 text-gray-700">2+ pages</td>
+                  <td className="px-6 py-4 font-medium text-white">Length</td>
+                  <td className="px-6 py-4 text-slate-400">1-2 pages</td>
+                  <td className="px-6 py-4 text-slate-400">2+ pages</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900">Content</td>
-                  <td className="px-6 py-4 text-gray-700">Tailored to job</td>
-                  <td className="px-6 py-4 text-gray-700">Complete history</td>
+                  <td className="px-6 py-4 font-medium text-white">Content</td>
+                  <td className="px-6 py-4 text-slate-400">Tailored to job</td>
+                  <td className="px-6 py-4 text-slate-400">Complete history</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900">Customization</td>
-                  <td className="px-6 py-4 text-gray-700">Changes per job</td>
-                  <td className="px-6 py-4 text-gray-700">Mostly static</td>
+                  <td className="px-6 py-4 font-medium text-white">Customization</td>
+                  <td className="px-6 py-4 text-slate-400">Changes per job</td>
+                  <td className="px-6 py-4 text-slate-400">Mostly static</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900">Photo</td>
-                  <td className="px-6 py-4 text-gray-700">Never include</td>
-                  <td className="px-6 py-4 text-gray-700">Sometimes expected</td>
+                  <td className="px-6 py-4 font-medium text-white">Photo</td>
+                  <td className="px-6 py-4 text-slate-400">Never include</td>
+                  <td className="px-6 py-4 text-slate-400">Sometimes expected</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900">Personal Info</td>
-                  <td className="px-6 py-4 text-gray-700">Minimal</td>
-                  <td className="px-6 py-4 text-gray-700">More detailed</td>
+                  <td className="px-6 py-4 font-medium text-white">Personal Info</td>
+                  <td className="px-6 py-4 text-slate-400">Minimal</td>
+                  <td className="px-6 py-4 text-slate-400">More detailed</td>
                 </tr>
               </tbody>
             </table>
@@ -207,19 +207,19 @@ export default function ResumeVsCVPage() {
           
           <ul className="space-y-3 mb-6">
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying for jobs in the <strong>United States</strong></span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying for jobs in <strong>Canada</strong></span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>The job posting specifically asks for a <strong>"resume"</strong></span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying to <strong>private sector</strong> jobs</span>
             </li>
           </ul>
@@ -228,19 +228,19 @@ export default function ResumeVsCVPage() {
           
           <ul className="space-y-3 mb-6">
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying for jobs in the <strong>UK, Europe, Asia, or Australia</strong></span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying for <strong>academic positions</strong> anywhere</span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>Applying for <strong>research positions</strong></span>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
               <span>The job posting specifically asks for a <strong>"CV"</strong></span>
             </li>
           </ul>
@@ -274,34 +274,34 @@ export default function ResumeVsCVPage() {
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Common Mistakes to Avoid</h2>
 
           <div className="space-y-4 mb-8">
-            <div className="flex items-start gap-3 p-4 bg-red-50 border-l-4 border-red-600 rounded not-prose">
-              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border-l-4 border-red-600 rounded not-prose">
+              <XCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-gray-900 mb-1">Sending a 4-page CV to a US employer</p>
+                <p className="font-bold text-white mb-1">Sending a 4-page CV to a US employer</p>
                 <p className="text-gray-300 text-sm">US employers expect 1-2 pages max. They'll likely stop reading after page 1.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-red-50 border-l-4 border-red-600 rounded not-prose">
-              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border-l-4 border-red-600 rounded not-prose">
+              <XCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-gray-900 mb-1">Sending a 1-page resume to a UK employer</p>
+                <p className="font-bold text-white mb-1">Sending a 1-page resume to a UK employer</p>
                 <p className="text-gray-300 text-sm">UK employers expect more detail. A 1-page document may look incomplete.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-red-50 border-l-4 border-red-600 rounded not-prose">
-              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border-l-4 border-red-600 rounded not-prose">
+              <XCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-gray-900 mb-1">Including a photo on a US resume</p>
+                <p className="font-bold text-white mb-1">Including a photo on a US resume</p>
                 <p className="text-gray-300 text-sm">This is a major red flag in the US and can lead to immediate rejection.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-red-50 border-l-4 border-red-600 rounded not-prose">
-              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-4 bg-red-900/20 border-l-4 border-red-600 rounded not-prose">
+              <XCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-gray-900 mb-1">Using the wrong terminology</p>
+                <p className="font-bold text-white mb-1">Using the wrong terminology</p>
                 <p className="text-gray-300 text-sm">Don't say "CV" when applying in the US, or "resume" when applying in the UK.</p>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default function ResumeVsCVPage() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
               href="/upload"
-              className="inline-flex items-center justify-center bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+              className="inline-flex items-center justify-center bg-white text-blue-400 px-6 py-3 rounded-lg font-semibold hover:bg-blue-900/20 transition"
             >
               Create Resume (US)
             </Link>
@@ -358,14 +358,14 @@ export default function ResumeVsCVPage() {
               href="/blog/how-to-beat-ats-systems"
               className="border rounded-lg p-6 hover:shadow-lg transition"
             >
-              <h4 className="text-lg font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
+              <h4 className="text-lg font-bold text-white mb-2">How to Beat ATS Systems</h4>
               <p className="text-gray-400 text-sm">Learn how to optimize your resume or CV for Applicant Tracking Systems.</p>
             </Link>
             <Link 
               href="/blog/cv-writing-tips"
               className="border rounded-lg p-6 hover:shadow-lg transition"
             >
-              <h4 className="text-lg font-bold text-gray-900 mb-2">CV Writing Tips & Best Practices</h4>
+              <h4 className="text-lg font-bold text-white mb-2">CV Writing Tips & Best Practices</h4>
               <p className="text-gray-400 text-sm">Expert advice to create a winning CV that gets you interviews.</p>
             </Link>
           </div>

@@ -84,7 +84,7 @@ export default function CVBuddyVsCanva() {
                         </span>
                       </td>
                     </tr>
-                    <tr className="bg-white/5">
+                    <tr className="bg-white/10">
                       <td className="px-4 py-4 font-medium text-white">AI CV Tailoring</td>
                       <td className="px-4 py-4 text-green-400 font-semibold">✓ Yes</td>
                       <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
@@ -94,7 +94,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4 text-slate-300">2 full CVs, no watermark</td>
                       <td className="px-4 py-4 text-slate-300">Limited features, watermark</td>
                     </tr>
-                    <tr className="bg-white/5">
+                    <tr className="bg-white/10">
                       <td className="px-4 py-4 font-medium text-white">Pro Price</td>
                       <td className="px-4 py-4 text-slate-300">£9.99/month</td>
                       <td className="px-4 py-4 text-slate-300">£10.99/month</td>
@@ -104,7 +104,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4 text-green-400 font-semibold">✓ Yes</td>
                       <td className="px-4 py-4 text-red-400 font-semibold">✗ No (Global)</td>
                     </tr>
-                    <tr className="bg-white/5">
+                    <tr className="bg-white/10">
                       <td className="px-4 py-4 font-medium text-white">Design Templates</td>
                       <td className="px-4 py-4 text-slate-300">10+ ATS-friendly</td>
                       <td className="px-4 py-4 text-slate-300">1000+ creative</td>
@@ -114,7 +114,7 @@ export default function CVBuddyVsCanva() {
                       <td className="px-4 py-4 text-slate-300">PDF, DOCX, TXT, HTML</td>
                       <td className="px-4 py-4 text-slate-300">PDF, PNG, JPG</td>
                     </tr>
-                    <tr className="bg-white/5">
+                    <tr className="bg-white/10">
                       <td className="px-4 py-4 font-medium text-white">Cover Letters</td>
                       <td className="px-4 py-4 text-green-400 font-semibold">✓ AI-generated</td>
                       <td className="px-4 py-4 text-yellow-400 font-semibold">~ Manual only</td>
@@ -291,7 +291,7 @@ export default function CVBuddyVsCanva() {
                 </p>
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-white text-blue-400 font-semibold rounded-lg hover:bg-blue-900/20 transition-colors"
                 >
                   Try CV Buddy Free
                   <Zap className="w-4 h-4 ml-2" />

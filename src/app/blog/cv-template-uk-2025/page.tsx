@@ -69,23 +69,23 @@ export default function CVTemplateUK2025() {
                 <span className="text-slate-300"><strong>Personal Details:</strong> Name, phone, email, location (city), LinkedIn profile</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Professional Summary:</strong> 3-4 lines highlighting your key strengths</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Work Experience:</strong> Reverse chronological order with achievements</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Education:</strong> Qualifications with grades (A-Levels, GCSEs, degrees)</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Skills:</strong> Technical and soft skills relevant to the role</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
                 <span className="text-gray-300"><strong>Additional Sections:</strong> Certifications, languages, interests (optional)</span>
               </li>
             </ul>
@@ -193,7 +193,7 @@ export default function CVTemplateUK2025() {
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">Font & Formatting</h3>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+          <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li><strong>Font:</strong> Arial, Calibri, or Times New Roman</li>
             <li><strong>Size:</strong> 10-12pt for body text, 14-16pt for headings</li>
             <li><strong>Margins:</strong> 2.5cm (1 inch) on all sides</li>
@@ -202,9 +202,9 @@ export default function CVTemplateUK2025() {
           </ul>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">What NOT to Include</h3>
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-            <h4 className="text-red-900 font-semibold mb-3">❌ Avoid These on UK CVs:</h4>
-            <ul className="list-disc pl-6 text-red-800 space-y-2">
+          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-6 mb-6">
+            <h4 className="text-red-300 font-semibold mb-3">❌ Avoid These on UK CVs:</h4>
+            <ul className="list-disc pl-6 text-red-200 space-y-2">
               <li>Photos (unless applying for acting/modeling)</li>
               <li>Date of birth (age discrimination laws)</li>
               <li>Marital status or number of children</li>
@@ -272,7 +272,7 @@ export default function CVTemplateUK2025() {
             <div className="flex flex-wrap gap-4">
               <Link 
                 href="/auth/signup"
-                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition inline-block"
+                className="bg-white text-blue-400 px-6 py-3 rounded-lg font-semibold hover:bg-blue-900/20 transition inline-block"
               >
                 Try Free (1 Generation)
               </Link>
@@ -289,22 +289,22 @@ export default function CVTemplateUK2025() {
           
           <div className="space-y-6 mb-8">
             <div className="bg-gray-100 rounded-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Should I use a CV template or create from scratch?</h3>
+              <h3 className="font-bold text-white mb-2">Should I use a CV template or create from scratch?</h3>
               <p className="text-gray-300">Use a template! It saves time and ensures proper formatting. Just make sure to customize it for each application.</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Are free CV templates as good as paid ones?</h3>
+              <h3 className="font-bold text-white mb-2">Are free CV templates as good as paid ones?</h3>
               <p className="text-gray-300">Yes, if they're ATS-friendly and professionally designed. The content matters more than fancy design.</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Can I use the same CV template for all applications?</h3>
+              <h3 className="font-bold text-white mb-2">Can I use the same CV template for all applications?</h3>
               <p className="text-gray-300">Use the same template design, but always customize the content for each job. Tailor your skills, experience, and keywords to match the job description.</p>
             </div>
 
             <div className="bg-gray-100 rounded-lg p-6">
-              <h3 className="font-bold text-gray-900 mb-2">What's the best file format for UK CVs?</h3>
+              <h3 className="font-bold text-white mb-2">What's the best file format for UK CVs?</h3>
               <p className="text-gray-300">PDF is generally best as it preserves formatting. However, some ATS systems prefer .docx, so check the job posting.</p>
             </div>
           </div>
@@ -318,15 +318,15 @@ export default function CVTemplateUK2025() {
           </p>
 
           {/* Related Articles */}
-          <div className="border-t border-gray-200 pt-8 mt-12">
+          <div className="border-t border-white/20 pt-8 mt-12">
             <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">How to Beat ATS Systems</h4>
+              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">How to Beat ATS Systems</h4>
                 <p className="text-gray-400 text-sm">Optimize your CV to pass Applicant Tracking Systems</p>
               </Link>
-              <Link href="/blog/cv-writing-tips" className="block bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-                <h4 className="font-bold text-gray-900 mb-2">CV Writing Tips & Best Practices</h4>
+              <Link href="/blog/cv-writing-tips" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+                <h4 className="font-bold text-white mb-2">CV Writing Tips & Best Practices</h4>
                 <p className="text-gray-400 text-sm">Expert advice to create a winning CV</p>
               </Link>
             </div>
