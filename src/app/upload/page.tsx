@@ -22,7 +22,8 @@ import {
   Sparkles,
   ScanLine,
   FileWarning,
-  Loader2
+  Loader2,
+  Clock
 } from 'lucide-react'
 
 export default function UploadPage() {
