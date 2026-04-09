@@ -23,41 +23,36 @@ export const metadata: Metadata = {
 
 export default function CVBuddyVsCanva() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link 
-          href="/blog"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Blog
-        </Link>
+    <>
+      <Link 
+        href="/blog"
+        className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 group"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+        Back to Blog
+      </Link>
 
-        <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-8 sm:p-12">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
-                <span>January 15, 2025</span>
-                <span>•</span>
-                <span>12 min read</span>
-                <span>•</span>
-                <span className="text-blue-400 font-black">Comparison</span>
-              </div>
-              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
-                CV Buddy vs Canva: Which CV Builder is Better in 2025?
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
+      <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
+        <span>January 15, 2025</span>
+        <span>•</span>
+        <span>12 min read</span>
+        <span>•</span>
+        <span className="text-blue-400 font-black">Comparison</span>
+      </div>
+      <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
+        CV Buddy vs Canva: Which CV Builder is Better in 2025?
+      </h1>
+      <p className="text-xl text-slate-300 leading-relaxed mb-8">
                 Choosing between CV Buddy and Canva for your CV? We tested both platforms extensively. Here's our honest comparison of features, ATS compatibility, and value for UK job seekers.
               </p>
-            </div>
 
-            <div className="prose prose-invert prose-lg max-w-none">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
+      <div className="prose prose-invert prose-lg max-w-none text-slate-300">
+              <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-6 mb-8">
                 <div className="flex items-start">
-                  <AlertTriangle className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-1" />
+                  <AlertTriangle className="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 mt-0 mb-2">TL;DR - Quick Answer</h3>
-                    <p className="mb-0">
+                    <h3 className="text-lg font-bold text-white mt-0 mb-2">TL;DR - Quick Answer</h3>
+                    <p className="mb-0 text-slate-300">
                       <strong>CV Buddy</strong> is better for job applications (95% ATS score, AI tailoring). 
                       <strong> Canva</strong> is better for creative portfolios (beautiful designs, poor ATS compatibility at 45%).
                     </p>
@@ -68,61 +63,61 @@ export default function CVBuddyVsCanva() {
               <h2>Quick Comparison Table</h2>
               <div className="overflow-x-auto -mx-4 sm:mx-0 mb-8">
                 <table className="min-w-full divide-y divide-white/10">
-                  <thead className="bg-white/5">
+                  <thead className="bg-white/10">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Feature</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">CV Buddy</th>
-                      <th className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase">Canva</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">Feature</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">CV Buddy</th>
+                      <th className="px-4 py-3 text-left text-xs font-black text-slate-400 uppercase">Canva</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white/5 divide-y divide-white/10">
+                  <tbody className="bg-white/10 divide-y divide-white/10">
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">ATS Compatibility</td>
+                      <td className="px-4 py-4 font-medium text-white">ATS Compatibility</td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-300">
                           95% - Excellent
                         </span>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/30 text-red-300">
                           45% - Poor
                         </span>
                       </td>
                     </tr>
                     <tr className="bg-white/5">
-                      <td className="px-4 py-4 font-medium text-gray-900">AI CV Tailoring</td>
-                      <td className="px-4 py-4 text-green-600 font-semibold">✓ Yes</td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No</td>
+                      <td className="px-4 py-4 font-medium text-white">AI CV Tailoring</td>
+                      <td className="px-4 py-4 text-green-400 font-semibold">✓ Yes</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">Free Tier</td>
-                      <td className="px-4 py-4">2 full CVs, no watermark</td>
-                      <td className="px-4 py-4">Limited features, watermark</td>
+                      <td className="px-4 py-4 font-medium text-white">Free Tier</td>
+                      <td className="px-4 py-4 text-slate-300">2 full CVs, no watermark</td>
+                      <td className="px-4 py-4 text-slate-300">Limited features, watermark</td>
                     </tr>
                     <tr className="bg-white/5">
-                      <td className="px-4 py-4 font-medium text-gray-900">Pro Price</td>
-                      <td className="px-4 py-4">£9.99/month</td>
-                      <td className="px-4 py-4">£10.99/month</td>
+                      <td className="px-4 py-4 font-medium text-white">Pro Price</td>
+                      <td className="px-4 py-4 text-slate-300">£9.99/month</td>
+                      <td className="px-4 py-4 text-slate-300">£10.99/month</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">UK-Specific</td>
-                      <td className="px-4 py-4 text-green-600 font-semibold">✓ Yes</td>
-                      <td className="px-4 py-4 text-red-600 font-semibold">✗ No (Global)</td>
+                      <td className="px-4 py-4 font-medium text-white">UK-Specific</td>
+                      <td className="px-4 py-4 text-green-400 font-semibold">✓ Yes</td>
+                      <td className="px-4 py-4 text-red-400 font-semibold">✗ No (Global)</td>
                     </tr>
                     <tr className="bg-white/5">
-                      <td className="px-4 py-4 font-medium text-gray-900">Design Templates</td>
-                      <td className="px-4 py-4">10+ ATS-friendly</td>
-                      <td className="px-4 py-4">1000+ creative</td>
+                      <td className="px-4 py-4 font-medium text-white">Design Templates</td>
+                      <td className="px-4 py-4 text-slate-300">10+ ATS-friendly</td>
+                      <td className="px-4 py-4 text-slate-300">1000+ creative</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-4 font-medium text-gray-900">Export Formats</td>
-                      <td className="px-4 py-4">PDF, DOCX, TXT, HTML</td>
-                      <td className="px-4 py-4">PDF, PNG, JPG</td>
+                      <td className="px-4 py-4 font-medium text-white">Export Formats</td>
+                      <td className="px-4 py-4 text-slate-300">PDF, DOCX, TXT, HTML</td>
+                      <td className="px-4 py-4 text-slate-300">PDF, PNG, JPG</td>
                     </tr>
                     <tr className="bg-white/5">
-                      <td className="px-4 py-4 font-medium text-gray-900">Cover Letters</td>
-                      <td className="px-4 py-4 text-green-600 font-semibold">✓ AI-generated</td>
-                      <td className="px-4 py-4 text-yellow-600 font-semibold">~ Manual only</td>
+                      <td className="px-4 py-4 font-medium text-white">Cover Letters</td>
+                      <td className="px-4 py-4 text-green-400 font-semibold">✓ AI-generated</td>
+                      <td className="px-4 py-4 text-yellow-400 font-semibold">~ Manual only</td>
                     </tr>
                   </tbody>
                 </table>
@@ -134,51 +129,51 @@ export default function CVBuddyVsCanva() {
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="p-6 bg-green-50 border border-green-200 rounded-xl">
+                <div className="p-6 bg-green-900/20 border border-green-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <Crown className="w-6 h-6 text-green-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">CV Buddy: 95% ATS Score</h3>
+                    <Crown className="w-6 h-6 text-green-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">CV Buddy: 95% ATS Score</h3>
                   </div>
                   <ul className="space-y-2 mb-0">
-                    <li className="flex items-start text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Clean, parseable formatting</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>AI keyword optimization</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Standard section headers</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <CheckCircle className="w-4 h-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>No graphics or tables</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="p-6 bg-red-50 border border-red-200 rounded-xl">
+                <div className="p-6 bg-red-900/20 border border-red-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <XCircle className="w-6 h-6 text-red-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">Canva: 45% ATS Score</h3>
+                    <XCircle className="w-6 h-6 text-red-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">Canva: 45% ATS Score</h3>
                   </div>
                   <ul className="space-y-2 mb-0">
-                    <li className="flex items-start text-sm">
-                      <XCircle className="w-4 h-4 text-red-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <XCircle className="w-4 h-4 text-red-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Complex layouts confuse ATS</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <XCircle className="w-4 h-4 text-red-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <XCircle className="w-4 h-4 text-red-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Graphics and icons unreadable</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <XCircle className="w-4 h-4 text-red-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <XCircle className="w-4 h-4 text-red-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Custom fonts cause issues</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <XCircle className="w-4 h-4 text-red-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <li className="flex items-start text-sm text-slate-300">
+                      <XCircle className="w-4 h-4 text-red-400 mr-2 flex-shrink-0 mt-0.5" />
                       <span>Text in images is invisible to ATS</span>
                     </li>
                   </ul>
@@ -230,49 +225,49 @@ export default function CVBuddyVsCanva() {
 
               <h2>Pricing Comparison</h2>
               <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="p-6 bg-white border border-gray-200 rounded-xl">
+                <div className="p-6 bg-white/10 border border-white/20 rounded-xl">
                   <h3 className="text-2xl font-black text-white mb-4">CV Buddy Pricing</h3>
                   <div className="space-y-3">
                     <div>
-                      <div className="font-semibold text-gray-900">Free</div>
-                      <div className="text-sm text-gray-600">2 CV generations, full features, no watermark</div>
+                      <div className="font-semibold text-white">Free</div>
+                      <div className="text-sm text-slate-300">2 CV generations, full features, no watermark</div>
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900">Pro: £9.99/month</div>
-                      <div className="text-sm text-gray-600">Unlimited CVs, cover letters, interview prep</div>
+                      <div className="font-semibold text-white">Pro: £9.99/month</div>
+                      <div className="text-sm text-slate-300">Unlimited CVs, cover letters, interview prep</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-6 bg-white border border-gray-200 rounded-xl">
+                <div className="p-6 bg-white/10 border border-white/20 rounded-xl">
                   <h3 className="text-2xl font-black text-white mb-4">Canva Pricing</h3>
                   <div className="space-y-3">
                     <div>
-                      <div className="font-semibold text-gray-900">Free</div>
-                      <div className="text-sm text-gray-600">Limited templates, watermark, basic features</div>
+                      <div className="font-semibold text-white">Free</div>
+                      <div className="text-sm text-slate-300">Limited templates, watermark, basic features</div>
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900">Pro: £10.99/month</div>
-                      <div className="text-sm text-gray-600">All templates, no watermark, team features</div>
+                      <div className="font-semibold text-white">Pro: £10.99/month</div>
+                      <div className="text-sm text-slate-300">All templates, no watermark, team features</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <h2>Real User Results</h2>
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">CV Buddy Users Report:</h3>
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 my-8">
+                <h3 className="text-lg font-bold text-white mb-4">CV Buddy Users Report:</h3>
                 <ul className="space-y-2 mb-0">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <li className="flex items-start text-slate-300">
+                    <CheckCircle className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>3x more interview requests after switching from Canva</span>
                   </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <li className="flex items-start text-slate-300">
+                    <CheckCircle className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>ATS scores improved from 30-40% to 85-95%</span>
                   </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <li className="flex items-start text-slate-300">
+                    <CheckCircle className="w-5 h-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" />
                     <span>Application time reduced from 45 minutes to 2 minutes per job</span>
                   </li>
                 </ul>
@@ -303,9 +298,6 @@ export default function CVBuddyVsCanva() {
                 </Link>
               </div>
             </div>
-          </div>
-        </article>
-      </div>
-    </div>
+    </>
   )
 }
