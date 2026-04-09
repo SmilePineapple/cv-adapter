@@ -747,9 +747,16 @@ export default function DownloadPage() {
       setExportStep('Complete!')
       toast.success('CV downloaded successfully!')
       
+      // Redirect to dashboard after successful download
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 1500)
+      
     } catch (error) {
       console.error('Export error:', error)
       toast.error('Failed to export CV. Please try again.')
+      // Show upgrade modal on export error (likely Pro feature restriction)
+      setShowUpgradeModal(true)
     } finally {
       setTimeout(() => {
         setIsExporting(false)

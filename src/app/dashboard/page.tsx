@@ -392,6 +392,9 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Dashboard fetch error:', error)
       toast.error('Failed to load dashboard data')
+      // Show upgrade modal on error - prompt user to upgrade for better experience
+      setShowUpgradeModal(true)
+      setUpgradeModalTrigger('limit_reached')
     } finally {
       setIsLoading(false)
     }
@@ -1070,7 +1073,7 @@ export default function DashboardPage() {
           <UpgradeModal
             isOpen={showUpgradeModal}
             onClose={() => setShowUpgradeModal(false)}
-            trigger="dashboard"
+            trigger={upgradeModalTrigger}
             currentUsage={currentUsage}
             maxGenerations={maxGenerations}
           />
