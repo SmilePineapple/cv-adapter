@@ -70,23 +70,23 @@ export default function CVTemplateUK2025() {
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Professional Summary:</strong> 3-4 lines highlighting your key strengths</span>
+                <span className="text-slate-300"><strong>Professional Summary:</strong> 3-4 lines highlighting your key strengths</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Work Experience:</strong> Reverse chronological order with achievements</span>
+                <span className="text-slate-300"><strong>Work Experience:</strong> Reverse chronological order with achievements</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Education:</strong> Qualifications with grades (A-Levels, GCSEs, degrees)</span>
+                <span className="text-slate-300"><strong>Education:</strong> Qualifications with grades (A-Levels, GCSEs, degrees)</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Skills:</strong> Technical and soft skills relevant to the role</span>
+                <span className="text-slate-300"><strong>Skills:</strong> Technical and soft skills relevant to the role</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Additional Sections:</strong> Certifications, languages, interests (optional)</span>
+                <span className="text-slate-300"><strong>Additional Sections:</strong> Certifications, languages, interests (optional)</span>
               </li>
             </ul>
           </div>
@@ -94,10 +94,10 @@ export default function CVTemplateUK2025() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">10 Best CV Templates for UK Jobs (2025)</h2>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">1. Classic Professional CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Corporate roles, finance, law, consulting
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             A traditional, clean layout with clear section headings. Uses a professional font (Calibri or Arial) and minimal formatting. Perfect for conservative industries where substance matters more than style.
           </p>
           <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mb-6">
@@ -111,81 +111,81 @@ export default function CVTemplateUK2025() {
           </div>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">2. Modern Creative CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Marketing, design, media, creative industries
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             A contemporary design with subtle color accents and modern typography. Balances creativity with professionalism, making your CV stand out while remaining readable by ATS systems.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">3. Graduate/Entry-Level CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Recent graduates, career starters, internships
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Emphasizes education, projects, and transferable skills. Includes sections for university achievements, societies, and volunteer work to compensate for limited work experience.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">4. Executive/Senior CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Senior managers, directors, C-suite roles
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             A sophisticated layout that highlights leadership experience and strategic achievements. Focuses on high-level accomplishments with quantifiable results.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">5. Technical/IT CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Software developers, engineers, IT professionals
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Structured to showcase technical skills, programming languages, and project experience. Includes dedicated sections for certifications and technical proficiencies.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">6. Healthcare/NHS CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Nurses, doctors, healthcare professionals
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Tailored for NHS applications with sections for clinical experience, registrations, and continuing professional development (CPD).
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">7. Teaching/Education CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Teachers, lecturers, education professionals
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Highlights teaching experience, qualifications (QTS, PGCE), and subject expertise. Includes sections for curriculum development and student outcomes.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">8. Sales/Business Development CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Sales professionals, account managers, BD roles
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Results-focused template emphasizing revenue growth, client acquisition, and performance metrics. Uses bold formatting to highlight key achievements.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">9. Career Change CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Professionals switching industries
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Skills-based format that emphasizes transferable skills over job titles. Includes a strong personal statement explaining your career transition.
           </p>
 
           <h3 className="text-3xl font-black text-white mt-8 mb-4">10. Academic/Research CV Template</h3>
-          <p className="text-gray-300 leading-relaxed mb-4">
+          <p className="text-slate-300 leading-relaxed mb-4">
             <strong>Best for:</strong> Researchers, academics, PhD candidates
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Comprehensive format for academic CVs (often 3+ pages). Includes sections for publications, research projects, grants, and conference presentations.
           </p>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">UK CV Format Guidelines (2025)</h2>
           
           <h3 className="text-3xl font-black text-white mt-8 mb-4">Length</h3>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             <strong>Standard:</strong> 2 pages (A4)<br/>
             <strong>Graduate/Entry-level:</strong> 1-2 pages<br/>
             <strong>Senior/Executive:</strong> 2-3 pages<br/>
@@ -252,15 +252,20 @@ export default function CVTemplateUK2025() {
                 <div>
                   <h3 className="font-bold text-white mb-2">Keep It Current</h3>
                   <p className="text-slate-400">Update dates, remove outdated skills, add recent achievements. Your CV should evolve with your career.</p>
-            <li>✅ Use standard section headings (Work Experience, Education, Skills)</li>
-            <li>✅ Avoid tables, text boxes, and columns</li>
-            <li>✅ Don't put important information in headers/footers</li>
-            <li>✅ Save as .docx or PDF (check job posting)</li>
-            <li>✅ Include relevant keywords from job description</li>
+                </div>
+              </div>
+            </div>
+
+            <ul className="list-disc pl-6 space-y-2 text-slate-300 mb-8">
+              <li>✅ Use standard section headings (Work Experience, Education, Skills)</li>
+              <li>✅ Avoid tables, text boxes, and columns</li>
+              <li>✅ Don't put important information in headers/footers</li>
+              <li>✅ Save as .docx or PDF (check job posting)</li>
+              <li>✅ Include relevant keywords from job description</li>
           </ul>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Get Your Perfect CV Template with AI</h2>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             While free templates are a great starting point, creating a truly tailored CV for each job application can be time-consuming. That's where <strong>My CV Buddy</strong> comes in.
           </p>
           
@@ -288,32 +293,32 @@ export default function CVTemplateUK2025() {
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Frequently Asked Questions</h2>
           
           <div className="space-y-6 mb-8">
-            <div className="bg-gray-100 rounded-lg p-6">
+            <div className="bg-white/10 rounded-lg p-6">
               <h3 className="font-bold text-white mb-2">Should I use a CV template or create from scratch?</h3>
-              <p className="text-gray-300">Use a template! It saves time and ensures proper formatting. Just make sure to customize it for each application.</p>
+              <p className="text-slate-300">Use a template! It saves time and ensures proper formatting. Just make sure to customize it for each application.</p>
             </div>
 
-            <div className="bg-gray-100 rounded-lg p-6">
+            <div className="bg-white/10 rounded-lg p-6">
               <h3 className="font-bold text-white mb-2">Are free CV templates as good as paid ones?</h3>
-              <p className="text-gray-300">Yes, if they're ATS-friendly and professionally designed. The content matters more than fancy design.</p>
+              <p className="text-slate-300">Yes, if they're ATS-friendly and professionally designed. The content matters more than fancy design.</p>
             </div>
 
-            <div className="bg-gray-100 rounded-lg p-6">
+            <div className="bg-white/10 rounded-lg p-6">
               <h3 className="font-bold text-white mb-2">Can I use the same CV template for all applications?</h3>
-              <p className="text-gray-300">Use the same template design, but always customize the content for each job. Tailor your skills, experience, and keywords to match the job description.</p>
+              <p className="text-slate-300">Use the same template design, but always customize the content for each job. Tailor your skills, experience, and keywords to match the job description.</p>
             </div>
 
-            <div className="bg-gray-100 rounded-lg p-6">
+            <div className="bg-white/10 rounded-lg p-6">
               <h3 className="font-bold text-white mb-2">What's the best file format for UK CVs?</h3>
-              <p className="text-gray-300">PDF is generally best as it preserves formatting. However, some ATS systems prefer .docx, so check the job posting.</p>
+              <p className="text-slate-300">PDF is generally best as it preserves formatting. However, some ATS systems prefer .docx, so check the job posting.</p>
             </div>
           </div>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">Conclusion</h2>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             A professional CV template is your foundation for job search success in the UK. Choose a template that matches your industry and experience level, then customize it for each application to maximize your chances of landing interviews.
           </p>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             Remember: The best CV template is one that's ATS-friendly, easy to read, and showcases your unique value to employers. Focus on achievements, use keywords from job descriptions, and keep your formatting clean and professional.
           </p>
 
@@ -321,13 +326,13 @@ export default function CVTemplateUK2025() {
           <div className="border-t border-white/20 pt-8 mt-12">
             <h3 className="text-3xl font-black text-white mb-6">Related Articles</h3>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+              <Link href="/blog/how-to-beat-ats-systems" className="block bg-white/10 border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-white mb-2">How to Beat ATS Systems</h4>
-                <p className="text-gray-400 text-sm">Optimize your CV to pass Applicant Tracking Systems</p>
+                <p className="text-slate-400 text-sm">Optimize your CV to pass Applicant Tracking Systems</p>
               </Link>
-              <Link href="/blog/cv-writing-tips" className="block bg-white border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
+              <Link href="/blog/cv-writing-tips" className="block bg-white/10 border border-white/20 rounded-lg p-6 hover:shadow-lg transition">
                 <h4 className="font-bold text-white mb-2">CV Writing Tips & Best Practices</h4>
-                <p className="text-gray-400 text-sm">Expert advice to create a winning CV</p>
+                <p className="text-slate-400 text-sm">Expert advice to create a winning CV</p>
               </Link>
             </div>
           </div>
