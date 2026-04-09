@@ -33,6 +33,7 @@ export default function UploadPage() {
   const [uploadStep, setUploadStep] = useState('')
   const [showVerification, setShowVerification] = useState(false)
   const [uploadError, setUploadError] = useState<{ message: string; details?: string } | null>(null)
+  const [isTakingLong, setIsTakingLong] = useState(false)
   const router = useRouter()
   const supabase = createSupabaseClient()
 
@@ -118,6 +119,13 @@ export default function UploadPage() {
 
       // Now call API with storage path
       console.log('[UPLOAD] Sending request to /api/upload...')
+      
+      // Set up timeout warning (15 seconds)
+      const timeoutWarning = setTimeout(() => {
+        setIsTakingLong(true)
+        setUploadStep('⏳ Still working... AI is carefully analyzing your CV (this may take 20-30 seconds)')
+      }, 15000)
+      
       const responsePromise = fetch('/api/upload', {
         method: 'POST',
         headers: {
@@ -135,9 +143,11 @@ export default function UploadPage() {
       // Wait for API response
       const response = await responsePromise
 
-      // Clear intervals
+      // Clear intervals and timeout
       if (progressInterval) clearInterval(progressInterval)
       if (messageInterval) clearInterval(messageInterval)
+      clearTimeout(timeoutWarning)
+      setIsTakingLong(false)
 
       console.log('[UPLOAD] Response status:', response.status)
       
@@ -165,6 +175,10 @@ export default function UploadPage() {
       setShowVerification(true)
       toast.success('CV uploaded and parsed successfully!')
       
+      // Auto-redirect to dashboard after 2 seconds
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 2000)
     } catch (error: any) {
       console.error('[UPLOAD] Upload error:', error)
       console.error('[UPLOAD] Error stack:', error.stack)
@@ -172,6 +186,7 @@ export default function UploadPage() {
       // Clear intervals on error
       if (progressInterval) clearInterval(progressInterval)
       if (messageInterval) clearInterval(messageInterval)
+      setIsTakingLong(false)
       // Don't clear uploadedFile on error so user can see what failed
     } finally {
       setIsUploading(false)
@@ -376,6 +391,16 @@ export default function UploadPage() {
                         )
                       })}
                     </div>
+                    
+                    {/* Long processing warning */}
+                    {isTakingLong && (
+                      <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
+                        <p className="text-sm text-yellow-400 flex items-center justify-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          Processing is taking longer than usual. Please don't close this page.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : uploadedFile ? (
