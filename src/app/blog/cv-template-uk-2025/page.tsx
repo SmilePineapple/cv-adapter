@@ -25,18 +25,18 @@ export default function CVTemplateUK2025() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             href="/blog"
-            className="inline-flex items-center text-gray-400 hover:text-white transition-colors mb-6"
+            className="inline-flex items-center text-slate-400 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          <div className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-blue-900/30 text-blue-300 px-3 py-1 rounded-full text-sm font-semibold mb-4">
             CV Templates
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             CV Template UK: 10 Free Professional Templates (2025)
           </h1>
-          <div className="flex items-center space-x-6 text-gray-600 text-sm">
+          <div className="flex items-center space-x-6 text-slate-400 text-sm">
             <span>January 8, 2025</span>
             <span>•</span>
             <span>12 min read</span>
@@ -49,24 +49,24 @@ export default function CVTemplateUK2025() {
         <div className="prose prose-invert prose-lg max-w-none">
           
           {/* Introduction */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-600 p-6 mb-8 rounded-r-lg">
-            <p className="text-lg text-gray-800 font-medium mb-0">
-              <FileText className="w-6 h-6 text-blue-600 inline mr-2" />
+          <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-l-4 border-blue-400 p-6 mb-8 rounded-r-lg">
+            <p className="text-lg text-slate-300 font-medium mb-0">
+              <FileText className="w-6 h-6 text-blue-400 inline mr-2" />
               Looking for a professional CV template for UK job applications? This guide provides 10 free, ATS-friendly CV templates designed specifically for the British job market in 2025.
             </p>
           </div>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">What Makes a Good UK CV Template?</h2>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="text-slate-300 leading-relaxed mb-6">
             A professional UK CV template should be clean, easy to read, and optimized for both Applicant Tracking Systems (ATS) and human recruiters. Unlike US resumes, UK CVs are typically 2 pages long and include more detailed information about your career history.
           </p>
 
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <h3 className="font-bold text-gray-900 mb-4">Essential Elements of a UK CV Template:</h3>
+          <div className="bg-white/10 rounded-lg shadow-sm p-6 mb-8">
+            <h3 className="font-bold text-white mb-4">Essential Elements of a UK CV Template:</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
-                <span className="text-gray-300"><strong>Personal Details:</strong> Name, phone, email, location (city), LinkedIn profile</span>
+                <CheckCircle className="w-5 h-5 text-green-400 mr-3 mt-1 flex-shrink-0" />
+                <span className="text-slate-300"><strong>Personal Details:</strong> Name, phone, email, location (city), LinkedIn profile</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-1 flex-shrink-0" />
@@ -100,9 +100,9 @@ export default function CVTemplateUK2025() {
           <p className="text-gray-300 leading-relaxed mb-6">
             A traditional, clean layout with clear section headings. Uses a professional font (Calibri or Arial) and minimal formatting. Perfect for conservative industries where substance matters more than style.
           </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <p className="text-blue-900 font-semibold mb-2">✨ Key Features:</p>
-            <ul className="text-blue-800 space-y-1">
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mb-6">
+            <p className="text-blue-300 font-semibold mb-2">✨ Key Features:</p>
+            <ul className="text-blue-200 space-y-1">
               <li>• Simple two-column layout</li>
               <li>• Professional color scheme (navy/grey)</li>
               <li>• ATS-friendly formatting</li>
@@ -216,56 +216,45 @@ export default function CVTemplateUK2025() {
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">How to Customize Your CV Template</h2>
           
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="bg-white/10 rounded-lg shadow-sm p-6 mb-8">
             <div className="space-y-4">
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">1</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">1</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Tailor to the Job Description</h3>
-                  <p className="text-gray-400">Match keywords from the job posting. If they want "project management," use that exact phrase in your CV.</p>
+                  <h3 className="font-bold text-white mb-2">Tailor to the Job Description</h3>
+                  <p className="text-slate-400">Match keywords from the job posting. If they want "project management," use that exact phrase in your CV.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">2</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">2</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Quantify Achievements</h3>
-                  <p className="text-gray-400">Use numbers: "Increased sales by 35%" is better than "Improved sales performance."</p>
+                  <h3 className="font-bold text-white mb-2">Quantify Achievements</h3>
+                  <p className="text-slate-400">Use numbers: "Increased sales by 35%" is better than "Improved sales performance."</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">3</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">3</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Use Action Verbs</h3>
-                  <p className="text-gray-400">Start bullet points with: Managed, Developed, Implemented, Achieved, Led, Coordinated.</p>
+                  <h3 className="font-bold text-white mb-2">Use Action Verbs</h3>
+                  <p className="text-slate-400">Start bullet points with: Managed, Developed, Implemented, Achieved, Led, Coordinated.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-blue-100 rounded-full p-2 mr-4 flex-shrink-0">
-                  <span className="text-blue-600 font-bold">4</span>
+                <div className="bg-blue-900/30 rounded-full p-2 mr-4 flex-shrink-0">
+                  <span className="text-blue-400 font-bold">4</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-2">Keep It Current</h3>
-                  <p className="text-gray-400">Update dates, remove outdated skills, add recent achievements. Your CV should evolve with your career.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h2 className="text-4xl font-black text-white mt-12 mb-6">ATS-Friendly CV Template Tips</h2>
-          <p className="text-gray-300 leading-relaxed mb-4">
-            92% of UK recruiters use Applicant Tracking Systems (ATS) to screen CVs. Your template must be ATS-compatible:
-          </p>
-          <ul className="list-disc pl-6 mb-6 text-gray-700">
+                  <h3 className="font-bold text-white mb-2">Keep It Current</h3>
+                  <p className="text-slate-400">Update dates, remove outdated skills, add recent achievements. Your CV should evolve with your career.</p>
             <li>✅ Use standard section headings (Work Experience, Education, Skills)</li>
             <li>✅ Avoid tables, text boxes, and columns</li>
             <li>✅ Don't put important information in headers/footers</li>
-            <li>✅ Use standard fonts (no fancy typography)</li>
             <li>✅ Save as .docx or PDF (check job posting)</li>
             <li>✅ Include relevant keywords from job description</li>
           </ul>

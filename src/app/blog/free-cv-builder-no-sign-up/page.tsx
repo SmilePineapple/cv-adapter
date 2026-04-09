@@ -23,38 +23,33 @@ export const metadata: Metadata = {
 
 export default function FreeCVBuilderNoSignUp() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link 
-          href="/blog"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Blog
-        </Link>
+    <>
+      <Link 
+        href="/blog"
+        className="inline-flex items-center text-blue-400 hover:text-blue-300 mb-8 group"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+        Back to Blog
+      </Link>
 
-        <article className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-8 sm:p-12">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
-                <span>January 15, 2025</span>
-                <span>•</span>
-                <span>10 min read</span>
-                <span>•</span>
-                <span className="text-blue-400 font-black">Guide</span>
-              </div>
-              <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
-                Free CV Builder No Sign Up Required (2025)
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                Want to create a CV without the hassle of creating an account? Here's the truth about "no sign up" CV builders and the best alternatives that respect your time.
-              </p>
-            </div>
+      <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
+        <span>January 15, 2025</span>
+        <span>•</span>
+        <span>10 min read</span>
+        <span>•</span>
+        <span className="text-blue-400 font-black">Guide</span>
+      </div>
+      <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-6">
+        Free CV Builder No Sign Up Required (2025)
+      </h1>
+      <p className="text-xl text-slate-300 leading-relaxed mb-8">
+        Want to create a CV without the hassle of creating an account? Here's the truth about "no sign up" CV builders and the best alternatives that respect your time.
+      </p>
 
-            <div className="prose prose-invert prose-lg max-w-none">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
-                <h3 className="text-lg font-bold text-gray-900 mt-0 mb-3">⚠️ The Truth About "No Sign Up" CV Builders</h3>
-                <p className="mb-0">
+      <div className="prose prose-invert prose-lg max-w-none text-slate-300">
+        <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-6 mb-8">
+          <h3 className="text-lg font-bold text-white mt-0 mb-3">⚠️ The Truth About "No Sign Up" CV Builders</h3>
+          <p className="mb-0 text-slate-300">
                   Most "no sign up" CV builders have a catch: you can't save or download your CV without creating an account. 
                   Instead, look for builders with <strong>minimal signup</strong> (just email, no credit card) that actually let you download your work.
                 </p>
@@ -80,30 +75,30 @@ export default function FreeCVBuilderNoSignUp() {
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="p-6 bg-green-50 border border-green-200 rounded-xl">
+                <div className="p-6 bg-green-900/20 border border-green-500/30 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <CheckCircle className="w-6 h-6 text-green-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">My CV Buddy</h3>
+                    <CheckCircle className="w-6 h-6 text-green-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">My CV Buddy</h3>
                   </div>
                   <ul className="space-y-2 mb-4">
-                    <li className="flex items-start text-sm">
-                      <span className="text-green-600 mr-2">✓</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-green-400 mr-2">✓</span>
                       <span>Email signup only (30 seconds)</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-green-600 mr-2">✓</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-green-400 mr-2">✓</span>
                       <span>No credit card required</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-green-600 mr-2">✓</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-green-400 mr-2">✓</span>
                       <span>2 free CV downloads immediately</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-green-600 mr-2">✓</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-green-400 mr-2">✓</span>
                       <span>AI-powered CV tailoring</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-green-600 mr-2">✓</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-green-400 mr-2">✓</span>
                       <span>95% ATS compatibility</span>
                     </li>
                   </ul>
@@ -116,34 +111,34 @@ export default function FreeCVBuilderNoSignUp() {
                   </Link>
                 </div>
 
-                <div className="p-6 bg-gray-50 border border-gray-200 rounded-xl">
+                <div className="p-6 bg-white/10 border border-white/20 rounded-xl">
                   <div className="flex items-center mb-3">
-                    <XCircle className="w-6 h-6 text-gray-600 mr-2" />
-                    <h3 className="text-lg font-bold text-gray-900 m-0">Typical "No Signup" Builder</h3>
+                    <XCircle className="w-6 h-6 text-slate-400 mr-2" />
+                    <h3 className="text-lg font-bold text-white m-0">Typical "No Signup" Builder</h3>
                   </div>
                   <ul className="space-y-2 mb-4">
-                    <li className="flex items-start text-sm">
-                      <span className="text-red-600 mr-2">✗</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-red-400 mr-2">✗</span>
                       <span>No account needed (initially)</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-red-600 mr-2">✗</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-red-400 mr-2">✗</span>
                       <span>Can't save your work</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-red-600 mr-2">✗</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-red-400 mr-2">✗</span>
                       <span>Forced signup to download</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-red-600 mr-2">✗</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-red-400 mr-2">✗</span>
                       <span>Often requires payment</span>
                     </li>
-                    <li className="flex items-start text-sm">
-                      <span className="text-red-600 mr-2">✗</span>
+                    <li className="flex items-start text-sm text-slate-300">
+                      <span className="text-red-400 mr-2">✗</span>
                       <span>Watermarks on free version</span>
                     </li>
                   </ul>
-                  <div className="text-sm text-gray-600 font-medium">
+                  <div className="text-sm text-slate-400 font-medium">
                     ⚠️ Avoid these traps
                   </div>
                 </div>
@@ -155,31 +150,31 @@ export default function FreeCVBuilderNoSignUp() {
               </p>
 
               <div className="space-y-4 my-6">
-                <div className="flex items-start p-4 bg-blue-50 rounded-lg">
-                  <Clock className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" />
+                <div className="flex items-start p-4 bg-blue-900/20 rounded-lg">
+                  <Clock className="w-6 h-6 text-blue-400 mr-3 flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Quick Signup (Under 1 minute)</h4>
-                    <p className="text-sm text-gray-700 mb-0">
+                    <h4 className="font-bold text-white mb-1">Quick Signup (Under 1 minute)</h4>
+                    <p className="text-sm text-slate-300 mb-0">
                       Email-only signup with instant access. No phone verification, no lengthy forms.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-blue-50 rounded-lg">
-                  <Shield className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" />
+                <div className="flex items-start p-4 bg-blue-900/20 rounded-lg">
+                  <Shield className="w-6 h-6 text-blue-400 mr-3 flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">No Credit Card Required</h4>
-                    <p className="text-sm text-gray-700 mb-0">
+                    <h4 className="font-bold text-white mb-1">No Credit Card Required</h4>
+                    <p className="text-sm text-slate-300 mb-0">
                       Free tier should be truly free - no payment details needed upfront.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-blue-50 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" />
+                <div className="flex items-start p-4 bg-blue-900/20 rounded-lg">
+                  <CheckCircle className="w-6 h-6 text-blue-400 mr-3 flex-shrink-0 mt-1" />
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Immediate Download Access</h4>
-                    <p className="text-sm text-gray-700 mb-0">
+                    <h4 className="font-bold text-white mb-1">Immediate Download Access</h4>
+                    <p className="text-sm text-slate-300 mb-0">
                       Download your CV right after signup, no waiting or verification delays.
                     </p>
                   </div>
@@ -256,9 +251,6 @@ export default function FreeCVBuilderNoSignUp() {
                 </Link>
               </div>
             </div>
-          </div>
-        </article>
-      </div>
-    </div>
+    </>
   )
 }
