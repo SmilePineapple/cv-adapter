@@ -258,6 +258,7 @@ export default function DownloadPage() {
   const [showSkillEditor, setShowSkillEditor] = useState(true)
   const [showPhotoUpload, setShowPhotoUpload] = useState(true)
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState<string | null>(null)
+  const [skillScores, setSkillScores] = useState<{ name: string; level: number }[] | null>(null)
 
   useEffect(() => {
     fetchGenerationData()
@@ -384,18 +385,18 @@ export default function DownloadPage() {
     }
   }
 
-  const generatePreview = async () => {
+  const generatePreview = async (updatedSkillScores?: { name: string; level: number }[] | null) => {
     if (!generationData) return
 
     // Use sections from generationData (already fetched from cv_sections in fetchGenerationData)
     const sections = [...generationData.output_sections.sections]
     
-    // Generate HTML preview based on template
-    const html = generateTemplateHtml(sections, selectedTemplate)
+    // Generate HTML preview based on template, passing updated skill scores if available
+    const html = generateTemplateHtml(sections, selectedTemplate, updatedSkillScores)
     setPreviewHtml(html)
   }
 
-  const generateTemplateHtml = (sections: CVSection[], templateId: string): string => {
+  const generateTemplateHtml = (sections: CVSection[], templateId: string, overrideSkillScores?: { name: string; level: number }[] | null): string => {
     // Check if it's a stunning template first
     const stunningTemplateKeys = Object.keys(stunningTemplates)
     if (stunningTemplateKeys.includes(templateId)) {
@@ -429,16 +430,19 @@ export default function DownloadPage() {
         website: contactInfo?.web || contactInfo?.website || ''
       }
       
-      // Get skill scores if available
-      const skillScoresSection = sections.find(s => s.type === 'skills')
-      const rawSkillScores = skillScoresSection?.content || null
-
-      const skillScores: { name: string; level: number }[] | null = Array.isArray(rawSkillScores)
-        ? rawSkillScores.map((item: any) => ({
-            name: typeof item === 'string' ? item : item.name || '',
-            level: typeof item === 'object' && item.level ? item.level : 3
-          }))
-        : null
+      // Get skill scores - use override if provided, otherwise extract from sections
+      let skillScores: { name: string; level: number }[] | null = overrideSkillScores || null
+      
+      if (!skillScores) {
+        const skillScoresSection = sections.find(s => s.type === 'skills')
+        const rawSkillScores = skillScoresSection?.content || null
+        skillScores = Array.isArray(rawSkillScores)
+          ? rawSkillScores.map((item: any) => ({
+              name: typeof item === 'string' ? item : item.name || '',
+              level: typeof item === 'object' && item.level ? item.level : 3
+            }))
+          : null
+      }
       
       // Prepare data for stunning templates
       const templateData = {
@@ -925,10 +929,18 @@ export default function DownloadPage() {
                 <div className="p-4 border-t">
                   <SkillScoreEditor
                     cvId={generationData.cv_id}
-                    onUpdate={async () => {
-                      // Regenerate preview with fresh data from database
-                      await generatePreview()
-                      toast.success('Skill levels updated! Preview refreshed.')
+                    onUpdate={async (updatedSkills) => {
+                      // Update local skill scores state immediately for real-time preview
+                      if (updatedSkills) {
+                        setSkillScores(updatedSkills)
+                        // Regenerate preview with updated skills
+                        await generatePreview(updatedSkills)
+                        toast.success('Skill levels updated! Preview refreshed.')
+                      } else {
+                        // Fallback: reload from database
+                        await generatePreview()
+                        toast.success('Skill levels saved!')
+                      }
                     }}
                   />
                 </div>

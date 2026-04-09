@@ -89,6 +89,8 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
     const updated = [...skills]
     updated[index].level = level
     setSkills(updated)
+    // Immediately notify parent of change for real-time preview updates
+    onUpdate?.(updated)
   }
 
   const addSkill = () => {

@@ -176,9 +176,13 @@ export default function UploadPage() {
       setShowVerification(true)
       toast.success('CV uploaded and parsed successfully!')
       
-      // Auto-redirect to dashboard after 2 seconds
+      // Auto-redirect to generate page with the new CV after 2 seconds
       setTimeout(() => {
-        router.push('/dashboard')
+        if (result.cv_id) {
+          router.push(`/generate/${result.cv_id}`)
+        } else {
+          router.push('/dashboard')
+        }
       }, 2000)
     } catch (error: any) {
       console.error('[UPLOAD] Upload error:', error)
