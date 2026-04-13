@@ -141,7 +141,7 @@ export default function DashboardPage() {
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
-  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'manual' | 'first_generation' | 'dashboard'>('manual')
+  const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'manual'>('manual')
   const [isAdmin, setIsAdmin] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [isResettingGenerations, setIsResettingGenerations] = useState(false)

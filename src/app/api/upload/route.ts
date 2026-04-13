@@ -249,7 +249,7 @@ export async function POST(request: NextRequest) {
     )
 
     if (sectionsToInsert.length > 0) {
-      console.log('Sections to insert:', sectionsToInsert.map(s => ({ type: s.section_type, title: s.title })))
+      console.log('Sections to insert:', sectionsToInsert.map((s: { section_type: string; title: string }) => ({ type: s.section_type, title: s.title })))
       
       const { error: sectionsError } = await supabaseAdmin
         .from('cv_sections')
