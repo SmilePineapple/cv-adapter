@@ -180,13 +180,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/blog/cv-examples-by-industry-uk`,
-      lastModified: new Date('2026-04-07'),
+      lastModified: new Date('2026-04-13'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog/cv-personal-statement-examples`,
-      lastModified: new Date('2026-04-07'),
+      lastModified: new Date('2026-04-13'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
@@ -246,9 +246,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/blog/cover-letter-template-uk-2025`,
-      lastModified: new Date('2026-04-07'),
+      lastModified: new Date('2026-04-13'),
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/blog/ai-cv-generator-guide`,

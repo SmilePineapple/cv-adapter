@@ -3,17 +3,19 @@ import { ArrowLeft, Mail, CheckCircle, Star } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Cover Letter Template UK: 5 Free Examples That Work (2025)',
-  description: 'Free professional cover letter templates for UK jobs. Includes examples for all industries and experience levels. Download and customize for 2025.',
-  keywords: ['cover letter template UK', 'cover letter examples', 'how to write a cover letter', 'cover letter format UK', 'job application letter'],
+  title: 'Cover Letter Examples UK 2026: 5 Free Templates That Get Interviews',
+  description: '5 free UK cover letter templates and examples for 2026. Copy proven cover letter formats for all industries — graduates, career changers & professionals. Land more interviews.',
+  keywords: ['cover letter template UK', 'cover letter examples uk', 'cover letter uk example', 'covering letter example uk', 'cover letters examples uk', 'cv cover letter examples uk', 'cover letter uk', 'best cover letter examples uk', 'cover letter format UK', 'cover letter 2026 uk', 'job application letter uk'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/blog/cover-letter-template-uk-2025'
   },
   openGraph: {
-    title: 'Cover Letter Template UK: 5 Free Examples (2025)',
-    description: 'Professional cover letter templates and examples for UK job applications.',
+    title: 'Cover Letter Examples UK 2026: 5 Free Templates That Get Interviews',
+    description: '5 free UK cover letter templates for 2026. Copy proven formats for all industries and land more interviews.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
+    modifiedTime: '2026-04-13T00:00:00Z',
+    url: 'https://www.mycvbuddy.com/blog/cover-letter-template-uk-2025',
   },
 }
 
