@@ -82,6 +82,7 @@ export async function GET(request: NextRequest) {
     const interviewPreps = interviewPrepsResult.data || []
 
     // Calculate statistics
+    const now = new Date()
     const totalUsers = users.length
     
     // Get active Stripe subscriptions FIRST (needed for revenue calculations)
@@ -139,6 +140,7 @@ export async function GET(request: NextRequest) {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
     const newUsersLast30Days = users.filter(u => new Date(u.created_at) > thirtyDaysAgo).length
 
+
     // Active users (generated CV in last 30 days)
     const activeUserIds = new Set(
       generations
@@ -151,170 +153,160 @@ export async function GET(request: NextRequest) {
     // Use usage_tracking.subscription_tier to identify paying users (excluding admins)
     // Then query Stripe API for actual amounts
     
-    // Get paying Pro users from usage_tracking (excluding admins)
+    // Paying pro users list (for fallback)
     const activePayingProUsers = usageTracking.filter(u => {
       const hasSubscriptionTier = u.subscription_tier === 'pro_monthly' || u.subscription_tier === 'pro_annual'
       const hasPaidStatus = activeSubscriptionUserIds.has(u.user_id) || completedPurchaseUserIds.has(u.user_id)
       return hasSubscriptionTier && hasPaidStatus && !adminUserIds.has(u.user_id)
     })
-    
+
     console.log('[Analytics] Paying Pro users (non-admin):', activePayingProUsers.length)
-    
-    // Query Stripe API for actual subscription amounts
+
     let totalMRR = 0
     let monthlyProCount = 0
     let annualProCount = 0
+    let monthlyProRevenue = 0
+    let annualProRevenue = 0
     let monthlyRevenueByMonth: Array<{ month: string; revenue: number; currency: string }> = []
-    
+    const upcomingPaymentsFromStripe: Array<{
+      user_id: string; email: string; due_date: string; due_date_ts: number;
+      days_until_due: number; plan: 'monthly' | 'annual'; amount: number;
+      stripe_subscription_id: string | null; stripe_status: string;
+    }> = []
+
     try {
       const stripe: any = require('stripe')(process.env.STRIPE_SECRET_KEY!)
 
+      // ── Monthly revenue: Stripe invoices only (no double-counting) ──────────
       try {
         const startDate = new Date('2025-10-01T00:00:00.000Z')
-        const endDate = new Date()
         const monthTotals = new Map<string, { amountMinor: number; currencies: Set<string> }>()
-
-        // Query invoices instead of charges (subscriptions create invoices, not charges)
         let startingAfter: string | undefined = undefined
+
         while (true) {
           const invoicesPage: any = await stripe.invoices.list({
             limit: 100,
             created: {
               gte: Math.floor(startDate.getTime() / 1000),
-              lte: Math.floor(endDate.getTime() / 1000),
+              lte: Math.floor(now.getTime() / 1000),
             },
             ...(startingAfter ? { starting_after: startingAfter } : {}),
           })
-
           for (const inv of invoicesPage.data) {
             if (inv.status !== 'paid') continue
-
-            const netAmountMinor = Math.max(0, (inv.amount_paid || 0))
+            const netAmountMinor = Math.max(0, inv.amount_paid || 0)
             if (netAmountMinor <= 0) continue
-
             const created = new Date((inv.created || 0) * 1000)
             const key = `${created.getUTCFullYear()}-${String(created.getUTCMonth() + 1).padStart(2, '0')}`
-
             const current = monthTotals.get(key) || { amountMinor: 0, currencies: new Set<string>() }
             current.amountMinor += netAmountMinor
             if (inv.currency) current.currencies.add(String(inv.currency).toLowerCase())
             monthTotals.set(key, current)
           }
-
           if (!invoicesPage.has_more) break
           startingAfter = invoicesPage.data[invoicesPage.data.length - 1]?.id
           if (!startingAfter) break
         }
 
-        // Also calculate revenue from subscriptions table (for manually upgraded users)
-        // This ensures revenue is counted even if Stripe invoice wasn't generated
-        const now = new Date()
-        for (const sub of subscriptions) {
-          if (sub.status !== 'active' || adminUserIds.has(sub.user_id)) continue
-          
-          // Get user's subscription tier from usage_tracking
-          const userUsage = usageTracking.find(u => u.user_id === sub.user_id)
-          const tier = userUsage?.subscription_tier || 'pro_monthly'
-          
-          // Calculate amount based on tier
-          const amount = tier === 'pro_annual' ? 2999 : 299 // in cents (29.99 or 2.99)
-          
-          // Use subscription_end_date or current_period_end to determine which month
-          const periodEnd = sub.current_period_end || userUsage?.subscription_end_date
-          if (!periodEnd) continue
-          
-          const endDate = new Date(periodEnd)
-          // For monthly: subscription started ~1 month before period end
-          // For annual: subscription started ~1 year before period end
-          const monthsToSubtract = tier === 'pro_annual' ? 12 : 1
-          const startDateSub = new Date(endDate)
-          startDateSub.setMonth(startDateSub.getMonth() - monthsToSubtract)
-          
-          // Only count if subscription started within our date range
-          if (startDateSub >= startDate && startDateSub <= endDate) {
-            const key = `${startDateSub.getUTCFullYear()}-${String(startDateSub.getUTCMonth() + 1).padStart(2, '0')}`
-            const current = monthTotals.get(key) || { amountMinor: 0, currencies: new Set<string>() }
-            current.amountMinor += amount
-            current.currencies.add('gbp')
-            monthTotals.set(key, current)
-            console.log(`[Analytics] Added subscription revenue for ${key}: £${amount / 100} (user: ${sub.user_id})`)
-          }
-        }
-
         monthlyRevenueByMonth = Array.from(monthTotals.entries())
           .map(([month, v]) => {
             const currencies = Array.from(v.currencies)
-            const currency = currencies.length === 1 ? currencies[0] : 'mixed'
-            return {
-              month,
-              revenue: v.amountMinor / 100,
-              currency,
-            }
+            return { month, revenue: v.amountMinor / 100, currency: currencies.length === 1 ? currencies[0] : 'mixed' }
           })
           .sort((a, b) => a.month.localeCompare(b.month))
       } catch (err) {
-        console.error('[Analytics] Failed to compute monthly revenue breakdown from Stripe charges:', err)
+        console.error('[Analytics] Failed to compute monthly revenue from Stripe invoices:', err)
       }
-      
-      for (const user of activePayingProUsers) {
-        try {
-          // Find subscription in subscriptions table
-          const subRecord = subscriptions.find(s => s.user_id === user.user_id && s.stripe_subscription_id)
-          
-          if (subRecord?.stripe_subscription_id) {
-            const stripeSub = await stripe.subscriptions.retrieve(subRecord.stripe_subscription_id)
-            
-            if (stripeSub.status === 'active' && stripeSub.items?.data?.[0]?.price) {
-              const price = stripeSub.items.data[0].price
-              const amount = price.unit_amount || 0 // in cents
-              const interval = price.recurring?.interval || 'month'
-              
-              // Convert to monthly MRR
-              if (interval === 'month') {
-                totalMRR += amount / 100 // Convert cents to pounds
-                monthlyProCount++
-                console.log(`[Analytics] Monthly sub: £${amount / 100}`)
-              } else if (interval === 'year') {
-                totalMRR += (amount / 100) / 12 // Annual to monthly
-                annualProCount++
-                console.log(`[Analytics] Annual sub: £${amount / 100}/year`)
-              }
-            }
-          } else {
-            // Fallback: Use subscription_tier to estimate
-            console.log(`[Analytics] No Stripe ID for user ${user.user_id}, using tier: ${user.subscription_tier}`)
-            if (user.subscription_tier === 'pro_monthly') {
-              totalMRR += 2.99 // Default monthly
-              monthlyProCount++
-            } else if (user.subscription_tier === 'pro_annual') {
-              totalMRR += 29.99 / 12 // Default annual
-              annualProCount++
-            }
+
+      // ── MRR + upcoming payments: list ALL active Stripe subscriptions ────────
+      // This is the fix: query Stripe directly instead of relying on DB current_period_end
+      try {
+        let subStartingAfter: string | undefined = undefined
+        const stripeActiveSubs: any[] = []
+
+        while (true) {
+          const page: any = await stripe.subscriptions.list({
+            status: 'active',
+            limit: 100,
+            expand: ['data.customer'],
+            ...(subStartingAfter ? { starting_after: subStartingAfter } : {}),
+          })
+          stripeActiveSubs.push(...page.data)
+          if (!page.has_more) break
+          subStartingAfter = page.data[page.data.length - 1]?.id
+          if (!subStartingAfter) break
+        }
+
+        for (const stripeSub of stripeActiveSubs) {
+          // Match to our user via stripe_subscription_id or stripe_customer_id in DB
+          const dbSub = subscriptions.find(
+            s => s.stripe_subscription_id === stripeSub.id ||
+                 (s.stripe_customer_id && s.stripe_customer_id === stripeSub.customer?.id)
+          )
+          const userId = dbSub?.user_id
+          if (!userId || adminUserIds.has(userId)) continue
+
+          const authUser = users.find(u => u.id === userId)
+          const email = authUser?.email || stripeSub.customer?.email || 'Unknown'
+
+          const price = stripeSub.items?.data?.[0]?.price
+          const amount = price?.unit_amount || 0
+          const interval = price?.recurring?.interval || 'month'
+
+          if (interval === 'month') {
+            const monthly = amount / 100
+            totalMRR += monthly; monthlyProRevenue += monthly; monthlyProCount++
+          } else if (interval === 'year') {
+            const monthly = (amount / 100) / 12
+            totalMRR += monthly; annualProRevenue += monthly; annualProCount++
           }
-        } catch (err) {
-          console.error(`[Analytics] Failed to retrieve Stripe data for user ${user.user_id}:`, err)
-          // Fallback to tier-based pricing
-          if (user.subscription_tier === 'pro_monthly') {
-            totalMRR += 2.99
-            monthlyProCount++
-          } else if (user.subscription_tier === 'pro_annual') {
-            totalMRR += 29.99 / 12
-            annualProCount++
+
+          // Upcoming payment using Stripe's current_period_end (always fresh)
+          const periodEnd = stripeSub.current_period_end
+          if (periodEnd) {
+            const dueDate = new Date(periodEnd * 1000)
+            const daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+            if (daysUntilDue >= 0) {
+              upcomingPaymentsFromStripe.push({
+                user_id: userId,
+                email,
+                due_date: dueDate.toISOString(),
+                due_date_ts: periodEnd,
+                days_until_due: daysUntilDue,
+                plan: interval === 'year' ? 'annual' : 'monthly',
+                amount: amount / 100,
+                stripe_subscription_id: stripeSub.id,
+                stripe_status: stripeSub.status,
+              })
+            }
           }
         }
+
+        upcomingPaymentsFromStripe.sort((a, b) => a.days_until_due - b.days_until_due)
+        console.log('[Analytics] Upcoming payments from Stripe:', upcomingPaymentsFromStripe.length)
+
+      } catch (err) {
+        console.error('[Analytics] Failed to list Stripe active subscriptions:', err)
+        // Fallback MRR from DB tiers
+        for (const u of activePayingProUsers) {
+          if (u.subscription_tier === 'pro_monthly') { totalMRR += 2.99; monthlyProRevenue += 2.99; monthlyProCount++ }
+          else if (u.subscription_tier === 'pro_annual') { totalMRR += 29.99 / 12; annualProRevenue += 29.99 / 12; annualProCount++ }
+        }
       }
+
     } catch (err) {
       console.error('[Analytics] Failed to initialize Stripe:', err)
-      // Fallback to tier-based calculation
       monthlyProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_monthly').length
       annualProCount = activePayingProUsers.filter(u => u.subscription_tier === 'pro_annual').length
-      totalMRR = (monthlyProCount * 2.99) + (annualProCount * (29.99 / 12))
+      monthlyProRevenue = monthlyProCount * 2.99
+      annualProRevenue = annualProCount * (29.99 / 12)
+      totalMRR = monthlyProRevenue + annualProRevenue
     }
-    
+
     console.log('[Analytics] Total MRR:', totalMRR, 'Monthly:', monthlyProCount, 'Annual:', annualProCount)
-    
-    const monthlyMRR = totalMRR // Already calculated above
-    const annualMRR = 0 // Already included in totalMRR
+
+    const monthlyMRR = monthlyProRevenue
+    const annualMRR = annualProRevenue
     
     // Calculate projected annual revenue (ARR)
     const projectedARR = totalMRR * 12
@@ -377,7 +369,9 @@ export async function GET(request: NextRequest) {
         cover_letter_count: userCoverLetters.length,
         interview_prep_count: userInterviewPreps.length,
         last_activity: profile?.last_activity_at || user.last_sign_in_at,
-        full_name: profile?.full_name || null
+        full_name: profile?.full_name || null,
+        subscription_tier: usage?.subscription_tier || null,
+        stripe_subscription_id: subscriptions.find(s => s.user_id === user.id)?.stripe_subscription_id || null,
       }
     })
 
@@ -433,29 +427,8 @@ export async function GET(request: NextRequest) {
     const monthlyProUsers = monthlyProCount  // Already filtered for paying customers above
     const annualProUsers = annualProCount  // Already filtered for paying customers above
 
-    // Build upcoming payments list from active subscriptions with current_period_end
-    const now = new Date()
-    const upcomingPayments = subscriptions
-      .filter(s => s.status === 'active' && s.current_period_end && !adminUserIds.has(s.user_id))
-      .map(s => {
-        const user = users.find(u => u.id === s.user_id)
-        const usage = usageTracking.find(u => u.user_id === s.user_id)
-        const dueDate = new Date(s.current_period_end)
-        const daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-        const isAnnual = usage?.subscription_tier === 'pro_annual'
-        return {
-          user_id: s.user_id,
-          email: user?.email || 'Unknown',
-          due_date: s.current_period_end,
-          days_until_due: daysUntilDue,
-          plan: isAnnual ? 'annual' : 'monthly',
-          amount: isAnnual ? 29.99 : 2.99,
-          stripe_subscription_id: s.stripe_subscription_id
-        }
-      })
-      .filter(p => p.days_until_due >= 0) // Exclude already-passed dates
-      .sort((a, b) => a.days_until_due - b.days_until_due)
-      .slice(0, 20) // Top 20 upcoming
+    // Upcoming payments come directly from Stripe (upcomingPaymentsFromStripe built above)
+    const upcomingPayments = upcomingPaymentsFromStripe.slice(0, 30)
 
     return NextResponse.json({
       overview: {
@@ -475,22 +448,20 @@ export async function GET(request: NextRequest) {
         newUsersLast7Days,
         newUsersLast30Days,
         activeUsers,
-        conversionRate: totalUsers > 0 ? ((payingProUsers / totalUsers) * 100).toFixed(1) : '0',  // Use paying customers for conversion
+        conversionRate: totalUsers > 0 ? ((payingProUsers / totalUsers) * 100).toFixed(1) : '0',
         avgGenerationsPerUser: totalUsers > 0 ? (totalGenerations / totalUsers).toFixed(1) : '0',
         revenueFromSubscriptions: totalMRR,
         revenueFromLegacyPurchases: legacyRevenue,
-        averageRevenuePerProUser: payingProUsers > 0 ? (combinedRevenue / payingProUsers).toFixed(2) : '0',  // Use paying customers
+        averageRevenuePerProUser: payingProUsers > 0 ? ((totalMRR + legacyRevenue) / payingProUsers).toFixed(2) : '0',
         monthlyProRevenue: monthlyMRR,
-        annualProRevenue: annualMRR
+        annualProRevenue: annualMRR,
+        dataFetchedAt: now.toISOString(),
       },
-      charts: {
-        generationsByDay,
-        signupsByDay
-      },
+      charts: { generationsByDay, signupsByDay },
       users: userDetails,
       topUsers,
       monthlyRevenueByMonth,
-      upcomingPayments
+      upcomingPayments,
     })
 
   } catch (error) {
