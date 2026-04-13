@@ -224,17 +224,30 @@ export async function GET(request: NextRequest) {
         let subStartingAfter: string | undefined = undefined
         const stripeActiveSubs: any[] = []
 
+        // Step 1: list active sub IDs (lightweight, no expand needed)
+        const activeSubIds: string[] = []
         while (true) {
           const page: any = await stripe.subscriptions.list({
             status: 'active',
             limit: 100,
-            expand: ['data.customer'],
             ...(subStartingAfter ? { starting_after: subStartingAfter } : {}),
           })
-          stripeActiveSubs.push(...page.data)
+          for (const s of page.data) activeSubIds.push(s.id)
           if (!page.has_more) break
           subStartingAfter = page.data[page.data.length - 1]?.id
           if (!subStartingAfter) break
+        }
+
+        // Step 2: retrieve each sub individually — guarantees fresh current_period_end + customer email
+        for (const subId of activeSubIds) {
+          try {
+            const full: any = await stripe.subscriptions.retrieve(subId, {
+              expand: ['customer'],
+            })
+            stripeActiveSubs.push(full)
+          } catch (e) {
+            console.error('[Analytics] Failed to retrieve sub:', subId, e)
+          }
         }
 
         const stripeCustomerEmail = (sub: any): string => {
