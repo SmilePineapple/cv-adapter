@@ -237,17 +237,48 @@ export async function GET(request: NextRequest) {
           if (!subStartingAfter) break
         }
 
+        const stripeCustomerEmail = (sub: any): string => {
+          if (typeof sub.customer === 'object' && sub.customer?.email) return sub.customer.email
+          return ''
+        }
+
         for (const stripeSub of stripeActiveSubs) {
-          // Match to our user via stripe_subscription_id or stripe_customer_id in DB
-          const dbSub = subscriptions.find(
+          const stripeCustomerId = typeof stripeSub.customer === 'object'
+            ? stripeSub.customer?.id
+            : stripeSub.customer
+
+          // Strategy 1: match via subscriptions table (stripe_subscription_id or stripe_customer_id)
+          let dbSub = subscriptions.find(
             s => s.stripe_subscription_id === stripeSub.id ||
-                 (s.stripe_customer_id && s.stripe_customer_id === stripeSub.customer?.id)
+                 (s.stripe_customer_id && s.stripe_customer_id === stripeCustomerId)
           )
-          const userId = dbSub?.user_id
-          if (!userId || adminUserIds.has(userId)) continue
+
+          // Strategy 2: match via usage_tracking stripe_customer_id
+          if (!dbSub) {
+            const usageMatch = usageTracking.find(u => u.stripe_customer_id === stripeCustomerId)
+            if (usageMatch) {
+              dbSub = { user_id: usageMatch.user_id, stripe_subscription_id: stripeSub.id, stripe_customer_id: stripeCustomerId }
+            }
+          }
+
+          // Strategy 3: match by Stripe customer email against auth users
+          let userId = dbSub?.user_id
+          if (!userId) {
+            const custEmail = stripeCustomerEmail(stripeSub)
+            if (custEmail) {
+              const matchedUser = users.find(u => u.email?.toLowerCase() === custEmail.toLowerCase())
+              if (matchedUser) userId = matchedUser.id
+            }
+          }
+
+          if (!userId) {
+            console.log('[Analytics] Stripe sub unmatched:', stripeSub.id, 'customer:', stripeCustomerId, 'email:', stripeCustomerEmail(stripeSub))
+            continue
+          }
+          if (adminUserIds.has(userId)) continue
 
           const authUser = users.find(u => u.id === userId)
-          const email = authUser?.email || stripeSub.customer?.email || 'Unknown'
+          const email = authUser?.email || stripeCustomerEmail(stripeSub) || 'Unknown'
 
           const price = stripeSub.items?.data?.[0]?.price
           const amount = price?.unit_amount || 0

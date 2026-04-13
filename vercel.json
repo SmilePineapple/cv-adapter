@@ -21,6 +21,10 @@
     {
       "path": "/api/social-bot/cron",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/drip-sequence",
+      "schedule": "30 10 * * *"
     }
   ],
   "redirects": [

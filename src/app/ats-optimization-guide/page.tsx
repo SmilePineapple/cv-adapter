@@ -3,43 +3,120 @@ import { Metadata } from 'next'
 import { ArrowRight, CheckCircle, XCircle, AlertTriangle, Target, Zap, FileText, Search, Award, TrendingUp } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'ATS Optimization Guide 2026: How to Beat Applicant Tracking Systems (UK)',
-  description: 'Step-by-step ATS optimization guide for UK job seekers. Learn exactly how to format your CV, choose the right keywords, and pass ATS scans — with free ATS checker tool. 95% pass rate proven.',
+  title: 'ATS Optimisation Guide 2026: Beat Applicant Tracking Systems (UK)',
+  description: 'Complete ATS optimisation guide for UK job seekers 2026. Learn how to format your CV, pick keywords, and pass ATS scans every time. Free ATS checker included. Used by 10,000+ UK job seekers.',
   keywords: [
+    'ATS optimisation',
     'ATS optimization',
     'ATS optimization best practices 2026',
     'ATS friendly CV',
-    'beat ATS systems',
-    'applicant tracking system optimization',
-    'ATS CV checker',
-    'ATS resume optimization',
+    'beat ATS systems UK',
+    'applicant tracking system optimisation',
+    'ATS CV checker UK',
     'pass ATS scan',
-    'ATS keywords',
-    'ATS formatting',
-    'ATS compatible CV',
-    'how to beat ATS',
-    'ATS optimization tips',
-    'ATS CV format',
-    'ATS optimisation',
-    'ATS optimize',
-    'how to optimize cv resume for ats 2026',
-    'ATS optimization strategies 2026',
+    'ATS keywords UK',
+    'ATS CV format UK',
+    'how to beat ATS UK',
+    'ATS optimisation tips 2026',
+    'ATS compatible CV UK',
+    'how to optimise cv for ATS 2026',
+    'ATS optimisation strategies 2026',
+    'ATS CV UK free',
+    'ATS score checker',
+    'applicant tracking system UK',
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/ats-optimization-guide',
   },
   openGraph: {
-    title: 'ATS Optimization Guide 2026: Beat Applicant Tracking Systems',
-    description: 'Step-by-step guide to getting your CV past ATS systems. Free checker tool included.',
+    title: 'ATS Optimisation Guide 2026: Beat Applicant Tracking Systems (UK)',
+    description: 'Complete step-by-step guide to getting your CV past ATS systems in the UK. Free checker tool included. Used by 10,000+ job seekers.',
     url: 'https://www.mycvbuddy.com/ats-optimization-guide',
     type: 'article',
-    modifiedTime: '2026-04-07T00:00:00Z',
+    modifiedTime: '2026-04-13T00:00:00Z',
   },
+}
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is ATS optimisation and why does it matter in the UK?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'ATS (Applicant Tracking System) optimisation means formatting and wording your CV so that recruitment software can read it and rank it highly. In the UK, over 70% of employers with more than 50 staff use ATS software. If your CV is not optimised, it may never reach a human recruiter — regardless of how qualified you are.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which UK companies use ATS software?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most large UK employers use ATS, including NHS, Deloitte, KPMG, PwC, Barclays, HSBC, Lloyds, Amazon UK, and most recruitment agencies. Popular ATS platforms used in the UK include Workday, Taleo, Greenhouse, SmartRecruiters, and Applicant Pro.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Should I use ATS optimisation or ATS optimization (which spelling)?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'In the UK, the correct spelling is ATS optimisation (with an \'s\'). However, the ATS software itself does not care about spelling variants — what matters is that your CV contains the exact keywords from the job description, using whichever spelling the employer uses.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What ATS score do I need to pass?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Most ATS systems require a minimum match score of 70-80% before forwarding your CV to a recruiter. Aim for at least 75% keyword match with the job description. My CV Buddy scores your CV against the job description automatically and shows you exactly which keywords are missing.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I use a PDF for ATS in the UK?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes — modern ATS systems in the UK can read text-based PDFs. However, .docx (Microsoft Word format) is still the safest choice. Never submit a scanned image saved as a PDF, as ATS cannot extract text from images.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I check if my CV is ATS compatible?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The quickest method is the plain text test: copy all text from your CV and paste it into Notepad. If it reads clearly and in the right order, your CV is likely ATS compatible. For a more thorough check, use My CV Buddy — it scores your CV against any job description and highlights missing keywords instantly.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the best CV format for ATS in 2026?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The best ATS-friendly CV format in 2026 is a simple, single-column layout in .docx format. Use standard section headings (Work Experience, Education, Skills), a standard font such as Arial or Calibri at 10-12pt, and plain bullet points. Avoid tables, columns, text boxes, headers and footers, images, and decorative fonts.',
+      },
+    },
+  ],
+}
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'ATS Optimisation Guide 2026: How to Beat Applicant Tracking Systems (UK)',
+  description: 'Complete ATS optimisation guide for UK job seekers. Learn how to format your CV, choose keywords, and pass ATS scans every time.',
+  author: { '@type': 'Organization', name: 'My CV Buddy', url: 'https://www.mycvbuddy.com' },
+  publisher: { '@type': 'Organization', name: 'My CV Buddy', url: 'https://www.mycvbuddy.com' },
+  datePublished: '2025-10-01T00:00:00Z',
+  dateModified: '2026-04-13T00:00:00Z',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://www.mycvbuddy.com/ats-optimization-guide' },
 }
 
 export default function ATSOptimizationGuidePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
@@ -69,11 +146,19 @@ export default function ATSOptimizationGuidePage() {
               <AlertTriangle className="w-4 h-4" />
               <span>75% of CVs Rejected by ATS</span>
             </div>
+            {/* Breadcrumb */}
+            <nav className="text-sm text-gray-500 mb-6 flex items-center space-x-2">
+              <Link href="/" className="hover:text-blue-600">Home</Link>
+              <span>/</span>
+              <Link href="/blog" className="hover:text-blue-600">Guides</Link>
+              <span>/</span>
+              <span className="text-gray-800 font-medium">ATS Optimisation Guide</span>
+            </nav>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              ATS CV Optimizer & Resume Adapter Guide 2026
+              ATS Optimisation Guide 2026: Beat Applicant Tracking Systems (UK)
             </h1>
             <p className="text-xl text-gray-400 mb-8">
-              Master the art of beating Applicant Tracking Systems with our free ATS CV optimizer. Learn how to adapt your resume for ATS, format your CV correctly, choose the right keywords, and get past the robots to reach human recruiters.
+              Over 75% of CVs are rejected by ATS before a human reads them. This complete guide shows UK job seekers exactly how to optimise their CV for any ATS — covering formatting rules, keyword strategy, common mistakes, and how to check your ATS score for free.
             </p>
             <Link href="/auth/signup" className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
               Optimize My CV for ATS
@@ -448,6 +533,96 @@ export default function ATSOptimizationGuidePage() {
               </div>
             </section>
 
+            {/* UK-Specific ATS Section */}
+            <section className="mb-12">
+              <h2 className="text-4xl font-black text-white mb-6">ATS Optimisation in the UK: What's Different</h2>
+              <p className="text-gray-300 text-lg mb-4">
+                UK employers use some ATS platforms that are less common in the US. Here's what you need to know:
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="bg-blue-50 p-5 rounded-lg">
+                  <h3 className="font-bold text-blue-900 mb-2">Common ATS Platforms Used by UK Employers</h3>
+                  <ul className="text-blue-800 text-sm space-y-1">
+                    <li>• <strong>Workday</strong> — Used by NHS, Deloitte, KPMG, PwC, Barclays</li>
+                    <li>• <strong>Taleo (Oracle)</strong> — Common in large FTSE 100 companies</li>
+                    <li>• <strong>Greenhouse</strong> — Popular with UK tech startups and scale-ups</li>
+                    <li>• <strong>SmartRecruiters</strong> — Growing in UK retail and logistics</li>
+                    <li>• <strong>Eploy</strong> — UK-built ATS used widely in public sector</li>
+                    <li>• <strong>Applicant Pro</strong> — SME and recruitment agency favourite</li>
+                  </ul>
+                </div>
+                <div className="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-lg">
+                  <p className="font-semibold text-yellow-800 mb-2">🇬🇧 UK-Specific Tips:</p>
+                  <ul className="text-yellow-700 text-sm space-y-2">
+                    <li>• Use <strong>British English spelling</strong> throughout — "optimisation" not "optimization", "organised" not "organized"</li>
+                    <li>• Include your <strong>National Insurance number eligibility</strong> or right-to-work status if relevant</li>
+                    <li>• Reference UK qualifications by full name: "A-Levels", "GCSEs", "HNC", "HND", "NVQ Level 3"</li>
+                    <li>• List UK-specific certifications: CIMA, ACCA, PRINCE2, NEBOSH, CIPD, ACA</li>
+                    <li>• State salary expectations in <strong>£ GBP</strong> if the application asks</li>
+                    <li>• UK CVs are typically 2 pages — not 1 page as in the US</li>
+                  </ul>
+                </div>
+              </div>
+
+              <h3 className="text-3xl font-black text-white mb-4">UK Job Board ATS Compatibility</h3>
+              <p className="text-gray-300 text-lg mb-4">
+                Most major UK job boards have their own built-in ATS. Here's how to optimise for each:
+              </p>
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <p className="font-bold text-white mb-2">Reed.co.uk</p>
+                  <p className="text-gray-400 text-sm">Use their CV upload feature. Their parser handles .docx best. Keep formatting simple.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <p className="font-bold text-white mb-2">Indeed UK</p>
+                  <p className="text-gray-400 text-sm">Indeed's own ATS scores CVs for keyword density. Fill out all fields in your Indeed profile in addition to uploading a CV.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <p className="font-bold text-white mb-2">LinkedIn (Easy Apply)</p>
+                  <p className="text-gray-400 text-sm">LinkedIn passes your profile + CV to the employer's ATS. Ensure your LinkedIn headline matches your target job title exactly.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <p className="font-bold text-white mb-2">Totaljobs / CV-Library</p>
+                  <p className="text-gray-400 text-sm">Both have strong CV parsing. Use a clean .docx and fill the skills field with keywords relevant to your sector.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Frequently Asked Questions */}
+            <section className="mb-12">
+              <h2 className="text-4xl font-black text-white mb-6">Frequently Asked Questions About ATS Optimisation</h2>
+              <div className="space-y-4">
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">What is ATS optimisation and why does it matter in the UK?</h3>
+                  <p className="text-gray-300 text-base">ATS (Applicant Tracking System) optimisation means formatting and wording your CV so that recruitment software can read it and rank it highly. In the UK, over 70% of employers with more than 50 staff use ATS software. If your CV is not optimised, it may never reach a human recruiter — regardless of how qualified you are.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">Is it ATS optimisation or ATS optimization in the UK?</h3>
+                  <p className="text-gray-300 text-base">The correct British English spelling is <strong>ATS optimisation</strong> (with an 's'). However, the ATS software itself doesn't care — what matters is that your CV contains the exact keywords from the job description, using whichever spelling the employer uses.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">What ATS score do I need to pass in the UK?</h3>
+                  <p className="text-gray-300 text-base">Most ATS systems require a minimum match score of 70–80% before forwarding your CV to a recruiter. Aim for at least 75% keyword match with the job description. My CV Buddy scores your CV against the job description automatically and shows you exactly which keywords are missing.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">Which UK companies use ATS software?</h3>
+                  <p className="text-gray-300 text-base">Most large UK employers use ATS, including NHS, Deloitte, KPMG, PwC, Barclays, HSBC, Lloyds, Amazon UK, and most recruitment agencies. If you're applying to a company with more than 50 employees, assume they use ATS.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">Can I use a PDF for ATS in the UK?</h3>
+                  <p className="text-gray-300 text-base">Yes — modern ATS systems can read text-based PDFs. However, .docx (Microsoft Word format) is still the safest choice. Never submit a scanned image saved as a PDF, as ATS cannot extract text from images.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">How do I check if my CV is ATS compatible?</h3>
+                  <p className="text-gray-300 text-base">The quickest method is the plain text test: copy all text from your CV and paste it into Notepad. If it reads clearly and in the right order, your CV is likely ATS compatible. For a more thorough check, <Link href="/auth/signup" className="text-blue-400 underline">use My CV Buddy</Link> — it scores your CV against any job description and highlights missing keywords instantly.</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+                  <h3 className="font-bold text-white mb-2">What is the best CV format for ATS in 2026?</h3>
+                  <p className="text-gray-300 text-base">The best ATS-friendly CV format in 2026 is a simple, single-column layout in .docx format. Use standard section headings (Work Experience, Education, Skills), a standard font such as Arial or Calibri at 10–12pt, and plain bullet points. Avoid tables, columns, text boxes, headers and footers, images, and decorative fonts.</p>
+                </div>
+              </div>
+            </section>
+
           </article>
         </div>
       </section>
@@ -500,7 +675,7 @@ export default function ATSOptimizationGuidePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-white font-bold mb-4">CV Adapter</h3>
+              <h3 className="text-white font-bold mb-4">My CV Buddy</h3>
               <p className="text-sm">AI-powered CV builder with built-in ATS optimization.</p>
             </div>
             <div>
@@ -528,7 +703,7 @@ export default function ATSOptimizationGuidePage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>&copy; 2026 CV Adapter. All rights reserved.</p>
+            <p>&copy; 2026 My CV Buddy. All rights reserved.</p>
           </div>
         </div>
       </footer>

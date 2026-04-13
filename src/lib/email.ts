@@ -662,6 +662,189 @@ export async function sendPromoEmail(email: string, name: string) {
 }
 
 /**
+ * Day 3 sequence: "Did you try Pro yet?" — sent to all free users on day 3
+ * Focuses on social proof and what they're missing, not urgency
+ */
+export async function sendDay3ProNudgeEmail(email: string, name: string) {
+  try {
+    const resend = getResendClient()
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: `${name ? name + ', have' : 'Have'} you tried tailoring your CV yet? 🎯`,
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f6f9fc;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+              <tr><td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                  <tr>
+                    <td style="background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 100%);padding:36px;text-align:center;">
+                      <h1 style="color:#ffffff;font-size:28px;margin:0;font-weight:700;">Your CV is competing against 200+ others 📋</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:40px;">
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 20px 0;">Hi ${name || 'there'},</p>
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 20px 0;">
+                        For most job postings, recruiters spend <strong>just 6 seconds</strong> scanning a CV before deciding to read on or bin it. The ones that get read are tailored to match the job description — keyword for keyword.
+                      </p>
+                      <div style="background-color:#f0f9ff;border-left:4px solid #4F46E5;padding:20px;margin:0 0 28px 0;border-radius:4px;">
+                        <p style="font-size:15px;line-height:24px;color:#1e40af;margin:0 0 12px 0;font-weight:600;">With My CV Buddy Pro you can:</p>
+                        <p style="font-size:15px;line-height:26px;color:#334155;margin:6px 0;">✅ Generate unlimited tailored CVs for every application</p>
+                        <p style="font-size:15px;line-height:26px;color:#334155;margin:6px 0;">✅ Get an AI expert review of your existing CV</p>
+                        <p style="font-size:15px;line-height:26px;color:#334155;margin:6px 0;">✅ Create matching cover letters in one click</p>
+                        <p style="font-size:15px;line-height:26px;color:#334155;margin:6px 0;">✅ Practice interview questions tailored to the role</p>
+                        <p style="font-size:15px;line-height:26px;color:#334155;margin:6px 0;">✅ Download in DOCX, PDF, or TXT — no watermarks</p>
+                      </div>
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 28px 0;">
+                        All of that for <strong>£2.99/month</strong>. Less than a coffee, and it could land you a job worth tens of thousands more.
+                      </p>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding:4px 0 28px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription" style="display:inline-block;padding:16px 36px;background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 100%);color:#ffffff;text-decoration:none;border-radius:8px;font-weight:700;font-size:16px;">
+                              See Pro Plans →
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <div style="background-color:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:0 0 28px 0;">
+                        <p style="font-size:14px;line-height:22px;color:#6b7280;margin:0 0 8px 0;font-style:italic;">
+                          "I applied to 12 jobs in one week using My CV Buddy. Each CV was perfectly tailored. Got 4 interviews. Landed the one I actually wanted." — Sarah M., Marketing Manager
+                        </p>
+                      </div>
+                      <p style="font-size:15px;line-height:24px;color:#6b7280;margin:0;">
+                        Questions? Just reply to this email — we read every one.<br><br>
+                        Jake @ My CV Buddy
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;background-color:#f9fafb;">
+                      <p style="font-size:13px;color:#9ca3af;margin:4px 0;">My CV Buddy · <a href="https://www.mycvbuddy.com" style="color:#7c3aed;text-decoration:none;">mycvbuddy.com</a></p>
+                      <p style="font-size:13px;color:#9ca3af;margin:4px 0;"><a href="https://www.mycvbuddy.com/unsubscribe" style="color:#9ca3af;">Unsubscribe</a></p>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Day3 pro nudge email error:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Day3 pro nudge email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
+ * Day 7 sequence: time-limited discount offer for free users who haven't converted
+ */
+export async function sendDay7OfferEmail(email: string, name: string) {
+  try {
+    const resend = getResendClient()
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: '🎁 A little gift for you — exclusive offer inside',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f6f9fc;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+              <tr><td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                  <tr>
+                    <td style="background:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);padding:36px;text-align:center;">
+                      <h1 style="color:#ffffff;font-size:30px;margin:0;font-weight:700;">🎁 This is for you, ${name || 'friend'}</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:40px;">
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 20px 0;">Hi ${name || 'there'},</p>
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 24px 0;">
+                        You joined My CV Buddy a week ago. We want to make sure you actually land the job you're going for — so we're making it easier to go Pro.
+                      </p>
+                      <!-- Offer Box -->
+                      <div style="background:linear-gradient(135deg,#fef3c7,#fff7ed);border:2px solid #f59e0b;border-radius:12px;padding:28px;text-align:center;margin:0 0 28px 0;">
+                        <p style="font-size:14px;font-weight:700;color:#92400e;letter-spacing:2px;margin:0 0 8px 0;text-transform:uppercase;">Your exclusive offer</p>
+                        <p style="font-size:36px;font-weight:800;color:#dc2626;margin:0 0 4px 0;">First month free</p>
+                        <p style="font-size:16px;color:#92400e;margin:0 0 20px 0;">Then just £2.99/month — cancel anytime</p>
+                        <p style="font-size:13px;color:#b45309;margin:0;background-color:rgba(255,255,255,0.6);padding:8px 16px;border-radius:6px;display:inline-block;">⏰ This offer expires in <strong>48 hours</strong></p>
+                      </div>
+                      <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 20px 0;">
+                        With Pro you get everything you need for a serious job search — unlimited tailored CVs, cover letters, interview prep, AI review, premium templates, and no watermarks.
+                      </p>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding:4px 0 28px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription?offer=firstmonthfree" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);color:#ffffff;text-decoration:none;border-radius:8px;font-weight:800;font-size:18px;">
+                              Claim Your Free Month →
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="font-size:14px;line-height:22px;color:#9ca3af;text-align:center;margin:0 0 28px 0;">
+                        No commitment. Cancel before the month ends and you pay nothing.
+                      </p>
+                      <div style="background-color:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin:0 0 28px 0;">
+                        <p style="font-size:14px;line-height:22px;color:#166534;margin:0;">
+                          💚 <strong>Risk-free:</strong> If Pro doesn't help you land more interviews in your first month, reply to this email and we'll extend your trial — no questions asked.
+                        </p>
+                      </div>
+                      <p style="font-size:15px;line-height:24px;color:#6b7280;margin:0;">
+                        Rooting for you,<br><br>
+                        Jake @ My CV Buddy
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;background-color:#f9fafb;">
+                      <p style="font-size:13px;color:#9ca3af;margin:4px 0;">My CV Buddy · <a href="https://www.mycvbuddy.com" style="color:#7c3aed;text-decoration:none;">mycvbuddy.com</a></p>
+                      <p style="font-size:13px;color:#9ca3af;margin:4px 0;"><a href="https://www.mycvbuddy.com/unsubscribe" style="color:#9ca3af;">Unsubscribe</a></p>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Day7 offer email error:', error)
+      return { success: false, error }
+    }
+    return { success: true, data }
+  } catch (error) {
+    console.error('Day7 offer email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
  * Test email sending (for development)
  */
 export async function sendTestEmail(email: string) {
