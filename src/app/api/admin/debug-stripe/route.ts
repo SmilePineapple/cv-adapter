@@ -103,6 +103,11 @@ export async function GET(request: NextRequest) {
         stripe_status: stripeSub.status,
         interval,
         amount_pence: amount,
+        // Raw fields from Stripe for diagnosis
+        raw_current_period_end: stripeSub.current_period_end,
+        raw_item_current_period_end: stripeSub.items?.data?.[0]?.current_period_end,
+        raw_billing_cycle_anchor: stripeSub.billing_cycle_anchor,
+        raw_item0_keys: stripeSub.items?.data?.[0] ? Object.keys(stripeSub.items.data[0]) : [],
         current_period_end: dueDate,
         days_until_renewal: daysUntil,
         matched_by: dbSubS1 ? 'strategy1_subscriptions_table'

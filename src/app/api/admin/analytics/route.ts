@@ -292,12 +292,27 @@ export async function GET(request: NextRequest) {
             totalMRR += monthly; annualProRevenue += monthly; annualProCount++
           }
 
-          // Upcoming payment using Stripe's current_period_end (always fresh)
-          const periodEnd = stripeSub.current_period_end
+          // Upcoming payment — try several locations where Stripe SDK may put the period end
+          // (field location varies by SDK version and expand options)
+          let periodEnd: number | null =
+            (typeof stripeSub.current_period_end === 'number' ? stripeSub.current_period_end : null) ??
+            (typeof stripeSub.items?.data?.[0]?.current_period_end === 'number' ? stripeSub.items.data[0].current_period_end : null)
+
+          // Fallback: use DB current_period_end if Stripe didn't return it
+          if (!periodEnd) {
+            const dbMatch = subscriptions.find((s: any) => s.stripe_subscription_id === stripeSub.id)
+            if (dbMatch?.current_period_end) {
+              const ts = Math.floor(new Date(dbMatch.current_period_end).getTime() / 1000)
+              if (!isNaN(ts)) periodEnd = ts
+            }
+          }
+
+          console.log('[Analytics] sub', stripeSub.id, 'periodEnd raw:', stripeSub.current_period_end, 'resolved:', periodEnd)
+
           if (periodEnd) {
             const dueDate = new Date(periodEnd * 1000)
             const daysUntilDue = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-            if (daysUntilDue >= 0) {
+            if (daysUntilDue >= -1) {
               upcomingPaymentsFromStripe.push({
                 user_id: userId,
                 email,
