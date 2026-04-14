@@ -628,6 +628,14 @@ export default function GeneratePage() {
               )}
             </div>
 
+            {/* Enhanced Loading Animation */}
+            {isGenerating && (
+              <CVGenerationLoader 
+                progress={generateProgress} 
+                step={generateStep} 
+              />
+            )}
+
             {/* Generate Buttons */}
             <div className="pt-4 space-y-3">
               <div className="flex gap-3">
@@ -670,14 +678,6 @@ export default function GeneratePage() {
                 </button>
               </div>
               <p className="text-center text-xs text-gray-500">Quick Generate skips the review page and takes you straight to download</p>
-              
-              {/* Enhanced Loading Animation */}
-              {isGenerating && (
-                <CVGenerationLoader 
-                  progress={generateProgress} 
-                  step={generateStep} 
-                />
-              )}
             </div>
           </form>
 
