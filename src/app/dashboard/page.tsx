@@ -197,7 +197,7 @@ export default function DashboardPage() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         setUser(session.user)
-        fetchDashboardData()
+        fetchDashboardData(session.user.id)
 
         // Check if user needs onboarding
         const { data: profile } = await supabase
@@ -212,6 +212,7 @@ export default function DashboardPage() {
       } else if (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
         // Only redirect on explicit sign out or confirmed no session on initial load
         if (!session) {
+          setIsLoading(false)
           router.push('/auth/login')
         }
       }
@@ -233,20 +234,26 @@ export default function DashboardPage() {
     }
   }, [])
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (userId?: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      let resolvedUserId = userId
+      if (!resolvedUserId) {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) { setIsLoading(false); return }
+        resolvedUserId = user.id
+      }
+      // Use a local variable so TypeScript knows it's a string
+      const uid = resolvedUserId
 
       // Check if user is admin
       const adminUserId = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
-      setIsAdmin(user.id === adminUserId)
+      setIsAdmin(uid === adminUserId)
 
       // Fetch CVs
       const { data: cvsData, error: cvsError } = await supabase
         .from('cvs')
         .select('id, file_meta, created_at, last_accessed_at')
-        .eq('user_id', user.id)
+        .eq('user_id', uid)
         .order('created_at', { ascending: false })
 
       if (cvsError) {
@@ -263,7 +270,7 @@ export default function DashboardPage() {
           id, job_title, job_description, rewrite_style, tone, created_at, cv_id, ats_score,
           cvs(file_meta)
         `)
-        .eq('user_id', user.id)
+        .eq('user_id', uid)
         .order('created_at', { ascending: false })
 
       if (generationsError) {
@@ -308,7 +315,7 @@ export default function DashboardPage() {
             id, job_description, company_research, interview_data, created_at,
             cvs(file_meta)
           `)
-          .eq('user_id', user.id)
+          .eq('user_id', uid)
           .order('created_at', { ascending: false })
         
         interviewPrepsData = result.data
@@ -365,7 +372,7 @@ export default function DashboardPage() {
       const { data: usageData, error: usageError } = await supabase
         .from('usage_tracking')
         .select('generation_count, lifetime_generation_count, plan_type, max_lifetime_generations, current_month')
-        .eq('user_id', user.id)
+        .eq('user_id', uid)
         .single()
 
       if (usageError && usageError.code !== 'PGRST116') {
@@ -379,7 +386,7 @@ export default function DashboardPage() {
         const { data: purchaseData, error: purchaseError } = await supabase
           .from('purchases')
           .select('status, purchased_at')
-          .eq('user_id', user.id)
+          .eq('user_id', uid)
           .eq('status', 'completed')
           .maybeSingle()
 
