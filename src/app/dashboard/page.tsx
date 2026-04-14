@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -192,12 +192,15 @@ export default function DashboardPage() {
     router.push(`/generate/${cvId}`)
   }
 
+  const currentUserIdRef = useRef<string | null>(null)
+
   useEffect(() => {
     let initialized = false
 
     const initDashboard = async (userId: string) => {
       if (initialized) return
       initialized = true
+      currentUserIdRef.current = userId
       fetchDashboardData(userId)
 
       // Check if user needs onboarding
@@ -242,16 +245,8 @@ export default function DashboardPage() {
     // Track page view
     trackPageView('/dashboard')
 
-    // Refetch data when user returns to dashboard
-    const handleFocus = () => {
-      console.log('Dashboard focused, refetching data...')
-      fetchDashboardData()
-    }
-
-    window.addEventListener('focus', handleFocus)
     return () => {
       subscription.unsubscribe()
-      window.removeEventListener('focus', handleFocus)
     }
   }, [])
 
