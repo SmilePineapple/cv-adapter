@@ -347,15 +347,16 @@ export function generateTealSidebar(data: TemplateData): string {
  */
 export function generateSoftHeader(data: TemplateData): string {
   // If skillScores exist, use those skill names; otherwise extract from skills text
+  // Limit to max 6 skills to fit on 1 page
   let skills: string[] = []
   if (data.skillScores && Array.isArray(data.skillScores) && data.skillScores.length > 0) {
     console.log('🎯 Soft Header: Using skillScores for skill names:', data.skillScores.map(s => s.name))
-    skills = data.skillScores.map(s => s.name)
+    skills = data.skillScores.slice(0, 6).map(s => s.name)
   } else {
     console.log('📝 Soft Header: Using extracted skills from text')
-    skills = extractSkills(data.skills)
+    skills = extractSkills(data.skills).slice(0, 6)
   }
-  console.log('✨ Soft Header: Final skills array:', skills)
+  console.log('✨ Soft Header: Final skills array (max 6):', skills)
   
   return `
 <!DOCTYPE html>
@@ -365,24 +366,24 @@ export function generateSoftHeader(data: TemplateData): string {
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
-    .header { display: flex; background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 100%); padding: 40px 60px; align-items: center; justify-content: space-between; }
+    .header { display: flex; background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 100%); padding: 30px 50px; align-items: center; justify-content: space-between; }
     .header-left h1 { font-size: 36px; font-weight: 700; margin-bottom: 5px; }
     .header-left .subtitle { font-size: 14px; color: #666; }
     .header-left .contact { font-size: 11px; margin-top: 10px; line-height: 1.8; }
     .photo { width: 110px; height: 110px; border-radius: 8px; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .photo-placeholder { width: 100%; height: 100%; background: #E0E0E0; display: flex; align-items: center; justify-content: center; font-size: 40px; }
-    .container { padding: 40px 60px; }
-    .section { margin-bottom: 30px; }
+    .container { padding: 30px 50px; }
+    .section { margin-bottom: 20px; }
     .section-title { font-size: 14px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; }
     .section-title::before { content: '▲'; margin-right: 8px; font-size: 12px; }
-    .summary { font-size: 12px; line-height: 1.8; margin-bottom: 25px; }
+    .summary { font-size: 11px; line-height: 1.6; margin-bottom: 20px; }
     .two-column { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
     .experience-item { margin-bottom: 20px; }
     .exp-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
     .exp-meta { font-size: 11px; color: #666; margin-bottom: 8px; }
-    .exp-desc { font-size: 11px; line-height: 1.7; }
+    .exp-desc { font-size: 10px; line-height: 1.5; }
     .skill-bars { margin-top: 15px; }
-    .skill-bar { margin-bottom: 15px; }
+    .skill-bar { margin-bottom: 10px; }
     .skill-name { font-size: 11px; font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; }
     .skill-progress { height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
     .skill-fill { height: 100%; background: linear-gradient(90deg, #FFB6C1 0%, #87CEEB 100%); }
@@ -440,17 +441,19 @@ export function generateSoftHeader(data: TemplateData): string {
         <div class="section">
           <div class="section-title">Skills</div>
           <div class="skill-bars">
-            ${skills.map((skill, i) => `
+            ${skills.map((skill, i) => {
+              const level = getSkillLevel(skill, data.skillScores, 95 - i * 5)
+              return `
               <div class="skill-bar">
                 <div class="skill-name">
                   <span>${skill}</span>
-                  <span>${95 - i * 5}%</span>
+                  <span>${level}%</span>
                 </div>
                 <div class="skill-progress">
-                  <div class="skill-fill" style="width: ${95 - i * 5}%"></div>
+                  <div class="skill-fill" style="width: ${level}%"></div>
                 </div>
               </div>
-            `).join('')}
+            `}).join('')}
           </div>
         </div>
       </div>
@@ -719,16 +722,18 @@ export function generateBoldSplit(data: TemplateData): string {
       
       <div class="section">
         <div class="section-title">Skills</div>
-        ${skills.map((skill, i) => `
+        ${skills.map((skill, i) => {
+          const level = getSkillLevel(skill, data.skillScores, 90 - i * 5)
+          return `
           <div class="skill-slider">
             <div class="skill-name">${skill}</div>
             <div class="slider-track">
-              <div class="slider-fill" style="width: ${90 - i * 5}%">
+              <div class="slider-fill" style="width: ${level}%">
                 <div class="slider-thumb"></div>
               </div>
             </div>
           </div>
-        `).join('')}
+        `}).join('')}
       </div>
       
       ${hobbies.length > 0 ? `

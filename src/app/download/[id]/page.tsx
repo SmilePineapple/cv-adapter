@@ -824,9 +824,10 @@ export default function DownloadPage() {
         {/* Template Slider - Horizontal */}
         <div className="mb-8">
           <h2 className="text-xl font-black text-white mb-4">Choose Template</h2>
-          <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide px-1">
             {TEMPLATES.map((template) => {
               const isLocked = template.pro && !isPro
+              const isSelected = selectedTemplate === template.id
               return (
                 <button
                   key={template.id}
@@ -838,40 +839,52 @@ export default function DownloadPage() {
                     }
                   }}
                   className={`
-                    relative flex-shrink-0 w-48 p-4 rounded-lg border-2 transition-all snap-start
-                    ${selectedTemplate === template.id 
-                      ? 'border-blue-500 bg-blue-50 shadow-lg' 
+                    relative flex-shrink-0 w-52 p-4 rounded-xl border-2 transition-all snap-start cursor-pointer
+                    hover:scale-[1.02] hover:-translate-y-0.5
+                    ${isSelected 
+                      ? 'border-blue-400 bg-gradient-to-br from-blue-500/20 to-purple-500/20 shadow-lg shadow-blue-500/20 ring-2 ring-blue-400/50' 
                       : isLocked
-                      ? 'border-white/10 bg-white/5 opacity-60'
-                      : 'border-white/10 hover:border-white/20 hover:shadow-md'
+                      ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed'
+                      : 'border-white/20 bg-white/10 hover:border-blue-400/50 hover:bg-white/15 hover:shadow-lg'
                     }
                   `}
                 >
+                  {/* Selection indicator */}
+                  {isSelected && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  )}
+                  
                   <div className="text-left">
-                    <div className="font-semibold text-sm text-white mb-1">
+                    <div className={`font-bold text-sm mb-1 ${isSelected ? 'text-white' : 'text-gray-200'}`}>
                       {template.name}
                     </div>
-                    <div className="text-xs text-gray-400 line-clamp-2 mb-2">
+                    <div className="text-xs text-gray-400 line-clamp-2 mb-3">
                       {template.description}
                     </div>
                     
-                    {template.badge && (
-                      <span className="inline-block px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
-                        {template.badge}
-                      </span>
-                    )}
-                    {template.category && (
-                      <span className="inline-block ml-1 px-2 py-0.5 text-xs font-medium bg-white/10 text-gray-300 rounded">
-                        {template.category}
-                      </span>
-                    )}
+                    <div className="flex flex-wrap gap-1">
+                      {template.badge && (
+                        <span className="inline-block px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
+                          {template.badge}
+                        </span>
+                      )}
+                      {template.category && (
+                        <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded ${isSelected ? 'bg-blue-500/30 text-blue-200' : 'bg-white/10 text-gray-300'}`}>
+                          {template.category}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   
                   {isLocked && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-xl">
                       <div className="text-center">
                         <div className="text-2xl mb-1">🔒</div>
-                        <div className="text-xs font-semibold text-purple-400">PRO</div>
+                        <div className="text-xs font-bold text-purple-400">PRO</div>
                       </div>
                     </div>
                   )}

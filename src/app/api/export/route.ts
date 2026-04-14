@@ -204,14 +204,18 @@ export async function POST(request: NextRequest) {
     }
     
     // CRITICAL: Ensure name and contact sections are ALWAYS present from original CV
-    // The AI sometimes doesn't include these in output_sections
+    // The AI sometimes doesn't include these in output_sections, or includes them with empty content
     const nameInOutput = completeSections.find(s => s.type === 'name')
     const contactInOutput = completeSections.find(s => s.type === 'contact')
+    const nameIsEmpty = !nameInOutput || !getSectionContent(nameInOutput.content).trim()
+    const contactIsEmpty = !contactInOutput || !getSectionContent(contactInOutput.content).trim()
     
-    if (!nameInOutput && originalSections) {
+    if (nameIsEmpty && originalSections) {
       const nameFromOriginal = originalSections.find(s => s.type === 'name')
-      if (nameFromOriginal) {
-        console.log('✅ Adding name section from original CV:', nameFromOriginal.content)
+      if (nameFromOriginal && getSectionContent(nameFromOriginal.content).trim()) {
+        console.log('✅ Restoring name section from original CV (was missing/empty):', nameFromOriginal.content)
+        // Replace empty or add missing
+        completeSections = completeSections.filter(s => s.type !== 'name')
         completeSections.unshift({
           type: 'name',
           content: nameFromOriginal.content,
@@ -220,10 +224,12 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    if (!contactInOutput && originalSections) {
+    if (contactIsEmpty && originalSections) {
       const contactFromOriginal = originalSections.find(s => s.type === 'contact')
-      if (contactFromOriginal) {
-        console.log('✅ Adding contact section from original CV:', contactFromOriginal.content)
+      if (contactFromOriginal && getSectionContent(contactFromOriginal.content).trim()) {
+        console.log('✅ Restoring contact section from original CV (was missing/empty):', contactFromOriginal.content)
+        // Replace empty or add missing
+        completeSections = completeSections.filter(s => s.type !== 'contact')
         completeSections.splice(1, 0, {
           type: 'contact',
           content: contactFromOriginal.content,
