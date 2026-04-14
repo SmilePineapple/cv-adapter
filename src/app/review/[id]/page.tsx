@@ -188,6 +188,7 @@ export default function ReviewPage() {
   const [improvedAtsScore, setImprovedAtsScore] = useState<number | null>(null)
   const [showComparison, setShowComparison] = useState(false)
   const [isPro, setIsPro] = useState(false)
+  const [aiGeneratingSection, setAiGeneratingSection] = useState<string | null>(null)
 
   useEffect(() => {
     fetchGenerationData()
@@ -258,21 +259,30 @@ export default function ReviewPage() {
       setGenerationData(generation)
       const generatedSecs: CVSection[] = generation.output_sections.sections || []
       
+      // Normalize type names to prevent duplicates (hobbies/interests/hobbies_and_interests are the same)
+      const normalizeType = (type: string) => {
+        if (type === 'interests' || type === 'hobbies_and_interests') return 'hobbies'
+        return type
+      }
+
       // Merge: use generated sections where they exist, otherwise use original
       const mergedSections = originalSecs.length > 0 
         ? originalSecs.map((originalSection: CVSection) => {
-            const generatedSection = generatedSecs.find((s: CVSection) => s.type === originalSection.type)
+            const normalizedOriginalType = normalizeType(originalSection.type)
+            const generatedSection = generatedSecs.find((s: CVSection) => normalizeType(s.type) === normalizedOriginalType)
             return generatedSection || originalSection
           })
         : generatedSecs // If no original, just use generated sections
       
-      // Add any generated sections that don't exist in original
+      // Add any generated sections that don't exist in original (using normalized types for comparison)
       console.log('🔍 Original sections count:', originalSecs.length)
       console.log('🔍 Generated sections count:', generatedSecs.length)
       console.log('🔍 Generated section types:', generatedSecs.map(s => s.type).join(', '))
       
       generatedSecs.forEach((genSection: CVSection) => {
-        if (!originalSecs.find((s: CVSection) => s.type === genSection.type)) {
+        const normalizedGenType = normalizeType(genSection.type)
+        const alreadyExists = originalSecs.some((s: CVSection) => normalizeType(s.type) === normalizedGenType)
+        if (!alreadyExists) {
           console.log('➕ Adding custom section:', genSection.type)
           mergedSections.push(genSection)
         }
@@ -349,6 +359,50 @@ export default function ReviewPage() {
     toast.success(`${sectionType.replace('_', ' ')} reverted to original`)
   }
 
+  const handleAIGenerateSection = async (sectionType: string) => {
+    if (!generationData?.cv_id) {
+      toast.error('Cannot generate section: CV not found')
+      return
+    }
+
+    setAiGeneratingSection(sectionType)
+    try {
+      const response = await fetch(`/api/cv/${generationData.cv_id}/ai-populate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section_type: sectionType,
+          section_title: sectionType.replace('_', ' '),
+          style: 'tailor',
+          existing_content: editedSections.find(s => s.type === sectionType)?.content || ''
+        })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to generate content')
+      }
+
+      const result = await response.json()
+      
+      // Update the section content
+      setEditedSections(prev =>
+        prev.map(section =>
+          section.type === sectionType
+            ? { ...section, content: result.content }
+            : section
+        )
+      )
+
+      toast.success(`${sectionType.replace('_', ' ')} generated successfully!`)
+    } catch (error: any) {
+      console.error('AI generation error:', error)
+      toast.error(`Failed to generate: ${error.message}`)
+    } finally {
+      setAiGeneratingSection(null)
+    }
+  }
+
   const handleSaveChanges = async () => {
     if (!generationData) return
 
@@ -368,8 +422,8 @@ export default function ReviewPage() {
       } else {
         toast.success('Changes saved successfully!')
         setEditingSection(null)
-        // Refresh the data
-        fetchGenerationData()
+        // Don't refresh data - we already have the edited sections in state
+        // Refreshing would lose skill score changes and other local edits
       }
     } catch (error) {
       console.error('Save exception:', error)
@@ -880,6 +934,26 @@ export default function ReviewPage() {
                   </div>
                   
                   <div className="flex items-center space-x-2">
+                    {(section.type === 'hobbies' || section.type === 'interests' || section.type === 'hobbies_and_interests') && (
+                      <button
+                        onClick={() => handleAIGenerateSection(section.type)}
+                        disabled={aiGeneratingSection === section.type}
+                        className="flex items-center px-3 py-1.5 text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors disabled:opacity-50"
+                        title="AI Generate tailored to job"
+                      >
+                        {aiGeneratingSection === section.type ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                            Generating...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-4 h-4 mr-1" />
+                            AI Generate
+                          </>
+                        )}
+                      </button>
+                    )}
                     {hasChanges && (
                       <button
                         onClick={() => handleRevertSection(section.type)}
