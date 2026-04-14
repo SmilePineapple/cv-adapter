@@ -193,28 +193,49 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    // Use onAuthStateChange to avoid race condition after login/OAuth callback
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    let initialized = false
+
+    const initDashboard = async (userId: string) => {
+      if (initialized) return
+      initialized = true
+      fetchDashboardData(userId)
+
+      // Check if user needs onboarding
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarding_completed')
+        .eq('id', userId)
+        .single()
+
+      if (profile && !profile.onboarding_completed) {
+        setShowOnboarding(true)
+      }
+    }
+
+    // First try getSession() directly — works with cookies even when localStorage is blocked
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user)
-        fetchDashboardData(session.user.id)
+        initDashboard(session.user.id)
+      } else {
+        // If no session after 3s (and onAuthStateChange hasn't fired), redirect to login
+        setTimeout(() => {
+          if (!initialized) {
+            setIsLoading(false)
+            router.push('/auth/login')
+          }
+        }, 3000)
+      }
+    })
 
-        // Check if user needs onboarding
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('onboarding_completed')
-          .eq('id', session.user.id)
-          .single()
-
-        if (profile && !profile.onboarding_completed) {
-          setShowOnboarding(true)
-        }
-      } else if (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
-        // Only redirect on explicit sign out or confirmed no session on initial load
-        if (!session) {
-          setIsLoading(false)
-          router.push('/auth/login')
-        }
+    // Also listen for auth changes (handles token refresh, sign out, etc.)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user && !initialized) {
+        setUser(session.user)
+        initDashboard(session.user.id)
+      } else if (event === 'SIGNED_OUT') {
+        setIsLoading(false)
+        router.push('/auth/login')
       }
     })
 

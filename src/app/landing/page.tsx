@@ -17,6 +17,7 @@ export default function LandingPage() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="#features" className="text-gray-400 hover:text-white transition-colors">Features</Link>
             <Link href="#pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition-colors">Blog</Link>
             <Link href="/auth/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
             <Link 
               href="/auth/signup" 
@@ -196,21 +197,50 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-950 border-t border-white/10 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CV</span>
+      <footer className="bg-gray-950 border-t border-white/10 text-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-10 mb-12">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">CV</span>
+                </div>
+                <span className="text-xl font-bold">CV Buddy</span>
+              </div>
+              <p className="text-gray-400 text-sm">
+                AI-powered CV tailoring for job seekers. Stand out from the crowd.
+              </p>
             </div>
-            <span className="text-xl font-bold">CV Buddy</span>
+            {/* Product */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/auth/signup" className="hover:text-white transition-colors">Get Started</Link></li>
+                <li><Link href="/auth/login" className="hover:text-white transition-colors">Login</Link></li>
+              </ul>
+            </div>
+            {/* Resources */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Resources</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+            {/* Legal */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
           </div>
-          <p className="text-gray-400 mb-4">
-            AI-powered CV tailoring for job seekers
-          </p>
-          <div className="flex justify-center space-x-6 text-sm text-gray-400">
-            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
-            <Link href="/contact" className="hover:text-white">Contact</Link>
+          <div className="border-t border-white/10 pt-8 text-center text-sm text-gray-500">
+            © {new Date().getFullYear()} CV Buddy. All rights reserved.
           </div>
         </div>
       </footer>
