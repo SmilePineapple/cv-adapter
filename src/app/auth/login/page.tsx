@@ -41,7 +41,7 @@ export default function LoginPage() {
         toast.error(error.message)
       } else {
         toast.success('Logged in successfully!')
-        router.push('/dashboard')
+        window.location.href = '/dashboard'
       }
     } catch (error) {
       toast.error('An unexpected error occurred')

@@ -193,9 +193,30 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    checkAuth()
-    fetchDashboardData()
-    
+    // Use onAuthStateChange to avoid race condition after login/OAuth callback
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser(session.user)
+        fetchDashboardData()
+
+        // Check if user needs onboarding
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('onboarding_completed')
+          .eq('id', session.user.id)
+          .single()
+
+        if (profile && !profile.onboarding_completed) {
+          setShowOnboarding(true)
+        }
+      } else if (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
+        // Only redirect on explicit sign out or confirmed no session on initial load
+        if (!session) {
+          router.push('/auth/login')
+        }
+      }
+    })
+
     // Track page view
     trackPageView('/dashboard')
 
@@ -206,28 +227,11 @@ export default function DashboardPage() {
     }
 
     window.addEventListener('focus', handleFocus)
-    return () => window.removeEventListener('focus', handleFocus)
+    return () => {
+      subscription.unsubscribe()
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
-
-  const checkAuth = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      router.push('/auth/login')
-      return
-    }
-    setUser(user)
-
-    // Check if user needs onboarding
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('onboarding_completed')
-      .eq('id', user.id)
-      .single()
-
-    if (profile && !profile.onboarding_completed) {
-      setShowOnboarding(true)
-    }
-  }
 
   const fetchDashboardData = async () => {
     try {
