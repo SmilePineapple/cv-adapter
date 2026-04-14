@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { PageTracker } from "@/components/PageTracker";
 import CrispChat from "@/components/CrispChat";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
         {children}
         <Toaster position="top-right" />
         <CrispChat />
+        <SpeedInsights />
       </body>
     </html>
   );
