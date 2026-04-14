@@ -54,9 +54,9 @@ const TEMPLATES = [
     name: '✨ Professional Metrics', 
     description: 'Two-column with circular skill meters & clean layout', 
     category: 'Professional', 
-    badge: 'POPULAR', 
+    badge: 'PRO', 
     advanced: true, 
-    pro: false,
+    pro: true,
     screenshot: '/templates/professional-metrics.png',
     colors: ['#4F46E5', '#6366F1', '#818CF8']
   },
@@ -65,9 +65,9 @@ const TEMPLATES = [
     name: '✨ Teal Sidebar', 
     description: 'Icon sidebar with teal accent & skill bars', 
     category: 'Modern', 
-    badge: 'NEW', 
+    badge: 'PRO', 
     advanced: true, 
-    pro: false,
+    pro: true,
     screenshot: '/templates/teal-sidebar.png',
     colors: ['#14B8A6', '#2DD4BF', '#5EEAD4']
   },
@@ -76,9 +76,9 @@ const TEMPLATES = [
     name: '✨ Soft Header', 
     description: 'Gradient header with skill progress bars', 
     category: 'Modern', 
-    badge: 'NEW', 
+    badge: 'PRO', 
     advanced: true, 
-    pro: false,
+    pro: true,
     screenshot: '/templates/soft-header.png',
     colors: ['#8B5CF6', '#A78BFA', '#C4B5FD']
   },
@@ -87,9 +87,9 @@ const TEMPLATES = [
     name: '✨ Artistic Header', 
     description: 'Decorative pattern header with pink accent', 
     category: 'Creative', 
-    badge: 'NEW', 
+    badge: 'PRO', 
     advanced: true, 
-    pro: false,
+    pro: true,
     screenshot: '/templates/artistic-header.png',
     colors: ['#EC4899', '#F472B6', '#F9A8D4']
   },
@@ -98,9 +98,9 @@ const TEMPLATES = [
     name: '✨ Bold Split', 
     description: 'Dark/cyan 50/50 split with high contrast', 
     category: 'Bold', 
-    badge: 'NEW', 
+    badge: 'PRO', 
     advanced: true, 
-    pro: false,
+    pro: true,
     screenshot: '/templates/bold-split.png',
     colors: ['#06B6D4', '#22D3EE', '#67E8F9']
   },
@@ -955,7 +955,7 @@ export default function DownloadPage() {
                 await generatePreview()
                 toast.success('Preview refreshed!')
               }}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-white/20 rounded-lg hover:bg-white/5 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh Preview

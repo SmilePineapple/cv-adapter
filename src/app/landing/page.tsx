@@ -11,7 +11,7 @@ export default function LandingPage() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CV</span>
             </div>
-            <span className="text-2xl font-black text-white">CV Adapter</span>
+            <span className="text-2xl font-black text-white">CV Buddy</span>
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
@@ -57,7 +57,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-sm text-gray-400">
-            ✨ 1 free CV generation • Then £5 one-time for 100 more
+            ✨ 1 free CV generation • Then £2.99/month for unlimited
           </div>
         </div>
       </section>
@@ -202,7 +202,7 @@ export default function LandingPage() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">CV</span>
             </div>
-            <span className="text-xl font-bold">CV Adapter</span>
+            <span className="text-xl font-bold">CV Buddy</span>
           </div>
           <p className="text-gray-400 mb-4">
             AI-powered CV tailoring for job seekers
