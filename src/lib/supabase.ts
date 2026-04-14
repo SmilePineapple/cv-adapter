@@ -4,21 +4,21 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-// Client-side Supabase client (nullable if env vars missing)
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null
+// Singleton client instance to avoid Multiple GoTrueClient instances warning
+let _clientInstance: ReturnType<typeof createClientComponentClient> | null = null
 
-// Client component client (for use in client components)
-export const createSupabaseClient = () => {
-  // During build/prerender, env vars might not be available
-  // Return a client with placeholder values that will be replaced at runtime
+// Client component client (for use in client components) - returns singleton
+export const createSupabaseClient = (): ReturnType<typeof createClientComponentClient> => {
+  // During build/prerender on the server, return a build-time dummy
   if (typeof window === 'undefined' && (!supabaseUrl || !supabaseAnonKey)) {
-    // Server-side during build - return a dummy client
     return createClient(
       'https://placeholder.supabase.co',
       'placeholder-key-for-build-only'
-    )
+    ) as ReturnType<typeof createClientComponentClient>
   }
-  return createClientComponentClient()
+  // Return existing singleton to avoid multiple GoTrueClient instances
+  if (!_clientInstance) {
+    _clientInstance = createClientComponentClient()
+  }
+  return _clientInstance
 }

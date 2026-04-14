@@ -61,10 +61,10 @@ export default function SignupPage() {
         
         if (needsConfirmation) {
           toast.success('Account created! Please check your email to confirm your account before logging in.')
-          router.push('/auth/login')
+          window.location.href = '/auth/login'
         } else {
           toast.success('Account created successfully! Welcome to CV Adapter.')
-          router.push('/dashboard')
+          window.location.href = '/dashboard'
         }
       }
     } catch (error) {
