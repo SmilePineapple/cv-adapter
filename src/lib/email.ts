@@ -1,3 +1,4 @@
+import React from 'react'
 import { Resend } from 'resend'
 import WelcomeEmail from '@/emails/WelcomeEmail'
 import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
@@ -36,7 +37,7 @@ export async function send3DayReminderEmail(email: string, name: string) {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      react: ThreeDayReminderEmail({ name }),
+      react: React.createElement(ThreeDayReminderEmail, { name }),
     })
 
     if (error) {
@@ -394,7 +395,7 @@ export async function sendReEngagementEmail(
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      react: ReEngagementEmail({ name, daysAgo, remainingGenerations }),
+      react: React.createElement(ReEngagementEmail, { name, daysAgo, remainingGenerations }),
     })
 
     if (error) {
