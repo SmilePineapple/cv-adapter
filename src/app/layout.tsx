@@ -20,6 +20,14 @@ export const metadata: Metadata = {
     apple: '/favicon.svg',
     shortcut: '/favicon.svg',
   },
+  alternates: {
+    canonical: 'https://www.mycvbuddy.com',
+    languages: {
+      'en-US': 'https://www.mycvbuddy.com',
+      'en-GB': 'https://www.mycvbuddy.com',
+      'x-default': 'https://www.mycvbuddy.com',
+    },
+  },
 };
 
 export default function RootLayout({

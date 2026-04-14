@@ -68,6 +68,38 @@ export function StructuredData() {
           "@type": "Answer",
           "text": "Yes! We offer 10+ professional CV templates optimized for UK and US job markets. All templates are ATS-friendly and can be customized to match your industry."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a resume adapter and how does it work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A resume adapter takes your existing resume and rewrites it to match a specific job description. Unlike a resume builder (which starts from scratch), a resume adapter keeps your real experience and reframes it using the employer's language and keywords. My CV Buddy is the leading AI resume adapter for US job seekers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use My CV Buddy for US job applications?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! My CV Buddy works for both US resumes and UK CVs. Our AI adapts your resume to match American job description language, ATS requirements, and resume formatting standards. 1 free resume adaptation included."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I tailor my resume to a job description for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your resume at mycvbuddy.com, paste the job description, and our AI instantly generates a tailored, ATS-optimized version. The first adaptation is completely free — no credit card required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does My CV Buddy optimize resumes for ATS systems?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. My CV Buddy's AI matches keywords from the job description to your resume, uses clean ATS-parseable formatting, and achieves a 95% ATS pass rate in internal tests. This is critical for US job applications where 75%+ of resumes are filtered by ATS before a human sees them."
+        }
       }
     ]
   }
@@ -82,6 +114,21 @@ export function StructuredData() {
       {
         "@type": "Offer",
         "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free tier with 1 resume/CV adaptation",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "price": "3.99",
+        "priceCurrency": "USD",
+        "description": "Pro Monthly - Unlimited resume adaptations",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "price": "0",
         "priceCurrency": "GBP",
         "description": "Free tier with 1 CV generation",
         "availability": "https://schema.org/InStock"
@@ -91,14 +138,6 @@ export function StructuredData() {
         "price": "2.99",
         "priceCurrency": "GBP",
         "description": "Pro Monthly - Unlimited CV generations",
-        "priceValidUntil": "2027-12-31",
-        "availability": "https://schema.org/InStock"
-      },
-      {
-        "@type": "Offer",
-        "price": "14.99",
-        "priceCurrency": "GBP",
-        "description": "Pro Annual - Unlimited CV generations (Save 58%)",
         "priceValidUntil": "2027-12-31",
         "availability": "https://schema.org/InStock"
       }

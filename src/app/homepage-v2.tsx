@@ -8,9 +8,9 @@ import { TrackingInitializer } from '@/components/TrackingInitializer'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
-  description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. My CV Buddy is the leading AI CV adapter for UK job seekers and US resume builders. 1 free generation included.',
-  keywords: ['mycvbuddy', 'my cv buddy', 'mycv', 'cv adapter', 'ai cv adapter', 'tailor cv to job description', 'resume adapter', 'resume buddy', 'cv tailoring tool', 'ats cv adapter', 'adapt cv for job', 'customize cv for job application', 'cv rewriter', 'job specific cv', 'cv builder', 'free cv builder', 'resume builder', 'ai cv builder', 'ats cv checker', 'cv maker', 'free resume builder', 'cv templates uk', 'fix my cv', 'fix my cv free', 'cv fixer', 'optimize my cv', 'improve my cv'],
+  title: 'AI Resume & CV Adapter | Tailor Your Resume to Any Job in 60 Seconds | My CV Buddy',
+  description: 'Upload your resume or CV, paste the job description, and get a tailored ATS-optimized result in 60 seconds. The #1 AI resume adapter for US and UK job seekers. 1 free generation included.',
+  keywords: ['resume adapter', 'ai resume adapter', 'resume adapter ai', 'resume buddy', 'resume tailoring tool', 'tailor resume to job description', 'mycvbuddy', 'my cv buddy', 'cv adapter', 'ai cv adapter', 'tailor cv to job description', 'cv tailoring tool', 'ats resume adapter', 'ats cv adapter', 'adapt resume for job', 'customize resume for job application', 'resume rewriter', 'job specific resume', 'resume builder', 'free resume builder', 'ai resume builder', 'cv builder', 'free cv builder', 'ats checker', 'cv maker', 'cv templates uk', 'optimize my resume', 'resume optimizer', 'fix my resume'],
   authors: [{ name: 'My CV Buddy' }],
   creator: 'My CV Buddy',
   publisher: 'My CV Buddy',
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com/',
   },
   openGraph: {
-    title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
-    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. 1 free generation included.',
-    locale: 'en_GB',
+    title: 'AI Resume & CV Adapter | Tailor Your Resume to Any Job in 60 Seconds | My CV Buddy',
+    description: 'Upload your resume or CV, paste any job description — get a perfectly tailored, ATS-optimized result in 60 seconds. Works for US resumes & UK CVs. 1 free generation included.',
+    locale: 'en_US',
     type: 'website',
-    siteName: 'My CV Buddy - AI CV Adapter',
+    siteName: 'My CV Buddy - AI Resume & CV Adapter',
     url: 'https://www.mycvbuddy.com/',
     images: [
       {
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My CV Buddy | AI CV Adapter | Tailor Your CV to Any Job Description',
-    description: 'Upload your CV, paste the job description, and get a tailored ATS-optimised CV in seconds. The leading AI CV adapter for UK job seekers. 1 free generation included.',
+    title: 'AI Resume & CV Adapter | My CV Buddy — Tailor Your Resume in 60 Seconds',
+    description: 'Upload your resume or CV, paste any job description — get an ATS-optimized, tailored result in 60 seconds. Free to try. Works for US resumes & UK CVs.',
     images: ['https://www.mycvbuddy.com/graph.png'],
   },
 }
@@ -204,7 +204,8 @@ export default function LandingPage() {
               Upload your CV, paste the job description, and let AI instantly adapt your application for ATS systems and recruiters.
             </p>
             <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              <span className="text-white font-semibold">1 free generation included.</span> Works with UK CVs and US resumes.
+              <span className="text-white font-semibold">1 free generation included.</span> Works with UK CVs and{' '}
+              <Link href="/resume-adapter" className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors">US resumes</Link>.
             </p>
 
             {/* Two CTAs - Enhancv Style */}
@@ -650,6 +651,7 @@ export default function LandingPage() {
               <div>
                 <h4 className="font-bold mb-4">Product</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
+                  <li><Link href="/resume-adapter" className="hover:text-white transition-colors">Resume Adapter</Link></li>
                   <li><Link href="/templates" className="hover:text-white transition-colors">Templates</Link></li>
                   <li><Link href="/ats-checker" className="hover:text-white transition-colors">ATS Checker</Link></li>
                   <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
@@ -661,9 +663,10 @@ export default function LandingPage() {
                 <h4 className="font-bold mb-4">Resources</h4>
                 <ul className="space-y-2 text-sm text-gray-400">
                   <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+                  <li><Link href="/resume-builder-usa" className="hover:text-white transition-colors">Resume Builder USA</Link></li>
+                  <li><Link href="/blog/resume-vs-cv-difference" className="hover:text-white transition-colors">Resume vs CV</Link></li>
                   <li><Link href="/cv-examples" className="hover:text-white transition-colors">CV Examples</Link></li>
                   <li><Link href="/ats-optimization-guide" className="hover:text-white transition-colors">ATS Guide</Link></li>
-                  <li><Link href="/cv-writing-guide" className="hover:text-white transition-colors">CV Writing</Link></li>
                 </ul>
               </div>
 

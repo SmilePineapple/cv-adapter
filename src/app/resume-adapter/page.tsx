@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { ArrowRight, CheckCircle, Zap } from 'lucide-react'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'AI Resume Adapter: Tailor Your Resume to Any Job in 60 Seconds | My CV Buddy',
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
   keywords: ['resume adapter', 'ai resume adapter', 'resume adapter ai', 'resume adapter.com', 'resume tailoring tool', 'customize resume for job', 'job specific resume', 'resume optimizer', 'resume rewriter', 'tailor resume to job description', 'cv adapter uk', 'resume buddy'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/resume-adapter',
+    languages: {
+      'en-US': 'https://www.mycvbuddy.com/resume-adapter',
+      'en-GB': 'https://www.mycvbuddy.com/resume-adapter',
+      'x-default': 'https://www.mycvbuddy.com/resume-adapter',
+    },
   },
   openGraph: {
     title: 'AI Resume Adapter: Tailor Your Resume to Any Job in 60 Seconds',
@@ -17,8 +23,45 @@ export const metadata: Metadata = {
   },
 }
 
+const resumeAdapterSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'AI Resume Adapter',
+  description: 'The #1 AI resume adapter for US and UK job seekers. Upload your resume, paste any job description — get a perfectly tailored, ATS-optimized resume in 60 seconds.',
+  url: 'https://www.mycvbuddy.com/resume-adapter',
+  inLanguage: ['en-US', 'en-GB'],
+  about: {
+    '@type': 'SoftwareApplication',
+    name: 'My CV Buddy Resume Adapter',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free resume adaptation — no credit card required',
+      availability: 'https://schema.org/InStock',
+    },
+  },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.mycvbuddy.com' },
+      { '@type': 'ListItem', position: 2, name: 'Resume Adapter', item: 'https://www.mycvbuddy.com/resume-adapter' },
+    ],
+  },
+  mainEntity: [
+    { '@type': 'Question', name: 'What is a resume adapter?', acceptedAnswer: { '@type': 'Answer', text: 'A resume adapter takes your existing resume and tailors it to a specific job description — rewriting bullet points in the employer\'s language and matching ATS keywords — without making anything up.' } },
+    { '@type': 'Question', name: 'How do I tailor my resume to a job description?', acceptedAnswer: { '@type': 'Answer', text: 'Upload your resume to My CV Buddy, paste the job description, and our AI adapts your resume in 60 seconds — highlighting relevant experience and matching the employer\'s keywords.' } },
+    { '@type': 'Question', name: 'Does this work for US resumes?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. My CV Buddy works with US resumes and UK CVs. The AI understands American resume format and adjusts language, length, and style accordingly.' } },
+    { '@type': 'Question', name: 'Is the resume adapter free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes — 1 free resume adaptation is included with no credit card required. Upgrade to Pro for unlimited adaptations from $3.99/month.' } },
+  ],
+}
+
 export default function ResumeAdapterPage() {
   return (
+    <>
+    <Script id="resume-adapter-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeAdapterSchema) }} />
     <div className="min-h-screen bg-black text-white">
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -165,5 +208,6 @@ export default function ResumeAdapterPage() {
         </div>
       </footer>
     </div>
+    </>
   )
 }
