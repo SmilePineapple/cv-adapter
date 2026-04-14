@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseRouteClient } from '@/lib/supabase-server'
+import { createAdminClient } from '@/lib/supabase-admin'
 import { sendReEngagementEmail } from '@/lib/email'
 
 /**
  * Cron job to send re-engagement emails to inactive users
- * Runs daily at 10 AM
+ * Runs daily at 10 AM UTC via cron-jobs.org
  * Targets free users who haven't been active in 7 days
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify cron secret (Vercel cron jobs send this header)
+    // Verify cron secret
     const authHeader = request.headers.get('authorization')
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const supabase = createSupabaseRouteClient()
+    const supabase = createAdminClient()
     
     // Calculate date 7 days ago
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)

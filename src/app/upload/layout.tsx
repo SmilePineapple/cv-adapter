@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Upload CV - Free CV Upload & Analysis | CV Adapter',
+  title: 'Upload CV - Free CV Upload & Analysis | My CV Buddy',
   description: 'Upload your CV for free AI-powered analysis and optimization. Supports PDF and Word documents. Get instant feedback on your CV and tailor it for any job in minutes.',
   alternates: {
     canonical: 'https://www.mycvbuddy.com/upload',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     follow: false,
   },
   openGraph: {
-    title: 'Upload CV - Free CV Analysis | CV Adapter',
+    title: 'Upload CV - Free CV Analysis | My CV Buddy',
     description: 'Upload your CV for free AI-powered analysis. Supports PDF and Word documents.',
     url: 'https://www.mycvbuddy.com/upload',
   },

@@ -1,36 +1,20 @@
 /**
- * Simple in-memory rate limiter
- * No external dependencies, works immediately
- * Resets on serverless cold starts (acceptable for MVP)
+ * Persistent Supabase-backed rate limiter
+ * Survives serverless cold starts — works correctly across all instances.
+ *
+ * Uses an upsert on the `rate_limits` table (service role) with atomic
+ * increment logic. Falls back to allow-through if the DB call fails,
+ * so a Supabase outage never blocks legitimate users.
+ *
+ * Migration: migrations/add-rate-limits-table.sql
  */
 
-interface RateLimitEntry {
-  count: number
-  resetTime: number
-}
-
-// In-memory store (resets on cold start)
-const rateLimitStore = new Map<string, RateLimitEntry>()
-
-// Cleanup old entries every 5 minutes
-setInterval(() => {
-  const now = Date.now()
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (entry.resetTime < now) {
-      rateLimitStore.delete(key)
-    }
-  }
-}, 5 * 60 * 1000)
+import { createAdminClient } from './supabase-admin'
 
 export interface RateLimitConfig {
-  /**
-   * Maximum number of requests allowed
-   */
+  /** Maximum number of requests allowed in the window */
   limit: number
-  
-  /**
-   * Time window in seconds
-   */
+  /** Time window in seconds */
   window: number
 }
 
@@ -42,107 +26,116 @@ export interface RateLimitResult {
 }
 
 /**
- * Check if request is within rate limit
- * 
- * @param identifier - Unique identifier (user ID, IP address, etc.)
- * @param config - Rate limit configuration
- * @returns Rate limit result
+ * Check and increment the rate limit for an identifier.
+ * Uses Supabase upsert for atomic, cross-instance counting.
  */
-export function rateLimit(
+export async function rateLimit(
   identifier: string,
   config: RateLimitConfig = { limit: 10, window: 60 }
-): RateLimitResult {
+): Promise<RateLimitResult> {
   const now = Date.now()
   const windowMs = config.window * 1000
-  const resetTime = now + windowMs
-  
-  const entry = rateLimitStore.get(identifier)
-  
-  // No entry or expired entry
-  if (!entry || entry.resetTime < now) {
-    rateLimitStore.set(identifier, {
-      count: 1,
-      resetTime
+  const resetAt = new Date(now + windowMs).toISOString()
+
+  try {
+    const supabase = createAdminClient()
+
+    // Upsert: if no row or expired, start fresh at count=1.
+    // If within window, increment atomically via RPC.
+    const { data, error } = await supabase.rpc('upsert_rate_limit', {
+      p_identifier: identifier,
+      p_limit: config.limit,
+      p_window_seconds: config.window,
+      p_reset_at: resetAt,
     })
-    
+
+    if (error) {
+      console.error('[RateLimit] Supabase error, allowing through:', error.message)
+      return { success: true, limit: config.limit, remaining: config.limit - 1, reset: now + windowMs }
+    }
+
+    // RPC returns { count, reset_at }
+    const { count, reset_at } = data as { count: number; reset_at: string }
+    const resetMs = new Date(reset_at).getTime()
+
+    if (count > config.limit) {
+      return { success: false, limit: config.limit, remaining: 0, reset: resetMs }
+    }
+
     return {
       success: true,
       limit: config.limit,
-      remaining: config.limit - 1,
-      reset: resetTime
+      remaining: Math.max(0, config.limit - count),
+      reset: resetMs,
     }
-  }
-  
-  // Within limit
-  if (entry.count < config.limit) {
-    entry.count++
-    
-    return {
-      success: true,
-      limit: config.limit,
-      remaining: config.limit - entry.count,
-      reset: entry.resetTime
-    }
-  }
-  
-  // Exceeded limit
-  return {
-    success: false,
-    limit: config.limit,
-    remaining: 0,
-    reset: entry.resetTime
+  } catch (err) {
+    console.error('[RateLimit] Unexpected error, allowing through:', err)
+    return { success: true, limit: config.limit, remaining: config.limit - 1, reset: now + windowMs }
   }
 }
 
 /**
- * Reset rate limit for identifier
+ * Delete the rate limit record for an identifier (e.g. after a test)
  */
-export function resetRateLimit(identifier: string): void {
-  rateLimitStore.delete(identifier)
+export async function resetRateLimit(identifier: string): Promise<void> {
+  try {
+    const supabase = createAdminClient()
+    await supabase.from('rate_limits').delete().eq('identifier', identifier)
+  } catch (err) {
+    console.error('[RateLimit] Failed to reset:', err)
+  }
 }
 
 /**
- * Get current rate limit status without incrementing
+ * Read current status without incrementing
  */
-export function getRateLimitStatus(identifier: string, config: RateLimitConfig): RateLimitResult {
+export async function getRateLimitStatus(
+  identifier: string,
+  config: RateLimitConfig
+): Promise<RateLimitResult> {
   const now = Date.now()
-  const entry = rateLimitStore.get(identifier)
-  
-  if (!entry || entry.resetTime < now) {
-    return {
-      success: true,
-      limit: config.limit,
-      remaining: config.limit,
-      reset: now + (config.window * 1000)
+  try {
+    const supabase = createAdminClient()
+    const { data } = await supabase
+      .from('rate_limits')
+      .select('count, reset_at')
+      .eq('identifier', identifier)
+      .single()
+
+    if (!data || new Date(data.reset_at).getTime() < now) {
+      return { success: true, limit: config.limit, remaining: config.limit, reset: now + config.window * 1000 }
     }
-  }
-  
-  return {
-    success: entry.count < config.limit,
-    limit: config.limit,
-    remaining: Math.max(0, config.limit - entry.count),
-    reset: entry.resetTime
+
+    const resetMs = new Date(data.reset_at).getTime()
+    return {
+      success: data.count < config.limit,
+      limit: config.limit,
+      remaining: Math.max(0, config.limit - data.count),
+      reset: resetMs,
+    }
+  } catch {
+    return { success: true, limit: config.limit, remaining: config.limit, reset: now + config.window * 1000 }
   }
 }
 
 /**
- * Middleware helper for API routes
+ * Create a pre-configured rate limiter function
  */
 export function createRateLimiter(config: RateLimitConfig) {
   return (identifier: string) => rateLimit(identifier, config)
 }
 
-// Pre-configured rate limiters
+// Pre-configured rate limiters — same API as before
 export const rateLimiters = {
   // Strict: 5 requests per 10 seconds
   strict: createRateLimiter({ limit: 5, window: 10 }),
-  
+
   // Normal: 10 requests per minute
   normal: createRateLimiter({ limit: 10, window: 60 }),
-  
+
   // Generous: 30 requests per minute
   generous: createRateLimiter({ limit: 30, window: 60 }),
-  
+
   // API: 100 requests per hour
   api: createRateLimiter({ limit: 100, window: 3600 }),
 }

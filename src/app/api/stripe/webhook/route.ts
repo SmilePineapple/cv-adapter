@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import Stripe from 'stripe'
 import { trackPaymentCompleted } from '@/lib/analytics'
-import { sendUpgradeConfirmationEmail } from '@/lib/email'
+import { sendUpgradeConfirmationEmail, sendPaymentFailedEmail } from '@/lib/email'
 
 /**
  * Lazy initialization of Stripe client to avoid build-time errors
@@ -13,6 +13,32 @@ function getStripeClient() {
     throw new Error('STRIPE_SECRET_KEY is not configured')
   }
   return new Stripe(apiKey)
+}
+
+/**
+ * Calculate subscription period end date from a Stripe subscription object.
+ * Falls back through multiple strategies to always return a valid Date.
+ */
+function calculatePeriodEnd(subscription: any): Date {
+  if (subscription.current_period_end && typeof subscription.current_period_end === 'number') {
+    return new Date(subscription.current_period_end * 1000)
+  }
+  if (subscription.current_period_start && typeof subscription.current_period_start === 'number') {
+    const startDate = new Date(subscription.current_period_start * 1000)
+    const interval = subscription.items?.data[0]?.price?.recurring?.interval || 'month'
+    const intervalCount = subscription.items?.data[0]?.price?.recurring?.interval_count || 1
+    const end = new Date(startDate)
+    if (interval === 'year') {
+      end.setFullYear(end.getFullYear() + intervalCount)
+    } else {
+      end.setMonth(end.getMonth() + intervalCount)
+    }
+    return end
+  }
+  // Last resort: now + 1 month
+  const fallback = new Date()
+  fallback.setMonth(fallback.getMonth() + 1)
+  return fallback
 }
 
 export async function POST(request: NextRequest) {
@@ -75,55 +101,14 @@ export async function POST(request: NextRequest) {
             billing_cycle_anchor: subscription.billing_cycle_anchor
           })
           
-          // Calculate current_period_end with fallback logic
-          let currentPeriodEnd: Date
-          
-          if (subscription.current_period_end && typeof subscription.current_period_end === 'number') {
-            // Use current_period_end if available
-            currentPeriodEnd = new Date(subscription.current_period_end * 1000)
-            console.log('[Webhook] Using subscription.current_period_end:', currentPeriodEnd.toISOString())
-          } else if (subscription.current_period_start && typeof subscription.current_period_start === 'number') {
-            // Fallback: Calculate from current_period_start + billing interval
-            const startDate = new Date(subscription.current_period_start * 1000)
-            const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
-            const intervalCount = subscription.items.data[0]?.price?.recurring?.interval_count || 1
-            
-            if (interval === 'month') {
-              currentPeriodEnd = new Date(startDate)
-              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + intervalCount)
-            } else if (interval === 'year') {
-              currentPeriodEnd = new Date(startDate)
-              currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + intervalCount)
-            } else {
-              // Default to 1 month
-              currentPeriodEnd = new Date(startDate)
-              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-            }
-            
-            console.log('[Webhook] Calculated period end from start date:', currentPeriodEnd.toISOString())
-          } else {
-            // Last resort: Use current date + billing interval
-            currentPeriodEnd = new Date()
-            const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
-            
-            if (interval === 'month') {
-              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-            } else if (interval === 'year') {
-              currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1)
-            } else {
-              currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-            }
-            
-            console.log('[Webhook] Using fallback period end (now + interval):', currentPeriodEnd.toISOString())
-          }
-          
-          // Validate the date is valid
+          const currentPeriodEnd = calculatePeriodEnd(subscription)
+
           if (isNaN(currentPeriodEnd.getTime())) {
             console.error('[Webhook] Invalid period end date calculated')
             throw new Error('Invalid subscription: could not determine valid period end date')
           }
 
-          console.log('[Webhook] Final subscription period end:', currentPeriodEnd.toISOString())
+          console.log('[Webhook] Subscription period end:', currentPeriodEnd.toISOString())
 
           // Upgrade user to pro with subscription tier
           const subscriptionTier = planType === 'annual' ? 'pro_annual' : 'pro_monthly'
@@ -285,49 +270,8 @@ export async function POST(request: NextRequest) {
         // Access subscription properties safely
         const subData = subscription as any
 
-        // Calculate current_period_end with fallback logic (same as checkout.session.completed)
-        let currentPeriodEnd: Date
-        
-        if (subData.current_period_end && typeof subData.current_period_end === 'number') {
-          // Use current_period_end if available
-          currentPeriodEnd = new Date(subData.current_period_end * 1000)
-          console.log('[Webhook] Using subscription.current_period_end:', currentPeriodEnd.toISOString())
-        } else if (subData.current_period_start && typeof subData.current_period_start === 'number') {
-          // Fallback: Calculate from current_period_start + billing interval
-          const startDate = new Date(subData.current_period_start * 1000)
-          const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
-          const intervalCount = subscription.items.data[0]?.price?.recurring?.interval_count || 1
-          
-          if (interval === 'month') {
-            currentPeriodEnd = new Date(startDate)
-            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + intervalCount)
-          } else if (interval === 'year') {
-            currentPeriodEnd = new Date(startDate)
-            currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + intervalCount)
-          } else {
-            // Default to 1 month
-            currentPeriodEnd = new Date(startDate)
-            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-          }
-          
-          console.log('[Webhook] Calculated period end from start date:', currentPeriodEnd.toISOString())
-        } else {
-          // Last resort: Use current date + billing interval
-          currentPeriodEnd = new Date()
-          const interval = subscription.items.data[0]?.price?.recurring?.interval || 'month'
-          
-          if (interval === 'month') {
-            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-          } else if (interval === 'year') {
-            currentPeriodEnd.setFullYear(currentPeriodEnd.getFullYear() + 1)
-          } else {
-            currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
-          }
-          
-          console.log('[Webhook] Using fallback period end (now + interval):', currentPeriodEnd.toISOString())
-        }
-        
-        // Validate the date is valid
+        const currentPeriodEnd = calculatePeriodEnd(subData)
+
         if (isNaN(currentPeriodEnd.getTime())) {
           console.error('[Webhook] Invalid period end date calculated')
           throw new Error('Invalid subscription: could not determine valid period end date')
@@ -507,17 +451,25 @@ export async function POST(request: NextRequest) {
           break
         }
 
-        // Downgrade user to free tier
+        // Downgrade user fully to free tier
         await supabase
           .from('usage_tracking')
           .update({
+            plan_type: 'free',
             subscription_tier: 'free',
             subscription_end_date: new Date().toISOString(),
+            max_lifetime_generations: 3,
             updated_at: new Date().toISOString()
           })
           .eq('user_id', userId)
 
-        console.log('[Webhook] User downgraded to free:', userId)
+        // Update subscriptions table
+        await supabase
+          .from('subscriptions')
+          .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+          .eq('user_id', userId)
+
+        console.log('[Webhook] User fully downgraded to free on subscription.deleted:', userId)
         break
       }
 
@@ -760,42 +712,53 @@ export async function POST(request: NextRequest) {
         // Get user email for logging
         const { data: userData } = await supabase.auth.admin.getUserById(userId)
         const userEmail = userData?.user?.email || 'unknown'
+        const userName = userData?.user?.user_metadata?.full_name || userData?.user?.email?.split('@')[0] || 'there'
 
-        console.log('[Webhook] Downgrading user due to payment failure:', {
+        console.log('[Webhook] Payment failed for user:', {
           userId,
           email: userEmail,
           attemptCount: invoice.attempt_count
         })
 
-        // Downgrade user to free tier immediately
-        const { error: downgradeError } = await supabase
-          .from('usage_tracking')
-          .update({
-            plan_type: 'free',
-            subscription_tier: 'free',
-            subscription_end_date: new Date().toISOString(),
-            max_lifetime_generations: 3, // Reset to free tier limit
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_id', userId)
+        // Stripe retries failed payments up to 3 times before giving up.
+        // Only downgrade on the final attempt to avoid revoking access prematurely.
+        const isLastAttempt = invoice.attempt_count >= 3
 
-        if (downgradeError) {
-          console.error('[Webhook] Failed to downgrade user:', downgradeError)
-          throw downgradeError
+        if (isLastAttempt) {
+          const { error: downgradeError } = await supabase
+            .from('usage_tracking')
+            .update({
+              plan_type: 'free',
+              subscription_tier: 'free',
+              subscription_end_date: new Date().toISOString(),
+              max_lifetime_generations: 3,
+              updated_at: new Date().toISOString()
+            })
+            .eq('user_id', userId)
+
+          if (downgradeError) {
+            console.error('[Webhook] Failed to downgrade user:', downgradeError)
+            throw downgradeError
+          }
+
+          await supabase
+            .from('subscriptions')
+            .update({ status: 'payment_failed', updated_at: new Date().toISOString() })
+            .eq('user_id', userId)
+
+          console.log('[Webhook] User downgraded to free after final failed payment:', userEmail)
+        } else {
+          console.log(`[Webhook] Payment failed (attempt ${invoice.attempt_count}/3) — keeping Pro, will retry:`, userEmail)
         }
 
-        // Update subscription status in subscriptions table
-        await supabase
-          .from('subscriptions')
-          .update({
-            status: 'payment_failed',
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_id', userId)
+        // Send dunning email on every failed attempt
+        try {
+          await sendPaymentFailedEmail(userEmail, userName, invoice.attempt_count, isLastAttempt)
+          console.log('[Webhook] Payment failed email sent to:', userEmail)
+        } catch (emailError) {
+          console.error('[Webhook] Failed to send payment failed email:', emailError)
+        }
 
-        console.log('[Webhook] User downgraded to free due to payment failure:', userEmail)
-        
-        // TODO: Send email notification to user about failed payment and downgrade
         break
       }
 

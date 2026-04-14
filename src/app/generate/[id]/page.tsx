@@ -27,10 +27,7 @@ import { LanguageSelector } from '@/components/LanguageSelector'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import { LANGUAGE_NAMES } from '@/lib/language-detection'
 import { LoadingProgress } from '@/components/LoadingProgress'
-import UpgradeModal from '@/components/UpgradeModal'
-import UpgradePromptModal from '@/components/UpgradePromptModal'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
-import SmartUpgradeModal from '@/components/SmartUpgradeModal'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
 import { shouldShowUpgradePrompt, trackPromptShown, incrementGenerationCount } from '@/lib/upgrade-tracking'
 
@@ -59,13 +56,8 @@ export default function GeneratePage() {
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [isQuickMode, setIsQuickMode] = useState(false)
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
-  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
-  const [upgradeTrigger, setUpgradeTrigger] = useState<'limit_reached' | 'second_generation' | 'manual'>('manual')
-  const [showSmartUpgrade, setShowSmartUpgrade] = useState(false)
-  const [smartUpgradeTrigger, setSmartUpgradeTrigger] = useState<'before_generation' | 'after_preview' | 'before_download' | 'after_views' | 'return_visit'>('before_generation')
 
   useEffect(() => {
     fetchCVData()
@@ -192,8 +184,8 @@ export default function GeneratePage() {
 
     // Check if we should show upgrade prompt BEFORE first generation
     if (usageData && !usageData.is_pro && shouldShowUpgradePrompt('before_generation')) {
-      setSmartUpgradeTrigger('before_generation')
-      setShowSmartUpgrade(true)
+      setUpgradeModalTrigger('manual')
+      setShowEnhancedUpgradeModal(true)
       trackPromptShown('before_generation')
       return
     }
@@ -296,8 +288,8 @@ export default function GeneratePage() {
         const result = await response.json().catch(() => ({ error: 'Generation failed' }))
         
         if (result.limit_reached) {
-          setShowUpgradeModal(true)
-          toast.error('Free generation limit reached. Upgrade to Pro for unlimited generations!')
+          setUpgradeModalTrigger('limit_reached')
+          setShowEnhancedUpgradeModal(true)
           return
         }
         
@@ -325,21 +317,12 @@ export default function GeneratePage() {
       setGenerateStep('Complete!')
       toast.success('CV tailored successfully!')
       
-      // Check if user just hit their 2nd generation (show upgrade prompt)
+      // Check if user just hit their generation limit (show upgrade prompt)
       if (usageData && !usageData.is_pro) {
         const newCount = usageData.generation_count + 1
-        if (newCount === 2) {
-          // Show upgrade prompt after 2nd generation
-          setUpgradeTrigger('second_generation')
-          setTimeout(() => {
-            setShowUpgradePrompt(true)
-          }, 1000) // Show after success message
-        } else if (newCount >= usageData.max_generations) {
-          // Show limit reached prompt
-          setUpgradeTrigger('limit_reached')
-          setTimeout(() => {
-            setShowUpgradePrompt(true)
-          }, 1000)
+        if (newCount >= usageData.max_generations) {
+          setUpgradeModalTrigger('limit_reached')
+          setTimeout(() => setShowEnhancedUpgradeModal(true), 1000)
         }
       }
       
@@ -388,7 +371,7 @@ export default function GeneratePage() {
               <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
                 <span className="text-blue-400 font-bold text-sm">CV</span>
               </div>
-              <span className="text-xl font-black text-white">CV Adapter</span>
+              <span className="text-xl font-black text-white">My CV Buddy</span>
             </div>
           </div>
         </div>
@@ -711,31 +694,6 @@ export default function GeneratePage() {
       </div>
 
       {/* Upgrade Modal */}
-      <UpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        trigger="limit_reached"
-        currentUsage={usageData?.generation_count || 1}
-        maxGenerations={usageData?.max_generations || 1}
-      />
-
-      {/* Smart Upgrade Modal (strategic timing) */}
-      <SmartUpgradeModal
-        isOpen={showSmartUpgrade}
-        onClose={() => setShowSmartUpgrade(false)}
-        trigger={smartUpgradeTrigger}
-      />
-
-      {/* Upgrade Prompt Modal (after 2nd generation) */}
-      <UpgradePromptModal
-        isOpen={showUpgradePrompt}
-        onClose={() => setShowUpgradePrompt(false)}
-        trigger={upgradeTrigger}
-        generationsUsed={usageData?.generation_count || 0}
-        maxGenerations={usageData?.max_generations || 2}
-      />
-
-      {/* Enhanced Upgrade Modal */}
       <EnhancedUpgradeModal
         isOpen={showEnhancedUpgradeModal}
         onClose={() => setShowEnhancedUpgradeModal(false)}

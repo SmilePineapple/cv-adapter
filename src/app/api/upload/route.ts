@@ -44,7 +44,7 @@ interface FileMetadata {
   upload_date: string
 }
 
-const MAX_FILE_SIZE = 15 * 1024 * 1024 // 15MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 // Sanitize strings for PostgreSQL by removing null bytes
 function sanitizeForPostgres(obj: any): any {
@@ -66,9 +66,6 @@ function sanitizeForPostgres(obj: any): any {
 
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createAdminClient()
-  console.log('[UPLOAD API] Called at:', new Date().toISOString())
-  console.log('[UPLOAD API] Request method:', request.method)
-  console.log('[UPLOAD API] Request URL:', request.url)
   
   try {
     const openai = getOpenAIClient()
@@ -87,7 +84,6 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = user.id
-    console.log('Authenticated user ID:', userId)
 
     // Get request body with storage path
     const body = await request.json()
@@ -96,11 +92,6 @@ export async function POST(request: NextRequest) {
     if (!storagePath) {
       return NextResponse.json({ error: 'No storage path provided' }, { status: 400 })
     }
-
-    console.log('Storage path:', storagePath)
-    console.log('File name:', fileName)
-    console.log('File size:', fileSize)
-    console.log('File type:', fileType)
 
     // Validate file size
     if (fileSize > MAX_FILE_SIZE) {
@@ -123,7 +114,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Download file from Supabase Storage
-    console.log('Downloading file from storage...')
     const { data: fileData, error: downloadError } = await supabaseAdmin.storage
       .from('cv-assets')
       .download(storagePath)
@@ -136,21 +126,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse file content
-    console.log('Starting file parsing, type:', fileType)
     const buffer = await fileData.arrayBuffer()
     let extractedText = ''
     let parseSuccess = true
 
     try {
       if (fileType === 'application/pdf') {
-        console.log('Parsing PDF file')
         const pdfData = await pdfParse(Buffer.from(buffer))
         extractedText = pdfData.text
-        console.log('PDF metadata:', {
-          pages: pdfData.numpages,
-          info: pdfData.info,
-          textLength: pdfData.text.length
-        })
         
         // Check if PDF is image-based (scanned)
         if (pdfData.text.length < 100 && pdfData.numpages > 0) {
@@ -161,11 +144,9 @@ export async function POST(request: NextRequest) {
           }, { status: 400 })
         }
       } else if (fileType.includes('word') || fileType.includes('document')) {
-        console.log('Parsing Word document')
         const result = await mammoth.extractRawText({ buffer: Buffer.from(buffer) })
         extractedText = result.value
       }
-      console.log('Extracted text length:', extractedText.length)
     } catch (parseError) {
       console.error('File parsing error:', parseError)
       parseSuccess = false
@@ -179,14 +160,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Detect language from extracted text
-    console.log('Detecting language...')
     const languageResult = detectLanguage(extractedText)
-    console.log('Language detected:', languageResult.code, `(${languageResult.name})`, `confidence: ${languageResult.confidence}`)
 
     // Parse CV sections using AI for better accuracy
-    console.log('Parsing CV sections with AI...')
     const parsedSections = await parseCVWithAI(extractedText, languageResult.code)
-    console.log('Parsed sections:', parsedSections.sections.length)
 
     // Create file metadata
     const fileMetadata: FileMetadata = {
@@ -202,7 +179,6 @@ export async function POST(request: NextRequest) {
     const sanitizedMetadata = sanitizeForPostgres(fileMetadata)
 
     // Save to database
-    console.log('Saving to database...')
     const { data: cvData, error: dbError } = await supabaseAdmin
       .from('cvs')
       .insert({
@@ -216,12 +192,11 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (dbError) {
-      console.error('Database error:', dbError)
+      console.error('[Upload] Database error:', dbError)
       return NextResponse.json({ 
         error: 'Failed to save CV data: ' + dbError.message 
       }, { status: 500 })
     }
-    console.log('CV saved successfully:', cvData.id)
 
     // Track analytics event (async - don't block response)
     trackCVUpload(languageResult.code, fileName).catch(err => 
@@ -232,11 +207,9 @@ export async function POST(request: NextRequest) {
     )
 
     // Create CV sections for the editor
-    console.log('Creating CV sections for editor...')
     const sectionsToInsert = sanitizeForPostgres(
       parsedSections.sections.map((section, index) => {
         const mappedType = mapSectionType(section.type)
-        console.log(`Mapping section: "${section.type}" → "${mappedType}"`)
         return {
           cv_id: cvData.id,
           section_type: mappedType,
@@ -249,18 +222,13 @@ export async function POST(request: NextRequest) {
     )
 
     if (sectionsToInsert.length > 0) {
-      console.log('Sections to insert:', sectionsToInsert.map((s: { section_type: string; title: string }) => ({ type: s.section_type, title: s.title })))
-      
       const { error: sectionsError } = await supabaseAdmin
         .from('cv_sections')
         .insert(sectionsToInsert)
 
       if (sectionsError) {
-        console.error('Error creating CV sections:', sectionsError)
-        console.error('Failed sections data:', JSON.stringify(sectionsToInsert, null, 2))
+        console.error('[Upload] Error creating CV sections:', sectionsError)
         // Don't fail the upload if sections creation fails
-      } else {
-        console.log('CV sections created successfully')
       }
     }
 

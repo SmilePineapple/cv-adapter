@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     console.log('✅ Authenticated user:', user.id, user.email)
 
     // Rate limiting: 10 requests per minute per user
-    const rateLimitResult = rateLimiters.normal(user.id)
+    const rateLimitResult = await rateLimiters.normal(user.id)
     if (!rateLimitResult.success) {
       const resetDate = new Date(rateLimitResult.reset)
       return NextResponse.json({ 

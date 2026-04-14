@@ -4,6 +4,7 @@ import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
 import LimitReachedEmail from '@/emails/LimitReachedEmail'
 import ReEngagementEmail from '@/emails/ReEngagementEmail'
 import PromoEmail from '@/emails/PromoEmail'
+import ThreeDayReminderEmail from '@/emails/ThreeDayReminderEmail'
 
 /**
  * Lazy initialization of Resend client to avoid build-time errors
@@ -35,95 +36,7 @@ export async function send3DayReminderEmail(email: string, name: string) {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      html: `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          </head>
-          <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif; background-color: #f6f9fc;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f6f9fc; padding: 40px 0;">
-              <tr>
-                <td align="center">
-                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
-                    <!-- Header -->
-                    <tr>
-                      <td style="background-color: #4F46E5; padding: 32px; text-align: center;">
-                        <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Still looking for your dream job? 🎯</h1>
-                      </td>
-                    </tr>
-                    
-                    <!-- Content -->
-                    <tr>
-                      <td style="padding: 40px;">
-                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
-                          Hi ${name || 'there'},
-                        </p>
-                        
-                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 20px 0;">
-                          We noticed you haven't created your AI-powered CV yet! You still have <strong>1 free generation</strong> waiting for you.
-                        </p>
-                        
-                        <div style="background-color: #f0f9ff; border-left: 4px solid #4F46E5; padding: 20px; margin: 0 0 30px 0; border-radius: 4px;">
-                          <p style="font-size: 16px; line-height: 26px; color: #1e40af; margin: 0 0 12px 0;">
-                            <strong>⏱️ It only takes 2 minutes to:</strong>
-                          </p>
-                          <ul style="margin: 0; padding-left: 20px; color: #1e40af;">
-                            <li style="margin-bottom: 8px;">Upload your existing CV</li>
-                            <li style="margin-bottom: 8px;">Paste a job description</li>
-                            <li style="margin-bottom: 8px;">Get an ATS-optimized CV tailored to the role</li>
-                          </ul>
-                        </div>
-                        
-                        <p style="font-size: 16px; line-height: 26px; color: #333333; margin: 0 0 30px 0;">
-                          <strong>Why wait?</strong> Our AI has helped thousands of job seekers land interviews by creating CVs that pass Applicant Tracking Systems and impress hiring managers.
-                        </p>
-                        
-                        <!-- CTA Button -->
-                        <table width="100%" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td align="center" style="padding: 20px 0;">
-                              <a href="https://www.mycvbuddy.com/dashboard" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">Create My CV Now →</a>
-                            </td>
-                          </tr>
-                        </table>
-                        
-                        <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 30px 0 0 0; border-radius: 4px;">
-                          <p style="font-size: 14px; line-height: 22px; color: #92400e; margin: 0;">
-                            <strong>💡 Pro Tip:</strong> Users who create their CV within the first week are 3x more likely to land an interview!
-                          </p>
-                        </div>
-                        
-                        <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin: 30px 0 0 0;">
-                          Best regards,<br>
-                          The CV Buddy Team
-                        </p>
-                      </td>
-                    </tr>
-                    
-                    <!-- Footer -->
-                    <tr>
-                      <td style="padding: 24px; border-top: 1px solid #e5e7eb; text-align: center; background-color: #f9fafb;">
-                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                          CV Buddy - AI-Powered CV & Cover Letter Generator
-                        </p>
-                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                          <a href="https://www.mycvbuddy.com" style="color: #7c3aed; text-decoration: underline;">www.mycvbuddy.com</a>
-                        </p>
-                        <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                          <a href="https://www.mycvbuddy.com/unsubscribe" style="color: #7c3aed; text-decoration: underline;">Unsubscribe</a>
-                        </p>
-                      </td>
-                    </tr>
-                    
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </body>
-        </html>
-      `,
+      react: ThreeDayReminderEmail({ name }),
     })
 
     if (error) {
@@ -537,6 +450,88 @@ export async function sendUpgradeConfirmationEmail(email: string, name: string) 
     return { success: true, data }
   } catch (error) {
     console.error('Upgrade confirmation email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
+ * Send payment failed / dunning email to notify user of failed charge
+ */
+export async function sendPaymentFailedEmail(email: string, name: string, attemptCount: number, isLastAttempt: boolean) {
+  try {
+    const resend = getResendClient()
+    const subject = isLastAttempt
+      ? '⚠️ Your CV Buddy Pro subscription has been cancelled'
+      : `⚠️ Payment failed for your CV Buddy Pro subscription (attempt ${attemptCount})`
+
+    const bodyMessage = isLastAttempt
+      ? `Unfortunately, after ${attemptCount} failed payment attempts, your Pro subscription has been cancelled and your account has been moved to the free plan. You can re-subscribe at any time from your account settings.`
+      : `We were unable to process your subscription payment (attempt ${attemptCount} of 3). We will automatically retry. Please update your payment method to avoid losing Pro access.`
+
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject,
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f6f9fc;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+              <tr><td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+                  <tr>
+                    <td style="background-color:#DC2626;padding:32px;text-align:center;">
+                      <h1 style="color:#ffffff;font-size:26px;margin:0;">Payment Failed ⚠️</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:40px;">
+                      <p style="font-size:16px;line-height:26px;color:#333333;margin:0 0 20px 0;">Hi ${name},</p>
+                      <p style="font-size:16px;line-height:26px;color:#333333;margin:0 0 20px 0;">${bodyMessage}</p>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding:20px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription" style="display:inline-block;padding:16px 32px;background:#4F46E5;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;font-size:16px;">
+                              ${isLastAttempt ? 'Re-subscribe Now →' : 'Update Payment Method →'}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="font-size:14px;line-height:22px;color:#6b7280;margin:20px 0 0 0;">
+                        If you need help, reply to this email or contact us at support@mycvbuddy.com
+                      </p>
+                      <p style="font-size:16px;line-height:26px;color:#4b5563;margin:30px 0 0 0;">
+                        Best regards,<br>The CV Buddy Team
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:24px;border-top:1px solid #e5e7eb;text-align:center;background-color:#f9fafb;">
+                      <p style="font-size:14px;color:#6b7280;margin:4px 0;">CV Buddy · <a href="https://www.mycvbuddy.com/unsubscribe" style="color:#7c3aed;">Unsubscribe</a></p>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Payment failed email error:', error)
+      return { success: false, error }
+    }
+
+    return { success: true, data }
+  } catch (error) {
+    console.error('Payment failed email exception:', error)
     return { success: false, error }
   }
 }

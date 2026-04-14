@@ -43,35 +43,35 @@ export interface AnalyticsEventData {
 }
 
 /**
- * Track an analytics event
+ * Track an analytics event.
+ * Pass userId if already known to skip an extra getUser() round-trip.
  */
 export async function trackEvent(
   eventType: AnalyticsEventType,
-  eventData: AnalyticsEventData = {}
+  eventData: AnalyticsEventData = {},
+  userId?: string
 ): Promise<void> {
   try {
     const supabase = createSupabaseClient()
     
-    // Check if user is authenticated
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      console.warn('Analytics: User not authenticated, skipping event tracking')
-      return
+    let resolvedUserId = userId
+    if (!resolvedUserId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      resolvedUserId = user.id
     }
 
     // Insert event
     const { error } = await supabase
       .from('analytics_events')
       .insert({
-        user_id: user.id,
+        user_id: resolvedUserId,
         event_type: eventType,
         event_data: eventData,
       })
 
     if (error) {
       console.error('Analytics tracking error:', error)
-    } else {
-      console.log(`📊 Analytics: Tracked ${eventType}`, eventData)
     }
   } catch (error) {
     console.error('Analytics tracking failed:', error)
@@ -285,25 +285,30 @@ export async function getDailyStats(days: number = 30) {
 }
 
 /**
- * Track funnel stage completion
+ * Track funnel stage completion.
+ * Pass userId if already known to skip an extra getUser() round-trip.
  */
-export async function trackFunnelStage(stage: 'signup' | 'first_cv_upload' | 'first_generation' | 'first_export' | 'upgrade_viewed' | 'payment_initiated' | 'payment_completed') {
+export async function trackFunnelStage(
+  stage: 'signup' | 'first_cv_upload' | 'first_generation' | 'first_export' | 'upgrade_viewed' | 'payment_initiated' | 'payment_completed',
+  userId?: string
+) {
   try {
     const supabase = createSupabaseClient()
     
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    let resolvedUserId = userId
+    if (!resolvedUserId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      resolvedUserId = user.id
+    }
 
-    // Call database function to track funnel stage
     const { error } = await supabase.rpc('track_funnel_stage', {
-      p_user_id: user.id,
+      p_user_id: resolvedUserId,
       p_stage: stage
     })
 
     if (error) {
       console.error('Error tracking funnel stage:', error)
-    } else {
-      console.log(`📊 Funnel: ${stage}`)
     }
   } catch (error) {
     console.error('Failed to track funnel stage:', error)
@@ -311,25 +316,27 @@ export async function trackFunnelStage(stage: 'signup' | 'first_cv_upload' | 'fi
 }
 
 /**
- * Track feature usage
+ * Track feature usage.
+ * Pass userId if already known to skip an extra getUser() round-trip.
  */
-export async function trackFeatureUsage(featureName: string) {
+export async function trackFeatureUsage(featureName: string, userId?: string) {
   try {
     const supabase = createSupabaseClient()
     
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    let resolvedUserId = userId
+    if (!resolvedUserId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      resolvedUserId = user.id
+    }
 
-    // Call database function to update feature usage
     const { error } = await supabase.rpc('update_feature_usage', {
-      p_user_id: user.id,
+      p_user_id: resolvedUserId,
       p_feature_name: featureName
     })
 
     if (error) {
       console.error('Error tracking feature usage:', error)
-    } else {
-      console.log(`📊 Feature used: ${featureName}`)
     }
   } catch (error) {
     console.error('Failed to track feature usage:', error)

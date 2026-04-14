@@ -39,14 +39,9 @@ export default function UploadPage() {
   const supabase = createSupabaseClient()
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    console.log('[UPLOAD] onDrop called with files:', acceptedFiles)
     const file = acceptedFiles[0]
-    if (!file) {
-      console.log('[UPLOAD] No file selected')
-      return
-    }
+    if (!file) return
 
-    console.log('[UPLOAD] File selected:', file.name, file.type, file.size)
     setUploadedFile(file)
     setIsUploading(true)
     setUploadProgress(0)
@@ -59,13 +54,10 @@ export default function UploadPage() {
 
     try {
       // Get session first
-      console.log('[UPLOAD] Getting session...')
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        console.error('[UPLOAD] No session found')
         throw new Error('Please log in to upload files')
       }
-      console.log('[UPLOAD] Session found, user ID:', session.user.id)
 
       // Upload file to Supabase Storage first
       setUploadProgress(10)
@@ -76,7 +68,6 @@ export default function UploadPage() {
       const fileName = `${session.user.id}-${Date.now()}.${fileExt}`
       const filePath = `cv-uploads/${fileName}`
 
-      console.log('[UPLOAD] Uploading to Supabase Storage:', filePath)
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('cv-assets')
         .upload(filePath, file, {
@@ -85,11 +76,8 @@ export default function UploadPage() {
         })
 
       if (uploadError) {
-        console.error('[UPLOAD] Storage upload error:', uploadError)
         throw new Error('Failed to upload file: ' + uploadError.message)
       }
-
-      console.log('[UPLOAD] File uploaded to storage:', uploadData.path)
       setUploadProgress(40)
       setUploadStep('🔍 Processing document...')
 
@@ -118,9 +106,6 @@ export default function UploadPage() {
         messageIndex++
       }, 2500) // Change message every 2.5 seconds
 
-      // Now call API with storage path
-      console.log('[UPLOAD] Sending request to /api/upload...')
-      
       // Set up timeout warning (15 seconds)
       const timeoutWarning = setTimeout(() => {
         setIsTakingLong(true)
@@ -149,12 +134,9 @@ export default function UploadPage() {
       if (messageInterval) clearInterval(messageInterval)
       clearTimeout(timeoutWarning)
       setIsTakingLong(false)
-
-      console.log('[UPLOAD] Response status:', response.status)
       
       if (!response.ok) {
         const result = await response.json().catch(() => ({ error: 'Upload failed' }))
-        console.log('[UPLOAD] Error result:', result)
         setUploadError({
           message: result.error || 'Upload failed',
           details: result.details
@@ -163,7 +145,6 @@ export default function UploadPage() {
       }
       
       const result = await response.json()
-      console.log('[UPLOAD] Response result:', result)
 
       setUploadProgress(95)
       setUploadStep('✨ Finalizing...')
@@ -185,8 +166,6 @@ export default function UploadPage() {
         }
       }, 2000)
     } catch (error: any) {
-      console.error('[UPLOAD] Upload error:', error)
-      console.error('[UPLOAD] Error stack:', error.stack)
       toast.error(error.message || 'Failed to upload CV')
       // Clear intervals on error
       if (progressInterval) clearInterval(progressInterval)
@@ -199,21 +178,14 @@ export default function UploadPage() {
   }, [supabase])
 
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('[UPLOAD] File input change event triggered')
     const files = e.target.files
-    if (!files || files.length === 0) {
-      console.log('[UPLOAD] No files in input')
-      return
-    }
-    console.log('[UPLOAD] Files from input:', files)
+    if (!files || files.length === 0) return
     await onDrop(Array.from(files))
   }, [onDrop])
 
   const onDropRejected = useCallback((fileRejections: any[]) => {
-    console.log('[UPLOAD] Files rejected:', fileRejections)
     fileRejections.forEach((rejection) => {
       const { file, errors } = rejection
-      console.log('[UPLOAD] Rejected file:', file.name, 'Errors:', errors)
       errors.forEach((error: any) => {
         if (error.code === 'file-too-large') {
           toast.error(`File ${file.name} is too large. Maximum size is 10MB.`)
@@ -283,6 +255,13 @@ export default function UploadPage() {
     setUploadError(null)
   }
 
+  const handleRetry = () => {
+    if (!uploadedFile) return
+    setUploadError(null)
+    // Re-trigger onDrop with the same file
+    onDrop([uploadedFile])
+  }
+
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
@@ -301,7 +280,7 @@ export default function UploadPage() {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">CV Adapter</span>
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">My CV Buddy</span>
             </div>
           </div>
         </div>
@@ -508,13 +487,22 @@ export default function UploadPage() {
                       </div>
                     )}
                     
-                    <button
-                      onClick={handleReset}
-                      className="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
-                    >
-                      <Upload className="w-4 h-4" />
-                      <span>Try a Different File</span>
-                    </button>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <button
+                        onClick={handleRetry}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                      >
+                        <Loader2 className="w-4 h-4" />
+                        <span>Retry Upload</span>
+                      </button>
+                      <button
+                        onClick={handleReset}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span>Try a Different File</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

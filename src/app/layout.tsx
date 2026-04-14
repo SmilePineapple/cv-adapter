@@ -13,6 +13,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.mycvbuddy.com'),
+  title: {
+    default: 'My CV Buddy — AI-Powered CV & Cover Letter Generator',
+    template: '%s | My CV Buddy',
+  },
+  description: 'Create ATS-optimised CVs and cover letters in minutes with AI. Tailored to any job description. Used by thousands of UK job seekers.',
+  keywords: ['CV builder', 'AI CV', 'cover letter generator', 'ATS optimiser', 'UK CV', 'resume builder'],
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
