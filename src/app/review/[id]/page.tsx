@@ -244,7 +244,7 @@ export default function ReviewPage() {
           .select('parsed_sections')
           .eq('id', generation.cv_id)
           .eq('user_id', user.id)
-          .single()
+          .maybeSingle()
 
         if (cvData && !cvError) {
           originalSecs = cvData.parsed_sections.sections || []

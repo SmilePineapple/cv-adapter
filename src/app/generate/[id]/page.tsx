@@ -129,7 +129,7 @@ export default function GeneratePage() {
         .select('*')
         .eq('id', id || cvId)
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (error || !data) {
         toast.error('CV not found')

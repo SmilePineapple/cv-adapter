@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       .from('cvs')
       .select('parsed_sections, original_text')
       .eq('id', cvId)
-      .single()
+      .maybeSingle()
 
     if (cvError || !cv) {
       throw new Error('CV not found')

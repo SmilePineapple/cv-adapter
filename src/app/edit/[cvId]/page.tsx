@@ -260,7 +260,7 @@ export default function CVEditorPage() {
         .select('id, file_meta')
         .eq('id', cvId)
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (cvError || !cvMeta) {
         console.error('❌ CV not found for ID:', cvId)

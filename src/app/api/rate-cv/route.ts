@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       .select('*')
       .eq('cv_id', cv_id)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (existingRating) {
       // Return existing rating
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       .select('original_text, parsed_sections')
       .eq('id', cv_id)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (cvError || !cvData) {
       return NextResponse.json({ error: 'CV not found' }, { status: 404 })
@@ -133,3 +133,4 @@ Respond in JSON format:
     }, { status: 500 })
   }
 }
+

@@ -45,7 +45,7 @@ export async function POST(
       .select('id, user_id, parsed_sections, file_meta')
       .eq('id', cvId)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (cvError || !cvData) {
       console.error('CV fetch error:', cvError)

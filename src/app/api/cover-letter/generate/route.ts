@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       .select('*')
       .eq('id', cvId)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (cvError || !cvData) {
       return NextResponse.json({ error: 'CV not found' }, { status: 404 })

@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         .select('parsed_content, file_meta')
         .eq('id', itemId)
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (cvError || !cvData) {
         return NextResponse.json({ error: 'CV not found' }, { status: 404 })
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
         .select('output_sections, job_title')
         .eq('id', itemId)
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (genError || !genData) {
         return NextResponse.json({ error: 'Generated CV not found' }, { status: 404 })

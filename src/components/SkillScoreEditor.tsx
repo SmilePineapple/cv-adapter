@@ -50,7 +50,7 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
           .from('cvs')
           .select('parsed_sections')
           .eq('id', cvId)
-          .single()
+          .maybeSingle()
 
         if (cvData?.parsed_sections?.sections) {
           const skillsSection = cvData.parsed_sections.sections.find(

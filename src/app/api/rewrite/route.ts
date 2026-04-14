@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
       .select('original_text, parsed_sections, detected_language')
       .eq('id', cv_id)
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (cvError || !cvData) {
       return NextResponse.json({ error: 'CV not found' }, { status: 404 })
