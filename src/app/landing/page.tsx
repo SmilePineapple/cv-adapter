@@ -3,9 +3,9 @@ import { ArrowRight, Upload, Zap, Download, CheckCircle } from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-white/10 bg-gray-950/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -20,7 +20,7 @@ export default function LandingPage() {
             <Link href="/auth/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
             <Link 
               href="/auth/signup" 
-              className="bg-white text-black px-4 py-2 rounded-full font-black hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded-full font-black hover:bg-blue-700 transition-colors"
             >
               Get Started
             </Link>
@@ -29,7 +29,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="py-24 px-4 bg-gradient-to-br from-gray-950 via-blue-950/30 to-gray-950">
         <div className="container mx-auto text-center max-w-4xl">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Tailor Your CV to Any Job with{' '}
@@ -43,7 +43,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
               href="/auth/signup" 
-              className="bg-white text-black px-8 py-4 rounded-full font-black text-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
+              className="bg-blue-600 text-white px-8 py-4 rounded-full font-black text-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
             >
               Get Started Free
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -63,7 +63,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="demo" className="py-20 bg-white">
+      <section id="demo" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-white mb-12">
             How It Works
@@ -71,30 +71,30 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-8 h-8 text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">1. Upload Your CV</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">1. Upload Your CV</h3>
               <p className="text-gray-400">
                 Upload your existing CV in PDF or Word format. We'll extract all sections automatically.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-purple-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">2. Add Job Details</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">2. Add Job Details</h3>
               <p className="text-gray-400">
                 Paste the job title and description. Choose your rewrite style and tone preferences.
               </p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Download className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">3. Download Optimized CV</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">3. Download Optimized CV</h3>
               <p className="text-gray-400">
                 Get your tailored CV with highlighted changes. Choose from 10 professional templates.
               </p>
@@ -104,7 +104,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 bg-white/5">
+      <section id="features" className="py-20 bg-gray-950">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-white mb-12">
             Powerful Features
@@ -137,9 +137,9 @@ export default function LandingPage() {
                 description: "Your data is encrypted and never shared. GDPR compliant with 5-year retention."
               }
             ].map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+              <div key={index} className="bg-gray-800/60 border border-white/10 p-6 rounded-lg">
                 <div className="flex items-center mb-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
                   <h3 className="font-black text-white">{feature.title}</h3>
                 </div>
                 <p className="text-gray-400">{feature.description}</p>
@@ -150,43 +150,43 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 bg-white">
+      <section id="pricing" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-black text-white mb-12">
             Simple, Transparent Pricing
           </h2>
           
           <div className="max-w-md mx-auto">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-200">
+            <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-8 rounded-2xl border border-blue-500/30">
               <h3 className="text-3xl font-black text-white mb-2">Pro Plan</h3>
               <div className="text-4xl font-bold text-blue-400 mb-4">
                 £2.99<span className="text-lg text-gray-400">/month</span>
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited CV generations</span>
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                  <span className="text-gray-200">Unlimited CV generations</span>
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Unlimited cover letters</span>
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                  <span className="text-gray-200">Unlimited cover letters</span>
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>All 10 professional templates</span>
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                  <span className="text-gray-200">All 10 professional templates</span>
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Priority support</span>
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                  <span className="text-gray-200">Priority support</span>
                 </li>
                 <li className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Cancel anytime</span>
+                  <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+                  <span className="text-gray-200">Cancel anytime</span>
                 </li>
               </ul>
               <Link 
                 href="/auth/signup" 
-                className="w-full bg-white text-black py-3 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors block"
+                className="w-full bg-blue-600 text-white py-3 rounded-full font-black hover:bg-blue-700 transition-colors block"
               >
                 Get Started
               </Link>
@@ -196,7 +196,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-950 border-t border-white/10 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
