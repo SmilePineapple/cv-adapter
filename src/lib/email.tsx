@@ -1,3 +1,4 @@
+import { render } from '@react-email/components'
 import { Resend } from 'resend'
 import WelcomeEmail from '@/emails/WelcomeEmail'
 import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
@@ -36,7 +37,7 @@ export async function send3DayReminderEmail(email: string, name: string) {
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      react: <ThreeDayReminderEmail name={name} />,
+      html: await render(<ThreeDayReminderEmail name={name} />),
     })
 
     if (error) {
@@ -394,7 +395,7 @@ export async function sendReEngagementEmail(
         'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
-      react: <ReEngagementEmail name={name} daysAgo={daysAgo} remainingGenerations={remainingGenerations} />,
+      html: await render(<ReEngagementEmail name={name} daysAgo={daysAgo} remainingGenerations={remainingGenerations} />),
     })
 
     if (error) {
