@@ -40,34 +40,45 @@ export default function UsageTracker({
           {isPro && <Crown className="w-4 h-4 text-purple-400" />}
         </div>
         <div className="text-right">
-          <div className={`text-2xl font-black ${
-            isAtLimit ? 'text-red-400' : isNearLimit ? 'text-orange-400' : 'text-blue-400'
-          }`}>
-            {remaining}
-          </div>
-          <div className="text-xs text-gray-400">remaining</div>
+          {isPro ? (
+            <>
+              <div className="text-lg font-black text-green-400">Unlimited</div>
+              <div className="text-xs text-gray-400">generations</div>
+            </>
+          ) : (
+            <>
+              <div className={`text-2xl font-black ${
+                isAtLimit ? 'text-red-400' : isNearLimit ? 'text-orange-400' : 'text-blue-400'
+              }`}>
+                {remaining}
+              </div>
+              <div className="text-xs text-gray-400">remaining</div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="mb-3">
-        <div className="flex justify-between text-sm text-gray-400 mb-1">
-          <span>{currentUsage} used</span>
-          <span>{maxGenerations} total</span>
+      {/* Progress Bar - only for free users */}
+      {!isPro && (
+        <div className="mb-3">
+          <div className="flex justify-between text-sm text-gray-400 mb-1">
+            <span>{currentUsage} used</span>
+            <span>{maxGenerations} total</span>
+          </div>
+          <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+            <div 
+              className={`h-full rounded-full transition-all duration-500 ${
+                isAtLimit 
+                  ? 'bg-gradient-to-r from-red-500 to-red-600' 
+                  : isNearLimit 
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600' 
+                  : 'bg-gradient-to-r from-blue-500 to-blue-600'
+              }`}
+              style={{ width: `${Math.min(percentage, 100)}%` }}
+            />
+          </div>
         </div>
-        <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-          <div 
-            className={`h-full rounded-full transition-all duration-500 ${
-              isAtLimit 
-                ? 'bg-gradient-to-r from-red-500 to-red-600' 
-                : isNearLimit 
-                ? 'bg-gradient-to-r from-orange-500 to-orange-600' 
-                : 'bg-gradient-to-r from-blue-500 to-blue-600'
-            }`}
-            style={{ width: `${Math.min(percentage, 100)}%` }}
-          />
-        </div>
-      </div>
+      )}
 
       {/* Call to Action */}
       {!isPro && (
@@ -155,10 +166,7 @@ export default function UsageTracker({
             </p>
           </div>
           <p className="text-xs text-gray-300">
-            {remaining > 0 
-              ? `Unlimited generations available. Keep creating amazing CVs!`
-              : "Unlimited generations available. Keep creating amazing CVs!"
-            }
+            Unlimited generations available. Keep creating amazing CVs!
           </p>
         </div>
       )}

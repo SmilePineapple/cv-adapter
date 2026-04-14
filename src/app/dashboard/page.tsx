@@ -45,7 +45,8 @@ import {
   MessageSquare,
   Flame,
   Target,
-  RefreshCw
+  RefreshCw,
+  Brain
 } from 'lucide-react'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
@@ -968,20 +969,12 @@ export default function DashboardPage() {
               <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-orange-400" />
               </div>
-              <span className="text-3xl font-black text-white">{currentUsage}/{maxGenerations}</span>
+              <span className="text-3xl font-black text-white">{currentUsage}</span>
             </div>
-            <p className="text-sm font-semibold text-gray-400">This Month</p>
-            <div className="mt-3">
-              <div className="bg-white/10 rounded-full h-2">
-                <div 
-                  className="bg-gradient-to-r from-orange-400 to-red-400 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${Math.min(usagePercentage, 100)}%` }}
-                ></div>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                {maxGenerations - currentUsage} remaining
-              </p>
-            </div>
+            <p className="text-sm font-semibold text-gray-400">Total Generations</p>
+            {isPro && (
+              <p className="text-xs text-green-400 mt-1 font-semibold">Unlimited ✓</p>
+            )}
           </div>
         </div>
 
@@ -1026,60 +1019,64 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Access Grid - Glass Morphism Cards */}
+        {/* Quick Access Grid - Colourful Feature Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
             href="/skills-assessment"
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group"
+            className="relative bg-gradient-to-br from-blue-600/40 to-blue-800/40 border border-blue-500/30 rounded-2xl p-6 hover:from-blue-600/60 hover:to-blue-800/60 transition-all group overflow-hidden"
           >
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
-              <Target className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/10 rounded-full -mr-6 -mt-6"></div>
+            <div className="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500/50 transition-colors">
+              <Target className="w-6 h-6 text-blue-300" />
             </div>
-            <h3 className="font-bold text-white mb-1">Skills Test</h3>
-            <p className="text-sm text-gray-400">Assess abilities</p>
+            <h3 className="font-black text-white mb-1">Skills Test</h3>
+            <p className="text-sm text-blue-200">Assess your abilities</p>
           </Link>
 
           <Link
             href={isPro ? "/interview-prep" : "/subscription"}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group relative"
+            className="relative bg-gradient-to-br from-purple-600/40 to-purple-800/40 border border-purple-500/30 rounded-2xl p-6 hover:from-purple-600/60 hover:to-purple-800/60 transition-all group overflow-hidden"
           >
             {!isPro && (
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
+              <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-400 to-blue-400 text-white text-xs font-black px-2 py-0.5 rounded-full">
                 PRO
               </div>
             )}
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
-              <Sparkles className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-purple-400/10 rounded-full -mr-6 -mt-6"></div>
+            <div className="w-12 h-12 bg-purple-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500/50 transition-colors">
+              <Sparkles className="w-6 h-6 text-purple-300" />
             </div>
-            <h3 className="font-bold text-white mb-1">Interview Prep</h3>
-            <p className="text-sm text-gray-400">Practice questions</p>
+            <h3 className="font-black text-white mb-1">Interview Prep</h3>
+            <p className="text-sm text-purple-200">Practice questions</p>
           </Link>
 
           <Link
             href={isPro ? "/career-coach" : "/subscription"}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group relative"
+            className="relative bg-gradient-to-br from-emerald-600/40 to-teal-800/40 border border-emerald-500/30 rounded-2xl p-6 hover:from-emerald-600/60 hover:to-teal-800/60 transition-all group overflow-hidden"
           >
             {!isPro && (
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
+              <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-400 to-blue-400 text-white text-xs font-black px-2 py-0.5 rounded-full">
                 PRO
               </div>
             )}
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
-              <TrendingUp className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-400/10 rounded-full -mr-6 -mt-6"></div>
+            <div className="w-12 h-12 bg-emerald-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-500/50 transition-colors">
+              <Brain className="w-6 h-6 text-emerald-300" />
             </div>
-            <h3 className="font-bold text-white mb-1">Career Coach</h3>
-            <p className="text-sm text-gray-400">Get guidance</p>
+            <h3 className="font-black text-white mb-1">Career Coach</h3>
+            <p className="text-sm text-emerald-200">AI-powered guidance</p>
           </Link>
 
           <Link
             href="/roast-cv"
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all group"
+            className="relative bg-gradient-to-br from-orange-600/40 to-red-800/40 border border-orange-500/30 rounded-2xl p-6 hover:from-orange-600/60 hover:to-red-800/60 transition-all group overflow-hidden"
           >
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white/20 transition-colors">
-              <Flame className="w-6 h-6 text-orange-400 group-hover:text-orange-300 transition-colors" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-orange-400/10 rounded-full -mr-6 -mt-6"></div>
+            <div className="w-12 h-12 bg-orange-500/30 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-500/50 transition-colors">
+              <Flame className="w-6 h-6 text-orange-300" />
             </div>
-            <h3 className="font-bold text-white mb-1">Roast CV</h3>
-            <p className="text-sm text-gray-400">Get honest feedback</p>
+            <h3 className="font-black text-white mb-1">Roast My CV</h3>
+            <p className="text-sm text-orange-200">Brutally honest feedback</p>
           </Link>
         </div>
 
@@ -1270,15 +1267,21 @@ export default function DashboardPage() {
                 <div className="space-y-6">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold text-gray-300">Monthly Usage</span>
-                      <span className="text-sm text-gray-400">{currentUsage}/{maxGenerations}</span>
+                      <span className="text-sm font-semibold text-gray-300">Total Generations</span>
+                      {isPro ? (
+                        <span className="text-xs font-bold text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">Unlimited</span>
+                      ) : (
+                        <span className="text-sm text-gray-400">{currentUsage} used</span>
+                      )}
                     </div>
-                    <div className="bg-white/10 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-blue-400 to-purple-400 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${Math.min(usagePercentage, 100)}%` }}
-                      ></div>
-                    </div>
+                    {!isPro && (
+                      <div className="bg-white/10 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-blue-400 to-purple-400 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${Math.min(usagePercentage, 100)}%` }}
+                        ></div>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -1308,19 +1311,6 @@ export default function DashboardPage() {
             </div>
           </div>
           
-          {/* Photo Upload Section */}
-          {cvs.length > 0 && (
-            <div className="mt-8">
-              <PhotoUpload
-                cvId={cvs[0].id}
-                currentPhotoUrl={(cvs[0] as any).photo_url}
-                onPhotoUploaded={() => {
-                  // Reload page to refresh data
-                  window.location.reload()
-                }}
-              />
-            </div>
-          )}
           </>
         )}
 
