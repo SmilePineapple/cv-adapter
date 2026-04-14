@@ -96,7 +96,7 @@ export default function CVBuddyVsCanva() {
                     </tr>
                     <tr className="bg-white/10">
                       <td className="px-4 py-4 font-medium text-white">Pro Price</td>
-                      <td className="px-4 py-4 text-slate-300">£9.99/month</td>
+                      <td className="px-4 py-4 text-slate-300">£2.99/month</td>
                       <td className="px-4 py-4 text-slate-300">£10.99/month</td>
                     </tr>
                     <tr>
@@ -233,7 +233,7 @@ export default function CVBuddyVsCanva() {
                       <div className="text-sm text-slate-300">2 CV generations, full features, no watermark</div>
                     </div>
                     <div>
-                      <div className="font-semibold text-white">Pro: £9.99/month</div>
+                      <div className="font-semibold text-white">Pro: £2.99/month</div>
                       <div className="text-sm text-slate-300">Unlimited CVs, cover letters, interview prep</div>
                     </div>
                   </div>

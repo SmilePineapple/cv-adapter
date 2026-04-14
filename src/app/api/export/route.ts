@@ -129,16 +129,6 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Check user's subscription tier for watermark
-    const { data: usage } = await supabase
-      .from('usage_tracking')
-      .select('subscription_tier')
-      .eq('user_id', user.id)
-      .single()
-
-    const subscriptionTier = usage?.subscription_tier || 'free'
-    const isPro = subscriptionTier === 'pro_monthly' || subscriptionTier === 'pro_annual'
-
     // Fetch generation data (allow orphaned generations with NULL cv_id)
     const { data: generation, error: genError } = await supabase
       .from('generations')
@@ -296,13 +286,13 @@ export async function POST(request: NextRequest) {
     // Generate content based on format
     switch (format) {
       case 'html':
-        return handleHtmlExport(sections, template, jobTitle, isPro)
+        return handleHtmlExport(sections, template, jobTitle)
       case 'pdf':
-        return await handlePdfExport(sections, template, jobTitle, isPro, photoUrl)
+        return await handlePdfExport(sections, template, jobTitle, photoUrl)
       case 'docx':
-        return await handleDocxExport(sections, template, jobTitle, isPro)
+        return await handleDocxExport(sections, template, jobTitle)
       case 'txt':
-        return handleTxtExport(sections, jobTitle, isPro)
+        return handleTxtExport(sections, jobTitle)
       default:
         return NextResponse.json({ error: 'Unsupported format' }, { status: 400 })
     }
@@ -315,24 +305,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function handleHtmlExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
-  let html = generateTemplateHtml(sections, template)
-  
-  // Add watermark for free users
-  if (!isPro) {
-    const watermark = `
-      <div style="width: 100%; text-align: center; padding: 20px; margin-top: 40px; border-top: 2px solid #e5e7eb; background: #f9fafb;">
-        <p style="margin: 0; font-size: 14px; color: #666;">
-          <strong>Created with CV Adapter</strong>
-          <span style="margin: 0 12px; color: #9ca3af;">•</span>
-          <span>Upgrade to Pro (£2.99/month) to remove this watermark</span>
-          <span style="margin: 0 12px; color: #9ca3af;">•</span>
-          <a href="https://mycvbuddy.com" style="color: #3b82f6; text-decoration: none;">mycvbuddy.com</a>
-        </p>
-      </div>
-    `
-    html = html.replace('</body>', watermark + '</body>')
-  }
+function handleHtmlExport(sections: CVSection[], template: string, jobTitle: string) {
+  const html = generateTemplateHtml(sections, template)
   
   return new NextResponse(html, {
     headers: {
@@ -342,7 +316,7 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
-async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean, photoUrl?: string | null) {
+async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, photoUrl?: string | null) {
   try {
     // Check if using advanced template
     let html: string
@@ -476,29 +450,11 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' })
       : { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } // Advanced templates handle their own margins
     
-    // Add watermark for free users
-    const basePdfOptions = {
+    const pdfOptions = {
       format: 'A4' as const,
       printBackground: true,
       margin: margins
     }
-
-    // Add footer watermark for free users only
-    const pdfOptions = !isPro ? {
-      ...basePdfOptions,
-      displayHeaderFooter: true,
-      footerTemplate: `
-        <div style="width: 100%; text-align: center; font-size: 10px; color: #666; padding: 8px 0; background: #f9fafb; border-top: 1px solid #e5e7eb;">
-          <span style="font-weight: 600;">Created with CV Adapter</span>
-          <span style="margin: 0 8px; color: #9ca3af;">•</span>
-          <span>Upgrade to Pro (£2.99/month) to remove this watermark</span>
-          <span style="margin: 0 8px; color: #9ca3af;">•</span>
-          <span style="color: #3b82f6;">mycvbuddy.com</span>
-        </div>
-      `,
-      headerTemplate: '<div></div>',
-      margin: { ...margins, bottom: '20mm' }
-    } : basePdfOptions
 
     const pdf = await page.pdf(pdfOptions)
     
@@ -513,11 +469,11 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
   } catch (error) {
     console.error('PDF generation error:', error)
     // Fallback to HTML if PDF generation fails
-    return handleHtmlExport(sections, template, jobTitle, isPro)
+    return handleHtmlExport(sections, template, jobTitle)
   }
 }
 
-async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string, isPro: boolean) {
+async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {
   try {
     const sortedSections = sections.sort((a, b) => a.order - b.order)
     const children: Paragraph[] = []
@@ -657,56 +613,6 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
       }
     })
 
-    // Add watermark for free users
-    if (!isPro) {
-      children.push(
-        new Paragraph({
-          children: [new TextRun('')],
-          spacing: { before: 400 }
-        }),
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: 'Created with CV Adapter',
-              size: 20, // 10pt
-              color: '666666',
-              bold: true
-            }),
-            new TextRun({
-              text: ' • ',
-              size: 20,
-              color: '999999'
-            }),
-            new TextRun({
-              text: 'Upgrade to Pro (£2.99/month) to remove this watermark',
-              size: 20,
-              color: '666666'
-            }),
-            new TextRun({
-              text: ' • ',
-              size: 20,
-              color: '999999'
-            }),
-            new TextRun({
-              text: 'mycvbuddy.com',
-              size: 20,
-              color: '3b82f6'
-            })
-          ],
-          alignment: AlignmentType.CENTER,
-          border: {
-            top: {
-              color: 'CCCCCC',
-              space: 1,
-              style: BorderStyle.SINGLE,
-              size: 6
-            }
-          },
-          spacing: { before: 200 }
-        })
-      )
-    }
-
     const doc = new Document({
       sections: [{
         properties: {
@@ -734,11 +640,11 @@ async function handleDocxExport(sections: CVSection[], template: string, jobTitl
   } catch (error) {
     console.error('DOCX generation error:', error)
     // Fallback to TXT if DOCX generation fails
-    return handleTxtExport(sections, jobTitle, isPro)
+    return handleTxtExport(sections, jobTitle)
   }
 }
 
-function handleTxtExport(sections: CVSection[], jobTitle: string, isPro: boolean) {
+function handleTxtExport(sections: CVSection[], jobTitle: string) {
   const sortedSections = sections.sort((a, b) => a.order - b.order)
   let content = ''
 
@@ -753,13 +659,6 @@ function handleTxtExport(sections: CVSection[], jobTitle: string, isPro: boolean
       content += `${contentStr}\n\n`
     }
   })
-
-  // Add watermark for free users
-  if (!isPro) {
-    content += '\n\n' + '='.repeat(80) + '\n'
-    content += 'Created with CV Adapter • Upgrade to Pro (£2.99/month) to remove this watermark • mycvbuddy.com'
-    content += '\n' + '='.repeat(80)
-  }
 
   return new NextResponse(content, {
     headers: {

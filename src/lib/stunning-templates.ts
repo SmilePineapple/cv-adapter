@@ -100,6 +100,7 @@ export function generateProfessionalMetrics(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #ffffff; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
     .container { max-width: 850px; margin: 0 auto; padding: 40px; }
     .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; border-bottom: 3px solid #2C3E50; padding-bottom: 20px; }
@@ -248,6 +249,7 @@ export function generateTealSidebar(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #ffffff; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
     .container { display: flex; min-height: 100vh; }
     .sidebar { width: 80px; background: #F5F5F5; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
@@ -365,6 +367,7 @@ export function generateSoftHeader(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #ffffff; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
     .header { display: flex; background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 100%); padding: 30px 50px; align-items: center; justify-content: space-between; }
     .header-left h1 { font-size: 36px; font-weight: 700; margin-bottom: 5px; }
@@ -489,6 +492,7 @@ export function generateArtisticHeader(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #ffffff; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
     .decorative-header { height: 120px; background: white; border-bottom: 2px solid #FFB6D9; position: relative; overflow: hidden; }
     .decorative-header svg { width: 100%; height: 100%; }
@@ -624,6 +628,7 @@ export function generateBoldSplit(data: TemplateData): string {
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     @page { size: A4; margin: 0; }
+    html, body { background: #1A1A1A; }
     body { font-family: 'Arial', sans-serif; line-height: 1.4; margin: 0; padding: 0; }
     .container { display: flex; height: 297mm; width: 210mm; }
     .dark-side { width: 50%; background: #1A1A1A; color: white; padding: 30px 25px; overflow: hidden; }

@@ -552,7 +552,11 @@ export async function sendPromoEmail(email: string, name: string) {
       from: FROM_EMAIL,
       to: email,
       replyTo: REPLY_TO,
-      subject: '⏰ Only 4 Days Left - 50% Off CV Buddy Pro!',
+      subject: '💼 Get more from My CV Buddy',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
       html: `
         <!DOCTYPE html>
         <html>
@@ -565,81 +569,47 @@ export async function sendPromoEmail(email: string, name: string) {
             
             <!-- Header -->
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
-              <h1 style="color: #ffffff; font-size: 32px; margin: 0;">⏰ Only 4 Days Left!</h1>
+              <h1 style="color: #ffffff; font-size: 32px; margin: 0;">💼 Still job hunting?</h1>
             </div>
             
             <!-- Content -->
             <div style="padding: 40px;">
               <p style="font-size: 18px; font-weight: 600; color: #1f2937; margin-bottom: 16px;">Hi ${name},</p>
               
-              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
-                This is your <strong>final reminder</strong> – our launch promotion ends in just <strong style="color: #dc2626;">4 days</strong>!
+              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 24px;">
+                Applying to multiple roles? Each job is different — and your CV should be too. Upgrade to Pro and tailor your CV for every single application in minutes.
               </p>
               
-              <!-- Promo Box -->
-              <div style="background-color: #fef3c7; border: 3px solid #f59e0b; border-radius: 12px; padding: 24px; text-align: center; margin: 24px 0;">
-                <div style="font-size: 28px; font-weight: bold; color: #92400e; margin-bottom: 8px; letter-spacing: 1px;">
-                  🎉 LAUNCH50MONTHLY
-                </div>
-                <div style="font-size: 16px; color: #78350f; margin-bottom: 16px;">
-                  50% OFF Your First Month
-                </div>
-                <div style="font-size: 18px; color: #9ca3af; text-decoration: line-through; margin-bottom: 8px;">
-                  £9.99/month
-                </div>
-                <div style="font-size: 32px; font-weight: bold; color: #dc2626;">
-                  £4.99/month
-                </div>
-              </div>
-              
               <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
-                <strong>What you get with Pro:</strong>
+                <strong>What you get with Pro — just £2.99/month:</strong>
               </p>
               
               <div style="margin: 16px 0 24px 0;">
-                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited CV Generations</strong></p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited CV Generations</strong> — one for every role</p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Unlimited Cover Letters</strong></p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Interview Preparation</strong> with AI</p>
                 <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>All Export Formats</strong> (PDF, DOCX, HTML, TXT)</p>
-                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>50+ Languages</strong> supported</p>
-                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Priority Support</strong></p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>AI Review</strong> on every section</p>
+                <p style="font-size: 16px; line-height: 28px; color: #374151; margin: 8px 0;">✅ <strong>Premium Templates</strong> — stand out from the crowd</p>
               </div>
               
               <!-- CTA Button -->
               <div style="text-align: center; margin: 32px 0;">
-                <a href="https://www.mycvbuddy.com" style="display: inline-block; background-color: #7c3aed; color: #ffffff; font-size: 18px; font-weight: bold; text-decoration: none; padding: 16px 32px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                  Upgrade to Pro Now - Save 50%
+                <a href="https://www.mycvbuddy.com/subscription" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; font-size: 18px; font-weight: bold; text-decoration: none; padding: 16px 32px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                  Upgrade to Pro — £2.99/month →
                 </a>
               </div>
               
-              <!-- Urgency Box -->
-              <div style="background-color: #fee2e2; color: #dc2626; padding: 16px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
-                ⚠️ <strong>This offer expires in 4 days.</strong> After that, the price returns to £9.99/month.
-              </div>
-              
-              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
-                Don't miss out on this limited-time opportunity to supercharge your job search!
-              </p>
-              
-              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 8px;">
-                Best regards,
-              </p>
-              <p style="font-size: 16px; line-height: 26px; color: #4b5563; margin-bottom: 16px;">
-                The CV Buddy Team
+              <p style="font-size: 15px; line-height: 24px; color: #6b7280; margin: 0;">
+                Rooting for you,<br><br>
+                Jake @ My CV Buddy
               </p>
             </div>
             
             <!-- Footer -->
             <div style="padding: 24px; border-top: 1px solid #e5e7eb; text-align: center; background-color: #f9fafb;">
-              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                CV Buddy - AI-Powered CV & Cover Letter Generator
-              </p>
-              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                <a href="https://www.mycvbuddy.com" style="color: #7c3aed; text-decoration: underline;">www.mycvbuddy.com</a>
-              </p>
-              <p style="font-size: 14px; color: #6b7280; margin: 4px 0;">
-                <a href="https://www.mycvbuddy.com/unsubscribe" style="color: #7c3aed; text-decoration: underline;">Unsubscribe</a>
-              </p>
+              <p style="font-size: 13px; color: #9ca3af; margin: 4px 0;">My CV Buddy · <a href="https://www.mycvbuddy.com" style="color: #7c3aed; text-decoration: none;">mycvbuddy.com</a></p>
+              <p style="font-size: 13px; color: #9ca3af; margin: 4px 0;"><a href="https://www.mycvbuddy.com/unsubscribe" style="color: #9ca3af;">Unsubscribe</a></p>
             </div>
             
           </div>
@@ -649,14 +619,13 @@ export async function sendPromoEmail(email: string, name: string) {
     })
 
     if (error) {
-      console.error('Promo email error:', error)
+      console.error('Upgrade reminder email error:', error)
       return { success: false, error }
     }
 
-    console.log('Promo email sent:', data)
     return { success: true, data }
   } catch (error) {
-    console.error('Promo email exception:', error)
+    console.error('Upgrade reminder email exception:', error)
     return { success: false, error }
   }
 }
@@ -786,28 +755,18 @@ export async function sendDay7OfferEmail(email: string, name: string) {
                       <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 24px 0;">
                         You joined My CV Buddy a week ago. We want to make sure you actually land the job you're going for — so we're making it easier to go Pro.
                       </p>
-                      <!-- Offer Box -->
-                      <div style="background:linear-gradient(135deg,#fef3c7,#fff7ed);border:2px solid #f59e0b;border-radius:12px;padding:28px;text-align:center;margin:0 0 28px 0;">
-                        <p style="font-size:14px;font-weight:700;color:#92400e;letter-spacing:2px;margin:0 0 8px 0;text-transform:uppercase;">Your exclusive offer</p>
-                        <p style="font-size:36px;font-weight:800;color:#dc2626;margin:0 0 4px 0;">First month free</p>
-                        <p style="font-size:16px;color:#92400e;margin:0 0 20px 0;">Then just £2.99/month — cancel anytime</p>
-                        <p style="font-size:13px;color:#b45309;margin:0;background-color:rgba(255,255,255,0.6);padding:8px 16px;border-radius:6px;display:inline-block;">⏰ This offer expires in <strong>48 hours</strong></p>
-                      </div>
                       <p style="font-size:16px;line-height:26px;color:#333;margin:0 0 20px 0;">
-                        With Pro you get everything you need for a serious job search — unlimited tailored CVs, cover letters, interview prep, AI review, premium templates, and no watermarks.
+                        With Pro you get everything you need for a serious job search — unlimited tailored CVs, cover letters, interview prep, AI review, and premium templates. All for just <strong>£2.99/month</strong>.
                       </p>
                       <table width="100%" cellpadding="0" cellspacing="0">
                         <tr>
                           <td align="center" style="padding:4px 0 28px 0;">
-                            <a href="https://www.mycvbuddy.com/subscription?offer=firstmonthfree" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);color:#ffffff;text-decoration:none;border-radius:8px;font-weight:800;font-size:18px;">
-                              Claim Your Free Month →
+                            <a href="https://www.mycvbuddy.com/subscription" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#ffffff;text-decoration:none;border-radius:8px;font-weight:800;font-size:18px;">
+                              Upgrade to Pro — £2.99/month →
                             </a>
                           </td>
                         </tr>
                       </table>
-                      <p style="font-size:14px;line-height:22px;color:#9ca3af;text-align:center;margin:0 0 28px 0;">
-                        No commitment. Cancel before the month ends and you pay nothing.
-                      </p>
                       <div style="background-color:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin:0 0 28px 0;">
                         <p style="font-size:14px;line-height:22px;color:#166534;margin:0;">
                           💚 <strong>Risk-free:</strong> If Pro doesn't help you land more interviews in your first month, reply to this email and we'll extend your trial — no questions asked.

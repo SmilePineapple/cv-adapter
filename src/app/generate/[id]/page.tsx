@@ -19,7 +19,9 @@ import {
   Plus,
   X,
   Sparkles,
-  Globe
+  Globe,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
 import { LanguageSelector } from '@/components/LanguageSelector'
 import { LanguageBadge } from '@/components/LanguageBadge'
@@ -29,8 +31,6 @@ import UpgradeModal from '@/components/UpgradeModal'
 import UpgradePromptModal from '@/components/UpgradePromptModal'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 import SmartUpgradeModal from '@/components/SmartUpgradeModal'
-import JobScraper from '@/components/JobScraper'
-import { analyzeJobPaste } from '@/lib/smart-paste'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
 import { shouldShowUpgradePrompt, trackPromptShown, incrementGenerationCount } from '@/lib/upgrade-tracking'
 
@@ -45,7 +45,6 @@ export default function GeneratePage() {
   const [selectedCvId, setSelectedCvId] = useState<string>(cvId)
   const [jobTitle, setJobTitle] = useState('')
   const [jobDescription, setJobDescription] = useState('')
-  const [smartPasteSuggestion, setSmartPasteSuggestion] = useState<{title: string, confidence: string} | null>(null)
   const [rewriteStyle, setRewriteStyle] = useState<RewriteStyle>('balanced')
   const [tone, setTone] = useState<ToneType>('professional')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -58,6 +57,8 @@ export default function GeneratePage() {
   const [usageData, setUsageData] = useState<{generation_count: number, max_generations: number, is_pro: boolean} | null>(null)
   const [outputLanguage, setOutputLanguage] = useState<string>('en')
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [isQuickMode, setIsQuickMode] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
@@ -344,7 +345,11 @@ export default function GeneratePage() {
       
       // Small delay to show completion
       setTimeout(() => {
-        router.push(`/review/${result.generation_id}`)
+        if (isQuickMode) {
+          router.push(`/download/${result.generation_id}`)
+        } else {
+          router.push(`/review/${result.generation_id}`)
+        }
       }, 500)
       
     } catch (error: any) {
@@ -439,38 +444,6 @@ export default function GeneratePage() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          {detectedLanguage && (
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4 mb-8">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-3">
-                  <Globe className="w-6 h-6 text-purple-400 mt-0.5" />
-                  <div className="flex-1">
-                    <p className="font-black text-white mb-1">
-                      Output Language
-                    </p>
-                    <p className="text-sm text-gray-400 mb-3">
-                      We detected your CV is in <strong className="text-white">{LANGUAGE_NAMES[detectedLanguage as keyof typeof LANGUAGE_NAMES] || detectedLanguage}</strong>. 
-                      The AI will generate content in the same language, or you can override it below.
-                    </p>
-                    <LanguageSelector 
-                      currentLanguage={outputLanguage}
-                      onLanguageChange={setOutputLanguage}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Job Scraper */}
-          <JobScraper
-            onJobScraped={(jobData) => {
-              setJobTitle(jobData.job_title || '')
-              setJobDescription(jobData.job_description || '')
-            }}
-          />
-
           <form onSubmit={handleGenerate} className="space-y-6">
             {/* Job Title */}
             <div>
@@ -500,31 +473,6 @@ export default function GeneratePage() {
                 id="jobDescription"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                onPaste={(e) => {
-                  // Smart paste detection
-                  const pastedText = e.clipboardData.getData('text')
-                  if (pastedText.length > 100) {
-                    setTimeout(() => {
-                      const analysis = analyzeJobPaste(pastedText)
-                      if (analysis.detectedTitle && !jobTitle) {
-                        setSmartPasteSuggestion({
-                          title: analysis.detectedTitle,
-                          confidence: analysis.confidence
-                        })
-                        toast.info(`Detected job title: "${analysis.detectedTitle}"`, {
-                          duration: 5000,
-                          action: {
-                            label: 'Use Title',
-                            onClick: () => {
-                              setJobTitle(analysis.detectedTitle!)
-                              setSmartPasteSuggestion(null)
-                            }
-                          }
-                        })
-                      }
-                    }, 100)
-                  }
-                }}
                 rows={8}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-colors"
                 placeholder="Paste the full job description here. Include requirements, responsibilities, and qualifications for best results."
@@ -535,171 +483,193 @@ export default function GeneratePage() {
               </p>
             </div>
 
-            {/* Generation Options */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="rewriteStyle" className="block text-sm font-bold text-white mb-2">
-                  <Settings className="inline w-4 h-4 mr-1" />
-                  Rewrite Style
-                </label>
-                <select
-                  id="rewriteStyle"
-                  value={rewriteStyle}
-                  onChange={(e) => setRewriteStyle(e.target.value as RewriteStyle)}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
-                >
-                  <option value="conservative" className="bg-black">Conservative - Minimal changes</option>
-                  <option value="balanced" className="bg-black">Balanced - Moderate optimization</option>
-                  <option value="bold" className="bg-black">Bold - Maximum alignment</option>
-                </select>
-                <p className="text-xs text-gray-400 mt-1">
-                  {rewriteStyle === 'conservative' && 'Keeps most original content, adds key terms'}
-                  {rewriteStyle === 'balanced' && 'Good balance of optimization and authenticity'}
-                  {rewriteStyle === 'bold' && 'Significant changes for strong job alignment'}
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="tone" className="block text-sm font-bold text-white mb-2">
-                  <Zap className="inline w-4 h-4 mr-1" />
-                  Tone
-                </label>
-                <select
-                  id="tone"
-                  value={tone}
-                  onChange={(e) => setTone(e.target.value as ToneType)}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
-                >
-                  <option value="professional" className="bg-black">Professional - Formal business language</option>
-                  <option value="friendly" className="bg-black">Friendly - Warm yet professional</option>
-                  <option value="creative" className="bg-black">Creative - Dynamic and engaging</option>
-                  <option value="technical" className="bg-black">Technical - Precise technical language</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Custom Sections */}
-            <div>
-              <label className="block text-sm font-bold text-white mb-3">
-                <Plus className="inline w-4 h-4 mr-1" />
-                Custom Sections
-              </label>
-              <p className="text-sm text-gray-400 mb-3">
-                Add additional sections to make your CV stand out. AI will generate relevant content based on your background.
-              </p>
-              
-              {/* Section Examples */}
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-4">
-                <p className="text-xs font-black text-blue-400 mb-2">💡 Popular section ideas:</p>
-                <div className="flex flex-wrap gap-2">
-                  {['Volunteer Work', 'Publications', 'Awards & Honors', 'Certifications', 'Projects', 'Languages', 'Professional Memberships', 'Speaking Engagements', 'Patents', 'Research', 'Teaching Experience', 'Community Involvement'].map((example) => (
-                    <button
-                      key={example}
-                      onClick={() => {
-                        if (!customSections.includes(example)) {
-                          setCustomSections([...customSections, example])
-                          toast.success(`Added "${example}" section!`)
-                        } else {
-                          toast.error('Section already added')
-                        }
-                      }}
-                      className="text-xs px-2 py-1 bg-white/10 text-blue-400 border border-blue-500/30 rounded hover:bg-white/20 transition-colors"
-                      type="button"
-                    >
-                      + {example}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Existing Custom Sections */}
-              {customSections.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {customSections.map((section, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm border border-blue-500/30"
-                    >
-                      <span>{section}</span>
-                      <button
-                        onClick={() => removeCustomSection(section)}
-                        className="ml-2 hover:text-blue-300"
-                        type="button"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Add Section */}
-              {showAddSection ? (
-                <div className="flex gap-2 mb-4">
-                  <input
-                    type="text"
-                    value={newSectionName}
-                    onChange={(e) => setNewSectionName(e.target.value)}
-                    placeholder="e.g., Volunteer Work"
-                    className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40"
-                    onKeyPress={(e) => e.key === 'Enter' && addCustomSection()}
-                  />
-                  <button
-                    onClick={addCustomSection}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-bold"
-                    type="button"
-                  >
-                    Add
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowAddSection(false)
-                      setNewSectionName('')
-                    }}
-                    className="px-4 py-2 text-gray-400 border border-white/20 rounded-xl hover:bg-white/5"
-                    type="button"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setShowAddSection(true)}
-                  className="flex items-center px-4 py-2 text-blue-400 border border-blue-500/30 rounded-xl hover:bg-blue-500/10 transition-colors"
-                  type="button"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Custom Section
-                </button>
-              )}
-              
-              {customSections.length > 0 && (
-                <p className="text-xs text-amber-400 mt-2">
-                  <Sparkles className="inline w-3 h-3 mr-1" />
-                  Custom sections will use AI generation tokens
-                </p>
-              )}
-            </div>
-
-            {/* Generate Button */}
-            <div className="pt-6">
+            {/* Advanced Options */}
+            <div className="border border-white/10 rounded-xl overflow-hidden">
               <button
-                type="submit"
-                disabled={isGenerating || !jobTitle.trim() || !jobDescription.trim()}
-                className="w-full bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg shadow-lg"
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="w-full flex items-center justify-between px-5 py-4 bg-white/5 hover:bg-white/10 transition-colors text-left"
               >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Generating Tailored CV...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-5 h-5 mr-2" />
-                    Generate Tailored CV
-                  </>
-                )}
+                <span className="flex items-center gap-2 text-sm font-bold text-gray-300">
+                  <Settings className="w-4 h-4" />
+                  Advanced Options
+                  {(rewriteStyle !== 'balanced' || tone !== 'professional' || customSections.length > 0 || outputLanguage !== 'en') && (
+                    <span className="text-xs bg-blue-500/30 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded-full">customised</span>
+                  )}
+                </span>
+                {showAdvanced ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
               </button>
+
+              {showAdvanced && (
+                <div className="px-5 py-5 space-y-6 border-t border-white/10">
+                  {/* Rewrite Style + Tone */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="rewriteStyle" className="block text-sm font-bold text-white mb-2">
+                        <Settings className="inline w-4 h-4 mr-1" />
+                        Rewrite Style
+                      </label>
+                      <select
+                        id="rewriteStyle"
+                        value={rewriteStyle}
+                        onChange={(e) => setRewriteStyle(e.target.value as RewriteStyle)}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
+                      >
+                        <option value="conservative" className="bg-black">Conservative — Minimal changes</option>
+                        <option value="balanced" className="bg-black">Balanced — Moderate optimization</option>
+                        <option value="bold" className="bg-black">Bold — Maximum alignment</option>
+                      </select>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {rewriteStyle === 'conservative' && 'Keeps most original content, adds key terms'}
+                        {rewriteStyle === 'balanced' && 'Good balance of optimization and authenticity'}
+                        {rewriteStyle === 'bold' && 'Significant changes for strong job alignment'}
+                      </p>
+                    </div>
+
+                    <div>
+                      <label htmlFor="tone" className="block text-sm font-bold text-white mb-2">
+                        <Zap className="inline w-4 h-4 mr-1" />
+                        Tone
+                      </label>
+                      <select
+                        id="tone"
+                        value={tone}
+                        onChange={(e) => setTone(e.target.value as ToneType)}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
+                      >
+                        <option value="professional" className="bg-black">Professional — Formal business language</option>
+                        <option value="friendly" className="bg-black">Friendly — Warm yet professional</option>
+                        <option value="creative" className="bg-black">Creative — Dynamic and engaging</option>
+                        <option value="technical" className="bg-black">Technical — Precise technical language</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Language */}
+                  <div>
+                    <label className="block text-sm font-bold text-white mb-2">
+                      <Globe className="inline w-4 h-4 mr-1" />
+                      Output Language
+                    </label>
+                    {detectedLanguage && detectedLanguage !== 'en' && (
+                      <p className="text-xs text-gray-400 mb-2">
+                        Detected: <strong className="text-white">{LANGUAGE_NAMES[detectedLanguage as keyof typeof LANGUAGE_NAMES] || detectedLanguage}</strong>
+                      </p>
+                    )}
+                    <LanguageSelector
+                      currentLanguage={outputLanguage}
+                      onLanguageChange={setOutputLanguage}
+                    />
+                  </div>
+
+                  {/* Custom Sections */}
+                  <div>
+                    <label className="block text-sm font-bold text-white mb-2">
+                      <Plus className="inline w-4 h-4 mr-1" />
+                      Custom Sections
+                    </label>
+                    <p className="text-xs text-gray-400 mb-3">Add additional sections — AI will generate relevant content based on your background.</p>
+
+                    <div className="bg-white/5 rounded-xl p-4 mb-3">
+                      <p className="text-xs font-black text-blue-400 mb-2">💡 Popular ideas:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {['Volunteer Work', 'Publications', 'Awards & Honors', 'Certifications', 'Projects', 'Languages', 'Professional Memberships', 'Speaking Engagements', 'Research', 'Teaching Experience'].map((example) => (
+                          <button
+                            key={example}
+                            onClick={() => {
+                              if (!customSections.includes(example)) {
+                                setCustomSections([...customSections, example])
+                                toast.success(`Added "${example}"`)
+                              }
+                            }}
+                            className="text-xs px-2 py-1 bg-white/10 text-blue-400 border border-blue-500/30 rounded hover:bg-white/20 transition-colors"
+                            type="button"
+                          >
+                            + {example}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {customSections.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {customSections.map((section, index) => (
+                          <div key={index} className="flex items-center bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm border border-blue-500/30">
+                            <span>{section}</span>
+                            <button onClick={() => removeCustomSection(section)} className="ml-2 hover:text-blue-300" type="button">
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {showAddSection ? (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={newSectionName}
+                          onChange={(e) => setNewSectionName(e.target.value)}
+                          placeholder="e.g., Volunteer Work"
+                          className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40"
+                          onKeyPress={(e) => e.key === 'Enter' && addCustomSection()}
+                        />
+                        <button onClick={addCustomSection} className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-bold" type="button">Add</button>
+                        <button onClick={() => { setShowAddSection(false); setNewSectionName('') }} className="px-4 py-2 text-gray-400 border border-white/20 rounded-xl hover:bg-white/5" type="button">Cancel</button>
+                      </div>
+                    ) : (
+                      <button onClick={() => setShowAddSection(true)} className="flex items-center px-4 py-2 text-blue-400 border border-blue-500/30 rounded-xl hover:bg-blue-500/10 transition-colors text-sm" type="button">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Custom Section
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Generate Buttons */}
+            <div className="pt-4 space-y-3">
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  disabled={isGenerating || !jobTitle.trim() || !jobDescription.trim()}
+                  onClick={() => setIsQuickMode(false)}
+                  className="flex-1 bg-white text-black py-4 px-6 rounded-full font-black hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg shadow-lg"
+                >
+                  {isGenerating && !isQuickMode ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-5 h-5 mr-2" />
+                      Generate CV
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isGenerating || !jobTitle.trim() || !jobDescription.trim()}
+                  onClick={() => setIsQuickMode(true)}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-full font-black hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg shadow-lg"
+                >
+                  {isGenerating && isQuickMode ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Quick Generate
+                    </>
+                  )}
+                </button>
+              </div>
+              <p className="text-center text-xs text-gray-500">Quick Generate skips the review page and takes you straight to download</p>
               
               {/* Enhanced Loading Animation */}
               {isGenerating && (
@@ -712,29 +682,29 @@ export default function GeneratePage() {
           </form>
 
           {/* Info Cards */}
-          <div className="grid md:grid-cols-3 gap-4 mt-8 pt-8 border-t">
+          <div className="grid md:grid-cols-3 gap-4 mt-8 pt-8 border-t border-white/10">
             <div className="text-center p-4">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Zap className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Zap className="w-5 h-5 text-green-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 text-sm">ATS Optimized</h3>
-              <p className="text-xs text-gray-600">Keywords matched to job requirements</p>
+              <h3 className="font-semibold text-white text-sm">ATS Optimized</h3>
+              <p className="text-xs text-gray-400">Keywords matched to job requirements</p>
             </div>
             
             <div className="text-center p-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <FileText className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <FileText className="w-5 h-5 text-blue-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 text-sm">Format Preserved</h3>
-              <p className="text-xs text-gray-600">Original structure maintained</p>
+              <h3 className="font-semibold text-white text-sm">Format Preserved</h3>
+              <p className="text-xs text-gray-400">Original structure maintained</p>
             </div>
             
             <div className="text-center p-4">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Settings className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Settings className="w-5 h-5 text-purple-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 text-sm">Customizable</h3>
-              <p className="text-xs text-gray-600">Review and edit before download</p>
+              <h3 className="font-semibold text-white text-sm">Customizable</h3>
+              <p className="text-xs text-gray-400">Review and edit before download</p>
             </div>
           </div>
         </div>

@@ -256,9 +256,10 @@ export default function DownloadPage() {
   const [isPro, setIsPro] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showSkillEditor, setShowSkillEditor] = useState(true)
-  const [showPhotoUpload, setShowPhotoUpload] = useState(true)
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false)
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState<string | null>(null)
   const [skillScores, setSkillScores] = useState<{ name: string; level: number }[] | null>(null)
+  const [showSuccessScreen, setShowSuccessScreen] = useState(false)
 
   useEffect(() => {
     fetchGenerationData()
@@ -749,12 +750,7 @@ export default function DownloadPage() {
 
       setExportProgress(100)
       setExportStep('Complete!')
-      toast.success('CV downloaded successfully!')
-      
-      // Redirect to dashboard after successful download
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1500)
+      setShowSuccessScreen(true)
       
     } catch (error) {
       console.error('Export error:', error)
@@ -768,6 +764,55 @@ export default function DownloadPage() {
         setExportStep('')
       }, 1000)
     }
+  }
+
+  if (showSuccessScreen) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-12 h-12 text-green-400" />
+          </div>
+          <h1 className="text-4xl font-black mb-3">CV Downloaded! 🎉</h1>
+          <p className="text-xl text-gray-300 mb-2">
+            Best of luck with your{' '}
+            <span className="text-white font-bold">{generationData?.job_title}</span>{' '}
+            application!
+          </p>
+          <p className="text-gray-400 mb-10">We&apos;re rooting for you — go get it! 💪</p>
+
+          {!isPro && (
+            <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-6 mb-8">
+              <p className="text-lg font-bold text-white mb-2">Applying for more roles? 🚀</p>
+              <p className="text-gray-300 text-sm mb-4">
+                Upgrade to Pro for just <span className="text-white font-bold">£2.99/month</span> and generate a tailored CV for every job you apply for — unlimited, no restrictions.
+              </p>
+              <button
+                onClick={() => router.push('/subscription')}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-black text-lg hover:opacity-90 transition-opacity"
+              >
+                Upgrade to Pro →
+              </button>
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="flex-1 border border-white/20 text-white py-3 rounded-full font-bold hover:bg-white/10 transition-colors"
+            >
+              Go to Dashboard
+            </button>
+            <button
+              onClick={() => router.push('/upload')}
+              className="flex-1 bg-white text-black py-3 rounded-full font-black hover:bg-gray-100 transition-colors"
+            >
+              Create Another CV
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (isLoading) {
@@ -802,7 +847,7 @@ export default function DownloadPage() {
             <button
               onClick={handleExport}
               disabled={isExporting}
-              className="bg-white text-black px-6 py-2.5 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full font-black hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2"
             >
               {isExporting ? (
                 <>
@@ -858,6 +903,13 @@ export default function DownloadPage() {
                     </div>
                   )}
                   
+                  {/* Colour preview strip */}
+                  <div className="w-full h-10 rounded-lg mb-3 overflow-hidden flex">
+                    {template.colors.map((color, i) => (
+                      <div key={i} className="flex-1" style={{ background: color }} />
+                    ))}
+                  </div>
+
                   <div className="text-left">
                     <div className={`font-bold text-sm mb-1 ${isSelected ? 'text-white' : 'text-gray-200'}`}>
                       {template.name}
@@ -910,12 +962,13 @@ export default function DownloadPage() {
             </button>
           </div>
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6">
-            <div className="border border-white/10 rounded-lg overflow-hidden bg-white/5">
+            <div className="border border-white/10 rounded-lg overflow-hidden bg-white">
               <iframe
                 key={previewHtml} 
                 srcDoc={previewHtml}
-                className="w-full h-[800px] border-0"
+                className="w-full h-[800px] border-0 bg-white"
                 title="CV Preview"
+                style={{ background: '#ffffff' }}
               />
             </div>
           </div>
@@ -1068,7 +1121,7 @@ export default function DownloadPage() {
 
         {/* Download or Edit CV - Single Action Section */}
         <div className="max-w-5xl mx-auto mb-8">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-6 border border-white/10">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div>
                 <h3 className="text-xl font-black text-white mb-1">
@@ -1084,7 +1137,7 @@ export default function DownloadPage() {
                   <button
                     onClick={handleExport}
                     disabled={isExporting}
-                    className="bg-white text-black px-6 py-3 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-black hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2 shadow-lg"
                   >
                     {isExporting ? (
                       <>
@@ -1349,7 +1402,7 @@ export default function DownloadPage() {
               <button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="w-full bg-white text-black py-4 px-6 rounded-full font-black font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-full font-black hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {isExporting ? (
                   <>

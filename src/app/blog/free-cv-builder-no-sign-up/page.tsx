@@ -222,7 +222,7 @@ export default function FreeCVBuilderNoSignUp() {
               <h3>Is My CV Buddy really free?</h3>
               <p>
                 Yes! You get 2 complete CV generations with full download access, no credit card required. 
-                For unlimited CVs, cover letters, and interview prep, upgrade to Pro for £9.99/month.
+                For unlimited CVs, cover letters, and interview prep, upgrade to Pro for £2.99/month.
               </p>
 
               <h3>What if I don't want to give my email?</h3>

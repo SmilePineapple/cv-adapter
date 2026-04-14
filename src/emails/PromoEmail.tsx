@@ -19,12 +19,12 @@ export default function PromoEmail({ name }: PromoEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Only 4 days left! 50% off CV Buddy Pro - Limited time offer</Preview>
+      <Preview>Still job hunting? Get unlimited tailored CVs for just £2.99/month</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Header */}
           <Section style={header}>
-            <Heading style={h1}>⏰ Only 4 Days Left!</Heading>
+            <Heading style={h1}>💼 Still job hunting?</Heading>
           </Section>
 
           {/* Main Content */}
@@ -32,50 +32,33 @@ export default function PromoEmail({ name }: PromoEmailProps) {
             <Text style={greeting}>Hi {name},</Text>
             
             <Text style={paragraph}>
-              This is your <strong>final reminder</strong> – our launch promotion ends in just <strong style={highlight}>4 days</strong>!
+              Applying to multiple roles? Each job is different — and your CV should be too. Upgrade to Pro and tailor your CV for every single application in minutes.
             </Text>
 
-            <Section style={promoBox}>
-              <Text style={promoTitle}>🎉 LAUNCH50MONTHLY</Text>
-              <Text style={promoSubtitle}>50% OFF Your First Month</Text>
-              <Text style={promoPrice}>
-                <span style={strikethrough}>£9.99/month</span>
-              </Text>
-              <Text style={newPrice}>£4.99/month</Text>
-            </Section>
-
             <Text style={paragraph}>
-              <strong>What you get with Pro:</strong>
+              <strong>What you get with Pro — just £2.99/month:</strong>
             </Text>
 
             <Section style={benefitsList}>
-              <Text style={benefit}>✅ <strong>100 CV Generations</strong> per month</Text>
+              <Text style={benefit}>✅ <strong>Unlimited CV Generations</strong> — one for every role</Text>
               <Text style={benefit}>✅ <strong>Unlimited Cover Letters</strong></Text>
               <Text style={benefit}>✅ <strong>Interview Preparation</strong> with AI</Text>
               <Text style={benefit}>✅ <strong>All Export Formats</strong> (PDF, DOCX, HTML, TXT)</Text>
-              <Text style={benefit}>✅ <strong>50+ Languages</strong> supported</Text>
-              <Text style={benefit}>✅ <strong>Priority Support</strong></Text>
+              <Text style={benefit}>✅ <strong>AI Review</strong> on every section</Text>
+              <Text style={benefit}>✅ <strong>Premium Templates</strong> — stand out from the crowd</Text>
             </Section>
 
             <Section style={ctaSection}>
-              <Button style={button} href="https://www.mycvbuddy.com/pricing">
-                Upgrade to Pro Now - Save 50%
+              <Button style={button} href="https://www.mycvbuddy.com/subscription">
+                Upgrade to Pro — £2.99/month →
               </Button>
             </Section>
 
-            <Text style={urgency}>
-              ⚠️ <strong>This offer expires in 4 days.</strong> After that, the price returns to £9.99/month.
-            </Text>
-
             <Text style={paragraph}>
-              Don't miss out on this limited-time opportunity to supercharge your job search!
-            </Text>
-
-            <Text style={paragraph}>
-              Best regards,
+              Rooting for you,
             </Text>
             <Text style={paragraph}>
-              The CV Buddy Team
+              Jake @ My CV Buddy
             </Text>
           </Section>
 
@@ -148,51 +131,6 @@ const paragraph = {
   marginBottom: '16px',
 }
 
-const highlight = {
-  color: '#dc2626',
-  fontWeight: 'bold',
-}
-
-const promoBox = {
-  backgroundColor: '#fef3c7',
-  border: '3px solid #f59e0b',
-  borderRadius: '12px',
-  padding: '24px',
-  textAlign: 'center' as const,
-  margin: '24px 0',
-}
-
-const promoTitle = {
-  fontSize: '28px',
-  fontWeight: 'bold',
-  color: '#92400e',
-  margin: '0 0 8px 0',
-  letterSpacing: '1px',
-}
-
-const promoSubtitle = {
-  fontSize: '16px',
-  color: '#78350f',
-  margin: '0 0 16px 0',
-}
-
-const promoPrice = {
-  fontSize: '18px',
-  color: '#78350f',
-  margin: '0',
-}
-
-const strikethrough = {
-  textDecoration: 'line-through',
-  color: '#9ca3af',
-}
-
-const newPrice = {
-  fontSize: '32px',
-  fontWeight: 'bold',
-  color: '#dc2626',
-}
-
 const benefitsList = {
   margin: '16px 0 24px 0',
 }
@@ -220,17 +158,6 @@ const button = {
   display: 'inline-block',
   padding: '16px 32px',
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-}
-
-const urgency = {
-  fontSize: '16px',
-  lineHeight: '26px',
-  color: '#dc2626',
-  backgroundColor: '#fee2e2',
-  padding: '16px',
-  borderRadius: '8px',
-  textAlign: 'center' as const,
-  marginBottom: '24px',
 }
 
 const footer = {

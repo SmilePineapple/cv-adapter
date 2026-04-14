@@ -160,7 +160,7 @@ export default function LandingPage() {
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border-2 border-blue-200">
               <h3 className="text-3xl font-black text-white mb-2">Pro Plan</h3>
               <div className="text-4xl font-bold text-blue-400 mb-4">
-                £9.99<span className="text-lg text-gray-400">/month</span>
+                £2.99<span className="text-lg text-gray-400">/month</span>
               </div>
               <ul className="text-left space-y-3 mb-6">
                 <li className="flex items-center">
