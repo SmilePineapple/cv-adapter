@@ -20,6 +20,9 @@ export async function GET(request: NextRequest) {
     const now = Date.now()
     const ninetyDaysAgo = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString()
 
+    // force=true bypasses the warning requirement for one-time bulk cleanup
+    const force = request.nextUrl.searchParams.get('force') === 'true'
+
     const { data: authData, error: authErr } = await supabase.auth.admin.listUsers()
     if (authErr) throw authErr
 
@@ -29,16 +32,16 @@ export async function GET(request: NextRequest) {
 
     const usageMap = new Map((usageRows || []).map(u => [u.user_id, u]))
 
-    // Only delete users who were warned (must have deletion_warning_30day record)
-    const { data: warnedRows } = await supabase
-      .from('email_sequences')
-      .select('user_id, sent_at')
-      .eq('sequence_step', 'deletion_warning_30day')
+    // Only check warnings if not in force mode
+    const warnedMap = new Map<string, string>()
+    if (!force) {
+      const { data: warnedRows } = await supabase
+        .from('email_sequences')
+        .select('user_id, sent_at')
+        .eq('sequence_step', 'deletion_warning_30day')
+      ;(warnedRows || []).forEach(r => warnedMap.set(r.user_id, r.sent_at))
+    }
 
-    // Build map: user_id -> warned_at date
-    const warnedMap = new Map((warnedRows || []).map(r => [r.user_id, r.sent_at]))
-
-    // Target: free users, inactive 90+ days, warned at least 25 days ago
     const twentyFiveDaysAgo = new Date(now - 25 * 24 * 60 * 60 * 1000).toISOString()
 
     const targets = authData.users.filter(u => {
@@ -46,12 +49,15 @@ export async function GET(request: NextRequest) {
       const usage = usageMap.get(u.id)
       // Skip pro users — never delete paying customers
       if (usage?.plan_type === 'pro' || usage?.subscription_tier?.startsWith('pro')) return false
-      // Must have been warned
-      const warnedAt = warnedMap.get(u.id)
-      if (!warnedAt || warnedAt > twentyFiveDaysAgo) return false
       // Must be inactive for 90+ days
       const lastActive = usage?.last_generation_at || u.last_sign_in_at || u.created_at
-      return lastActive <= ninetyDaysAgo
+      if (lastActive > ninetyDaysAgo) return false
+      // In normal mode, must have been warned at least 25 days ago
+      if (!force) {
+        const warnedAt = warnedMap.get(u.id)
+        if (!warnedAt || warnedAt > twentyFiveDaysAgo) return false
+      }
+      return true
     })
 
     console.log(`[DeleteInactiveUsers] ${targets.length} users targeted for deletion`)
