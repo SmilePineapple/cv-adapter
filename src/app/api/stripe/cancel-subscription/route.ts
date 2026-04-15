@@ -123,24 +123,36 @@ export async function POST(request: NextRequest) {
     )
 
     // Update the subscription status in subscriptions table
+    // Status is 'canceling' not 'canceled' - sub is still active until period end
+    const canceledSubData = canceledSubscription as any
+    const periodEnd = canceledSubData.current_period_end
+      ? new Date(canceledSubData.current_period_end * 1000).toISOString()
+      : null
+
+    const updateFields: Record<string, string> = {
+      status: 'canceling',
+      updated_at: new Date().toISOString()
+    }
+    if (periodEnd) updateFields.current_period_end = periodEnd
+
     const { error: updateError } = await supabase
       .from('subscriptions')
-      .update({
-        status: 'canceled',
-        updated_at: new Date().toISOString()
-      })
+      .update(updateFields)
       .eq('user_id', userId)
 
     if (updateError) {
       console.error('Error updating subscription status:', updateError)
     }
 
+    console.log('[CANCEL] Subscription marked as canceling, access until:', periodEnd || 'period end')
+
     return NextResponse.json({
       success: true,
-      message: 'Subscription cancelled successfully',
+      message: 'Subscription cancelled successfully. You will retain Pro access until the end of your billing period.',
       subscription: {
         status: 'canceling',
-        cancel_at_period_end: true
+        cancel_at_period_end: true,
+        period_end: periodEnd
       }
     })
 

@@ -374,24 +374,26 @@ export async function POST(request: NextRequest) {
           break
         }
         
-        // Access subscription properties safely
-        const subData = subscription as any
+        // Access subscription properties safely - event payload may omit current_period_end
+        // in newer Stripe API versions, so retrieve fresh data if needed
+        let subData = subscription as any
         
-        // Validate current_period_end exists
         if (!subData.current_period_end || typeof subData.current_period_end !== 'number') {
-          console.error('[Webhook] Subscription missing or invalid current_period_end:', subscription.id, subData.current_period_end)
-          break
+          console.log('[Webhook] current_period_end missing in event, retrieving fresh subscription from Stripe:', subscription.id)
+          try {
+            subData = await stripe.subscriptions.retrieve(subscription.id) as any
+            console.log('[Webhook] Fresh subscription current_period_end:', subData.current_period_end)
+          } catch (retrieveErr) {
+            console.error('[Webhook] Failed to retrieve subscription:', retrieveErr)
+          }
         }
         
-        const currentPeriodEnd = new Date(subData.current_period_end * 1000)
-        
-        // Validate the date is valid
-        if (isNaN(currentPeriodEnd.getTime())) {
-          console.error('[Webhook] Invalid current_period_end timestamp:', subData.current_period_end)
-          break
-        }
+        const currentPeriodEnd = calculatePeriodEnd(subData)
+        const isCancellingAtPeriodEnd = subData.cancel_at_period_end === true
 
-        // Update subscription end date
+        console.log('[Webhook] Subscription cancel_at_period_end:', isCancellingAtPeriodEnd, 'period_end:', currentPeriodEnd.toISOString())
+
+        // Update usage_tracking with the latest period end date
         await supabase
           .from('usage_tracking')
           .update({
@@ -400,7 +402,17 @@ export async function POST(request: NextRequest) {
           })
           .eq('user_id', userId)
 
-        console.log('[Webhook] Subscription updated for user:', userId)
+        // Update subscriptions table status to reflect cancellation pending
+        await supabase
+          .from('subscriptions')
+          .update({
+            status: isCancellingAtPeriodEnd ? 'canceling' : 'active',
+            current_period_end: currentPeriodEnd.toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+
+        console.log('[Webhook] Subscription updated for user:', userId, isCancellingAtPeriodEnd ? '(cancellation scheduled)' : '(still active)')
         break
       }
 
