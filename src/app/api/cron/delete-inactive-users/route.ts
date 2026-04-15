@@ -50,7 +50,8 @@ export async function GET(request: NextRequest) {
       // Skip pro users — never delete paying customers
       if (usage?.plan_type === 'pro' || usage?.subscription_tier?.startsWith('pro')) return false
       // Must be inactive for 90+ days
-      const lastActive = usage?.last_generation_at || u.last_sign_in_at || u.created_at
+      // Null last_sign_in_at means never logged in — treat as inactive since created_at
+      const lastActive = usage?.last_generation_at || u.last_sign_in_at || u.created_at || ninetyDaysAgo
       if (lastActive > ninetyDaysAgo) return false
       // In normal mode, must have been warned at least 25 days ago
       if (!force) {
@@ -60,7 +61,19 @@ export async function GET(request: NextRequest) {
       return true
     })
 
+    console.log(`[DeleteInactiveUsers] Total auth users: ${authData.users.length}, force: ${force}`)
+    console.log(`[DeleteInactiveUsers] Usage rows: ${usageRows?.length || 0}`)
     console.log(`[DeleteInactiveUsers] ${targets.length} users targeted for deletion`)
+
+    // Debug: show breakdown of why users are excluded
+    let proSkipped = 0, tooRecentlyActive = 0
+    authData.users.forEach(u => {
+      const usage = usageMap.get(u.id)
+      if (usage?.plan_type === 'pro' || usage?.subscription_tier?.startsWith('pro')) { proSkipped++; return }
+      const lastActive = usage?.last_generation_at || u.last_sign_in_at || u.created_at || ninetyDaysAgo
+      if (lastActive > ninetyDaysAgo) tooRecentlyActive++
+    })
+    console.log(`[DeleteInactiveUsers] Pro users skipped: ${proSkipped}, Too recently active: ${tooRecentlyActive}`)
 
     if (targets.length === 0) {
       return NextResponse.json({ success: true, message: 'No users to delete', count: 0 })
