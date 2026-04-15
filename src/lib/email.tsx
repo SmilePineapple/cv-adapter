@@ -800,6 +800,74 @@ export async function sendDay7OfferEmail(email: string, name: string) {
 }
 
 /**
+ * Send 30-day deletion warning to inactive free users (GDPR)
+ */
+export async function sendDeletionWarningEmail(email: string, name: string, deletionDate: string) {
+  try {
+    const resend = getResendClient()
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: 'Your My CV Buddy account will be deleted soon',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f6f9fc; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px 48px 48px;">
+            <h1 style="color: #111827; font-size: 24px; margin-bottom: 16px;">Account Deletion Notice</h1>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">Hi ${name},</p>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              As part of our GDPR data retention policy, we automatically delete accounts that have been inactive for 3+ months.
+            </p>
+            <div style="background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px; padding: 24px; margin: 24px 0; text-align: center;">
+              <p style="color: #92400e; font-size: 18px; font-weight: bold; margin: 0;">
+                Your account will be deleted on ${deletionDate}
+              </p>
+            </div>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              <strong>To keep your account active, simply log in before this date.</strong>
+            </p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="https://www.mycvbuddy.com/login" style="background: #4F46E5; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold; display: inline-block;">
+                Log In to Keep My Account
+              </a>
+            </div>
+            <p style="color: #6b7280; font-size: 14px; line-height: 22px;">
+              If you no longer want to use My CV Buddy, you don't need to do anything — your account and all associated data will be permanently deleted on the date above.
+            </p>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              The CV Buddy Team
+            </p>
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
+            <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+              <a href="https://www.mycvbuddy.com" style="color: #4F46E5;">mycvbuddy.com</a>
+            </p>
+          </div>
+        </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Deletion warning email error:', error)
+      return { success: false, error }
+    }
+
+    console.log('Deletion warning email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Deletion warning email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
  * Test email sending (for development)
  */
 export async function sendTestEmail(email: string) {
