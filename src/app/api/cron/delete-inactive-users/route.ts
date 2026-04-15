@@ -23,8 +23,16 @@ export async function GET(request: NextRequest) {
     // force=true bypasses the warning requirement for one-time bulk cleanup
     const force = request.nextUrl.searchParams.get('force') === 'true'
 
-    const { data: authData, error: authErr } = await supabase.auth.admin.listUsers()
-    if (authErr) throw authErr
+    // Paginate through all users (default page size is 50)
+    const allUsers = []
+    let page = 1
+    while (true) {
+      const { data: authData, error: authErr } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+      if (authErr) throw authErr
+      allUsers.push(...authData.users)
+      if (authData.users.length < 1000) break
+      page++
+    }
 
     const { data: usageRows } = await supabase
       .from('usage_tracking')
@@ -44,7 +52,7 @@ export async function GET(request: NextRequest) {
 
     const twentyFiveDaysAgo = new Date(now - 25 * 24 * 60 * 60 * 1000).toISOString()
 
-    const targets = authData.users.filter(u => {
+    const targets = allUsers.filter(u => {
       if (!u.email || !u.created_at) return false
       const usage = usageMap.get(u.id)
       // Skip pro users — never delete paying customers
@@ -61,13 +69,13 @@ export async function GET(request: NextRequest) {
       return true
     })
 
-    console.log(`[DeleteInactiveUsers] Total auth users: ${authData.users.length}, force: ${force}`)
+    console.log(`[DeleteInactiveUsers] Total auth users: ${allUsers.length}, force: ${force}`)
     console.log(`[DeleteInactiveUsers] Usage rows: ${usageRows?.length || 0}`)
     console.log(`[DeleteInactiveUsers] ${targets.length} users targeted for deletion`)
 
     // Debug: show breakdown of why users are excluded
     let proSkipped = 0, tooRecentlyActive = 0
-    authData.users.forEach(u => {
+    allUsers.forEach((u: { id: string; last_sign_in_at: string | null; created_at: string }) => {
       const usage = usageMap.get(u.id)
       if (usage?.plan_type === 'pro' || usage?.subscription_tier?.startsWith('pro')) { proSkipped++; return }
       const lastActive = usage?.last_generation_at || u.last_sign_in_at || u.created_at || ninetyDaysAgo

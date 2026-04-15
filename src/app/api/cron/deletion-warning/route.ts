@@ -21,8 +21,16 @@ export async function GET(request: NextRequest) {
     const sixtyDaysAgo = new Date(now - 60 * 24 * 60 * 60 * 1000).toISOString()
     const seventyDaysAgo = new Date(now - 70 * 24 * 60 * 60 * 1000).toISOString()
 
-    const { data: authData, error: authErr } = await supabase.auth.admin.listUsers()
-    if (authErr) throw authErr
+    // Paginate through all users (default page size is 50)
+    const allUsers = []
+    let page = 1
+    while (true) {
+      const { data: authData, error: authErr } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+      if (authErr) throw authErr
+      allUsers.push(...authData.users)
+      if (authData.users.length < 1000) break
+      page++
+    }
 
     const { data: usageRows } = await supabase
       .from('usage_tracking')
@@ -39,7 +47,7 @@ export async function GET(request: NextRequest) {
     const warnedSet = new Set((alreadyWarned || []).map(r => r.user_id))
 
     // Target: free users inactive 60-70 days, not yet warned
-    const targets = authData.users.filter(u => {
+    const targets = allUsers.filter(u => {
       if (!u.email || !u.created_at) return false
       const usage = usageMap.get(u.id)
       // Skip pro users
