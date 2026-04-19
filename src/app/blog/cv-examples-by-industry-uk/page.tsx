@@ -3,25 +3,40 @@ import { ArrowLeft, Briefcase, CheckCircle, Download } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
-  description: '15 real UK CV examples across every major industry — IT, marketing, healthcare, finance & more. Copy proven formats that beat ATS systems and land interviews. Updated for 2026.',
-  keywords: ['CV examples UK', 'CV examples', 'best CV examples UK', 'CV samples UK', 'professional CV examples', 'CV templates by industry', 'British CV examples', 'CV example UK 2026', 'business CV example', 'cv examples 2026', 'cv ideas uk', 'cv examples 2024', 'example of cv uk', 'cv example uk', 'simple cv examples uk', 'british cv example', 'excellent cv examples uk', 'great cv examples uk'],
+  title: 'UK CV Examples by Industry 2026: 15 Real CVs That Got Interviews',
+  description: 'Read 15 real UK CV examples that landed interviews in 2026 — full CV text included. See exactly what hiring managers want in marketing, IT, healthcare, finance & more.',
+  keywords: ['CV examples UK', 'CV examples by industry', 'best CV examples UK', 'CV samples UK', 'professional CV examples', 'CV templates by industry', 'British CV examples', 'CV example UK 2026', 'executive cv examples uk', 'cv examples 2026', 'curriculum vitae uk example', 'cv examples 2024', 'example of cv uk', 'cv uk example', 'simple cv examples uk', 'excellent cv examples uk', 'great cv examples uk', 'it cv examples uk'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk'
   },
   openGraph: {
-    title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
-    description: '15 real UK CV examples across every major industry. Copy proven formats that beat ATS and land interviews.',
+    title: 'UK CV Examples by Industry 2026: 15 Real CVs That Got Interviews',
+    description: '15 real UK CV examples with full CV text — see exactly what got interviews in marketing, IT, healthcare, finance & more.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
-    modifiedTime: '2026-04-13T00:00:00Z',
+    modifiedTime: '2026-04-19T00:00:00Z',
     url: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk',
   },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'UK CV Examples by Industry 2026: 15 Real CVs That Got Interviews',
+  description: 'Read 15 real UK CV examples that landed interviews in 2026 — full CV text included.',
+  url: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk',
+  datePublished: '2025-01-08T00:00:00Z',
+  dateModified: '2026-04-19T00:00:00Z',
+  author: { '@type': 'Organization', name: 'My CV Buddy', url: 'https://www.mycvbuddy.com' },
+  publisher: { '@type': 'Organization', name: 'My CV Buddy', url: 'https://www.mycvbuddy.com', logo: { '@type': 'ImageObject', url: 'https://www.mycvbuddy.com/og-image.png' } },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk' },
+  keywords: 'cv examples uk, cv examples by industry, best cv examples uk, curriculum vitae uk example, executive cv examples uk',
 }
 
 export default function CVExamplesByIndustry() {
   return (
     <div className="min-h-screen bg-black text-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="bg-black border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
@@ -38,7 +53,7 @@ export default function CVExamplesByIndustry() {
             CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews
           </h1>
           <div className="flex items-center space-x-6 text-slate-300 text-sm">
-            <span>January 8, 2025</span>
+            <span>Updated: April 2026</span>
             <span>•</span>
             <span>16 min read</span>
           </div>

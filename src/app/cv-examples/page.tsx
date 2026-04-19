@@ -3,43 +3,44 @@ import { Metadata } from 'next'
 import { ArrowRight, FileText, Briefcase, GraduationCap, Code, Heart, Building2, TrendingUp, Users, Wrench, ShoppingBag, Palette, Shield, FlaskConical, Plane, BookOpen } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Free CV Builder UK Examples: Resume Adapter Templates by Industry 2026',
-  description: 'Browse 15+ professional CV examples with our free CV builder UK. Resume adapter templates for marketing, IT, healthcare, finance, and more. ATS-optimized CV templates you can customize instantly for UK job applications.',
+  title: 'CV Examples UK 2026: 15+ Free Templates by Industry | My CV Buddy',
+  description: '15+ free CV examples UK — real templates for marketing, IT, healthcare, finance, engineering & more. Copy proven UK CV formats that pass ATS and land interviews. Updated April 2026.',
   keywords: [
-    'free cv builder uk',
-    'cv builder uk',
-    'resume adapter',
-    'CV examples',
-    'CV examples UK',
-    'free cv builder no sign up',
-    'ai cv builder uk',
-    'ats cv optimizer',
-    'CV templates by industry',
-    'professional CV examples',
-    'CV samples',
-    'industry specific CV',
-    'CV templates UK',
-    'marketing CV example',
-    'IT CV example',
-    'healthcare CV example',
-    'finance CV example',
-    'ATS CV examples',
-    'free CV templates UK'
+    'cv examples uk',
+    'cv examples',
+    'cv sample uk',
+    'cv uk example',
+    'example of cv uk',
+    'examples of cv uk',
+    'examples cv uk',
+    'good cv examples uk',
+    'good cv examples',
+    'best cv examples uk',
+    'best cv examples',
+    'it cv examples uk',
+    'executive cv examples uk',
+    'cv examples 2024',
+    'cv examples 2026',
+    'curriculum vitae uk example',
+    'cv template examples uk',
+    'example uk cv',
+    'professional cv examples uk',
+    'free cv examples uk'
   ],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/cv-examples',
   },
   openGraph: {
-    title: 'CV Examples by Industry: 15+ Real CV Templates UK 2026',
-    description: 'Browse professional CV examples for different industries. Real templates you can customize for your job application.',
+    title: 'CV Examples UK 2026: 15+ Free Templates by Industry',
+    description: '15+ free UK CV examples across every industry. Real templates that pass ATS and land interviews — copy and customize instantly.',
     url: 'https://www.mycvbuddy.com/cv-examples',
-    type: 'article',
+    type: 'website',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'CV Examples by Industry',
+        alt: 'CV Examples UK by Industry',
       },
     ],
   },
@@ -318,9 +319,36 @@ const cvExamples = [
   },
 ]
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'CV Examples UK 2026 by Industry',
+  description: '15+ free professional CV examples for UK job seekers across every major industry',
+  url: 'https://www.mycvbuddy.com/cv-examples',
+  numberOfItems: 15,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Digital Marketing Manager CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 2, name: 'Software Developer CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 3, name: 'Registered Nurse CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 4, name: 'Financial Analyst CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 5, name: 'Primary School Teacher CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 6, name: 'Mechanical Engineer CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 7, name: 'Sales Manager CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 8, name: 'Graphic Designer CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 9, name: 'Solicitor CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 10, name: 'Research Scientist CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 11, name: 'Hotel Manager CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 12, name: 'HR Manager CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 13, name: 'Graduate CV Example UK (No Experience)', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 14, name: 'Career Changer CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+    { '@type': 'ListItem', position: 15, name: 'Executive CV Example UK', url: 'https://www.mycvbuddy.com/cv-examples' },
+  ]
+}
+
 export default function CVExamplesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
@@ -347,10 +375,10 @@ export default function CVExamplesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-              CV Examples by Industry
+              CV Examples UK 2026
             </h1>
             <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
-              Browse 15+ professional CV examples tailored for different UK industries. Real templates you can customize for your job application.
+              Browse 15+ professional UK CV examples across every industry. Real templates used by thousands of UK job seekers — copy, customize and download for free.
             </p>
             <Link href="/auth/signup" className="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-blue-700 font-semibold text-lg inline-flex items-center">
               Create Your CV Now
@@ -363,7 +391,7 @@ export default function CVExamplesPage() {
       {/* Industries Grid */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-4xl font-black text-white mb-8 text-center">Browse by Industry</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Browse UK CV Examples by Industry</h2>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {industries.map((industry) => {
               const Icon = industry.icon
@@ -382,7 +410,7 @@ export default function CVExamplesPage() {
       {/* CV Examples */}
       <section className="py-12 bg-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <h2 className="text-4xl font-black text-white mb-8 text-center">Professional CV Examples</h2>
+          <h2 className="text-4xl font-black text-white mb-8 text-center">Professional UK CV Examples &amp; Templates</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {cvExamples.map((example, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
