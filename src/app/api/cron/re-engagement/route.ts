@@ -19,9 +19,16 @@ export async function GET(request: NextRequest) {
     const now = Date.now()
     const sevenDaysAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString()
 
-    // Get all auth users
-    const { data: authData, error: authErr } = await supabase.auth.admin.listUsers()
-    if (authErr) throw authErr
+    // Paginate through all users (default page size is 50)
+    const allUsers = []
+    let page = 1
+    while (true) {
+      const { data: authData, error: authErr } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+      if (authErr) throw authErr
+      allUsers.push(...authData.users)
+      if (authData.users.length < 1000) break
+      page++
+    }
 
     // Get usage_tracking for all users
     const { data: usageRows } = await supabase
@@ -38,7 +45,7 @@ export async function GET(request: NextRequest) {
     const sentSet = new Set((alreadySent || []).map(r => `${r.user_id}::${r.sequence_step}`))
 
     // Target: free users, signed up >7 days ago, last active >7 days ago, not unsubscribed
-    const targets = authData.users.filter(u => {
+    const targets = allUsers.filter(u => {
       if (!u.email || !u.created_at) return false
       if (u.user_metadata?.email_unsubscribed === true) return false
       const usage = usageMap.get(u.id)
