@@ -10,20 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1,
     },
-    {
-      url: `${baseUrl}/auth/login`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/auth/signup`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    // Note: /upload, /templates, /cover-letter, /interview-prep require authentication
-    // and are excluded from sitemap to prevent "Crawled - currently not indexed" issues
+    // Note: /auth/login, /auth/signup, /upload, /templates, /cover-letter, /interview-prep
+    // require authentication and are excluded from sitemap to prevent "Crawled - currently not indexed" issues
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
@@ -64,15 +52,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/cv-writing-guide`,
-      lastModified: new Date(),
+      lastModified: new Date('2026-04-20'),
       changeFrequency: 'monthly',
-      priority: 0.95,
+      priority: 0.98,
     },
     {
       url: `${baseUrl}/cv-examples`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
+      lastModified: new Date('2026-04-21'),
+      changeFrequency: 'weekly',
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/ats-optimization-guide`,
@@ -87,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/usa-resume-builder`,
+      url: `${baseUrl}/resume-builder-usa`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -180,13 +168,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/blog/cv-examples-by-industry-uk`,
-      lastModified: new Date('2026-04-13'),
-      changeFrequency: 'monthly',
-      priority: 0.9,
+      lastModified: new Date('2026-04-20'),
+      changeFrequency: 'weekly',
+      priority: 0.92,
     },
     {
       url: `${baseUrl}/blog/cv-personal-statement-examples`,
-      lastModified: new Date('2026-04-13'),
+      lastModified: new Date('2026-04-20'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },

@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Calendar, Clock, ArrowRight, TrendingUp, Target, L
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Writing Blog - Expert Tips & Guides UK 2025 | My CV Buddy',
+  title: 'CV Writing Blog - Expert Tips & Guides UK 2026 | My CV Buddy',
   description: 'Expert CV writing tips, ATS optimization guides, and job search strategies for UK job seekers. Compare CV builders, learn best practices, and create a winning CV that gets interviews.',
   keywords: [
     'CV writing tips',

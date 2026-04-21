@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'Step-by-step CV writing guide with real examples and free templates. From blank page to interview in 30 minutes.',
     url: 'https://www.mycvbuddy.com/cv-writing-guide',
     type: 'article',
-    modifiedTime: '2026-04-07T00:00:00Z',
+    modifiedTime: '2026-04-20T00:00:00Z',
     images: [
       {
         url: '/og-image.png',

@@ -74,6 +74,8 @@ export async function trackEvent(
       console.error('Analytics tracking error:', error)
     }
   } catch (error) {
+    // Suppress AbortError from Supabase Web Locks contention — non-critical analytics noise
+    if (error instanceof DOMException && error.name === 'AbortError') return
     console.error('Analytics tracking failed:', error)
   }
 }
@@ -172,13 +174,14 @@ export async function trackPaymentCompleted(amount: number, planType: string) {
 }
 
 /**
- * Track page view
+ * Track page view.
+ * Pass userId if already known to skip an extra getUser() round-trip.
  */
-export async function trackPageView(page: string, referrer?: string) {
+export async function trackPageView(page: string, referrer?: string, userId?: string) {
   await trackEvent('page_view', {
     page,
-    referrer: referrer || document.referrer,
-  })
+    referrer: referrer || (typeof document !== 'undefined' ? document.referrer : undefined),
+  }, userId)
 }
 
 /**

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: '15 real UK CV examples across every major industry. Copy proven formats that beat ATS and land interviews.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
-    modifiedTime: '2026-04-13T00:00:00Z',
+    modifiedTime: '2026-04-20T00:00:00Z',
     url: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk',
   },
 }

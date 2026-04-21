@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'CV & Resume Writing Tips | Job Search Advice | My CV Buddy Blog',
+  title: 'CV Writing Tips & Guides 2026 | My CV Buddy Blog',
   description: 'Expert CV writing tips, ATS optimization guides, and job search strategies. Learn how to create a winning CV that gets you interviews.',
   keywords: [
     'CV writing tips',
@@ -62,7 +62,7 @@ export default function BlogLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-white/60 text-sm">
-              © 2025 My CV Buddy. All rights reserved.
+              © 2026 My CV Buddy. All rights reserved.
             </p>
             <div className="flex items-center space-x-6">
               <Link href="/privacy" className="text-white/60 hover:text-white text-sm transition-colors">

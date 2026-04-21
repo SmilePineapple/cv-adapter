@@ -204,6 +204,10 @@ export default function DashboardPage() {
       currentUserIdRef.current = userId
       fetchDashboardData(userId)
 
+      // Track page view here so userId is known — avoids a concurrent getUser() call
+      // that would race with getSession/onAuthStateChange and trigger a Web Locks AbortError
+      trackPageView('/dashboard', undefined, userId)
+
       // Check if user needs onboarding
       const { data: profile } = await supabase
         .from('profiles')
@@ -242,9 +246,6 @@ export default function DashboardPage() {
         router.push('/auth/login')
       }
     })
-
-    // Track page view
-    trackPageView('/dashboard')
 
     return () => {
       subscription.unsubscribe()
