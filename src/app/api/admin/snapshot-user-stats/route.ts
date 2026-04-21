@@ -134,3 +134,67 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+/**
+ * PATCH /api/admin/snapshot-user-stats
+ * Manually set / adjust the signup count for a specific month.
+ * Body: { year_month: "YYYY-MM", new_signups: number, deletions?: number }
+ * Always takes the HIGHER of the supplied value vs what is already stored.
+ */
+export async function PATCH(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const token = authHeader.split(' ')[1]
+    const userClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    const { data: { user }, error: userError } = await userClient.auth.getUser(token)
+    if (userError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const { year_month, new_signups, deletions } = body as { year_month: string; new_signups: number; deletions?: number }
+
+    if (!year_month || typeof new_signups !== 'number') {
+      return NextResponse.json({ error: 'year_month and new_signups are required' }, { status: 400 })
+    }
+    if (!/^\d{4}-\d{2}$/.test(year_month)) {
+      return NextResponse.json({ error: 'year_month must be in YYYY-MM format' }, { status: 400 })
+    }
+
+    const supabase = createAdminClient()
+
+    const { data: existing } = await supabase
+      .from('user_growth_stats')
+      .select('new_signups, deletions')
+      .eq('year_month', year_month)
+      .maybeSingle()
+
+    const row = {
+      year_month,
+      new_signups: Math.max(new_signups, existing?.new_signups || 0),
+      deletions: deletions !== undefined ? Math.max(deletions, existing?.deletions || 0) : (existing?.deletions || 0),
+      updated_at: new Date().toISOString(),
+    }
+
+    const { error: upsertError } = await supabase
+      .from('user_growth_stats')
+      .upsert(row, { onConflict: 'year_month' })
+
+    if (upsertError) throw upsertError
+
+    console.log(`[SnapshotUserStats] Manual entry: ${year_month} → signups=${row.new_signups} deletions=${row.deletions}`)
+    return NextResponse.json({ success: true, saved: row })
+  } catch (error) {
+    console.error('[SnapshotUserStats PATCH] Error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown' },
+      { status: 500 }
+    )
+  }
+}

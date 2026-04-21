@@ -81,6 +81,11 @@ export default function AnalyticsPage() {
   const [isAuthorized, setIsAuthorized] = useState(false)
   const [isSnapshotting, setIsSnapshotting] = useState(false)
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null)
+  const [analyticsError, setAnalyticsError] = useState<string | null>(null)
+  const [manualMonth, setManualMonth] = useState('')
+  const [manualCount, setManualCount] = useState('')
+  const [isSavingManual, setIsSavingManual] = useState(false)
+  const [manualMsg, setManualMsg] = useState<string | null>(null)
   // const [_timeRange] = useState<'7d' | '30d' | '90d'>('30d')
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
@@ -124,9 +129,11 @@ export default function AnalyticsPage() {
 
       const data = await response.json()
       setAnalytics(data)
+      setAnalyticsError(null)
       setLastRefresh(new Date())
     } catch (error) {
       console.error('Failed to load analytics:', error)
+      setAnalyticsError(error instanceof Error ? error.message : 'Failed to load analytics')
     } finally {
       setIsLoading(false)
     }
@@ -186,6 +193,36 @@ export default function AnalyticsPage() {
       setSnapshotMsg('Snapshot failed')
     } finally {
       setIsSnapshotting(false)
+    }
+  }
+
+  const saveManualEntry = async () => {
+    if (!manualMonth || !manualCount) return
+    const count = parseInt(manualCount, 10)
+    if (isNaN(count) || count < 0) { setManualMsg('Enter a valid positive number'); return }
+    try {
+      setIsSavingManual(true)
+      setManualMsg(null)
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+      const res = await fetch('/api/admin/snapshot-user-stats', {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ year_month: manualMonth, new_signups: count })
+      })
+      const json = await res.json()
+      if (json.success) {
+        setManualMsg(`Saved: ${manualMonth} → ${json.saved.new_signups} signups`)
+        setManualMonth('')
+        setManualCount('')
+        await loadAnalytics()
+      } else {
+        setManualMsg(`Error: ${json.error}`)
+      }
+    } catch {
+      setManualMsg('Save failed')
+    } finally {
+      setIsSavingManual(false)
     }
   }
 
@@ -550,9 +587,14 @@ export default function AnalyticsPage() {
               </h3>
               <p className="text-sm text-gray-500 mt-1">All-time signup and deletion counts (survives GDPR cleanups)</p>
             </div>
-            {snapshotMsg && (
-              <span className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">{snapshotMsg}</span>
-            )}
+            <div className="flex flex-wrap items-center gap-2">
+              {snapshotMsg && (
+                <span className="text-xs text-green-700 bg-green-50 border border-green-200 rounded px-3 py-1">{snapshotMsg}</span>
+              )}
+              {analyticsError && (
+                <span className="text-xs text-red-700 bg-red-50 border border-red-200 rounded px-3 py-1">Analytics error: {analyticsError}</span>
+              )}
+            </div>
           </div>
 
           {/* Summary tiles */}
@@ -576,6 +618,41 @@ export default function AnalyticsPage() {
                   : '0%'}
               </p>
               <p className="text-xs text-purple-700 mt-1">Churn Rate (lifetime)</p>
+            </div>
+          </div>
+
+          {/* Manual entry */}
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-sm font-medium text-amber-900 mb-3">Add Historical Month <span className="font-normal text-amber-700">(for months before tracking started — enter the total signups you know for that month)</span></p>
+            <div className="flex flex-wrap gap-2 items-end">
+              <div>
+                <label className="text-xs text-amber-800 block mb-1">Month (YYYY-MM)</label>
+                <input
+                  type="month"
+                  value={manualMonth}
+                  onChange={e => setManualMonth(e.target.value)}
+                  className="border border-amber-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-amber-800 block mb-1">Total signups that month</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={manualCount}
+                  onChange={e => setManualCount(e.target.value)}
+                  placeholder="e.g. 85"
+                  className="border border-amber-300 rounded px-2 py-1 text-sm w-28 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                />
+              </div>
+              <button
+                onClick={saveManualEntry}
+                disabled={isSavingManual || !manualMonth || !manualCount}
+                className="px-4 py-1.5 bg-amber-600 text-white text-sm rounded hover:bg-amber-700 disabled:opacity-50 transition-colors"
+              >
+                {isSavingManual ? 'Saving...' : 'Save Entry'}
+              </button>
+              {manualMsg && <span className="text-xs text-amber-800">{manualMsg}</span>}
             </div>
           </div>
 
