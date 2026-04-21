@@ -87,6 +87,41 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true, message: 'No users to delete', count: 0 })
     }
 
+    // ── Save aggregate signup stats BEFORE deleting (preserves history with no PII) ──
+    try {
+      const signupMonthCounts = new Map<string, number>()
+      for (const u of targets) {
+        if (!u.created_at) continue
+        const d = new Date(u.created_at)
+        const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
+        signupMonthCounts.set(key, (signupMonthCounts.get(key) || 0) + 1)
+      }
+
+      // For each affected month, ensure new_signups is at least as large as the
+      // combined live + about-to-be-deleted count (MAX wins on conflict).
+      const { data: existingStats } = await supabase
+        .from('user_growth_stats')
+        .select('year_month, new_signups')
+        .in('year_month', Array.from(signupMonthCounts.keys()))
+
+      const existingMap = new Map<string, number>(
+        (existingStats || []).map((r: { year_month: string; new_signups: number }) => [r.year_month, r.new_signups])
+      )
+
+      const signupRows = Array.from(signupMonthCounts.entries()).map(([year_month, deletedCount]) => ({
+        year_month,
+        // Use whichever is higher: what we already stored vs (existing stored + users we're about to delete)
+        new_signups: Math.max(existingMap.get(year_month) || 0, (existingMap.get(year_month) || 0) + deletedCount),
+        updated_at: new Date().toISOString(),
+      }))
+
+      await supabase.from('user_growth_stats').upsert(signupRows, { onConflict: 'year_month' })
+      console.log(`[DeleteInactiveUsers] Saved signup stats for ${signupRows.length} month(s) before deletion`)
+    } catch (statsErr) {
+      console.error('[DeleteInactiveUsers] Failed to save pre-deletion signup stats:', statsErr)
+      // Non-fatal — continue with deletion
+    }
+
     let successCount = 0
     let failureCount = 0
     const deletedEmails: string[] = []
@@ -122,6 +157,28 @@ export async function GET(request: NextRequest) {
     }
 
     console.log(`[DeleteInactiveUsers] Done: ${successCount} deleted, ${failureCount} failed`)
+
+    // ── Record deletion count for current month ──────────────────────────────
+    if (successCount > 0) {
+      try {
+        const now2 = new Date()
+        const currentMonth = `${now2.getUTCFullYear()}-${String(now2.getUTCMonth() + 1).padStart(2, '0')}`
+        const { data: monthRow } = await supabase
+          .from('user_growth_stats')
+          .select('deletions')
+          .eq('year_month', currentMonth)
+          .maybeSingle()
+
+        await supabase.from('user_growth_stats').upsert({
+          year_month: currentMonth,
+          deletions: (monthRow?.deletions || 0) + successCount,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'year_month' })
+        console.log(`[DeleteInactiveUsers] Recorded ${successCount} deletions for ${currentMonth}`)
+      } catch (statsErr) {
+        console.error('[DeleteInactiveUsers] Failed to save deletion count:', statsErr)
+      }
+    }
 
     return NextResponse.json({
       success: true,

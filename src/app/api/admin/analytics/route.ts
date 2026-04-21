@@ -59,7 +59,8 @@ export async function GET(request: NextRequest) {
       generationsResult,
       cvsResult,
       coverLettersResult,
-      interviewPrepsResult
+      interviewPrepsResult,
+      growthStatsResult
     ] = await Promise.all([
       supabase.from('profiles').select('*'),
       supabase.from('purchases').select('*'),
@@ -68,11 +69,13 @@ export async function GET(request: NextRequest) {
       supabase.from('generations').select('id, user_id, created_at, job_title'),
       supabase.from('cvs').select('id, user_id, created_at'),
       supabase.from('cover_letters').select('id, user_id, created_at'),
-      supabase.from('interview_preps').select('id, user_id, created_at')
+      supabase.from('interview_preps').select('id, user_id, created_at'),
+      supabase.from('user_growth_stats').select('year_month, new_signups, deletions').order('year_month', { ascending: true })
     ])
 
     const users = allUsers
     const profiles = profilesResult.data || []
+    const growthStats: Array<{ year_month: string; new_signups: number; deletions: number }> = growthStatsResult.data || []
     const purchases = purchasesResult.data || []
     const subscriptions = subscriptionsResult.data || []
     const usageTracking = usageResult.data || []
@@ -477,6 +480,32 @@ export async function GET(request: NextRequest) {
       }
     })
 
+    // Monthly growth: merge live signup counts with stored growth stats
+    // (stored stats include deleted users; live auth.users only shows current users)
+    const liveSignupsByMonth = new Map<string, number>()
+    for (const u of allUsers) {
+      if (!u.created_at) continue
+      const d = new Date(u.created_at)
+      const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
+      liveSignupsByMonth.set(key, (liveSignupsByMonth.get(key) || 0) + 1)
+    }
+    const growthMap = new Map(growthStats.map(r => [r.year_month, { ...r }]))
+    for (const [month, liveCount] of liveSignupsByMonth) {
+      const existing = growthMap.get(month)
+      if (!existing) {
+        growthMap.set(month, { year_month: month, new_signups: liveCount, deletions: 0 })
+      } else {
+        existing.new_signups = Math.max(existing.new_signups, liveCount)
+      }
+    }
+    const monthlyGrowthStats = Array.from(growthMap.values())
+      .sort((a, b) => a.year_month.localeCompare(b.year_month))
+      .map((row, idx, arr) => {
+        const cumSignups = arr.slice(0, idx + 1).reduce((s, r) => s + r.new_signups, 0)
+        const cumDeletions = arr.slice(0, idx + 1).reduce((s, r) => s + r.deletions, 0)
+        return { ...row, net_change: row.new_signups - row.deletions, cumulative_signups: cumSignups, cumulative_active: cumSignups - cumDeletions }
+      })
+
     // Top users by generation count
     const topUsers = [...userDetails]
       .sort((a, b) => b.generation_count - a.generation_count)
@@ -515,8 +544,11 @@ export async function GET(request: NextRequest) {
         monthlyProRevenue: monthlyMRR,
         annualProRevenue: annualMRR,
         dataFetchedAt: now.toISOString(),
+        totalEverRegistered: monthlyGrowthStats.reduce((s, r) => s + r.new_signups, 0),
+        totalEverDeleted: monthlyGrowthStats.reduce((s, r) => s + r.deletions, 0),
       },
       charts: { generationsByDay, signupsByDay },
+      monthlyGrowthStats,
       users: userDetails,
       topUsers,
       monthlyRevenueByMonth,

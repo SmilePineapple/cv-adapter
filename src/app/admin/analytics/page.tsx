@@ -23,9 +23,20 @@ import {
   Percent,
   ArrowUpRight,
   ArrowDownRight,
-  RefreshCw
+  RefreshCw,
+  Database,
+  Trash2
 } from 'lucide-react'
 import Link from 'next/link'
+
+interface MonthlyGrowthRow {
+  year_month: string
+  new_signups: number
+  deletions: number
+  net_change: number
+  cumulative_signups: number
+  cumulative_active: number
+}
 
 interface AnalyticsData {
   overview: {
@@ -44,11 +55,14 @@ interface AnalyticsData {
     avgGenerationsPerUser: string
     monthlyProUsers?: number
     annualProUsers?: number
+    totalEverRegistered?: number
+    totalEverDeleted?: number
   }
   charts: {
     generationsByDay: { [key: string]: number }
     signupsByDay: { [key: string]: number }
   }
+  monthlyGrowthStats?: MonthlyGrowthRow[]
   users: Array<{
     id: string
     email: string
@@ -65,6 +79,8 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isSnapshotting, setIsSnapshotting] = useState(false)
+  const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null)
   // const [_timeRange] = useState<'7d' | '30d' | '90d'>('30d')
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
@@ -148,6 +164,30 @@ export default function AnalyticsPage() {
     }
   }
 
+  const runSnapshot = async () => {
+    try {
+      setIsSnapshotting(true)
+      setSnapshotMsg(null)
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+      const res = await fetch('/api/admin/snapshot-user-stats', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      })
+      const json = await res.json()
+      if (json.success) {
+        setSnapshotMsg(`Seeded ${json.upserted} months from ${json.totalUsers} current users`)
+        await loadAnalytics()
+      } else {
+        setSnapshotMsg(`Error: ${json.error}`)
+      }
+    } catch (e) {
+      setSnapshotMsg('Snapshot failed')
+    } finally {
+      setIsSnapshotting(false)
+    }
+  }
+
   const growth = getGrowthMetrics()
 
   if (isLoading) {
@@ -192,6 +232,15 @@ export default function AnalyticsPage() {
             </div>
 
             <div className="flex items-center gap-3">
+              <button
+                onClick={runSnapshot}
+                disabled={isSnapshotting}
+                title="Seed/refresh user_growth_stats from current auth.users"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                <Database className="w-4 h-4" />
+                {isSnapshotting ? 'Seeding...' : 'Seed Stats'}
+              </button>
               <Link
                 href="/admin/analytics-enhanced"
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors"
@@ -488,6 +537,94 @@ export default function AnalyticsPage() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* User Growth History */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-blue-600" />
+                User Growth History
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">All-time signup and deletion counts (survives GDPR cleanups)</p>
+            </div>
+            {snapshotMsg && (
+              <span className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-3 py-1">{snapshotMsg}</span>
+            )}
+          </div>
+
+          {/* Summary tiles */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-blue-50 rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-blue-900">{(analytics.overview.totalEverRegistered ?? analytics.overview.totalUsers).toLocaleString()}</p>
+              <p className="text-xs text-blue-700 mt-1">Total Ever Registered</p>
+            </div>
+            <div className="bg-red-50 rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-red-900">{(analytics.overview.totalEverDeleted ?? 0).toLocaleString()}</p>
+              <p className="text-xs text-red-700 mt-1">Total Deleted (GDPR)</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-green-900">{analytics.overview.totalUsers.toLocaleString()}</p>
+              <p className="text-xs text-green-700 mt-1">Currently Active</p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-purple-900">
+                {analytics.overview.totalEverRegistered
+                  ? `${(((analytics.overview.totalEverRegistered - analytics.overview.totalUsers) / analytics.overview.totalEverRegistered) * 100).toFixed(1)}%`
+                  : '0%'}
+              </p>
+              <p className="text-xs text-purple-700 mt-1">Churn Rate (lifetime)</p>
+            </div>
+          </div>
+
+          {/* Monthly breakdown table */}
+          {analytics.monthlyGrowthStats && analytics.monthlyGrowthStats.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-2 px-3 text-gray-600 font-medium">Month</th>
+                    <th className="text-right py-2 px-3 text-gray-600 font-medium">New Signups</th>
+                    <th className="text-right py-2 px-3 text-gray-600 font-medium">Deleted</th>
+                    <th className="text-right py-2 px-3 text-gray-600 font-medium">Net</th>
+                    <th className="text-right py-2 px-3 text-gray-600 font-medium">Cumulative Total</th>
+                    <th className="text-right py-2 px-3 text-gray-600 font-medium">Still Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...analytics.monthlyGrowthStats].reverse().map(row => (
+                    <tr key={row.year_month} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                      <td className="py-2 px-3 font-medium text-gray-900">
+                        {new Date(row.year_month + '-01').toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                      </td>
+                      <td className="py-2 px-3 text-right">
+                        <span className="text-green-700 font-medium">+{row.new_signups}</span>
+                      </td>
+                      <td className="py-2 px-3 text-right">
+                        {row.deletions > 0
+                          ? <span className="text-red-600 flex items-center justify-end gap-1"><Trash2 className="w-3 h-3" />{row.deletions}</span>
+                          : <span className="text-gray-400">—</span>}
+                      </td>
+                      <td className="py-2 px-3 text-right">
+                        <span className={row.net_change >= 0 ? 'text-blue-700' : 'text-orange-600'}>
+                          {row.net_change >= 0 ? '+' : ''}{row.net_change}
+                        </span>
+                      </td>
+                      <td className="py-2 px-3 text-right text-gray-700">{row.cumulative_signups.toLocaleString()}</td>
+                      <td className="py-2 px-3 text-right text-gray-700">{row.cumulative_active.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-400">
+              <Database className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">No growth history yet.</p>
+              <p className="text-xs mt-1">Click <strong>Seed Stats</strong> above to populate from current users.</p>
+            </div>
+          )}
         </div>
 
       </div>
