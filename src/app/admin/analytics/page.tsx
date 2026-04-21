@@ -57,6 +57,7 @@ interface AnalyticsData {
     annualProUsers?: number
     totalEverRegistered?: number
     totalEverDeleted?: number
+    payingProUsers?: number
   }
   charts: {
     generationsByDay: { [key: string]: number }
@@ -320,8 +321,14 @@ export default function AnalyticsPage() {
             </div>
             <div>
               <p className="text-3xl font-bold text-gray-900">{analytics.overview.totalUsers}</p>
-              <p className="text-sm text-gray-600 mt-1">Total Users</p>
+              <p className="text-sm text-gray-600 mt-1">Active Users</p>
               <p className="text-xs text-gray-500 mt-2">+{analytics.overview.newUsersLast7Days} this week</p>
+              {(analytics.overview.totalEverRegistered ?? 0) > analytics.overview.totalUsers && (
+                <p className="text-xs text-blue-600 mt-1 font-medium">
+                  {(analytics.overview.totalEverRegistered ?? 0).toLocaleString()} total ever registered
+                  {' '}· {((analytics.overview.totalEverRegistered ?? 0) - analytics.overview.totalUsers).toLocaleString()} purged
+                </p>
+              )}
             </div>
           </div>
 
@@ -375,7 +382,12 @@ export default function AnalyticsPage() {
             <div>
               <p className="text-3xl font-bold text-gray-900">{analytics.overview.conversionRate}%</p>
               <p className="text-sm text-gray-600 mt-1">Conversion Rate</p>
-              <p className="text-xs text-gray-500 mt-2">Free → Pro</p>
+              <p className="text-xs text-gray-500 mt-2">Free → Pro (active users)</p>
+              {(analytics.overview.totalEverRegistered ?? 0) > 0 && (
+                <p className="text-xs text-gray-400 mt-1">
+                  {(((analytics.overview.payingProUsers ?? analytics.overview.proUsers) / (analytics.overview.totalEverRegistered ?? 1)) * 100).toFixed(1)}% of all-time signups
+                </p>
+              )}
             </div>
           </div>
         </div>
