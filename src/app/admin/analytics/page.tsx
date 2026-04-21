@@ -176,7 +176,8 @@ export default function AnalyticsPage() {
       })
       const json = await res.json()
       if (json.success) {
-        setSnapshotMsg(`Seeded ${json.upserted} months from ${json.totalUsers} current users`)
+        const { live = 0, orphanedProfiles = 0, orphanedGenerations = 0 } = json.sources || {}
+        setSnapshotMsg(`Seeded ${json.upserted} months | ${json.totalUsers} total (${live} live + ${orphanedProfiles} recovered from profiles + ${orphanedGenerations} from generations)`)
         await loadAnalytics()
       } else {
         setSnapshotMsg(`Error: ${json.error}`)

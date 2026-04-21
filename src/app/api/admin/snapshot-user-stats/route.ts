@@ -6,16 +6,15 @@ const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 
 /**
  * POST /api/admin/snapshot-user-stats
- * Seeds / refreshes user_growth_stats from all current auth.users.
- * Safe to run multiple times — uses upsert (will only ADD to existing counts,
- * never overwrite months that already have a higher value from past deletions).
+ * Seeds / refreshes user_growth_stats from three sources:
+ *   1. Current auth.users (live accounts)
+ *   2. Orphaned `profiles` rows (deleted users whose profile survived the cron cleanup)
+ *   3. Orphaned `generations` rows (earliest gen date used as proxy signup date)
  *
- * Call this once to backfill historical data from existing users, then the
- * deletion cron keeps the table accurate going forward.
+ * Safe to run multiple times — upsert uses MAX to never overwrite higher stored counts.
  */
 export async function POST(request: NextRequest) {
   try {
-    // Auth: must be admin user
     const authHeader = request.headers.get('authorization')
     if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -32,28 +31,60 @@ export async function POST(request: NextRequest) {
 
     const supabase = createAdminClient()
 
-    // Paginate through all current auth users
-    const allUsers: Array<{ created_at: string }> = []
+    // ── 1. Current live auth.users ────────────────────────────────────────────
+    const liveUsers: Array<{ id: string; created_at: string }> = []
     let page = 1
     while (true) {
       const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
       if (error) throw error
-      allUsers.push(...data.users)
+      liveUsers.push(...data.users.map(u => ({ id: u.id, created_at: u.created_at })))
       if (data.users.length < 1000) break
       page++
     }
+    const liveUserIds = new Set(liveUsers.map(u => u.id))
 
-    // Group by year-month based on created_at
+    // Combined map: user_id → earliest known date (signup date)
+    const signupDates = new Map<string, string>()
+    for (const u of liveUsers) {
+      if (u.created_at) signupDates.set(u.id, u.created_at)
+    }
+
+    // ── 2. Orphaned profiles (users deleted from auth but profile row survived) ──
+    const { data: allProfiles } = await supabase
+      .from('profiles')
+      .select('id, created_at')
+
+    let orphanedProfileCount = 0
+    for (const p of (allProfiles || [])) {
+      if (!liveUserIds.has(p.id) && p.created_at) {
+        signupDates.set(p.id, p.created_at)
+        orphanedProfileCount++
+      }
+    }
+
+    // ── 3. Orphaned generations (earliest generation ≈ signup for any remaining gaps) ──
+    const { data: allGenerations } = await supabase
+      .from('generations')
+      .select('user_id, created_at')
+      .order('created_at', { ascending: true })
+
+    let orphanedGenCount = 0
+    for (const g of (allGenerations || [])) {
+      if (!liveUserIds.has(g.user_id) && !signupDates.has(g.user_id) && g.created_at) {
+        signupDates.set(g.user_id, g.created_at)
+        orphanedGenCount++
+      }
+    }
+
+    // ── Group all signup dates by year-month ──────────────────────────────────
     const monthlyCounts = new Map<string, number>()
-    for (const u of allUsers) {
-      if (!u.created_at) continue
-      const d = new Date(u.created_at)
+    for (const dateStr of signupDates.values()) {
+      const d = new Date(dateStr)
       const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
       monthlyCounts.set(key, (monthlyCounts.get(key) || 0) + 1)
     }
 
-    // Upsert into user_growth_stats — for each month we take the MAX of
-    // what's already stored vs what we can see now (protects against deleted-user data)
+    // ── Upsert: MAX wins — never lower a stored count ─────────────────────────
     const { data: existing } = await supabase
       .from('user_growth_stats')
       .select('year_month, new_signups')
@@ -62,14 +93,17 @@ export async function POST(request: NextRequest) {
       (existing || []).map(r => [r.year_month, r.new_signups])
     )
 
-    const rows = Array.from(monthlyCounts.entries()).map(([year_month, liveCount]) => ({
+    const rows = Array.from(monthlyCounts.entries()).map(([year_month, count]) => ({
       year_month,
-      new_signups: Math.max(liveCount, existingMap.get(year_month) || 0),
+      new_signups: Math.max(count, existingMap.get(year_month) || 0),
       updated_at: new Date().toISOString(),
     }))
 
     if (rows.length === 0) {
-      return NextResponse.json({ success: true, upserted: 0, totalUsers: 0 })
+      return NextResponse.json({
+        success: true, upserted: 0, totalUsers: 0,
+        sources: { live: liveUsers.length, orphanedProfiles: 0, orphanedGenerations: 0 },
+      })
     }
 
     const { error: upsertError } = await supabase
@@ -78,12 +112,18 @@ export async function POST(request: NextRequest) {
 
     if (upsertError) throw upsertError
 
-    console.log(`[SnapshotUserStats] Upserted ${rows.length} months from ${allUsers.length} current users`)
+    const totalRecovered = signupDates.size
+    console.log(`[SnapshotUserStats] Upserted ${rows.length} months | live=${liveUsers.length} orphaned_profiles=${orphanedProfileCount} orphaned_gens=${orphanedGenCount} total=${totalRecovered}`)
 
     return NextResponse.json({
       success: true,
       upserted: rows.length,
-      totalUsers: allUsers.length,
+      totalUsers: totalRecovered,
+      sources: {
+        live: liveUsers.length,
+        orphanedProfiles: orphanedProfileCount,
+        orphanedGenerations: orphanedGenCount,
+      },
       months: rows.map(r => ({ month: r.year_month, signups: r.new_signups })).sort((a, b) => a.month.localeCompare(b.month)),
     })
   } catch (error) {
