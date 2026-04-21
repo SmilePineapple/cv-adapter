@@ -12,7 +12,7 @@ export default function GermanLandingPage() {
             <Link href="/" className="flex items-center space-x-2">
               <Sparkles className="w-8 h-8 text-purple-600" />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                CV Adapter
+                My CV Buddy
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -64,7 +64,7 @@ export default function GermanLandingPage() {
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl p-12 text-center text-white">
           <h2 className="text-4xl font-bold mb-4">Bereit, Ihren Lebenslauf zu Transformieren?</h2>
           <p className="text-xl mb-8 opacity-90">
-            Schließen Sie sich Hunderten von deutschen Fachkräften an, die CV Adapter nutzen
+            Schließen Sie sich Hunderten von deutschen Fachkräften an, die My CV Buddy nutzen
           </p>
           <Link href="/signup" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg">
             Kostenlos Starten
@@ -76,7 +76,7 @@ export default function GermanLandingPage() {
       <footer className="border-t bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center text-gray-600">
-            <p className="mb-4">© 2025 CV Adapter. Alle Rechte vorbehalten.</p>
+            <p className="mb-4">© 2026 My CV Buddy. Alle Rechte vorbehalten.</p>
           </div>
         </div>
       </footer>

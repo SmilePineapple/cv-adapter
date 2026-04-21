@@ -327,7 +327,7 @@ export default function CareerChangeCVGuide() {
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 my-12 text-center">
             <h3 className="text-2xl font-bold mb-4">Make Your Career Change CV Stand Out</h3>
             <p className="text-lg mb-6">
-              CV Adapter's AI automatically highlights your transferable skills and optimizes your CV for your target industry. 
+              My CV Buddy's AI automatically highlights your transferable skills and optimizes your CV for your target industry. 
               Get past ATS systems and land interviews in your new career.
             </p>
             <Link 

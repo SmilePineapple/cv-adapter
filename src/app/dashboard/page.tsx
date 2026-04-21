@@ -822,7 +822,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold">Unlock Your Full Potential</h2>
-                  <p className="text-blue-100">Join 1,000+ professionals using CV Adapter Pro</p>
+                  <p className="text-blue-100">Join 1,000+ professionals using My CV Buddy Pro</p>
                 </div>
               </div>
 

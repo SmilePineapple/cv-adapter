@@ -63,7 +63,7 @@ export default function CVWritingGuidePage() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-white">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-white">My CV Buddy</span>
           </Link>
           
           <div className="flex items-center space-x-3 sm:space-x-4">
@@ -486,7 +486,7 @@ export default function CVWritingGuidePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-white font-bold mb-4">CV Adapter</h3>
+              <h3 className="text-white font-bold mb-4">My CV Buddy</h3>
               <p className="text-sm">AI-powered CV builder trusted by thousands of UK professionals.</p>
             </div>
             <div>
@@ -516,7 +516,7 @@ export default function CVWritingGuidePage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>&copy; 2026 CV Adapter. All rights reserved.</p>
+            <p>&copy; 2026 My CV Buddy. All rights reserved.</p>
           </div>
         </div>
       </footer>

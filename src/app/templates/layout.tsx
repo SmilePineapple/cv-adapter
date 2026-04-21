@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Templates - Professional CV Templates UK | CV Adapter',
-  description: 'Browse 12+ professional CV templates optimized for UK job applications. ATS-friendly designs, modern layouts, and industry-specific templates. Free to use with CV Adapter.',
+  title: 'CV Templates - Professional CV Templates UK | My CV Buddy',
+  description: 'Browse 12+ professional CV templates optimized for UK job applications. ATS-friendly designs, modern layouts, and industry-specific templates. Free with My CV Buddy.',
   alternates: {
     canonical: 'https://www.mycvbuddy.com/templates',
   },
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     follow: false,
   },
   openGraph: {
-    title: 'Professional CV Templates UK | CV Adapter',
+    title: 'Professional CV Templates UK | My CV Buddy',
     description: 'Browse 12+ professional CV templates optimized for UK job applications. ATS-friendly and modern designs.',
     url: 'https://www.mycvbuddy.com/templates',
   },

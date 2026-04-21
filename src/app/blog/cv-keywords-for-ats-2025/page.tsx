@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Keywords for ATS: Complete List for UK Jobs (2025) | CV Adapter',
+  title: 'CV Keywords for ATS: Complete List for UK Jobs (2025) | My CV Buddy',
   description: '500+ ATS-friendly CV keywords for UK job applications. Industry-specific keywords that get your CV past applicant tracking systems.',
   keywords: 'ATS keywords, CV keywords UK, applicant tracking system keywords, ATS-friendly words, CV optimization keywords',
   openGraph: {
@@ -19,7 +19,7 @@ export default function CVKeywordsForATS() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              CV Adapter
+              My CV Buddy
             </Link>
             <Link 
               href="/auth/signup"
@@ -210,7 +210,7 @@ export default function CVKeywordsForATS() {
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 my-12 text-center">
             <h3 className="text-2xl font-bold mb-4">Automatically Optimize Your CV for ATS</h3>
             <p className="text-lg mb-6">
-              CV Adapter's AI analyzes job descriptions and automatically includes the right keywords in your CV—naturally and effectively.
+              My CV Buddy's AI analyzes job descriptions and automatically includes the right keywords in your CV—naturally and effectively.
             </p>
             <Link 
               href="/auth/signup"
@@ -222,7 +222,7 @@ export default function CVKeywordsForATS() {
 
           <div className="border-t border-white/20 pt-8 mt-12">
             <p className="text-gray-400 text-sm">
-              <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in ATS optimization 
+              <strong>About the Author:</strong> This guide was created by the My CV Buddy team, specialists in ATS optimization 
               for the UK job market. Our AI-powered tool has helped thousands of job seekers get past ATS systems and land interviews.
             </p>
           </div>
@@ -240,7 +240,7 @@ export default function CVKeywordsForATS() {
 
       <footer className="border-t bg-white mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-300">
-          <p>© 2025 CV Adapter. All rights reserved.</p>
+          <p>© 2026 My CV Buddy. All rights reserved.</p>
         </div>
       </footer>
     </div>

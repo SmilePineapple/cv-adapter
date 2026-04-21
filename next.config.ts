@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
   // 301 Redirects - Consolidate duplicate content to new comprehensive guides
   async redirects() {
     return [
+      // Redirect duplicate USA resume builder page
+      {
+        source: '/usa-resume-builder',
+        destination: '/resume-builder-usa',
+        permanent: true,
+      },
       // Redirect old blog posts to new comprehensive guides
       {
         source: '/blog/how-to-beat-ats-systems',

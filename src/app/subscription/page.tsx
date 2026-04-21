@@ -383,7 +383,7 @@ export default function SubscriptionPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center py-2 border-b border-white/10">
                       <span className="text-gray-400">Plan</span>
-                      <span className="font-semibold text-white">CV Adapter Pro</span>
+                      <span className="font-semibold text-white">My CV Buddy Pro</span>
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-white/10">
                       <span className="text-gray-400">Price</span>
@@ -581,7 +581,7 @@ export default function SubscriptionPage() {
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Potential</span>
               </h1>
               <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                Join 10,000+ professionals using CV Adapter Pro to land their dream jobs
+                Join 10,000+ professionals using My CV Buddy Pro to land their dream jobs
               </p>
             </div>
 

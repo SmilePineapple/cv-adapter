@@ -124,7 +124,7 @@ export default function ATSOptimizationGuidePage() {
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs sm:text-sm">CV</span>
             </div>
-            <span className="text-lg sm:text-xl font-bold text-white">CV Adapter</span>
+            <span className="text-lg sm:text-xl font-bold text-white">My CV Buddy</span>
           </Link>
           
           <div className="flex items-center space-x-3 sm:space-x-4">
@@ -464,7 +464,7 @@ export default function ATSOptimizationGuidePage() {
 
                 <div className="bg-purple-50 p-6 rounded-lg">
                   <h3 className="font-black text-white mb-3">Method 2: Use Our ATS Checker</h3>
-                  <p className="text-gray-300 mb-4">Upload your CV to CV Adapter for instant ATS compatibility analysis:</p>
+                  <p className="text-gray-300 mb-4">Upload your CV to My CV Buddy for instant ATS compatibility analysis:</p>
                   <Link href="/auth/signup" className="bg-white text-black px-6 py-3 rounded-full font-black hover:bg-purple-700 font-semibold inline-flex items-center">
                     Check My CV for ATS
                     <ArrowRight className="ml-2 w-4 h-4" />

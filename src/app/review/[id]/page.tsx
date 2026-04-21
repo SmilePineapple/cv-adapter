@@ -653,7 +653,7 @@ export default function ReviewPage() {
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">CV</span>
                 </div>
-                <span className="text-2xl font-black text-white">CV Adapter</span>
+                <span className="text-2xl font-black text-white">My CV Buddy</span>
               </div>
             </div>
             

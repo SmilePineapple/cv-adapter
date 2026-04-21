@@ -13,7 +13,7 @@ export default function FrenchLandingPage() {
             <Link href="/" className="flex items-center space-x-2">
               <Sparkles className="w-8 h-8 text-purple-600" />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                CV Adapter
+                My CV Buddy
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -172,7 +172,7 @@ export default function FrenchLandingPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Pourquoi Choisir CV Adapter?
+              Pourquoi Choisir My CV Buddy?
             </h2>
             <div className="space-y-4">
               {[
@@ -246,7 +246,7 @@ export default function FrenchLandingPage() {
             Prêt à Transformer Votre CV?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Rejoignez des centaines de professionnels français qui utilisent CV Adapter
+            Rejoignez des centaines de professionnels français qui utilisent My CV Buddy
           </p>
           <Link
             href="/signup"
@@ -262,7 +262,7 @@ export default function FrenchLandingPage() {
       <footer className="border-t bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center text-gray-600">
-            <p className="mb-4">© 2025 CV Adapter. Tous droits réservés.</p>
+            <p className="mb-4">© 2026 My CV Buddy. Tous droits réservés.</p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <Link href="/privacy" className="hover:text-gray-900">
                 Confidentialité

@@ -69,6 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/ats-checker`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.88,
+    },
+    {
       url: `${baseUrl}/uk-cv-builder`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

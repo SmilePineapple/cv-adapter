@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     canonical: 'https://www.mycvbuddy.com/blog/cv-writing-tips'
   },
   openGraph: {
-    title: 'CV Writing Tips & Best Practices | CV Adapter',
+    title: 'CV Writing Tips & Best Practices | My CV Buddy',
     description: 'Expert advice to create a winning CV that gets you interviews.',
     url: 'https://www.mycvbuddy.com/blog/cv-writing-tips',
-    siteName: 'CV Adapter',
+    siteName: 'My CV Buddy',
     type: 'article',
     publishedTime: '2025-10-10T00:00:00Z',
-    authors: ['CV Adapter'],
+    authors: ['My CV Buddy'],
   },
   robots: {
     index: true,

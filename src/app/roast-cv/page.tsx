@@ -382,7 +382,7 @@ export default function RoastCVPage() {
       .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, '[EMAIL]')
       .replace(/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g, '[PHONE]')
 
-    const shareText = `🔥 I got my CV roasted by AI! 🔥\n\n${blurredRoast.slice(0, 200)}...\n\nTry it yourself at CV Adapter!`
+    const shareText = `🔥 I got my CV roasted by AI! 🔥\n\n${blurredRoast.slice(0, 200)}...\n\nTry it yourself at My CV Buddy!`
     
     if (navigator.share) {
       navigator.share({

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Graduate CV with No Experience: UK Guide (2025) | CV Adapter',
+  title: 'Graduate CV with No Experience: UK Guide (2025) | My CV Buddy',
   description: 'How to write a winning graduate CV with no work experience. Expert tips for UK university leavers to land their first job in 2025.',
   keywords: 'graduate CV no experience UK, university leaver CV, first job CV, graduate CV template UK, entry level CV',
   openGraph: {
@@ -20,7 +20,7 @@ export default function GraduateCVNoExperience() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              CV Adapter
+              My CV Buddy
             </Link>
             <Link 
               href="/auth/signup"
@@ -373,7 +373,7 @@ export default function GraduateCVNoExperience() {
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 my-12 text-center">
             <h3 className="text-2xl font-bold mb-4">Create Your Graduate CV in Minutes</h3>
             <p className="text-lg mb-6">
-              CV Adapter's AI helps you highlight your strengths, reframe your experience, and create an ATS-optimized 
+              My CV Buddy's AI helps you highlight your strengths, reframe your experience, and create an ATS-optimized 
               CV that gets interviews—even with no work experience.
             </p>
             <Link 
@@ -414,7 +414,7 @@ export default function GraduateCVNoExperience() {
 
           <div className="border-t border-white/20 pt-8 mt-12">
             <p className="text-gray-400 text-sm">
-              <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in helping 
+              <strong>About the Author:</strong> This guide was created by the My CV Buddy team, specialists in helping 
               UK graduates create compelling CVs that get interviews. We've helped thousands of university leavers land 
               their first roles at top companies.
             </p>
@@ -435,7 +435,7 @@ export default function GraduateCVNoExperience() {
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-300">
-          <p>© 2025 CV Adapter. All rights reserved.</p>
+          <p>© 2026 My CV Buddy. All rights reserved.</p>
         </div>
       </footer>
     </div>

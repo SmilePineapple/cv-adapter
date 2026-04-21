@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'How to Beat ATS Systems in the UK (2025 Guide) | CV Adapter',
+  title: 'How to Beat ATS Systems in the UK (2025 Guide) | My CV Buddy',
   description: 'Learn how to optimize your CV for Applicant Tracking Systems (ATS) used by 92% of UK recruiters. Expert tips for 2025 job market.',
   keywords: 'ATS CV UK, applicant tracking system, CV optimization UK, ATS-friendly CV, UK job applications 2025',
   openGraph: {
@@ -20,7 +20,7 @@ export default function ATSCVTipsUK2025() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              CV Adapter
+              My CV Buddy
             </Link>
             <Link 
               href="/auth/signup"
@@ -163,7 +163,7 @@ export default function ATSCVTipsUK2025() {
           <h3 className="text-2xl font-semibold text-slate-300 mt-8 mb-3">10. Test Your CV</h3>
           <p className="text-gray-300 leading-relaxed mb-6">
             Before applying, test your CV with an ATS checker or upload it to a job board to see how it parses. 
-            Better yet, use an AI-powered tool like <strong>CV Adapter</strong> to automatically optimize your CV for ATS systems.
+            Better yet, use an AI-powered CV adapter tool like <strong>My CV Buddy</strong> to automatically optimize your CV for ATS systems.
           </p>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-4">Common ATS Mistakes to Avoid</h2>
@@ -191,9 +191,9 @@ export default function ATSCVTipsUK2025() {
             <li><strong>Spelling:</strong> Use British English (organised, not organized)</li>
           </ul>
 
-          <h2 className="text-4xl font-black text-white mt-12 mb-4">How CV Adapter Helps</h2>
+          <h2 className="text-4xl font-black text-white mt-12 mb-4">How My CV Buddy Helps as a CV Adapter</h2>
           <p className="text-gray-300 leading-relaxed mb-6">
-            CV Adapter uses AI to automatically optimize your CV for ATS systems. Our tool:
+            My CV Buddy works as a smart CV adapter—using AI to automatically optimize your CV for ATS systems. Our tool:
           </p>
           <ul className="list-disc pl-6 mb-6 text-slate-400">
             <li>✅ Formats your CV with ATS-friendly structure</li>
@@ -206,7 +206,7 @@ export default function ATSCVTipsUK2025() {
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl p-8 my-12 text-center">
             <h3 className="text-2xl font-bold mb-4">Ready to Beat the ATS?</h3>
             <p className="text-lg mb-6">
-              Try CV Adapter free and get your CV past automated screening systems.
+              Try My CV Buddy free and get your CV past automated screening systems.
             </p>
             <Link 
               href="/auth/signup"
@@ -228,7 +228,7 @@ export default function ATSCVTipsUK2025() {
 
           <div className="border-t border-white/20 pt-8 mt-12">
             <p className="text-gray-400 text-sm">
-              <strong>About the Author:</strong> This guide was created by the CV Adapter team, specialists in AI-powered 
+              <strong>About the Author:</strong> This guide was created by the My CV Buddy team, specialists in AI-powered 
               CV optimization for the UK job market. We help thousands of job seekers get past ATS systems every month.
             </p>
           </div>
@@ -248,7 +248,7 @@ export default function ATSCVTipsUK2025() {
       {/* Footer */}
       <footer className="border-t bg-white mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-300">
-          <p>© 2025 CV Adapter. All rights reserved.</p>
+          <p>© 2026 My CV Buddy. All rights reserved.</p>
         </div>
       </footer>
     </div>

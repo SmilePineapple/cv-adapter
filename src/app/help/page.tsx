@@ -16,7 +16,7 @@ export default function HelpCenterPage() {
           a: 'Click "Sign Up" in the top right corner, enter your email and password, and verify your email address. You can also sign up with Google or LinkedIn for faster access.'
         },
         {
-          q: 'Is CV Adapter free to use?',
+          q: 'Is My CV Buddy free to use?',
           a: 'Yes! My CV Buddy includes 1 free CV generation with no credit card required. For unlimited generations, upgrade to Pro for just £2.99/month.'
         },
         {
@@ -26,7 +26,7 @@ export default function HelpCenterPage() {
       ]
     },
     {
-      category: 'Using CV Adapter',
+      category: 'Using My CV Buddy',
       questions: [
         {
           q: 'How does the AI tailoring work?',
@@ -192,7 +192,7 @@ export default function HelpCenterPage() {
           <Link href="/api-docs" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
             <Book className="w-8 h-8 text-purple-400 mb-3" />
             <h3 className="font-black text-white mb-2">API Documentation</h3>
-            <p className="text-sm text-gray-400">Integrate CV Adapter into your applications</p>
+            <p className="text-sm text-gray-400">Integrate My CV Buddy into your applications</p>
           </Link>
           <Link href="/contact" className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition">
             <MessageCircle className="w-8 h-8 text-green-400 mb-3" />

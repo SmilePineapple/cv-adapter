@@ -123,7 +123,7 @@ export default function PricingComparisonPage() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">CV</span>
               </div>
-              <span className="text-2xl font-black text-white">CV Adapter</span>
+              <span className="text-2xl font-black text-white">My CV Buddy</span>
             </Link>
             
             <div className="flex items-center space-x-4">
@@ -173,7 +173,7 @@ export default function PricingComparisonPage() {
             <div className="text-center mb-6">
               <h2 className="text-3xl font-black text-white mb-2">Free Plan</h2>
               <div className="text-5xl font-black text-white mb-2">£0</div>
-              <p className="text-gray-400">Perfect for trying out CV Adapter</p>
+              <p className="text-gray-400">Perfect for trying out My CV Buddy</p>
             </div>
 
             <div className="space-y-3 mb-8">
@@ -350,7 +350,7 @@ export default function PricingComparisonPage() {
             Ready to Create Your Perfect CV?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of job seekers who landed their dream jobs with CV Adapter Pro
+            Join thousands of job seekers who landed their dream jobs with My CV Buddy Pro
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">

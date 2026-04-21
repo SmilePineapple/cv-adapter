@@ -72,12 +72,12 @@ export default function TermsOfServicePage() {
           {/* Main Content */}
           <h2>1. Agreement to Terms</h2>
           <p>
-            By accessing or using CV Adapter, you agree to be bound by these Terms of Service. 
+            By accessing or using My CV Buddy, you agree to be bound by these Terms of Service. 
             If you do not agree to these Terms, do not use the Service.
           </p>
 
           <h2>2. Description of Service</h2>
-          <p>CV Adapter is an AI-powered platform that helps users:</p>
+          <p>My CV Buddy is an AI-powered platform that helps users:</p>
           <ul>
             <li>Upload and parse CV/resume documents</li>
             <li>Tailor CVs to specific job descriptions using AI</li>
@@ -164,7 +164,7 @@ export default function TermsOfServicePage() {
 
           <h3>6.2 Our Content</h3>
           <ul>
-            <li><strong>Platform Ownership</strong>: We own all rights to the CV Adapter platform</li>
+            <li><strong>Platform Ownership</strong>: We own all rights to the My CV Buddy platform</li>
             <li><strong>Templates</strong>: Our CV templates are proprietary</li>
             <li><strong>No Copying</strong>: You may not copy, modify, or redistribute our platform</li>
           </ul>
@@ -240,7 +240,7 @@ export default function TermsOfServicePage() {
           </div>
 
           <h2>13. Acknowledgment</h2>
-          <p>By using CV Adapter, you acknowledge that:</p>
+          <p>By using My CV Buddy, you acknowledge that:</p>
           <ul>
             <li>✅ You have read and understood these Terms</li>
             <li>✅ You agree to be bound by these Terms</li>

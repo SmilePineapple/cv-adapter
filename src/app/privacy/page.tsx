@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
           {/* Main Content */}
           <h2>1. Introduction</h2>
           <p>
-            Welcome to CV Adapter. We respect your privacy and are committed to protecting your personal data. 
+            Welcome to My CV Buddy. We respect your privacy and are committed to protecting your personal data. 
             This privacy policy explains how we collect, use, store, and protect your information when you use our CV tailoring service.
           </p>
 
@@ -167,7 +167,7 @@ export default function PrivacyPolicyPage() {
 
           <h2>8. Children's Privacy</h2>
           <p>
-            CV Adapter is NOT intended for users under 16 years old. We do not knowingly collect data from children.
+            My CV Buddy is NOT intended for users under 16 years old. We do not knowingly collect data from children.
           </p>
 
           <h2>9. Changes to This Policy</h2>

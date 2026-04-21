@@ -13,7 +13,7 @@ export default function HindiLandingPage() {
             <Link href="/" className="flex items-center space-x-2">
               <Sparkles className="w-8 h-8 text-purple-600" />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                CV Adapter
+                My CV Buddy
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -121,7 +121,7 @@ export default function HindiLandingPage() {
             अपना CV बदलने के लिए तैयार हैं?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            सैकड़ों भारतीय पेशेवरों के साथ जुड़ें जो CV Adapter का उपयोग करते हैं
+            सैकड़ों भारतीय पेशेवरों के साथ जुड़ें जो My CV Buddy का उपयोग करते हैं
           </p>
           <Link
             href="/signup"
@@ -137,7 +137,7 @@ export default function HindiLandingPage() {
       <footer className="border-t bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center text-gray-600">
-            <p className="mb-4">© 2025 CV Adapter. सर्वाधिकार सुरक्षित।</p>
+            <p className="mb-4">© 2026 My CV Buddy. सर्वाधिकार सुरक्षित।</p>
             <div className="flex items-center justify-center gap-6 text-sm">
               <Link href="/privacy" className="hover:text-gray-900">
                 गोपनीयता
