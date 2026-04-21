@@ -70,6 +70,8 @@ interface AnalyticsData {
     monthlyProRevenue?: number
     annualProRevenue?: number
     dataFetchedAt?: string
+    totalEverRegistered?: number
+    totalEverDeleted?: number
   }
   monthlyRevenueByMonth?: Array<{ month: string; revenue: number; currency: string }>
   charts: {
@@ -342,9 +344,12 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
             icon={<Users className="w-5 h-5" />}
-            label="Total Users"
+            label="Active Users"
             value={analytics.overview.totalUsers.toLocaleString()}
             sub={`+${analytics.overview.newUsersLast7Days} this week`}
+            sub2={(analytics.overview.totalEverRegistered ?? 0) > analytics.overview.totalUsers
+              ? `${(analytics.overview.totalEverRegistered ?? 0).toLocaleString()} total ever · ${((analytics.overview.totalEverRegistered ?? 0) - analytics.overview.totalUsers).toLocaleString()} purged`
+              : undefined}
             color="blue"
           />
           <KpiCard
@@ -752,10 +757,11 @@ interface KpiCardProps {
   label: string
   value: string | number
   sub: string
+  sub2?: string
   color: 'blue' | 'purple' | 'green' | 'emerald'
 }
 
-function KpiCard({ icon, label, value, sub, color }: KpiCardProps) {
+function KpiCard({ icon, label, value, sub, sub2, color }: KpiCardProps) {
   const colors = {
     blue: 'text-blue-400 bg-blue-500/10',
     purple: 'text-purple-400 bg-purple-500/10',
@@ -770,6 +776,7 @@ function KpiCard({ icon, label, value, sub, color }: KpiCardProps) {
       </div>
       <div className="text-3xl font-bold text-white mb-1">{value}</div>
       <div className="text-xs text-gray-500">{sub}</div>
+      {sub2 && <div className="text-xs text-blue-400 mt-0.5">{sub2}</div>}
     </div>
   )
 }
