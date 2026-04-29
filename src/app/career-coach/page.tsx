@@ -200,9 +200,11 @@ export default function CareerCoachPage() {
   const sendChatMessage = async () => {
     if (!chatInput.trim() || !user) return
 
+    const messageText = chatInput.trim()
+
     const userMessage: ChatMessage = {
       role: 'user',
-      content: chatInput,
+      content: messageText,
       timestamp: new Date()
     }
 
@@ -216,7 +218,7 @@ export default function CareerCoachPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user.id,
-          message: chatInput,
+          message: messageText,
           conversationHistory: chatMessages
         })
       })

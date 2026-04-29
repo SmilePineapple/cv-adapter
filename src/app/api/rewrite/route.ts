@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
         }
       ],
       temperature: 0.7,
-      max_tokens: 3000 // Optimized for faster generation
+      max_tokens: 6000 // Sufficient for 4-page CVs with multiple jobs
     })
 
     const aiResponse = completion.choices[0]?.message?.content
