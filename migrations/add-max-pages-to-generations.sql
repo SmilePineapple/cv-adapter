@@ -1,7 +1,7 @@
 -- Add max_pages column to generations table
--- This allows users to specify desired CV length (1-4 pages) which is then used during PDF export
+-- This allows users to specify desired CV length in pages (1-4) which is then used during PDF export
 
-ALTER TABLE generations ADD COLUMN IF NOT EXISTS max_pages INTEGER DEFAULT 4;
+ALTER TABLE generations ADD COLUMN IF NOT EXISTS max_pages INTEGER DEFAULT 1;
 
 -- Add comment to document the column
 COMMENT ON COLUMN generations.max_pages IS 'Desired CV length in pages (1-4). Used during PDF export to constrain output length.';

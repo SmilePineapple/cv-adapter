@@ -58,7 +58,7 @@ export default function GeneratePage() {
   const [isQuickMode, setIsQuickMode] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
-  const [maxPages, setMaxPages] = useState(4)
+  const [maxPages, setMaxPages] = useState(1)
 
   useEffect(() => {
     fetchCVData()
