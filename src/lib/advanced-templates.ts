@@ -633,6 +633,15 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
   // Content should fill pages naturally through actual content, not artificial spacing
   const useSingleColumn = maxPages > 1
   
+  // For 4-page CVs, add strategic page breaks to distribute sections
+  // Only break after profile to ensure page 1 has content, let rest flow naturally
+  const pageBreakStyle = maxPages === 4 ? `
+        <style>
+          /* Strategic page breaks for 4-page CV distribution */
+          .section[data-type="profile"], .section[data-type="summary"] { page-break-after: always; }
+        </style>
+        ` : ''
+  
   return `
     <!DOCTYPE html>
     <html>
@@ -648,6 +657,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
           .section-header { margin-bottom: 12px !important; }
         </style>
         ` : ''}
+        ${pageBreakStyle}
       </head>
       <body>
         <!-- Decorative Background -->
@@ -676,7 +686,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
             <!-- Single Column Layout for Multi-Page CVs -->
             <div class="single-column">
               ${profileSection ? `
-                <div class="section">
+                <div class="section" data-type="profile">
                   <div class="section-header">
                     ${sectionIcons.profile}
                     Profile
@@ -686,7 +696,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${experienceSection ? `
-                <div class="section">
+                <div class="section" data-type="experience">
                   <div class="section-header">
                     ${sectionIcons.experience}
                     Work Experience
@@ -696,7 +706,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${educationSection ? `
-                <div class="section">
+                <div class="section" data-type="education">
                   <div class="section-header">
                     ${sectionIcons.education}
                     Education
@@ -706,7 +716,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${skills.length > 0 ? `
-                <div class="section">
+                <div class="section" data-type="skills">
                   <div class="section-header">
                     ${sectionIcons.skills}
                     Skills
@@ -718,7 +728,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${hobbies.length > 0 ? `
-                <div class="section">
+                <div class="section" data-type="hobbies">
                   <div class="section-header">
                     ${sectionIcons.hobbies}
                     Hobbies
@@ -739,7 +749,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
                   !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
                 )
                 return additionalSections.map(section => `
-                  <div class="section">
+                  <div class="section" data-type="${section.type}">
                     <div class="section-header">
                       ${sectionIcons[section.type] || sectionIcons.additional_information}
                       ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
