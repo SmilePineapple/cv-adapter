@@ -597,7 +597,7 @@ function getSectionContent(content: any): string {
 /**
  * Generate HTML for Creative Modern template
  */
-export function generateCreativeModernHTML(sections: any[], contactInfo: any): string {
+export function generateCreativeModernHTML(sections: any[], contactInfo: any, maxPages: number = 1): string {
   const nameSection = sections.find(s => s.type === 'name')
   const profileSection = sections.find(s => s.type === 'profile' || s.type === 'summary' || s.type === 'professional_summary')
   const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
@@ -629,6 +629,9 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
     if (contactInfo.linkedin) contactItems.push({ label: 'LinkedIn', value: contactInfo.linkedin })
   }
   
+  // Use single-column layout for multi-page CVs to ensure better page distribution
+  const useSingleColumn = maxPages > 1
+  
   return `
     <!DOCTYPE html>
     <html>
@@ -636,6 +639,13 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
         <meta charset="UTF-8">
         <title>CV</title>
         <style>${advancedTemplateStyles.creative_modern}</style>
+        ${useSingleColumn ? `
+        <style>
+          .content-wrapper { display: block !important; }
+          .left-column, .right-column { width: 100% !important; }
+          .section { page-break-inside: avoid; margin-bottom: 30px !important; }
+        </style>
+        ` : ''}
       </head>
       <body>
         <!-- Decorative Background -->
@@ -658,108 +668,184 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any): s
           </div>
         </div>
         
-        <!-- Two Column Content -->
+        <!-- Content Wrapper -->
         <div class="content-wrapper">
-          <!-- Left Column -->
-          <div class="left-column">
-            ${profileSection ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.profile}
-                  Profile
+          ${useSingleColumn ? `
+            <!-- Single Column Layout for Multi-Page CVs -->
+            <div class="single-column">
+              ${profileSection ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.profile}
+                    Profile
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
                 </div>
-                <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
-              </div>
-            ` : ''}
-            
-            ${educationSection ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.education}
-                  Education
+              ` : ''}
+              
+              ${experienceSection ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.experience}
+                    Work Experience
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
                 </div>
-                <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
-              </div>
-            ` : ''}
-            
-            ${skills.length > 0 ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.skills}
-                  Skills
+              ` : ''}
+              
+              ${educationSection ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.education}
+                    Education
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
                 </div>
-                <div class="skills-list">
-                  ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+              ` : ''}
+              
+              ${skills.length > 0 ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.skills}
+                    Skills
+                  </div>
+                  <div class="skills-list">
+                    ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+                  </div>
                 </div>
-              </div>
-            ` : ''}
-            
-            ${hobbies.length > 0 ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.hobbies}
-                  Hobbies
+              ` : ''}
+              
+              ${hobbies.length > 0 ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.hobbies}
+                    Hobbies
+                  </div>
+                  <div class="hobbies-grid">
+                    ${hobbies.map(hobby => `
+                      <div class="hobby-item">
+                        ${hobby.icon ? hobby.icon : ''}
+                        <span class="hobby-label">${escapeHtml(hobby.name || hobby)}</span>
+                      </div>
+                    `).join('')}
+                  </div>
                 </div>
-                <div class="hobbies-grid">
-                  ${hobbies.map(hobby => `
-                    <div class="hobby-item">
-                      ${hobby.icon ? hobby.icon : ''}
-                      <span class="hobby-label">${escapeHtml(hobby.name || hobby)}</span>
+              ` : ''}
+              
+              ${(() => {
+                const additionalSections = sections.filter(s => 
+                  !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                )
+                return additionalSections.map(section => `
+                  <div class="section">
+                    <div class="section-header">
+                      ${sectionIcons[section.type] || sectionIcons.additional_information}
+                      ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
                     </div>
-                  `).join('')}
-                </div>
-              </div>
-            ` : ''}
-            
-            ${(() => {
-              // Get additional sections (not in right column)
-              const additionalSections = sections.filter(s => 
-                !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
-              )
-              // Put half of additional sections in left column for balance
-              const leftAdditionalSections = additionalSections.slice(0, Math.ceil(additionalSections.length / 2))
-              return leftAdditionalSections.map(section => `
+                    <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                  </div>
+                `).join('')
+              })()}
+            </div>
+          ` : `
+            <!-- Two Column Layout for Single-Page CVs -->
+            <!-- Left Column -->
+            <div class="left-column">
+              ${profileSection ? `
                 <div class="section">
                   <div class="section-header">
-                    ${sectionIcons[section.type] || sectionIcons.additional_information}
-                    ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                    ${sectionIcons.profile}
+                    Profile
                   </div>
-                  <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                  <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
                 </div>
-              `).join('')
-            })()}
-          </div>
-          
-          <!-- Right Column -->
-          <div class="right-column">
-            ${experienceSection ? `
-              <div class="section">
-                <div class="section-header">
-                  ${sectionIcons.experience}
-                  Work Experience
-                </div>
-                <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
-              </div>
-            ` : ''}
-            
-            ${(() => {
-              // Get additional sections (not in left column)
-              const additionalSections = sections.filter(s => 
-                !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
-              )
-              // Put remaining half in right column for balance
-              const rightAdditionalSections = additionalSections.slice(Math.ceil(additionalSections.length / 2))
-              return rightAdditionalSections.map(section => `
+              ` : ''}
+              
+              ${educationSection ? `
                 <div class="section">
                   <div class="section-header">
-                    ${sectionIcons[section.type] || sectionIcons.additional_information}
-                    ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                    ${sectionIcons.education}
+                    Education
                   </div>
-                  <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                  <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
                 </div>
-              `).join('')
-            })()}
-          </div>
+              ` : ''}
+              
+              ${skills.length > 0 ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.skills}
+                    Skills
+                  </div>
+                  <div class="skills-list">
+                    ${skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              
+              ${hobbies.length > 0 ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.hobbies}
+                    Hobbies
+                  </div>
+                  <div class="hobbies-grid">
+                    ${hobbies.map(hobby => `
+                      <div class="hobby-item">
+                        ${hobby.icon ? hobby.icon : ''}
+                        <span class="hobby-label">${escapeHtml(hobby.name || hobby)}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              
+              ${(() => {
+                const additionalSections = sections.filter(s => 
+                  !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                )
+                const leftAdditionalSections = additionalSections.slice(0, Math.ceil(additionalSections.length / 2))
+                return leftAdditionalSections.map(section => `
+                  <div class="section">
+                    <div class="section-header">
+                      ${sectionIcons[section.type] || sectionIcons.additional_information}
+                      ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                    </div>
+                    <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                  </div>
+                `).join('')
+              })()}
+            </div>
+            
+            <!-- Right Column -->
+            <div class="right-column">
+              ${experienceSection ? `
+                <div class="section">
+                  <div class="section-header">
+                    ${sectionIcons.experience}
+                    Work Experience
+                  </div>
+                  <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+                </div>
+              ` : ''}
+              
+              ${(() => {
+                const additionalSections = sections.filter(s => 
+                  !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                )
+                const rightAdditionalSections = additionalSections.slice(Math.ceil(additionalSections.length / 2))
+                return rightAdditionalSections.map(section => `
+                  <div class="section">
+                    <div class="section-header">
+                      ${sectionIcons[section.type] || sectionIcons.additional_information}
+                      ${escapeHtml(section.type.replace(/_/g, ' ').toUpperCase())}
+                    </div>
+                    <div class="section-content">${escapeHtml(getSectionContent(section.content))}</div>
+                  </div>
+                `).join('')
+              })()}
+            </div>
+          `}
         </div>
       </body>
     </html>
