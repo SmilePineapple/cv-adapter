@@ -404,7 +404,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         }
         html = stunningTemplates[template as keyof typeof stunningTemplates](templateData)
       } else if (template === 'creative_modern') {
-        html = generateCreativeModernHTML(sections, contactInfo, maxPages)
+        html = generateCreativeModernHTML(sections, contactInfo)
       } else if (template === 'professional_columns') {
         html = generateProfessionalColumnsHTML(sections, contactInfo)
       } else if (industryTemplates[template]) {
@@ -469,7 +469,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
                 photoUrl: photoUrl || undefined,
               })
             } else if (template === 'creative_modern') {
-              html = generateCreativeModernHTML(sections, contactInfo, maxPages)
+              html = generateCreativeModernHTML(sections, contactInfo)
             } else if (template === 'professional_columns') {
               html = generateProfessionalColumnsHTML(sections, contactInfo)
             }
