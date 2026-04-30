@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
+import { getOpenAIClient } from '@/lib/openai-client'
 import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle } from 'docx'
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
@@ -516,7 +517,7 @@ Output format:
   }
 }`
 
-              const { default: openai } = await import('@ai-sdk/openai')
+              const openai = getOpenAIClient()
               const layoutCompletion = await openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 response_format: { type: "json_object" },
