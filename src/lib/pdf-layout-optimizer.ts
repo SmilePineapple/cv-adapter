@@ -305,17 +305,7 @@ export function getAdvancedTemplateStyle(templateId: string): string | null {
 function getSectionContent(content: any): string {
   if (!content) return ''
   if (typeof content === 'string') return content
-  if (Array.isArray(content)) {
-    return content.map(item => {
-      if (typeof item === 'string') return item
-      if (typeof item === 'object') {
-        return Object.values(item).filter(v => typeof v === 'string').join(' ')
-      }
-      return ''
-    }).join(' ')
-  }
-  if (typeof content === 'object') {
-    return Object.values(content).filter(v => typeof v === 'string').join(' ')
-  }
-  return String(content)
+  // For arrays and objects, use JSON.stringify to capture all content
+  // This ensures we don't lose nested data like responsibilities arrays in experience sections
+  return JSON.stringify(content)
 }
