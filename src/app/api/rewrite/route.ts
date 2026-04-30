@@ -298,12 +298,160 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
     let { rewrittenSections } = parseAIResponse(aiResponse, originalSections.sections)
     const { diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
     
+    // For 4-page CVs, validate structure specifications and regenerate if needed
+    if (requestedMaxPages >= 4) {
+      console.log('🔍 Validating 4-page CV structure specifications...')
+      
+      // Local helper to get section content as string
+      const getSectionContentLocal = (content: any): string => {
+        if (!content) return ''
+        if (typeof content === 'string') return content
+        if (Array.isArray(content)) {
+          return content.map((item: any) => {
+            if (typeof item === 'string') return item
+            if (typeof item === 'object' && item !== null) {
+              const parts = []
+              const title = item.title || item.job_title || item.position || ''
+              const company = item.company || item.employer || ''
+              const dates = item.dates || item.duration || item.period || ''
+              if (title || company) {
+                let titleLine = ''
+                if (title && company && dates) {
+                  titleLine = `${title} | ${company} | ${dates}`
+                } else if (title && company) {
+                  titleLine = `${title} | ${company}`
+                } else {
+                  titleLine = title || company
+                }
+                parts.push(titleLine)
+              }
+              if (item.bullets && Array.isArray(item.bullets)) {
+                item.bullets.forEach((bullet: string) => {
+                  parts.push(`• ${bullet}`)
+                })
+              } else if (item.responsibilities) {
+                if (typeof item.responsibilities === 'string') {
+                  parts.push(item.responsibilities)
+                } else if (Array.isArray(item.responsibilities)) {
+                  item.responsibilities.forEach((resp: string) => {
+                    parts.push(`• ${resp}`)
+                  })
+                }
+              } else if (item.description) {
+                parts.push(item.description)
+              }
+              return parts.join('\n')
+            }
+            return ''
+          }).join('\n\n')
+        }
+        if (typeof content === 'object') {
+          return Object.values(content).filter((v: any) => typeof v === 'string').join('\n')
+        }
+        return String(content)
+      }
+      
+      try {
+        const expSection = rewrittenSections.find((s: any) => s.type === 'experience')
+        if (expSection) {
+          const expContent = getSectionContentLocal(expSection.content)
+          const expLines = expContent.split('\n').filter((line: string) => line.trim().startsWith('•'))
+          console.log(`💼 Experience bullets count: ${expLines.length} (target: 10 per job)`)
+          
+          // Check if we have enough bullets (should be 10 per job)
+          if (expLines.length < 10) {
+            console.log(`⚠️ Not enough bullets (${expLines.length} < 10), asking AI to expand...`)
+            
+            const expandPrompt = `The experience section has only ${expLines.length} bullet points but needs EXACTLY 10 bullet points per job for a 4-page CV. Each bullet must be 35-40 words.
+
+Current experience content:
+${expContent}
+
+Add ${10 - expLines.length} more detailed bullet points. Each bullet must:
+- Be 35-40 words
+- Include action verb + specific task + quantifiable result + context
+- Be relevant to the job title and company
+
+Respond with ONLY the complete experience section content with all bullet points.`
+            
+            const openai = getOpenAIClient()
+            const expandCompletion = await openai.chat.completions.create({
+              model: 'gpt-4o-mini',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are a CV content generator. Expand experience sections to meet exact specifications.'
+                },
+                {
+                  role: 'user',
+                  content: expandPrompt
+                }
+              ],
+              temperature: 0.7,
+              max_tokens: 2000
+            })
+            
+            const expandedContent = expandCompletion.choices[0]?.message?.content
+            if (expandedContent) {
+              expSection.content = expandedContent
+              console.log('✅ Experience section expanded')
+            }
+          }
+        }
+        
+        const summarySection = rewrittenSections.find((s: any) => s.type === 'summary')
+        if (summarySection) {
+          const summaryContent = getSectionContentLocal(summarySection.content)
+          const summarySentences = summaryContent.split(/[.!?]+/).filter((s: string) => s.trim().length > 0)
+          console.log(`📝 Summary sentences count: ${summarySentences.length} (target: 6)`)
+          
+          if (summarySentences.length < 6) {
+            console.log(`⚠️ Not enough summary sentences (${summarySentences.length} < 6), asking AI to expand...`)
+            
+            const expandPrompt = `The summary section has only ${summarySentences.length} sentences but needs EXACTLY 6 sentences for a 4-page CV. Each sentence should be 12-15 words.
+
+Current summary:
+${summaryContent}
+
+Add ${6 - summarySentences.length} more sentences. Focus on: professional background, key strengths, therapeutic approach, achievements.
+
+Respond with ONLY the complete summary section content.`
+            
+            const openai = getOpenAIClient()
+            const expandCompletion = await openai.chat.completions.create({
+              model: 'gpt-4o-mini',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are a CV content generator. Expand summary sections to meet exact specifications.'
+                },
+                {
+                  role: 'user',
+                  content: expandPrompt
+                }
+              ],
+              temperature: 0.7,
+              max_tokens: 500
+            })
+            
+            const expandedContent = expandCompletion.choices[0]?.message?.content
+            if (expandedContent) {
+              summarySection.content = expandedContent
+              console.log('✅ Summary section expanded')
+            }
+          }
+        }
+      } catch (error) {
+        console.error('❌ Structure validation failed:', error)
+      }
+    }
+    
     // 🔍 DEBUG: Log parsed sections
     console.log('📋 Parsed sections count:', rewrittenSections.length)
     console.log('📋 Section types:', rewrittenSections.map(s => s.type).join(', '))
     
     // 🔍 DEBUG: Check experience section specifically
-    const expSection = rewrittenSections.find(s => s.type === 'experience')
+    const expSection = rewrittenSections.find((s: any) => s.type === 'experience')
     if (expSection) {
       const expContent = typeof expSection.content === 'string' ? expSection.content : JSON.stringify(expSection.content)
       console.log('💼 Experience section length:', expContent.length)
@@ -591,7 +739,7 @@ function createRewritePrompt(
     bold: 'significant optimization'
   }
 
-  // Page length instructions with exact character targets
+  // Page length instructions with exact structure specifications
   let pageLengthInstructions = ''
   if (maxPages) {
     pageLengthInstructions = `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n`
@@ -602,34 +750,54 @@ function createRewritePrompt(
     } else if (maxPages === 3) {
       pageLengthInstructions += '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences'
     } else {
-      // Calculate exact character targets for 4-page CV
-      const totalTargetChars = maxPages * 3000 // 12,000 characters for 4 pages
-      const summaryTarget = 300
-      const experienceTarget = 6000
-      const skillsTarget = 800
-      const educationTarget = 400
-      const certificationsTarget = 500
-      const interestsTarget = 300
-      
-      pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - EXACT CHARACTER TARGETS 🔥
+      // Specify exact structure for 4-page CV
+      pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
 
-You MUST generate content to these EXACT character counts:
-- Summary section: EXACTLY ${summaryTarget} characters (${Math.round(summaryTarget/5)} words)
-- Experience section: EXACTLY ${experienceTarget} characters (8-10 bullet points per job, 30-40 words each)
-- Skills section: EXACTLY ${skillsTarget} characters (8-12 skills with context)
-- Education section: EXACTLY ${educationTarget} characters (expand with coursework, achievements)
-- Certifications section: EXACTLY ${certificationsTarget} characters (details about what was learned)
-- Interests section: EXACTLY ${interestsTarget} characters (detailed interests)
-- TOTAL: EXACTLY ${totalTargetChars} characters
+You MUST follow these EXACT structure specifications:
+
+SUMMARY SECTION:
+- EXACTLY 6 sentences
+- Each sentence: 12-15 words
+- Total: ~75-90 words
+- Focus: Professional background, key strengths, therapeutic approach, achievements
+
+EXPERIENCE SECTION:
+- For EACH job: EXACTLY 10 bullet points
+- Each bullet point: EXACTLY 35-40 words
+- Each bullet MUST include: action verb + specific task + quantifiable result/metric + context
+- Example: "Developed innovative communication resources for 50+ children with diverse needs, resulting in 40% improvement in engagement levels across 12 schools."
+- DO NOT write fewer than 10 bullets per job
+- DO NOT write bullets shorter than 35 words
+- If you don't have enough source material, expand with reasonable details based on job title
+
+SKILLS SECTION:
+- EXACTLY 12 skills
+- Each skill: 8-10 words with context
+- Format: "Skill name - context/application"
+- Example: "Play Therapy - child-centered approaches for emotional expression"
+
+EDUCATION SECTION:
+- For each degree: EXACTLY 5 bullet points
+- Each bullet: 15-20 words
+- Include: coursework completed, projects undertaken, research participation, achievements, relevant modules
+
+CERTIFICATIONS SECTION:
+- For each certification: EXACTLY 4 bullet points
+- Each bullet: 15-20 words
+- Include: what was learned, skills gained, practical applications, duration/intensity
+
+INTERESTS SECTION:
+- EXACTLY 6 interests
+- Each interest: 12-15 words with context
+- Example: "Traveling - exploring cultures for personal growth and inspiration"
 
 CRITICAL INSTRUCTIONS:
-1. Count characters as you generate each section
-2. If a section is too short, add more detail, examples, context
-3. If a section is too long, be more concise while maintaining substance
-4. Each bullet point in experience MUST be 30-40 words with specific metrics
-5. Summary MUST be exactly ${Math.round(summaryTarget/5)} words (${summaryTarget} chars)
-6. DO NOT exceed or fall short of these character targets
-7. Your total output must be ${totalTargetChars} characters to fill 4 pages`
+1. Count the items as you generate - DO NOT guess
+2. If a section has fewer items than specified, add more
+3. If bullets are too short, expand with more detail
+4. Follow the EXACT word counts for each item
+5. DO NOT exceed or fall short of these structure specifications
+6. Your output MUST follow this exact structure to fill 4 pages`
     }
   }
 
