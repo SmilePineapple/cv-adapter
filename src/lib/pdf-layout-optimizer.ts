@@ -30,9 +30,12 @@ export function analyzeContentDensity(sections: CVSection[]): LayoutMetrics {
   // Average A4 page holds ~3000-3500 characters with normal spacing
   const estimatedPages = Math.ceil(totalContentLength / 3000)
 
+  // DEBUG: Log the calculation
+  console.log(`📏 DEBUG analyzeContentDensity: totalContentLength=${totalContentLength}, sectionCount=${sectionCount}, estimatedPages=${estimatedPages} (calc: ${totalContentLength}/3000=${(totalContentLength/3000).toFixed(2)})`)
+
   // Determine compression level
   let compressionLevel: 'none' | 'light' | 'medium' | 'heavy' = 'none'
-  
+
   if (estimatedPages > 2.5) {
     compressionLevel = 'heavy'
   } else if (estimatedPages > 2) {

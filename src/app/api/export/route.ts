@@ -479,10 +479,11 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           if (maxPages > 2 && metrics.estimatedPages < 2) {
             console.log(`📏 Expanding spacing to fill ${maxPages} pages (content is only ${metrics.estimatedPages} pages)`)
             const expandStyle = `<style>
-              body { line-height: 1.8 !important; }
-              section { margin-bottom: 2em !important; }
-              p, li { margin-bottom: 0.8em !important; }
-              h1, h2, h3 { margin-top: 1.5em !important; margin-bottom: 1em !important; }
+              body { line-height: 2.5 !important; }
+              section { margin-bottom: 4em !important; }
+              p, li { margin-bottom: 1.5em !important; }
+              h1, h2, h3 { margin-top: 3em !important; margin-bottom: 2em !important; }
+              .content { margin-bottom: 2em !important; }
             </style>`
             html = html.replace('</head>', `${expandStyle}</head>`)
           }

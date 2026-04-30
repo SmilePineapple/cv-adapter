@@ -152,6 +152,11 @@ export async function POST(request: NextRequest) {
 
     console.log(`📏 DEBUG: Prompt length: ${prompt.length} characters`)
     console.log(`📏 DEBUG: Prompt contains "PAGE LENGTH": ${prompt.includes('PAGE LENGTH')}`)
+    // Extract and log the page length instructions
+    const pageLengthMatch = prompt.match(/PAGE LENGTH CONSTRAINT:[\s\S]*?(?=\n\n|$)/)
+    if (pageLengthMatch) {
+      console.log(`📏 DEBUG: Page length instructions:`, pageLengthMatch[0])
+    }
 
     // Call OpenAI API with language-aware system prompt
     const languageName = LANGUAGE_NAMES[targetLanguage] || 'English'
