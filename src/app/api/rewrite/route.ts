@@ -460,6 +460,93 @@ Respond with ONLY the complete summary section content.`
       console.error('❌ NO EXPERIENCE SECTION IN AI OUTPUT!')
     }
 
+    // 🎨 AI LAYOUT ANALYSIS: Review CV content and suggest improvements for multi-page CVs
+    if (max_pages === 4) {
+      console.log('🎨 Running AI layout analysis for 4-page CV...')
+      try {
+        const totalContentLength = rewrittenSections.reduce((sum: number, s: any) => {
+          const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
+          return sum + content.length
+        }, 0)
+        
+        console.log(`📏 Total content length: ${totalContentLength} characters`)
+        
+        // Target: ~12,000 characters for 4 pages (3,000 per page)
+        if (totalContentLength < 10000) {
+          console.log('⚠️ Content is too short for 4 pages, requesting AI to add more sections...')
+          
+          const layoutAnalysisPrompt = `
+You are a CV layout expert. Review the following CV content and suggest additional relevant sections to fill white space and improve the layout.
+
+CURRENT CV CONTENT:
+${JSON.stringify(rewrittenSections, null, 2)}
+
+ANALYSIS:
+- Total content length: ${totalContentLength} characters
+- Target for 4-page CV: ~12,000 characters
+- Gap: ${12000 - totalContentLength} characters needed
+
+TASK:
+1. Analyze the current sections and identify gaps
+2. Suggest 2-3 additional sections that would be relevant for this candidate's profile
+3. For each suggested section, provide:
+   - Section type (e.g., "achievements", "projects", "volunteering", "publications", "conferences")
+   - 5-7 bullet points with 15-20 words each
+   - Content should be relevant to the candidate's experience and industry
+
+RESPONSE FORMAT (JSON):
+{
+  "suggested_sections": [
+    {
+      "type": "section_type",
+      "content": "section content with bullet points"
+    }
+  ]
+}
+
+IMPORTANT:
+- Do NOT invent fake experience or companies
+- Use the candidate's actual experience and skills as context
+- Make suggestions relevant to their industry and career level
+- Keep content professional and factual
+`
+
+          const layoutAnalysisResponse = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+              { role: 'system', content: 'You are a CV layout expert who helps optimize CV content for professional presentation.' },
+              { role: 'user', content: layoutAnalysisPrompt }
+            ],
+            temperature: 0.2,
+            response_format: { type: 'json_object' }
+          })
+
+          const layoutAnalysis = JSON.parse(layoutAnalysisResponse.choices[0].message.content || '{}')
+          
+          if (layoutAnalysis.suggested_sections && layoutAnalysis.suggested_sections.length > 0) {
+            console.log(`✅ AI suggested ${layoutAnalysis.suggested_sections.length} additional sections`)
+            
+            // Add suggested sections to the CV
+            for (const section of layoutAnalysis.suggested_sections) {
+              rewrittenSections.push({
+                type: section.type,
+                content: section.content,
+                order: rewrittenSections.length + 1
+              })
+            }
+            
+            console.log(`✅ Added ${layoutAnalysis.suggested_sections.length} sections to CV`)
+            console.log('📋 New section types:', rewrittenSections.map(s => s.type).join(', '))
+          }
+        } else {
+          console.log('✅ Content length is sufficient for 4 pages')
+        }
+      } catch (error) {
+        console.error('❌ AI layout analysis failed:', error)
+        // Continue without layout analysis if it fails
+      }
+    }
+
     // 🚨 CRITICAL VALIDATION: Check if AI invented fake jobs or changed companies
     const originalExperience = originalSections.sections.find(s => s.type === 'experience')
     const rewrittenExperience = rewrittenSections.find(s => s.type === 'experience')
