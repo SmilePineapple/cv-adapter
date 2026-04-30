@@ -124,8 +124,8 @@ export async function POST(request: NextRequest) {
     const { generation_id, template, format } = await request.json()
 
     if (!generation_id || !template || !format) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: generation_id, template, format' 
+      return NextResponse.json({
+        error: 'Missing required fields: generation_id, template, format'
       }, { status: 400 })
     }
 
@@ -133,10 +133,11 @@ export async function POST(request: NextRequest) {
     const { data: generation, error: genError } = await supabase
       .from('generations')
       .select(`
-        output_sections, 
+        output_sections,
         job_title,
         cv_id,
-        cvs(parsed_sections, photo_url)
+        cvs(parsed_sections, photo_url),
+        max_pages
       `)
       .eq('id', generation_id)
       .eq('user_id', user.id)
@@ -147,12 +148,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get original CV sections
-    const generationData = generation as unknown as {cvs: {parsed_sections: {sections: CVSection[]}, photo_url?: string | null}}
+    const generationData = generation as unknown as {cvs: {parsed_sections: {sections: CVSection[]}, photo_url?: string | null}, max_pages?: number}
     const originalSections: CVSection[] = generationData.cvs.parsed_sections.sections
     const modifiedSections: CVSection[] = generation.output_sections.sections
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
     const photoUrl = generationData.cvs?.photo_url || null
+    const maxPages = generation.max_pages || 4
 
     // CRITICAL FIX: Use generation output_sections as primary source for tailored CVs
     // This contains the AI-tailored content. Only use cv_sections if user has explicitly
@@ -288,7 +290,7 @@ export async function POST(request: NextRequest) {
       case 'html':
         return handleHtmlExport(sections, template, jobTitle)
       case 'pdf':
-        return await handlePdfExport(sections, template, jobTitle, photoUrl)
+        return await handlePdfExport(sections, template, jobTitle, photoUrl, maxPages)
       case 'docx':
         return await handleDocxExport(sections, template, jobTitle)
       case 'txt':
@@ -316,7 +318,7 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
-async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, photoUrl?: string | null) {
+async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, photoUrl?: string | null, maxPages?: number) {
   try {
     // Check if using advanced template
     let html: string
@@ -354,13 +356,13 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
         // Get name from name section
         const nameSection = sections.find(s => s.type === 'name')
         const userName = getSectionContent(nameSection?.content) || 'Your Name'
-        
+
         // Get skill scores if available - note: skill_scores is not in CVSection type, handled separately
         const skillScores = null // Skill scores handled via separate data structure
-        
+
         console.log('📊 Skill scores for template:', skillScores)
         console.log('📧 Contact info for template:', contactInfo)
-        
+
         // Normalize contact info field names (handle both formats)
         let normalizedContact = {
           email: '',
@@ -368,7 +370,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           location: '',
           website: ''
         }
-        
+
         if (typeof contactInfo === 'object' && contactInfo) {
           const contact = contactInfo as Record<string, unknown>
           normalizedContact = {
@@ -378,7 +380,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
             website: (contact.web || contact.website || '') as string
           }
         }
-        
+
         // Prepare data for stunning templates
         const templateData = {
           name: userName,
@@ -408,24 +410,92 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
       } else {
         // Fallback
         const metrics = analyzeContentDensity(sections)
+
+        // Override compression level based on maxPages constraint
+        if (maxPages && metrics.estimatedPages > maxPages) {
+          const pagesOver = metrics.estimatedPages - maxPages
+          if (pagesOver >= 2) {
+            metrics.compressionLevel = 'heavy'
+          } else if (pagesOver >= 1) {
+            metrics.compressionLevel = 'medium'
+          } else {
+            metrics.compressionLevel = 'light'
+          }
+          console.log(`📏 Advanced template: Adjusting compression to ${metrics.compressionLevel} to fit ${maxPages} pages (estimated ${metrics.estimatedPages})`)
+        }
+
         const optimizedSpacing = getOptimizedSpacing(metrics)
         html = generateTemplateHtml(sections, template, optimizedSpacing)
         useOptimizedMargins = true
         compressionLevel = metrics.compressionLevel
       }
-      
+
       console.log('Using Advanced Template:', template)
+
+      // Truncate content to fit maxPages for advanced templates
+      if (maxPages) {
+        const metrics = analyzeContentDensity(sections)
+        if (metrics.estimatedPages > maxPages) {
+          const ratio = maxPages / metrics.estimatedPages
+          console.log(`📏 Truncating content to fit ${maxPages} pages (estimated ${metrics.estimatedPages}, ratio: ${ratio.toFixed(2)})`)
+          // Truncate experience section first as it's usually the longest
+          const experienceSection = sections.find(s => s.type === 'experience')
+          if (experienceSection && Array.isArray(experienceSection.content)) {
+            const keepCount = Math.ceil(experienceSection.content.length * ratio)
+            experienceSection.content = experienceSection.content.slice(0, keepCount)
+            // Regenerate HTML with truncated content
+            if (stunningTemplateKeys.includes(template)) {
+              html = stunningTemplates[template as keyof typeof stunningTemplates]({
+                name: getSectionContent(sections.find(s => s.type === 'name')?.content) || 'Your Name',
+                email: typeof contactInfo === 'object' ? (contactInfo as any).email || '' : '',
+                phone: typeof contactInfo === 'object' ? (contactInfo as any).phone || '' : '',
+                location: typeof contactInfo === 'object' ? (contactInfo as any).location || '' : '',
+                website: typeof contactInfo === 'object' ? (contactInfo as any).website || '' : '',
+                summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
+                experience: getSectionContent(experienceSection.content),
+                education: getSectionContent(sections.find(s => s.type === 'education')?.content),
+                skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
+                skillScores: null,
+                languages: '',
+                hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
+                certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
+                photoUrl: photoUrl || undefined,
+              })
+            } else if (template === 'creative_modern') {
+              html = generateCreativeModernHTML(sections, contactInfo)
+            } else if (template === 'professional_columns') {
+              html = generateProfessionalColumnsHTML(sections, contactInfo)
+            }
+          }
+        }
+      }
     } else {
       // AI-powered layout optimization for basic templates
       const metrics = analyzeContentDensity(sections)
+
+      // Override compression level based on maxPages constraint
+      if (maxPages && metrics.estimatedPages > maxPages) {
+        // Calculate required compression level to fit into maxPages
+        const pagesOver = metrics.estimatedPages - maxPages
+        if (pagesOver >= 2) {
+          metrics.compressionLevel = 'heavy'
+        } else if (pagesOver >= 1) {
+          metrics.compressionLevel = 'medium'
+        } else {
+          metrics.compressionLevel = 'light'
+        }
+        console.log(`📏 Adjusting compression to ${metrics.compressionLevel} to fit ${maxPages} pages (estimated ${metrics.estimatedPages})`)
+      }
+
       const optimizedSpacing = getOptimizedSpacing(metrics)
-      
+
       console.log('PDF Layout Optimization:', {
         estimatedPages: metrics.estimatedPages,
         compressionLevel: metrics.compressionLevel,
-        sectionCount: metrics.sectionCount
+        sectionCount: metrics.sectionCount,
+        maxPages
       })
-      
+
       html = generateTemplateHtml(sections, template, optimizedSpacing)
       useOptimizedMargins = true
       compressionLevel = metrics.compressionLevel

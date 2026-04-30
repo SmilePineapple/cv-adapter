@@ -362,7 +362,8 @@ export async function POST(request: NextRequest) {
         output_sections: { sections: rewrittenSections },
         diff_meta: diffMeta,
         ats_score: atsScore,
-        output_language: targetLanguage
+        output_language: targetLanguage,
+        max_pages: max_pages || 4
       })
       .select()
       .single()
