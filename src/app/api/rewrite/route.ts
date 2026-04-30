@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: GenerationRequest = await request.json()
-    const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language } = body
+    const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language, max_pages } = body
     
     console.log('🌍 Output language requested:', output_language)
 
@@ -145,14 +145,20 @@ export async function POST(request: NextRequest) {
       rewrite_style,
       tone,
       custom_sections,
-      targetLanguage
+      targetLanguage,
+      max_pages
     )
 
     // Call OpenAI API with language-aware system prompt
     const languageName = LANGUAGE_NAMES[targetLanguage] || 'English'
-    const systemPrompt = targetLanguage === 'en' 
+    const systemPrompt = targetLanguage === 'en'
       ? 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
+
+    // Adjust max_tokens based on requested page count
+    const tokensPerPage = 1500
+    const requestedMaxPages = max_pages || 4
+    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 6000)
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -168,7 +174,7 @@ export async function POST(request: NextRequest) {
         }
       ],
       temperature: 0.7,
-      max_tokens: 6000 // Sufficient for 4-page CVs with multiple jobs
+      max_tokens: adjustedMaxTokens
     })
 
     const aiResponse = completion.choices[0]?.message?.content
@@ -455,7 +461,8 @@ function createRewritePrompt(
   rewriteStyle: string,
   tone: string,
   customSections?: string[],
-  languageCode: string = 'en'
+  languageCode: string = 'en',
+  maxPages?: number
 ): string {
   // Extract top keywords from job description (more efficient)
   const keywords = extractTopKeywords(jobDescription, 10)
@@ -474,6 +481,11 @@ function createRewritePrompt(
     balanced: 'moderate improvements',
     bold: 'significant optimization'
   }
+
+  // Page length instructions
+  const pageLengthInstructions = maxPages
+    ? `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n${maxPages === 1 ? '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences' : maxPages === 2 ? '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences' : maxPages === 3 ? '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences' : '- Use comprehensive bullet points (5-6 per job)\n- Include all experience with full detail\n- Keep summary to 5-6 sentences'}`
+    : ''
 
   return `🚨🚨🚨 CRITICAL INSTRUCTIONS - FAILURE = REJECTED OUTPUT 🚨🚨🚨
 
@@ -494,6 +506,7 @@ YOU CAN ONLY CHANGE:
 
 REWRITING CV FOR: ${jobTitle}
 KEY REQUIREMENTS: ${keywords.join(', ')}
+${pageLengthInstructions}
 
 CURRENT CV:
 ${sectionsText}

@@ -226,6 +226,7 @@ export interface GenerationRequest {
   tone: ToneType
   custom_sections?: string[]
   output_language?: string
+  max_pages?: number
 }
 
 export interface GenerationResponse {

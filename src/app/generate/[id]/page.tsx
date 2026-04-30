@@ -58,6 +58,7 @@ export default function GeneratePage() {
   const [isQuickMode, setIsQuickMode] = useState(false)
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
+  const [maxPages, setMaxPages] = useState(4)
 
   useEffect(() => {
     fetchCVData()
@@ -237,6 +238,7 @@ export default function GeneratePage() {
           tone: tone,
           custom_sections: customSections,
           output_language: outputLanguage,
+          max_pages: maxPages,
         }),
       })
 
@@ -543,6 +545,31 @@ export default function GeneratePage() {
                       currentLanguage={outputLanguage}
                       onLanguageChange={setOutputLanguage}
                     />
+                  </div>
+
+                  {/* Page Length */}
+                  <div>
+                    <label htmlFor="maxPages" className="block text-sm font-bold text-white mb-2">
+                      <FileText className="inline w-4 h-4 mr-1" />
+                      Maximum Pages
+                    </label>
+                    <select
+                      id="maxPages"
+                      value={maxPages}
+                      onChange={(e) => setMaxPages(parseInt(e.target.value))}
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
+                    >
+                      <option value={1} className="bg-black">1 page — Concise (recommended for most roles)</option>
+                      <option value={2} className="bg-black">2 pages — Standard (most common)</option>
+                      <option value={3} className="bg-black">3 pages — Detailed (senior roles)</option>
+                      <option value={4} className="bg-black">4 pages — Comprehensive (executive/academic)</option>
+                    </select>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {maxPages === 1 && 'Best for early-career roles and tight ATS systems'}
+                      {maxPages === 2 && 'Standard length for most professionals'}
+                      {maxPages === 3 && 'Good for senior roles with extensive experience'}
+                      {maxPages === 4 && 'For executive, academic, or highly technical positions'}
+                    </p>
                   </div>
 
                   {/* Custom Sections */}
