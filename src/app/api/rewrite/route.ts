@@ -374,8 +374,55 @@ Respond in JSON format with this structure:
           if (gapResponse) {
             const suggestions = JSON.parse(gapResponse)
             console.log('✅ AI suggested additional sections:', suggestions.suggested_sections?.length || 0)
-            // Note: We could automatically add these sections, but for now we just log them
-            // Future enhancement: Generate content for suggested sections automatically
+            
+            // Generate content for suggested sections and add them to rewrittenSections
+            if (suggestions.suggested_sections && suggestions.suggested_sections.length > 0) {
+              console.log('🔨 Generating content for suggested sections...')
+              
+              for (const suggestion of suggestions.suggested_sections) {
+                const sectionPrompt = `Generate content for the "${suggestion.type}" section of a CV.
+
+Description: ${suggestion.description}
+Estimated character count: ${suggestion.estimated_chars}
+
+Context: This is for a Play Therapist with extensive experience in schools, child therapy, and family support.
+
+Generate realistic, professional content that would be appropriate for this CV section. Respond in JSON format with:
+{
+  "type": "${suggestion.type}",
+  "content": "generated content here..."
+}`
+
+                const sectionCompletion = await openai.chat.completions.create({
+                  model: 'gpt-4o-mini',
+                  response_format: { type: "json_object" },
+                  messages: [
+                    {
+                      role: 'system',
+                      content: 'You are a CV content generator. Generate realistic, professional CV section content. Respond in JSON format.'
+                    },
+                    {
+                      role: 'user',
+                      content: sectionPrompt
+                    }
+                  ],
+                  temperature: 0.7,
+                  max_tokens: 800
+                })
+
+                const sectionResponse = sectionCompletion.choices[0]?.message?.content
+                if (sectionResponse) {
+                  const sectionData = JSON.parse(sectionResponse)
+                  rewrittenSections.push({
+                    type: sectionData.type,
+                    content: sectionData.content,
+                    order: rewrittenSections.length + 1,
+                    changes: []
+                  })
+                  console.log(`✅ Added section: ${sectionData.type}`)
+                }
+              }
+            }
           }
         }
       } catch (error) {
