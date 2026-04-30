@@ -478,16 +478,26 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           // If content is less than maxPages and user requested multi-page, add spacing to expand
           if (maxPages > 1 && metrics.estimatedPages < maxPages) {
             console.log(`📏 Expanding spacing to fill ${maxPages} pages (content is only ${metrics.estimatedPages} pages)`)
-            // Use creative_modern template-specific selectors
+            // Calculate expansion factor based on how many more pages we need
+            const expansionFactor = maxPages / metrics.estimatedPages
+            const sectionMargin = Math.floor(40 * expansionFactor)
+            const itemMargin = Math.floor(25 * expansionFactor)
+            const lineHeight = (2.2 * expansionFactor).toFixed(1)
+            
+            console.log(`📏 Expansion factor: ${expansionFactor.toFixed(2)}, section margin: ${sectionMargin}px, item margin: ${itemMargin}px, line-height: ${lineHeight}`)
+            
+            // Use creative_modern template-specific selectors with aggressive spacing
             const expandStyle = `<style>
-              body { line-height: 2.2 !important; font-size: 10px !important; }
-              .section { margin-bottom: 40px !important; }
-              .section-header { margin-bottom: 15px !important; }
-              .experience-item { margin-bottom: 25px !important; }
-              .education-item { margin-bottom: 20px !important; }
-              .skill-tag { margin-bottom: 8px !important; }
-              .hobby-item { margin-bottom: 10px !important; }
-              p, li, .description { margin-bottom: 8px !important; }
+              body { line-height: ${lineHeight} !important; font-size: 10px !important; }
+              .section { margin-bottom: ${sectionMargin}px !important; }
+              .section-header { margin-bottom: 20px !important; }
+              .experience-item { margin-bottom: ${itemMargin}px !important; }
+              .education-item { margin-bottom: ${itemMargin}px !important; }
+              .skill-tag { margin-bottom: 12px !important; }
+              .hobby-item { margin-bottom: 15px !important; }
+              p, li, .description { margin-bottom: 12px !important; }
+              .header { padding-bottom: 50px !important; }
+              .content-wrapper { padding-bottom: 100px !important; }
             </style>`
             html = html.replace('</head>', `${expandStyle}</head>`)
           }
