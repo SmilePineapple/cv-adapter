@@ -171,26 +171,123 @@ export async function POST(request: NextRequest) {
 
     console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      response_format: { type: "json_object" }, // ✅ Guaranteed valid JSON
-      messages: [
-        {
-          role: 'system',
-          content: systemPrompt
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: adjustedMaxTokens
-    })
+    let aiResponse: string
 
-    const aiResponse = completion.choices[0]?.message?.content
-    if (!aiResponse) {
-      return NextResponse.json({ error: 'Failed to generate CV rewrite' }, { status: 500 })
+    // Two-step approach for multi-page CVs (maxPages > 1)
+    if (requestedMaxPages > 1) {
+      console.log(`🔥 Using two-step AI approach for ${requestedMaxPages}-page CV`)
+
+      // Step 1: Analyze structure and generate outline
+      const outlinePrompt = `${prompt}
+
+📋 ADDITIONAL TASK FOR STEP 1:
+Before generating the full CV, first analyze the current CV and provide a detailed outline for expanding it to ${requestedMaxPages} pages.
+
+For EACH section in the outline, specify:
+1. How many bullet points/items to generate
+2. Target character count for each bullet point
+3. Specific topics to expand on
+
+Output format for Step 1:
+{
+  "outline": {
+    "summary": { "target_chars": 200, "sentences": 6-8 },
+    "experience": [
+      {
+        "job_title": "...",
+        "company": "...",
+        "bullet_points_count": 8-10,
+        "each_bullet_chars": 100-150,
+        "topics_to_expand": ["...", "...", "..."]
+      }
+    ],
+    "skills": { "count": 12, "each_detail_chars": 50-80 },
+    "education": { "expand_with": ["coursework", "achievements", "relevant_projects"] },
+    "certifications": { "expand_with": ["what_learned", "achievements", "duration"] }
+  }
+}
+
+Then proceed to generate the full CV following this outline.`
+
+      const outlineCompletion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt + ' You are in STEP 1 of a two-step process. First analyze and outline, then generate content.'
+          },
+          {
+            role: 'user',
+            content: outlinePrompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 2000
+      })
+
+      const outlineResponse = outlineCompletion.choices[0]?.message?.content
+      console.log('📋 Step 1: Outline generated:', outlineResponse?.substring(0, 300))
+
+      // Step 2: Generate full content based on outline
+      const fullPrompt = `${prompt}
+
+📋 STEP 2: Generate Full Content
+You have analyzed the CV structure. Now generate the full CV content following these requirements:
+- Target: ${requestedMaxPages} pages (${requestedMaxPages * 3000} characters minimum)
+- Each job: 8-10 bullet points, 25-40 words each
+- Summary: 6-8 sentences (150-200 words)
+- Skills: 8-12 detailed skills with context
+- Education: Expand with coursework, achievements, relevant details
+- Certifications: Add details about what was learned and achieved
+- Total content: 10,000-12,000 characters
+
+CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, and specific outcomes for EVERY point.`
+
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt + ' You are in STEP 2. Generate the full expanded CV content based on the analysis.'
+          },
+          {
+            role: 'user',
+            content: fullPrompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: adjustedMaxTokens
+      })
+
+      aiResponse = completion.choices[0]?.message?.content || ''
+      if (!aiResponse) {
+        return NextResponse.json({ error: 'Failed to generate CV rewrite' }, { status: 500 })
+      }
+    } else {
+      // Single-step approach for 1-page CVs
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: adjustedMaxTokens
+      })
+
+      aiResponse = completion.choices[0]?.message?.content || ''
+      if (!aiResponse) {
+        return NextResponse.json({ error: 'Failed to generate CV rewrite' }, { status: 500 })
+      }
     }
 
     // 🔍 DEBUG: Log AI response to see what it's actually returning
