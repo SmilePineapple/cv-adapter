@@ -478,12 +478,16 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           // If content is less than maxPages, add spacing to expand
           if (maxPages && metrics.estimatedPages < maxPages) {
             console.log(`📏 Expanding spacing to fill ${maxPages} pages (content is only ${metrics.estimatedPages} pages)`)
+            // Use creative_modern template-specific selectors
             const expandStyle = `<style>
-              body { line-height: 2.5 !important; }
-              section { margin-bottom: 4em !important; }
-              p, li { margin-bottom: 1.5em !important; }
-              h1, h2, h3 { margin-top: 3em !important; margin-bottom: 2em !important; }
-              .content { margin-bottom: 2em !important; }
+              body { line-height: 2.2 !important; font-size: 10px !important; }
+              .section { margin-bottom: 40px !important; }
+              .section-header { margin-bottom: 15px !important; }
+              .experience-item { margin-bottom: 25px !important; }
+              .education-item { margin-bottom: 20px !important; }
+              .skill-tag { margin-bottom: 8px !important; }
+              .hobby-item { margin-bottom: 10px !important; }
+              p, li, .description { margin-bottom: 8px !important; }
             </style>`
             html = html.replace('</head>', `${expandStyle}</head>`)
           }
