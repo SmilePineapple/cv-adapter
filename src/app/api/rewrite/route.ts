@@ -416,8 +416,7 @@ Generate realistic, professional content that would be appropriate for this CV s
                   rewrittenSections.push({
                     type: sectionData.type,
                     content: sectionData.content,
-                    order: rewrittenSections.length + 1,
-                    changes: []
+                    order: rewrittenSections.length + 1
                   })
                   console.log(`✅ Added section: ${sectionData.type}`)
                 }
@@ -723,7 +722,7 @@ function createRewritePrompt(
     bold: 'significant optimization'
   }
 
-  // Page length instructions
+  // Page length instructions with exact character targets
   let pageLengthInstructions = ''
   if (maxPages) {
     pageLengthInstructions = `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n`
@@ -734,18 +733,34 @@ function createRewritePrompt(
     } else if (maxPages === 3) {
       pageLengthInstructions += '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences'
     } else {
-      pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - GENERATE MAXIMUM CONTENT 🔥
-- Experience section: Each job MUST have 8-10 detailed bullet points
-- Each bullet point: 25-40 words with specific achievements, metrics, and context
-- Summary section: 6-8 comprehensive sentences (150-200 words)
-- Skills section: 8-12 detailed skills with context for each
-- Education section: Expand with coursework, achievements, and relevant details
-- Certifications: Add details about what was learned and achieved
-- Total content target: 10,000-12,000 characters to fill 4 pages
-- DO NOT be concise - be exhaustive and detailed
-- Add context, examples, and specific outcomes for EVERY point
-- If you have limited source material, expand with reasonable details based on the job title and industry
-- CRITICAL: Your output MUST be substantial enough to fill 4 full pages - if in doubt, add more detail, not less`
+      // Calculate exact character targets for 4-page CV
+      const totalTargetChars = maxPages * 3000 // 12,000 characters for 4 pages
+      const summaryTarget = 300
+      const experienceTarget = 6000
+      const skillsTarget = 800
+      const educationTarget = 400
+      const certificationsTarget = 500
+      const interestsTarget = 300
+      
+      pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - EXACT CHARACTER TARGETS 🔥
+
+You MUST generate content to these EXACT character counts:
+- Summary section: EXACTLY ${summaryTarget} characters (${Math.round(summaryTarget/5)} words)
+- Experience section: EXACTLY ${experienceTarget} characters (8-10 bullet points per job, 30-40 words each)
+- Skills section: EXACTLY ${skillsTarget} characters (8-12 skills with context)
+- Education section: EXACTLY ${educationTarget} characters (expand with coursework, achievements)
+- Certifications section: EXACTLY ${certificationsTarget} characters (details about what was learned)
+- Interests section: EXACTLY ${interestsTarget} characters (detailed interests)
+- TOTAL: EXACTLY ${totalTargetChars} characters
+
+CRITICAL INSTRUCTIONS:
+1. Count characters as you generate each section
+2. If a section is too short, add more detail, examples, context
+3. If a section is too long, be more concise while maintaining substance
+4. Each bullet point in experience MUST be 30-40 words with specific metrics
+5. Summary MUST be exactly ${Math.round(summaryTarget/5)} words (${summaryTarget} chars)
+6. DO NOT exceed or fall short of these character targets
+7. Your total output must be ${totalTargetChars} characters to fill 4 pages`
     }
   }
 
