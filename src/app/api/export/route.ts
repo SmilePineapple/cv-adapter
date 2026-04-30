@@ -487,7 +487,7 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
                 contentLength: typeof s.content === 'string' ? s.content.length : JSON.stringify(s.content).length
               }))
               
-              const layoutPrompt = `You are a CV layout expert. Analyze this CV content and determine optimal page breaks for a ${maxPages}-page CV.
+              const layoutPrompt = `You are a CV layout expert. Analyze this CV content and determine optimal page breaks for a ${maxPages}-page CV. Respond in JSON format.
 
 Sections with lengths:
 ${JSON.stringify(sectionsSummary, null, 2)}
