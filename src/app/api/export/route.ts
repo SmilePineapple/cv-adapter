@@ -324,6 +324,98 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
 
 async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, photoUrl?: string | null, maxPages?: number) {
   try {
+    // 🎨 AI LAYOUT ANALYSIS: Review and optimize layout before PDF generation for 4-page CVs
+    if (maxPages === 4) {
+      console.log('🎨 Running AI layout analysis before PDF generation...')
+      try {
+        const openai = getOpenAIClient()
+        
+        const totalContentLength = sections.reduce((sum, s) => {
+          const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
+          return sum + content.length
+        }, 0)
+        
+        console.log(`📏 Total content length before layout analysis: ${totalContentLength} characters`)
+        
+        // Analyze sections and suggest improvements
+        const layoutAnalysisPrompt = `
+You are a CV layout expert. Review the following CV content and suggest specific improvements to eliminate white space and improve layout for a 4-page CV.
+
+CURRENT CV SECTIONS:
+${JSON.stringify(sections, null, 2)}
+
+ANALYSIS:
+- Total content length: ${totalContentLength} characters
+- Target for 4-page CV: ~12,000 characters (3,000 per page)
+- Current gap: ${12000 - totalContentLength} characters needed
+
+TASK:
+1. Analyze each section and identify content that can be expanded
+2. For each section, provide specific suggestions to make it more substantial:
+   - Add more bullet points to experience (aim for 8-10 bullets per job, 35-40 words each)
+   - Expand summary with more details and context
+   - Add more skills with proficiency levels
+   - Expand education with achievements, coursework, or projects
+   - Add more detail to certifications (issuing body, date, credential ID)
+   - Expand hobbies with descriptions or achievements
+
+3. Return the improved sections with expanded content
+
+RESPONSE FORMAT (JSON):
+{
+  "improved_sections": [
+    {
+      "type": "section_type",
+      "content": "expanded_content"
+    }
+  ]
+}
+
+IMPORTANT:
+- Do NOT invent fake experience or companies
+- Use the candidate's actual experience and skills as context
+- Make content more detailed and substantial without being dishonest
+- Keep content professional and factual
+- Add context, achievements, metrics, and details that showcase expertise
+`
+
+        const layoutAnalysisResponse = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a CV layout expert who helps optimize CV content for professional presentation and eliminates white space.' },
+            { role: 'user', content: layoutAnalysisPrompt }
+          ],
+          temperature: 0.2,
+          response_format: { type: 'json_object' }
+        })
+
+        const layoutAnalysis = JSON.parse(layoutAnalysisResponse.choices[0].message.content || '{}')
+        
+        if (layoutAnalysis.improved_sections && layoutAnalysis.improved_sections.length > 0) {
+          console.log(`✅ AI improved ${layoutAnalysis.improved_sections.length} sections`)
+          
+          // Replace sections with improved versions
+          for (const improved of layoutAnalysis.improved_sections) {
+            const sectionIndex = sections.findIndex(s => s.type === improved.type)
+            if (sectionIndex !== -1) {
+              sections[sectionIndex].content = improved.content
+              console.log(`✅ Improved section: ${improved.type}`)
+            }
+          }
+          
+          const newTotalLength = sections.reduce((sum, s) => {
+            const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
+            return sum + content.length
+          }, 0)
+          
+          console.log(`📏 Total content length after layout analysis: ${newTotalLength} characters (${newTotalLength - totalContentLength} added)`)
+        }
+      } catch (error) {
+        console.error('❌ AI layout analysis failed:', error)
+        // Continue without layout analysis if it fails
+      }
+    }
+
     // Check if using advanced template
     let html: string
     let useOptimizedMargins = false
