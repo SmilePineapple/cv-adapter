@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
     // Adjust max_tokens based on requested page count
     const tokensPerPage = 2000
     const requestedMaxPages = max_pages || 1
-    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 4000)
+    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 8000)
 
     console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
 
