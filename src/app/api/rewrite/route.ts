@@ -165,9 +165,9 @@ export async function POST(request: NextRequest) {
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
     // Adjust max_tokens based on requested page count
-    const tokensPerPage = 2000 // Increased from 1500 to allow more content per page
+    const tokensPerPage = 4000 // Increased from 2000 to force more content generation for multi-page CVs
     const requestedMaxPages = max_pages || 4
-    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit from 6000 to 12000
+    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 16000) // Increased limit from 12000 to 16000
 
     console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
 
