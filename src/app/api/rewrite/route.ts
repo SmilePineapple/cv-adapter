@@ -156,9 +156,9 @@ export async function POST(request: NextRequest) {
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
     // Adjust max_tokens based on requested page count
-    const tokensPerPage = 1500
+    const tokensPerPage = 2000 // Increased from 1500 to allow more content per page
     const requestedMaxPages = max_pages || 4
-    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 6000)
+    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit from 6000 to 12000
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -485,7 +485,7 @@ function createRewritePrompt(
 
   // Page length instructions
   const pageLengthInstructions = maxPages
-    ? `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n${maxPages === 1 ? '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences' : maxPages === 2 ? '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences' : maxPages === 3 ? '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences' : '- Use comprehensive bullet points (5-6 per job)\n- Include all experience with full detail\n- Keep summary to 5-6 sentences'}`
+    ? `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n${maxPages === 1 ? '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences' : maxPages === 2 ? '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences' : maxPages === 3 ? '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences' : '- Use comprehensive bullet points (6-8 per job)\n- Expand on ALL responsibilities and achievements\n- Include full details, metrics, and context for each job\n- Keep summary to 5-6 sentences\n- CRITICAL: Generate SUBSTANTIAL content to fill ${maxPages} pages - do not be brief'}`
     : ''
 
   return `🚨🚨🚨 CRITICAL INSTRUCTIONS - FAILURE = REJECTED OUTPUT 🚨🚨🚨
