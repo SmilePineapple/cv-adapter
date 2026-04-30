@@ -475,8 +475,8 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
           }
         } else {
           console.log(`📏 Content fits within ${maxPages} pages (estimated ${metrics.estimatedPages}), no truncation needed`)
-          // If content is significantly less than maxPages, add spacing to expand
-          if (maxPages > 2 && metrics.estimatedPages < 2) {
+          // If content is less than maxPages, add spacing to expand
+          if (maxPages && metrics.estimatedPages < maxPages) {
             console.log(`📏 Expanding spacing to fill ${maxPages} pages (content is only ${metrics.estimatedPages} pages)`)
             const expandStyle = `<style>
               body { line-height: 2.5 !important; }
