@@ -165,9 +165,9 @@ export async function POST(request: NextRequest) {
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
     // Adjust max_tokens based on requested page count
-    const tokensPerPage = 2000
+    const tokensPerPage = 3000 // Increased to 3000 for 4-page CVs to generate 10,000-12,000 characters
     const requestedMaxPages = max_pages || 1
-    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 8000)
+    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit to 12000
 
     console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
 
@@ -495,9 +495,30 @@ function createRewritePrompt(
   }
 
   // Page length instructions
-  const pageLengthInstructions = maxPages
-    ? `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n${maxPages === 1 ? '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences' : maxPages === 2 ? '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences' : maxPages === 3 ? '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences' : '- Use comprehensive bullet points (6-8 per job)\n- Expand on ALL responsibilities and achievements\n- Include full details, metrics, and context for each job\n- Keep summary to 5-6 sentences\n- CRITICAL: Generate SUBSTANTIAL content to fill ${maxPages} pages - do not be brief'}`
-    : ''
+  let pageLengthInstructions = ''
+  if (maxPages) {
+    pageLengthInstructions = `\n\n📏 PAGE LENGTH CONSTRAINT: Maximum ${maxPages} page(s)\n`
+    if (maxPages === 1) {
+      pageLengthInstructions += '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences'
+    } else if (maxPages === 2) {
+      pageLengthInstructions += '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences'
+    } else if (maxPages === 3) {
+      pageLengthInstructions += '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences'
+    } else {
+      pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - GENERATE MAXIMUM CONTENT 🔥
+- Experience section: Each job MUST have 8-10 detailed bullet points
+- Each bullet point: 25-40 words with specific achievements, metrics, and context
+- Summary section: 6-8 comprehensive sentences (150-200 words)
+- Skills section: 8-12 detailed skills with context for each
+- Education section: Expand with coursework, achievements, and relevant details
+- Certifications: Add details about what was learned and achieved
+- Total content target: 10,000-12,000 characters to fill 4 pages
+- DO NOT be concise - be exhaustive and detailed
+- Add context, examples, and specific outcomes for EVERY point
+- If you have limited source material, expand with reasonable details based on the job title and industry
+- CRITICAL: Your output MUST be substantial enough to fill 4 full pages - if in doubt, add more detail, not less`
+    }
+  }
 
   return `🚨🚨🚨 CRITICAL INSTRUCTIONS - FAILURE = REJECTED OUTPUT 🚨🚨🚨
 
