@@ -102,7 +102,8 @@ export async function POST(request: NextRequest) {
 
     const body: GenerationRequest = await request.json()
     const { cv_id, job_title, job_description, rewrite_style, tone, custom_sections, output_language, max_pages } = body
-    
+
+    console.log('📏 DEBUG: max_pages received:', max_pages)
     console.log('🌍 Output language requested:', output_language)
 
     // 🔍 DEBUG: Log custom sections received

@@ -156,6 +156,9 @@ export async function POST(request: NextRequest) {
     const photoUrl = generationData.cvs?.photo_url || null
     const maxPages = generation.max_pages || 4
 
+    console.log('📏 DEBUG: max_pages from generation:', generation.max_pages)
+    console.log('📏 DEBUG: using maxPages:', maxPages)
+
     // CRITICAL FIX: Use generation output_sections as primary source for tailored CVs
     // This contains the AI-tailored content. Only use cv_sections if user has explicitly
     // edited the CV in the editor (which updates a timestamp we can check)
