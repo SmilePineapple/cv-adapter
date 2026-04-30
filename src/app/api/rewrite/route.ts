@@ -298,6 +298,91 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
     let { rewrittenSections } = parseAIResponse(aiResponse, originalSections.sections)
     const { diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
     
+    // For multi-page CVs, use AI to identify gaps and suggest relevant additional sections
+    if (requestedMaxPages > 1) {
+      console.log(`🔍 Analyzing CV for gaps to fill ${requestedMaxPages} pages`)
+      
+      try {
+        const sectionsSummary = rewrittenSections.map(s => ({
+          type: s.type,
+          contentLength: typeof s.content === 'string' ? s.content.length : JSON.stringify(s.content).length
+        }))
+        
+        const totalContentLength = sectionsSummary.reduce((sum, s) => sum + s.contentLength, 0)
+        const targetLength = requestedMaxPages * 3000
+        const gap = targetLength - totalContentLength
+        
+        console.log(`📏 Current content length: ${totalContentLength}, target: ${targetLength}, gap: ${gap}`)
+        
+        if (gap > 2000) {
+          // Significant gap - ask AI to suggest relevant additional sections
+          const gapPrompt = `You are a CV expert. Analyze this CV and suggest relevant additional sections to fill a ${requestedMaxPages}-page CV.
+
+Current sections:
+${JSON.stringify(sectionsSummary, null, 2)}
+
+Total content length: ${totalContentLength} characters
+Target length: ${targetLength} characters
+Gap to fill: ${gap} characters
+
+Based on the CV content (Play Therapist with experience in schools), suggest 2-3 relevant additional sections that would add value and fill space. Options include:
+- Professional Development
+- Volunteering
+- Awards & Achievements
+- Publications
+- Conference Presentations
+- Projects
+- References
+
+For each suggested section, provide:
+1. Section type
+2. Brief description of what content to include
+3. Estimated character count
+
+Respond in JSON format with this structure:
+{
+  "suggested_sections": [
+    {
+      "type": "professional_development",
+      "description": "...",
+      "estimated_chars": 500
+    }
+  ]
+}`
+
+          const openai = getOpenAIClient()
+          const gapCompletion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            response_format: { type: "json_object" },
+            messages: [
+              {
+                role: 'system',
+                content: 'You are a CV expert. Suggest relevant sections to fill gaps in multi-page CVs. Respond in JSON format.'
+              },
+              {
+                role: 'user',
+                content: gapPrompt
+              }
+            ],
+            temperature: 0.5,
+            max_tokens: 1000
+          })
+
+          const gapResponse = gapCompletion.choices[0]?.message?.content
+          console.log('🔍 Gap analysis suggestions:', gapResponse?.substring(0, 300))
+
+          if (gapResponse) {
+            const suggestions = JSON.parse(gapResponse)
+            console.log('✅ AI suggested additional sections:', suggestions.suggested_sections?.length || 0)
+            // Note: We could automatically add these sections, but for now we just log them
+            // Future enhancement: Generate content for suggested sections automatically
+          }
+        }
+      } catch (error) {
+        console.error('❌ Gap analysis failed:', error)
+      }
+    }
+
     // 🔍 DEBUG: Log parsed sections
     console.log('📋 Parsed sections count:', rewrittenSections.length)
     console.log('📋 Section types:', rewrittenSections.map(s => s.type).join(', '))

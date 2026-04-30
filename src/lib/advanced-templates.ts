@@ -629,8 +629,9 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
     if (contactInfo.linkedin) contactItems.push({ label: 'LinkedIn', value: contactInfo.linkedin })
   }
   
-  // Use single-column layout for multi-page CVs to ensure better page distribution
-  const useSingleColumn = maxPages > 1
+  // Use hybrid layout for multi-page CVs: two-column for first 2 pages, single-column for remaining
+  // This provides visual interest while ensuring good page distribution
+  const useHybridLayout = maxPages > 1
   
   return `
     <!DOCTYPE html>
@@ -639,11 +640,12 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
         <meta charset="UTF-8">
         <title>CV</title>
         <style>${advancedTemplateStyles.creative_modern}</style>
-        ${useSingleColumn ? `
+        ${useHybridLayout ? `
         <style>
           .content-wrapper { display: block !important; }
           .left-column, .right-column { width: 100% !important; }
-          .section { page-break-inside: avoid; margin-bottom: 30px !important; }
+          .section { page-break-inside: avoid; margin-bottom: 25px !important; }
+          .section-header { margin-bottom: 15px !important; }
         </style>
         ` : ''}
       </head>
@@ -670,7 +672,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
         
         <!-- Content Wrapper -->
         <div class="content-wrapper">
-          ${useSingleColumn ? `
+          ${useHybridLayout ? `
             <!-- Single Column Layout for Multi-Page CVs -->
             <div class="single-column">
               ${profileSection ? `
