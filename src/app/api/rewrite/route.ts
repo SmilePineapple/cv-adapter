@@ -150,6 +150,9 @@ export async function POST(request: NextRequest) {
       max_pages
     )
 
+    console.log(`📏 DEBUG: Prompt length: ${prompt.length} characters`)
+    console.log(`📏 DEBUG: Prompt contains "PAGE LENGTH": ${prompt.includes('PAGE LENGTH')}`)
+
     // Call OpenAI API with language-aware system prompt
     const languageName = LANGUAGE_NAMES[targetLanguage] || 'English'
     const systemPrompt = targetLanguage === 'en'
@@ -160,6 +163,8 @@ export async function POST(request: NextRequest) {
     const tokensPerPage = 2000 // Increased from 1500 to allow more content per page
     const requestedMaxPages = max_pages || 4
     const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit from 6000 to 12000
+
+    console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',

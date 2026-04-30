@@ -435,9 +435,12 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
 
       console.log('Using Advanced Template:', template)
 
+      // Analyze content density for advanced templates
+      const metrics = analyzeContentDensity(sections)
+      console.log(`📏 Content analysis for advanced template: estimated=${metrics.estimatedPages} pages, maxPages=${maxPages}, compression=${metrics.compressionLevel}`)
+
       // Truncate content to fit maxPages for advanced templates
       if (maxPages) {
-        const metrics = analyzeContentDensity(sections)
         if (metrics.estimatedPages > maxPages) {
           const ratio = maxPages / metrics.estimatedPages
           console.log(`📏 Truncating content to fit ${maxPages} pages (estimated ${metrics.estimatedPages}, ratio: ${ratio.toFixed(2)})`)
@@ -469,6 +472,19 @@ async function handlePdfExport(sections: CVSection[], template: string, jobTitle
             } else if (template === 'professional_columns') {
               html = generateProfessionalColumnsHTML(sections, contactInfo)
             }
+          }
+        } else {
+          console.log(`📏 Content fits within ${maxPages} pages (estimated ${metrics.estimatedPages}), no truncation needed`)
+          // If content is significantly less than maxPages, add spacing to expand
+          if (maxPages > 2 && metrics.estimatedPages < 2) {
+            console.log(`📏 Expanding spacing to fill ${maxPages} pages (content is only ${metrics.estimatedPages} pages)`)
+            const expandStyle = `<style>
+              body { line-height: 1.8 !important; }
+              section { margin-bottom: 2em !important; }
+              p, li { margin-bottom: 0.8em !important; }
+              h1, h2, h3 { margin-top: 1.5em !important; margin-bottom: 1em !important; }
+            </style>`
+            html = html.replace('</head>', `${expandStyle}</head>`)
           }
         }
       }
