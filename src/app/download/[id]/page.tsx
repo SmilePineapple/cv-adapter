@@ -964,11 +964,11 @@ export default function DownloadPage() {
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6">
             <div className="border border-white/10 rounded-lg overflow-hidden bg-white">
               <iframe
-                key={previewHtml} 
+                key={previewHtml}
                 srcDoc={previewHtml}
-                className="w-full h-[800px] border-0 bg-white"
+                className="w-full h-auto border-0 bg-white"
                 title="CV Preview"
-                style={{ background: '#ffffff' }}
+                style={{ background: '#ffffff', height: 'auto', minHeight: '1200px' }}
               />
             </div>
           </div>
