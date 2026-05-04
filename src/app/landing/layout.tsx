@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI CV Optimization for UK Job Seekers | CV Buddy - Professional Resume Writing',
+  title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
   description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers. 95% success rate. Start free trial today.',
   keywords: [
+    'CV writing services',
     'AI CV optimization',
     'CV tailoring',
     'professional resume writing',
@@ -25,7 +26,22 @@ export const metadata: Metadata = {
     'CV enhancement',
     'resume customization',
     'UK employers',
-    'career development'
+    'career development',
+    'professional CV writer UK',
+    'CV writing service London',
+    'ATS CV checker',
+    'CV optimization service',
+    'best CV writing service UK',
+    'CV writing service Manchester',
+    'CV writing service Edinburgh',
+    'CV writing service Birmingham',
+    'professional CV writing services',
+    'executive CV writing service',
+    'graduate CV writing service',
+    'CV writing service reviews',
+    'affordable CV writing service',
+    'CV writing service cost',
+    'CV writing service guarantee'
   ],
   authors: [{ name: 'CV Buddy Team' }],
   creator: 'CV Buddy',
@@ -43,7 +59,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GB',
     url: 'https://mycvbuddy.com',
-    title: 'AI CV Optimization for UK Job Seekers | CV Buddy',
+    title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
     description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers. 95% success rate.',
     siteName: 'CV Buddy',
     images: [
@@ -57,7 +73,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI CV Optimization for UK Job Seekers | CV Buddy',
+    title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
     description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers.',
     images: ['/og-image.jpg'],
   },

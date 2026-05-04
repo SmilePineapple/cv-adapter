@@ -1,9 +1,125 @@
 import Link from 'next/link'
 import { ArrowRight, Upload, Zap, Download, CheckCircle, Star, Users, FileText, TrendingUp, Shield, Award, Target } from 'lucide-react'
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "CV Buddy",
+  "url": "https://mycvbuddy.com",
+  "logo": "https://mycvbuddy.com/logo.png",
+  "description": "AI-powered CV optimization platform for UK job seekers. Professional resume writing services with 95% success rate.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "GB"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": "English"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/cv-buddy",
+    "https://twitter.com/cvbuddy"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "2500"
+  }
+}
+
+const serviceStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "AI CV Optimization Service",
+  "description": "Professional AI-powered CV tailoring and resume writing services for UK job seekers",
+  "provider": {
+    "@type": "Organization",
+    "name": "CV Buddy"
+  },
+  "serviceType": "Professional CV Writing",
+  "areaServed": {
+    "@type": "Country",
+    "name": "United Kingdom"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "CV Writing Plans",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Free CV Optimization",
+          "description": "1 free CV generation"
+        },
+        "price": "0",
+        "priceCurrency": "GBP"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Unlimited CV Writing",
+          "description": "Unlimited CV generations and cover letters"
+        },
+        "price": "2.99",
+        "priceCurrency": "GBP",
+        "billingDuration": "P1M"
+      }
+    ]
+  }
+}
+
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does AI CV optimization work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our AI analyzes your existing CV and the target job description to identify key skills, experiences, and keywords that UK employers are looking for. It then rewrites your CV to highlight relevant achievements and ensure ATS compatibility."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is CV Buddy suitable for UK job applications?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely! CV Buddy is specifically designed for the UK job market. Our AI understands UK terminology, formatting preferences, and ATS systems used by British employers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What file formats do you support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can upload CVs in PDF, DOC, and DOCX formats up to 10MB. Download options include PDF, Word, HTML, and plain text formats."
+      }
+    }
+  ]
+}
+
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+      />
+      
+      <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <header className="border-b border-white/10 bg-gray-950/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -33,12 +149,13 @@ export default function LandingPage() {
       <section className="py-24 px-4 bg-gradient-to-br from-gray-950 via-blue-950/30 to-gray-950">
         <div className="container mx-auto text-center max-w-4xl">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            AI-Powered CV Tailoring for UK Job Seekers
+            CV Writing Services | AI-Powered CV Tailoring for UK Job Seekers
           </h1>
           <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
             Transform your job search with intelligent CV optimization. Upload your CV, paste any job description, 
             and get a perfectly tailored resume that passes ATS systems and impresses recruiters. 
-            Professional resume writing powered by advanced AI technology.
+            Professional CV writing services and ATS CV checker powered by advanced AI technology. 
+            Best CV writing service UK with guaranteed results.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -186,6 +303,91 @@ export default function LandingPage() {
                 <li>• UK data centers</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Industry-Specific Section */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            Industry-Specific CV Optimization
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            Professional CV writing services tailored to your industry. Our AI understands the specific requirements 
+            and keywords that UK employers in different sectors are looking for.
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6 hover:border-blue-500/30 transition-colors">
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-white font-bold">💻</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Technology & IT</h3>
+              <p className="text-gray-400 text-sm mb-3">
+                Software engineers, data scientists, IT professionals. Optimized for tech CVs with technical skills and project highlights.
+              </p>
+              <ul className="text-xs text-gray-500 space-y-1">
+                <li>• Technical skill highlighting</li>
+                <li>• Project impact metrics</li>
+                <li>• Tech terminology optimization</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6 hover:border-green-500/30 transition-colors">
+              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-white font-bold">💰</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Finance & Banking</h3>
+              <p className="text-gray-400 text-sm mb-3">
+                Financial analysts, accountants, investment professionals. CVs optimized for financial services and banking roles.
+              </p>
+              <ul className="text-xs text-gray-500 space-y-1">
+                <li>• Financial metrics emphasis</li>
+                <li>• Regulatory compliance keywords</li>
+                <li>• Risk management highlights</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6 hover:border-purple-500/30 transition-colors">
+              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-white font-bold">🏥</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Healthcare & Medical</h3>
+              <p className="text-gray-400 text-sm mb-3">
+                Doctors, nurses, healthcare administrators. Professional CVs for NHS and private healthcare positions.
+              </p>
+              <ul className="text-xs text-gray-500 space-y-1">
+                <li>• Medical credentials showcase</li>
+                <li>• Patient care outcomes</li>
+                <li>• Healthcare compliance terms</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6 hover:border-yellow-500/30 transition-colors">
+              <div className="w-12 h-12 bg-yellow-600 rounded-lg flex items-center justify-center mb-4">
+                <span className="text-white font-bold">📈</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Marketing & Sales</h3>
+              <p className="text-gray-400 text-sm mb-3">
+                Marketing managers, sales executives, business development. CVs optimized for revenue and growth metrics.
+              </p>
+              <ul className="text-xs text-gray-500 space-y-1">
+                <li>• Revenue achievement focus</li>
+                <li>• Campaign results metrics</li>
+                <li>• Customer acquisition data</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Link 
+              href="/resume-writing-services" 
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              View All Industries
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -553,6 +755,7 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   )
 }
