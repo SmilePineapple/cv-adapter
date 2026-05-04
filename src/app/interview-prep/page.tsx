@@ -283,6 +283,40 @@ export default function InterviewPrepPage() {
           </p>
         </div>
 
+        {/* Virtual Interview Tips Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <h2 className="text-2xl font-black text-white mb-4 flex items-center gap-2">
+            <Lightbulb className="w-6 h-6 text-yellow-400" />
+            Virtual Interview Tips for Success
+          </h2>
+          <div className="prose prose-gray max-w-none">
+            <p className="text-gray-300 mb-4">
+              Mastering virtual interviews requires both technical preparation and professional presentation. 
+              Start by testing your equipment thoroughly - ensure your camera, microphone, and internet connection 
+              are reliable. Position your camera at eye level and choose a quiet, well-lit space with a professional 
+              background. Dress professionally from head to toe, as you may need to stand up during the interview.
+            </p>
+            <p className="text-gray-300 mb-4">
+              Maintain strong eye contact by looking directly at the camera, not at your screen image. Use hand 
+              gestures naturally but keep them within the camera frame. Minimize distractions by closing unnecessary 
+              applications and silencing notifications. Have a glass of water nearby and keep your resume and notes 
+              accessible but out of sight. Test the video platform beforehand and arrive 5-10 minutes early to 
+              resolve any technical issues. Remember to smile naturally and show enthusiasm through your tone and 
+              facial expressions, as virtual interviews require more explicit engagement than in-person meetings.
+            </p>
+            <div className="bg-blue-50 rounded-lg p-4 mt-4">
+              <h3 className="font-semibold text-blue-900 mb-2">Quick Virtual Interview Checklist:</h3>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Test all equipment 24 hours before</li>
+                <li>• Choose professional background and lighting</li>
+                <li>• Minimize distractions and notifications</li>
+                <li>• Practice speaking to the camera, not the screen</li>
+                <li>• Have backup internet connection ready</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         {/* Pro Badge Info */}
         {usageData && (
           <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 mb-6">
