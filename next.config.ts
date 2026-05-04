@@ -15,6 +15,20 @@ const nextConfig: NextConfig = {
     },
   },
   
+  // Image optimization settings
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  
+  // Compression settings
+  compress: true,
+  
   // Disable static optimization for all pages (they all need runtime Supabase client)
   output: 'standalone',
   
@@ -113,7 +127,7 @@ const nextConfig: NextConfig = {
     ];
   },
   
-  // Allow cross-origin requests from local network
+  // Allow cross-origin requests from local network + performance headers
   async headers() {
     return [
       {
@@ -123,8 +137,50 @@ const nextConfig: NextConfig = {
             key: 'Access-Control-Allow-Origin',
             value: '*',
           },
+          // Security headers
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          // Performance headers
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
         ],
       },
+      // Static asset caching
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      // API routes - shorter cache
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400'
+          }
+        ]
+      }
     ];
   },
   

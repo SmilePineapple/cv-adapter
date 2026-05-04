@@ -1,5 +1,17 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { ArrowRight, Upload, Zap, Download, CheckCircle, Star, Users, FileText, TrendingUp, Shield, Award, Target } from 'lucide-react'
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-white text-lg">Loading CV Buddy...</p>
+      </div>
+    </div>
+  )
+}
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -104,22 +116,23 @@ const faqStructuredData = {
 
 export default function LandingPage() {
   return (
-    <>
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
-      />
-      
-      <div className="min-h-screen bg-gray-950 text-white">
+    <Suspense fallback={<LoadingFallback />}>
+      <>
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+        />
+        
+        <div className="min-h-screen bg-gray-950 text-white">
       {/* Header */}
       <header className="border-b border-white/10 bg-gray-950/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -756,6 +769,7 @@ export default function LandingPage() {
         </div>
       </footer>
       </div>
-    </>
+      </>
+    </Suspense>
   )
 }
