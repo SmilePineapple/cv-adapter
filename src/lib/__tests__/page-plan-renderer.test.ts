@@ -41,6 +41,41 @@ describe('page plan renderer', () => {
     expect(html).toContain('data-zone-id="page_1_work_experience"')
   })
 
+  it('splits repeated sections across repeated blueprint zones', () => {
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'experience', content: 'Role one\nRole two\nRole three\nRole four', order: 1 },
+      { type: 'summary', content: 'Summary', order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 }
+    ], 4)
+    const pageThreeSections = plan.pages
+      .find(page => page.page === 3)
+      ?.zones.flatMap(zone => zone.sections.map(section => section.type))
+
+    expect(pageThreeSections).toContain('experience')
+  })
+
+  it('normalizes interests into hobbies on supporting pages', () => {
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'experience', content: 'Experience', order: 1 },
+      { type: 'summary', content: 'Summary', order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 },
+      { type: 'interests', content: 'Travel and wellbeing', order: 4 } as unknown as CVSection
+    ], 4)
+    const allSections = plan.pages.flatMap(page => page.zones.flatMap(zone => zone.sections.map(section => section.type)))
+
+    expect(allSections).toContain('hobbies')
+  })
+
+  it('uses creative modern theme colours for creative modern multi-page PDFs', () => {
+    const html = renderPagePlanHTML(sections, 4, 'creative_modern')
+
+    expect(html).toContain('#f6ad55')
+    expect(html).toContain('#2d3748')
+    expect(html).not.toContain('#1d4ed8')
+  })
+
   it('escapes section content', () => {
     const html = renderPagePlanHTML([
       { type: 'name', content: '<Alex>', order: 0 },

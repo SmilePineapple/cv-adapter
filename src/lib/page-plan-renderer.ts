@@ -1,11 +1,13 @@
 import { CVSection } from '@/types/database'
-import { CVPageBlueprint, CVSectionType, getCVPageBlueprint } from './cv-page-blueprints'
+import { CVPageBlueprint, PageZone, getCVPageBlueprint } from './cv-page-blueprints'
 import { getSectionText, normalizeSectionType } from './cv-layout-validator'
 
 export interface PlannedPageSection {
   type: string
   content: string
   order: number
+  part?: number
+  totalParts?: number
 }
 
 export interface PlannedPageZone {
@@ -36,7 +38,21 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     }))
     .filter(section => section.content.trim().length > 0)
 
-  const assignedSectionIndexes = new Set<number>()
+  const repeatedSectionTypes = getRepeatedSectionTypes(blueprint.zones)
+  const sectionQueues = new Map<string, PlannedPageSection[]>()
+
+  plannedSections.forEach(section => {
+    const repeatedCount = repeatedSectionTypes.get(section.type) || 1
+    const segments = repeatedCount > 1
+      ? splitSection(section, repeatedCount)
+      : [section]
+
+    sectionQueues.set(section.type, [
+      ...(sectionQueues.get(section.type) || []),
+      ...segments
+    ])
+  })
+
   const pages = Array.from({ length: blueprint.targetPages }, (_, index) => {
     const pageNumber = index + 1
     const pageZones = blueprint.zones.filter(zone => zone.page === pageNumber)
@@ -44,15 +60,8 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     return {
       page: pageNumber,
       zones: pageZones.map(zone => {
-        const zoneSections = plannedSections.filter((section, sectionIndex) => {
-          if (assignedSectionIndexes.has(sectionIndex)) return false
-          return zone.sectionTypes.includes(section.type as CVSectionType)
-        })
-
-        zoneSections.forEach(section => {
-          const indexToAssign = plannedSections.findIndex(candidate => candidate === section)
-          if (indexToAssign >= 0) assignedSectionIndexes.add(indexToAssign)
-        })
+        const zoneSections = zone.sectionTypes
+          .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
 
         return {
           id: zone.id,
@@ -63,7 +72,7 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     }
   })
 
-  const unassignedSections = plannedSections.filter((_, index) => !assignedSectionIndexes.has(index))
+  const unassignedSections = Array.from(sectionQueues.values()).flat()
   const finalPage = pages[pages.length - 1]
   const finalZone = finalPage?.zones[finalPage.zones.length - 1]
   if (finalZone) {
@@ -73,7 +82,7 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
 
   return {
     blueprint,
-    pages,
+    pages: compactEmptyPages(pages),
     unassignedSections
   }
 }
@@ -89,7 +98,7 @@ export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, te
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(name)}</title>
-  <style>${getPagePlanCSS()}</style>
+  <style>${getPagePlanCSS(templateName)}</style>
 </head>
 <body data-template="${escapeHtml(templateName)}" data-page-plan="${plan.blueprint.targetPages}">
   ${plan.pages.map(page => `
@@ -115,7 +124,7 @@ function renderHeader(name: string, contact: string): string {
 
 function renderSection(section: PlannedPageSection): string {
   return `<article class="cv-section section" data-section-type="${escapeHtml(section.type)}" data-type="${escapeHtml(section.type)}">
-    <h2>${escapeHtml(formatSectionTitle(section.type))}</h2>
+    <h2>${escapeHtml(formatSectionTitle(section))}</h2>
     <div class="section-content">${formatContent(section.content)}</div>
   </article>`
 }
@@ -129,31 +138,115 @@ function formatContent(content: string): string {
     .join('')
 }
 
-function formatSectionTitle(type: string): string {
-  return type.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
+function formatSectionTitle(section: PlannedPageSection): string {
+  const title = section.type.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
+  return section.totalParts && section.totalParts > 1 ? `${title} (${section.part}/${section.totalParts})` : title
 }
 
-function getPagePlanCSS(): string {
+function getPagePlanCSS(templateName: string): string {
+  const theme = getTemplateTheme(templateName)
   return `
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #e5e7eb; color: #111827; font-family: Inter, Arial, sans-serif; font-size: 10.5px; line-height: 1.42; }
-    .cv-page { width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: 12mm 13mm; background: #ffffff; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: 4mm; }
+    body { margin: 0; background: #ffffff; color: ${theme.text}; font-family: ${theme.fontFamily}; font-size: ${theme.fontSize}; line-height: 1.36; }
+    .cv-page { position: relative; width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: ${theme.pagePadding}; background: ${theme.background}; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: 3.2mm; }
     .cv-page:last-child { page-break-after: auto; }
-    .cv-header { border-bottom: 1.5px solid #2563eb; padding-bottom: 4mm; margin-bottom: 2mm; }
-    .cv-header h1 { margin: 0 0 2mm; color: #111827; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; }
-    .cv-contact { color: #4b5563; white-space: pre-wrap; font-size: 9.5px; }
+    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: 3mm; margin-bottom: 1mm; }
+    .cv-header h1 { margin: 0 0 2mm; color: ${theme.heading}; font-size: ${theme.nameSize}; line-height: 1.1; letter-spacing: -0.02em; }
+    .cv-contact { color: ${theme.muted}; white-space: pre-wrap; font-size: ${theme.contactSize}; }
     .page-zone { display: grid; gap: 3.5mm; min-height: 0; }
     .page-zone-single-column { grid-template-columns: 1fr; }
     .page-zone-two-column { grid-template-columns: 1fr 1fr; align-items: start; }
     .page-zone-hybrid { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
-    .cv-section { break-inside: avoid; page-break-inside: avoid; border-left: 2px solid #dbeafe; padding-left: 3mm; min-width: 0; }
-    .cv-section h2 { margin: 0 0 1.8mm; color: #1d4ed8; font-size: 11px; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
+    .cv-section { break-inside: avoid; page-break-inside: avoid; border-left: 2px solid ${theme.accent}; padding-left: 3mm; min-width: 0; }
+    .cv-section h2 { margin: 0 0 1.4mm; color: ${theme.accent}; font-size: ${theme.sectionTitleSize}; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
     .section-content { white-space: normal; overflow-wrap: anywhere; }
-    .section-content p { margin: 0 0 1.5mm; }
+    .section-content p { margin: 0 0 1.1mm; }
     .section-content p:last-child { margin-bottom: 0; }
+    ${theme.extraCss}
     @media print { body { background: #ffffff; } .cv-page { margin: 0; box-shadow: none; } }
   `
+}
+
+function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
+  const counts = new Map<string, number>()
+  zones.forEach(zone => {
+    zone.sectionTypes.forEach(sectionType => {
+      counts.set(sectionType, (counts.get(sectionType) || 0) + 1)
+    })
+  })
+  return counts
+}
+
+function splitSection(section: PlannedPageSection, count: number): PlannedPageSection[] {
+  const paragraphs = section.content.split('\n').map(line => line.trim()).filter(Boolean)
+  const chunks = Array.from({ length: count }, () => [] as string[])
+  const chunkSize = Math.ceil(paragraphs.length / count)
+
+  paragraphs.forEach((paragraph, index) => {
+    const chunkIndex = Math.min(Math.floor(index / chunkSize), count - 1)
+    chunks[chunkIndex].push(paragraph)
+  })
+
+  return chunks
+    .map((chunk, index) => ({
+      ...section,
+      content: chunk.join('\n'),
+      part: index + 1,
+      totalParts: count
+    }))
+    .filter(chunk => chunk.content.trim().length > 0)
+}
+
+function compactEmptyPages(pages: PlannedPage[]): PlannedPage[] {
+  const emptyPages = pages.filter(page => page.zones.every(zone => zone.sections.length === 0))
+  if (emptyPages.length === 0) return pages
+
+  const nonEmptyPages = pages.filter(page => page.zones.some(zone => zone.sections.length > 0))
+  return nonEmptyPages.map((page, index) => ({
+    ...page,
+    page: index + 1
+  }))
+}
+
+function getTemplateTheme(templateName: string) {
+  if (templateName === 'creative_modern') {
+    return {
+      fontFamily: "'Inter', Arial, sans-serif",
+      fontSize: '9px',
+      pagePadding: '10mm 11mm',
+      background: '#ffffff',
+      text: '#2d3748',
+      heading: '#2d3748',
+      muted: '#4a5568',
+      accent: '#f6ad55',
+      nameSize: '22px',
+      contactSize: '8.8px',
+      sectionTitleSize: '10px',
+      extraCss: `
+        .cv-page::before { content: ''; position: absolute; width: 38mm; height: 38mm; border-radius: 50%; background: #f6ad55; top: -15mm; right: 18mm; opacity: 0.82; }
+        .cv-page::after { content: ''; position: absolute; width: 28mm; height: 28mm; border-radius: 50%; background: #4a5568; top: 5mm; right: -8mm; opacity: 0.78; }
+        .cv-header, .page-zone { position: relative; z-index: 1; }
+        .cv-section { border-left-color: #f6ad55; }
+        .cv-section h2 { color: #2d3748; }
+      `
+    }
+  }
+
+  return {
+    fontFamily: 'Inter, Arial, sans-serif',
+    fontSize: '10px',
+    pagePadding: '11mm 12mm',
+    background: '#ffffff',
+    text: '#111827',
+    heading: '#111827',
+    muted: '#4b5563',
+    accent: '#2563eb',
+    nameSize: '24px',
+    contactSize: '9px',
+    sectionTitleSize: '10.5px',
+    extraCss: ''
+  }
 }
 
 function escapeHtml(text: string): string {
