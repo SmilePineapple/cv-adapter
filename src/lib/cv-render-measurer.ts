@@ -27,6 +27,7 @@ export interface RenderMeasurement {
   pageOccupancy: PageOccupancy[]
   sectionPlacements: SectionPlacement[]
   underfilledPages: PageOccupancy[]
+  clippedPages: number[]
   overflowing: boolean
 }
 
@@ -103,11 +104,19 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     const bodyRect = document.body.getBoundingClientRect()
     const bodyTop = bodyRect.top + window.scrollY
     const bodyBottom = Math.max(bodyRect.bottom + window.scrollY, scrollHeight)
+    const clippedPages = Array.from(document.querySelectorAll('.cv-page'))
+      .map((node, index) => {
+        const element = node as HTMLElement
+        const hasClippedContent = element.scrollHeight > element.clientHeight + 4 || element.scrollWidth > element.clientWidth + 4
+        return hasClippedContent ? index + 1 : null
+      })
+      .filter((pageNumber): pageNumber is number => pageNumber !== null)
 
     return {
       scrollHeight,
       pageHeight,
       sectionPlacements,
+      clippedPages,
       bodyRect: {
         top: bodyTop,
         bottom: bodyBottom,
@@ -131,6 +140,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     pageOccupancy,
     sectionPlacements: rawMeasurement.sectionPlacements,
     underfilledPages,
-    overflowing: typeof targetPages === 'number' ? actualPages > targetPages : false
+    clippedPages: rawMeasurement.clippedPages,
+    overflowing: typeof targetPages === 'number' ? actualPages > targetPages || rawMeasurement.clippedPages.length > 0 : rawMeasurement.clippedPages.length > 0
   }
 }

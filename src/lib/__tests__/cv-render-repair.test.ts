@@ -18,6 +18,7 @@ function createMeasurement(overrides: Partial<RenderMeasurement>): RenderMeasure
       { type: 'skills', top: 1400, bottom: 1800, height: 400, pageStart: 2, pageEnd: 2 }
     ],
     underfilledPages: [],
+    clippedPages: [],
     overflowing: false,
     ...overrides
   }
@@ -47,6 +48,21 @@ describe('cv render repair', () => {
     expect(plan.sectionTypesToAdjust).toContain('experience')
   })
 
+  it('plans condensation when fixed page content is clipped', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 2,
+      actualPages: 2,
+      clippedPages: [2],
+      overflowing: true
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('condense')
+    expect(plan.reason).toContain('clipped content')
+    expect(plan.sectionTypesToAdjust).toContain('experience')
+    expect(plan.sectionTypesToAdjust).toContain('skills')
+  })
+
   it('plans expansion when rendered pages are below target', () => {
     const plan = createRenderRepairPlan(createMeasurement({
       targetPages: 4,
@@ -70,5 +86,20 @@ describe('cv render repair', () => {
     expect(plan.shouldRepair).toBe(true)
     expect(plan.action).toBe('expand')
     expect(plan.underfilledPages).toEqual([2])
+  })
+
+  it('plans expansion across all materially underfilled pages', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 2,
+      actualPages: 2,
+      underfilledPages: [
+        { page: 1, occupancy: 0.52, usedHeight: 520, availableHeight: 1000 },
+        { page: 2, occupancy: 0.5, usedHeight: 500, availableHeight: 1000 }
+      ]
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('expand')
+    expect(plan.sectionTypesToAdjust).toEqual(expect.arrayContaining(['summary', 'experience', 'skills']))
   })
 })
