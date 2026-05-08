@@ -349,7 +349,18 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
             targetTotalChars: repairedValidation.targetTotalChars,
             issues: repairedValidation.issues.map(issue => issue.message)
           })
-          rewrittenSections = repaired.rewrittenSections
+          const initialIsTooShort = initialLayoutValidation.issues.some(issue => issue.code === 'total_under_minimum')
+          const repairImprovedLength = repairedValidation.totalChars > initialLayoutValidation.totalChars
+          const repairResolvedOrImprovedIssues = repairedValidation.issues.length <= initialLayoutValidation.issues.length
+
+          if (initialIsTooShort ? repairImprovedLength : repairResolvedOrImprovedIssues) {
+            rewrittenSections = repaired.rewrittenSections
+          } else {
+            console.warn('📐 Layout repair rejected because it did not expand the underfilled CV.', {
+              initialTotalChars: initialLayoutValidation.totalChars,
+              repairedTotalChars: repairedValidation.totalChars
+            })
+          }
         }
       } catch (layoutRepairError) {
         console.error('❌ Layout repair failed:', layoutRepairError)

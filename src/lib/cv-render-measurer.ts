@@ -107,7 +107,12 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     const clippedPages = Array.from(document.querySelectorAll('.cv-page'))
       .map((node, index) => {
         const element = node as HTMLElement
-        const hasClippedContent = element.scrollHeight > element.clientHeight + 4 || element.scrollWidth > element.clientWidth + 4
+        const pageRect = element.getBoundingClientRect()
+        const contentNodes = Array.from(element.querySelectorAll('[data-section-type], [data-type], .section'))
+        const hasClippedContent = contentNodes.some((contentNode) => {
+          const contentRect = (contentNode as HTMLElement).getBoundingClientRect()
+          return contentRect.bottom > pageRect.bottom + 4 || contentRect.right > pageRect.right + 4
+        })
         return hasClippedContent ? index + 1 : null
       })
       .filter((pageNumber): pageNumber is number => pageNumber !== null)

@@ -167,6 +167,9 @@ Rules:
 - Preserve real employers, dates, qualifications, and credentials from the original CV.
 - Do not invent fake companies, dates, degrees, or certifications.
 - Add truthful context, detail, responsibilities, tools, outcomes, and relevant achievements.
+- If the CV is below the acceptable total range, the repaired output must be longer than the current CV.
+- For 3/4-page CVs, generate permitted optional sections when existing content alone cannot fill the selected page count.
+- Use transferable achievements, treatment/service outcomes, client-care strengths, relevant projects, tools, and professional context inferred from the CV and target role.
 - If adding optional sections, only use sections permitted by the layout plan.
 - Keep total content within the selected page budget.`
 }
