@@ -20,6 +20,20 @@
 # production
 /build
 
+# duplicate/local project copies
+/cv-adapter/
+
+# local test/development artifacts
+/playwright-report/
+/test-results/
+/screenshots/
+/docs-archive/
+/CV examples/
+/analytics/
+/fixes/
+/migrations/
+*.tsbuildinfo
+
 # misc
 .DS_Store
 *.pem

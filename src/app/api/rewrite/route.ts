@@ -9,6 +9,8 @@ import { runATSOptimization } from '@/lib/ats-optimizer'
 import { formatErrorResponse } from '@/lib/errors'
 import { rateLimiters } from '@/lib/rate-limit-simple'
 import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
+import { formatBlueprintForPrompt, getCVPageBlueprint } from '@/lib/cv-page-blueprints'
+import { createLayoutRepairPrompt, validateCVLayout } from '@/lib/cv-layout-validator'
 
 // Increase timeout for AI generation with ATS optimization
 // AI generation: ~23s + ATS optimization: ~36s = ~59s total
@@ -167,9 +169,12 @@ export async function POST(request: NextRequest) {
     // Adjust max_tokens based on requested page count
     const tokensPerPage = 3000 // Increased to 3000 for 4-page CVs to generate 10,000-12,000 characters
     const requestedMaxPages = max_pages || 1
+    const pageBlueprint = getCVPageBlueprint(requestedMaxPages)
+    const pageBlueprintPrompt = formatBlueprintForPrompt(pageBlueprint)
     const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit to 12000
 
     console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
+    console.log('📐 DEBUG: page blueprint:', pageBlueprintPrompt)
 
     let aiResponse: string
 
@@ -182,6 +187,9 @@ export async function POST(request: NextRequest) {
 
 📋 ADDITIONAL TASK FOR STEP 1:
 Before generating the full CV, first analyze the current CV and provide a detailed outline for expanding it to ${requestedMaxPages} pages.
+
+📐 PAGE LAYOUT BLUEPRINT:
+${pageBlueprintPrompt}
 
 For EACH section in the outline, specify:
 1. How many bullet points/items to generate
@@ -234,13 +242,17 @@ Then proceed to generate the full CV following this outline.`
 
 📋 STEP 2: Generate Full Content
 You have analyzed the CV structure. Now generate the full CV content following these requirements:
-- Target: ${requestedMaxPages} pages (${requestedMaxPages * 3000} characters minimum)
+- Target: ${requestedMaxPages} pages
+- Follow this exact page layout blueprint:
+${pageBlueprintPrompt}
+- Target total content: ${pageBlueprint.targetTotalChars} characters
+- Acceptable total content range: ${pageBlueprint.minTotalChars}-${pageBlueprint.maxTotalChars} characters
 - Each job: 8-10 bullet points, 25-40 words each
 - Summary: 6-8 sentences (150-200 words)
 - Skills: 8-12 detailed skills with context
 - Education: Expand with coursework, achievements, relevant details
 - Certifications: Add details about what was learned and achieved
-- Total content: 10,000-12,000 characters
+- Return all sections needed by the blueprint
 
 CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, and specific outcomes for EVERY point.`
 
@@ -297,6 +309,52 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
     // Parse AI response
     let { rewrittenSections } = parseAIResponse(aiResponse, originalSections.sections)
     const { diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
+
+    const initialLayoutValidation = validateCVLayout(rewrittenSections, pageBlueprint)
+    console.log('📐 Layout validation after initial generation:', {
+      isValid: initialLayoutValidation.isValid,
+      totalChars: initialLayoutValidation.totalChars,
+      targetTotalChars: initialLayoutValidation.targetTotalChars,
+      issues: initialLayoutValidation.issues.map(issue => issue.message)
+    })
+
+    if (!initialLayoutValidation.isValid || initialLayoutValidation.issues.some(issue => issue.code === 'section_under_minimum' || issue.code === 'section_over_maximum')) {
+      console.log('📐 Running targeted layout repair pass...')
+      try {
+        const repairPrompt = createLayoutRepairPrompt(rewrittenSections, pageBlueprint, initialLayoutValidation)
+        const repairCompletion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          response_format: { type: 'json_object' },
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt + ' Repair only the layout budget issues while preserving factual accuracy and returning the full sections array.'
+            },
+            {
+              role: 'user',
+              content: repairPrompt
+            }
+          ],
+          temperature: 0.3,
+          max_tokens: adjustedMaxTokens
+        })
+
+        const repairResponse = repairCompletion.choices[0]?.message?.content || ''
+        if (repairResponse) {
+          const repaired = parseAIResponse(repairResponse, originalSections.sections)
+          const repairedValidation = validateCVLayout(repaired.rewrittenSections, pageBlueprint)
+          console.log('📐 Layout validation after repair:', {
+            isValid: repairedValidation.isValid,
+            totalChars: repairedValidation.totalChars,
+            targetTotalChars: repairedValidation.targetTotalChars,
+            issues: repairedValidation.issues.map(issue => issue.message)
+          })
+          rewrittenSections = repaired.rewrittenSections
+        }
+      } catch (layoutRepairError) {
+        console.error('❌ Layout repair failed:', layoutRepairError)
+      }
+    }
     
     // For 4-page CVs, validate structure specifications and regenerate if needed
     if (requestedMaxPages >= 4) {

@@ -53,6 +53,16 @@ CV Adapter is an AI-powered web application that helps job seekers tailor their 
 - **PDF Generation**: Puppeteer
 - **Document Export**: docx library for Word files
 
+## 🧩 Current Implementation Patterns
+
+- **Multi-page CV planning**: 2/3/4 page generation uses deterministic page blueprints in `src/lib/cv-page-blueprints.ts`.
+- **Layout validation**: Generated sections are checked against per-page and per-section budgets in `src/lib/cv-layout-validator.ts`.
+- **Targeted AI repair**: `src/app/api/rewrite/route.ts` runs a focused repair pass when generated content is under or over the selected page budget.
+- **Rendered layout diagnostics**: PDF export measures actual rendered page count, occupancy, underfilled pages, and section placement with `src/lib/cv-render-measurer.ts`.
+- **Render-based repair loop**: PDF export can run one guarded AI repair pass from actual render measurements using `src/lib/cv-render-repair.ts`.
+- **Explicit page-plan rendering**: Multi-page PDFs use fixed A4 page containers and blueprint zones from `src/lib/page-plan-renderer.ts`.
+- **Manual QA checklist**: Multi-page CV testing steps are documented in `docs/multi-page-cv-qa-checklist.md`.
+
 ## 📋 Prerequisites
 
 Before running this project, you need:

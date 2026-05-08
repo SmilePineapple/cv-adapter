@@ -257,6 +257,11 @@ export default function GeneratePage() {
         '✍️ Rewriting work experience...',
         '💼 Tailoring professional summary...',
         '🎓 Optimizing skills section...',
+        ...(maxPages > 1 ? [
+          `📐 Building your ${maxPages}-page layout blueprint...`,
+          '📏 Balancing section lengths for each page...',
+          '🧩 Preparing deterministic page zones...'
+        ] : []),
         '🎯 Running ATS optimization...',
         '🔍 Analyzing keyword density...',
         '📊 Calculating ATS score...',

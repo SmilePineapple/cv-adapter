@@ -12,8 +12,6 @@ import { CVSection } from '@/types/database'
 import { 
   ArrowLeft, 
   Download, 
-  FileText, 
-  Eye,
   CheckCircle,
   Loader2,
   Edit3,
@@ -709,7 +707,11 @@ export default function DownloadPage() {
     
     try {
       setExportProgress(20)
-      setExportStep(`Generating ${selectedFormat.toUpperCase()} file...`)
+      setExportStep(
+        selectedFormat === 'pdf'
+          ? 'Building page-plan layout...'
+          : `Generating ${selectedFormat.toUpperCase()} file...`
+      )
       
       const response = await fetch('/api/export', {
         method: 'POST',
@@ -724,14 +726,18 @@ export default function DownloadPage() {
       })
 
       setExportProgress(60)
-      setExportStep('Processing document...')
+      setExportStep(
+        selectedFormat === 'pdf'
+          ? 'Measuring and optimizing page fit...'
+          : 'Processing document...'
+      )
 
       if (!response.ok) {
         throw new Error('Export failed')
       }
 
       setExportProgress(80)
-      setExportStep('Downloading file...')
+      setExportStep('Finalizing download...')
       
       // Handle file download
       const blob = await response.blob()

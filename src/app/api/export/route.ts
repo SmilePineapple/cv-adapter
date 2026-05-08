@@ -10,6 +10,9 @@ import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/l
 import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
+import { measureRenderedCV } from '@/lib/cv-render-measurer'
+import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
+import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
 
 // Configure runtime for Vercel
 export const runtime = 'nodejs'
@@ -322,106 +325,24 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
-async function handlePdfExport(sections: CVSection[], template: string, jobTitle: string, photoUrl?: string | null, maxPages?: number) {
+async function handlePdfExport(
+  sections: CVSection[],
+  template: string,
+  jobTitle: string,
+  photoUrl?: string | null,
+  maxPages?: number,
+  renderRepairAttempted: boolean = false
+) {
   try {
-    // 🎨 AI LAYOUT ANALYSIS: Review and optimize layout before PDF generation for 4-page CVs
-    if (maxPages === 4) {
-      console.log('🎨 Running AI layout analysis before PDF generation...')
-      try {
-        const openai = getOpenAIClient()
-        
-        const totalContentLength = sections.reduce((sum, s) => {
-          const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
-          return sum + content.length
-        }, 0)
-        
-        console.log(`📏 Total content length before layout analysis: ${totalContentLength} characters`)
-        
-        // Analyze sections and suggest improvements
-        const layoutAnalysisPrompt = `
-You are a CV layout expert. Review the following CV content and suggest specific improvements to eliminate white space and improve layout for a 4-page CV.
-
-CURRENT CV SECTIONS:
-${JSON.stringify(sections, null, 2)}
-
-ANALYSIS:
-- Total content length: ${totalContentLength} characters
-- Target for 4-page CV: ~12,000 characters (3,000 per page)
-- Current gap: ${12000 - totalContentLength} characters needed
-
-TASK:
-1. Analyze each section and identify content that can be expanded
-2. For each section, provide specific suggestions to make it more substantial:
-   - Add more bullet points to experience (aim for 8-10 bullets per job, 35-40 words each)
-   - Expand summary with more details and context
-   - Add more skills with proficiency levels
-   - Expand education with achievements, coursework, or projects
-   - Add more detail to certifications (issuing body, date, credential ID)
-   - Expand hobbies with descriptions or achievements
-
-3. Return the improved sections with expanded content
-
-RESPONSE FORMAT (JSON):
-{
-  "improved_sections": [
-    {
-      "type": "section_type",
-      "content": "expanded_content"
-    }
-  ]
-}
-
-IMPORTANT:
-- Do NOT invent fake experience or companies
-- Use the candidate's actual experience and skills as context
-- Make content more detailed and substantial without being dishonest
-- Keep content professional and factual
-- Add context, achievements, metrics, and details that showcase expertise
-`
-
-        const layoutAnalysisResponse = await openai.chat.completions.create({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: 'You are a CV layout expert who helps optimize CV content for professional presentation and eliminates white space.' },
-            { role: 'user', content: layoutAnalysisPrompt }
-          ],
-          temperature: 0.2,
-          response_format: { type: 'json_object' }
-        })
-
-        const layoutAnalysis = JSON.parse(layoutAnalysisResponse.choices[0].message.content || '{}')
-        
-        if (layoutAnalysis.improved_sections && layoutAnalysis.improved_sections.length > 0) {
-          console.log(`✅ AI improved ${layoutAnalysis.improved_sections.length} sections`)
-          
-          // Replace sections with improved versions
-          for (const improved of layoutAnalysis.improved_sections) {
-            const sectionIndex = sections.findIndex(s => s.type === improved.type)
-            if (sectionIndex !== -1) {
-              sections[sectionIndex].content = improved.content
-              console.log(`✅ Improved section: ${improved.type}`)
-            }
-          }
-          
-          const newTotalLength = sections.reduce((sum, s) => {
-            const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
-            return sum + content.length
-          }, 0)
-          
-          console.log(`📏 Total content length after layout analysis: ${newTotalLength} characters (${newTotalLength - totalContentLength} added)`)
-        }
-      } catch (error) {
-        console.error('❌ AI layout analysis failed:', error)
-        // Continue without layout analysis if it fails
-      }
-    }
-
     // Check if using advanced template
     let html: string
     let useOptimizedMargins = false
     let compressionLevel: 'none' | 'light' | 'medium' | 'heavy' = 'none'
     
-    if (isAdvancedTemplate(template)) {
+    if (maxPages && maxPages > 1) {
+      console.log(`📐 Using deterministic page-plan renderer for ${maxPages}-page PDF`)
+      html = renderPagePlanHTML(sections, maxPages, template)
+    } else if (isAdvancedTemplate(template)) {
       // Use advanced template with icons and two-column layout
       const contactSection = sections.find(s => s.type === 'contact')
       
@@ -611,6 +532,38 @@ IMPORTANT:
     
     const page = await browser.newPage()
     await page.setContent(html, { waitUntil: 'networkidle0' })
+
+    const renderMeasurement = await measureRenderedCV(page, maxPages)
+    console.log('📐 Render measurement:', {
+      targetPages: renderMeasurement.targetPages,
+      actualPages: renderMeasurement.actualPages,
+      overflowing: renderMeasurement.overflowing,
+      pageOccupancy: renderMeasurement.pageOccupancy.map(item => ({
+        page: item.page,
+        occupancy: Number(item.occupancy.toFixed(2))
+      })),
+      underfilledPages: renderMeasurement.underfilledPages.map(item => item.page),
+      sectionPlacements: renderMeasurement.sectionPlacements.map(section => ({
+        type: section.type,
+        pageStart: section.pageStart,
+        pageEnd: section.pageEnd,
+        height: Math.round(section.height)
+      }))
+    })
+
+    const renderRepairPlan = createRenderRepairPlan(renderMeasurement)
+    console.log('📐 Render repair plan:', renderRepairPlan)
+
+    if (maxPages && maxPages > 1 && renderRepairPlan.shouldRepair && !renderRepairAttempted) {
+      console.log('📐 Running one-pass render-based layout repair...')
+      try {
+        const repairedSections = await repairSectionsForRenderedLayout(sections, renderMeasurement, renderRepairPlan)
+        await browser.close()
+        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, true)
+      } catch (repairError) {
+        console.error('❌ Render-based layout repair failed:', repairError)
+      }
+    }
     
     // Optimized margins based on content density (for basic templates only)
     const margins = useOptimizedMargins 
@@ -642,6 +595,45 @@ IMPORTANT:
     // Fallback to HTML if PDF generation fails
     return handleHtmlExport(sections, template, jobTitle)
   }
+}
+
+async function repairSectionsForRenderedLayout(
+  sections: CVSection[],
+  renderMeasurement: Awaited<ReturnType<typeof measureRenderedCV>>,
+  renderRepairPlan: ReturnType<typeof createRenderRepairPlan>
+): Promise<CVSection[]> {
+  const openai = getOpenAIClient()
+  const prompt = createRenderRepairPrompt(sections, renderMeasurement, renderRepairPlan)
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content: 'You repair CV content based on real browser layout measurements. Preserve facts and return valid JSON only.'
+      },
+      {
+        role: 'user',
+        content: prompt
+      }
+    ],
+    temperature: 0.2,
+    max_tokens: 12000
+  })
+
+  const content = completion.choices[0]?.message?.content || '{}'
+  const parsed = JSON.parse(content)
+
+  if (!parsed.sections || !Array.isArray(parsed.sections)) {
+    throw new Error('Render repair response did not include a sections array.')
+  }
+
+  return parsed.sections.map((section: Partial<CVSection>, index: number) => ({
+    type: section.type,
+    content: section.content,
+    order: typeof section.order === 'number' ? section.order : index + 1
+  })).filter((section: Partial<CVSection>) => section.type && section.content !== undefined) as CVSection[]
 }
 
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {
