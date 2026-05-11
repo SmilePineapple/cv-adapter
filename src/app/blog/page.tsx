@@ -138,8 +138,8 @@ const blogPosts = [
   },
   {
     slug: 'cv-examples-by-industry-uk',
-    title: 'CV Examples: 15 Winning CVs by Industry (UK 2025)',
-    excerpt: 'Real CV examples for UK jobs across 15 industries. See what works and adapt these proven templates for your applications.',
+    title: 'Best CV Examples UK 2026: 15 Good, Professional CV Samples',
+    excerpt: 'Real UK CV examples across 15 industries. See good professional samples, layouts and formats you can adapt for your next application.',
     date: 'January 8, 2025',
     readTime: '16 min read',
     category: 'CV Examples',

@@ -1,17 +1,17 @@
 import Link from 'next/link'
-import { ArrowLeft, Briefcase, CheckCircle, Download } from 'lucide-react'
+import { ArrowLeft, Briefcase, CheckCircle } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
-  description: '15 real UK CV examples across every major industry — IT, marketing, healthcare, finance & more. Copy proven formats that beat ATS systems and land interviews. Updated for 2026.',
+  title: 'Best CV Examples UK 2026: 15 Good, Professional CV Samples',
+  description: 'See 15 of the best CV examples UK job seekers can use in 2026. Good, professional CV samples by industry with layouts, formats and ATS-friendly tips.',
   keywords: ['CV examples UK', 'CV examples', 'best CV examples UK', 'CV samples UK', 'professional CV examples', 'CV templates by industry', 'British CV examples', 'CV example UK 2026', 'business CV example', 'cv examples 2026', 'cv ideas uk', 'cv examples 2024', 'example of cv uk', 'cv example uk', 'simple cv examples uk', 'british cv example', 'excellent cv examples uk', 'great cv examples uk'],
   alternates: {
     canonical: 'https://www.mycvbuddy.com/blog/cv-examples-by-industry-uk'
   },
   openGraph: {
-    title: 'CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews',
-    description: '15 real UK CV examples across every major industry. Copy proven formats that beat ATS and land interviews.',
+    title: 'Best CV Examples UK 2026: 15 Good, Professional CV Samples',
+    description: '15 real UK CV examples across every major industry, with professional samples, layouts and ATS-friendly tips.',
     type: 'article',
     publishedTime: '2025-01-08T00:00:00Z',
     modifiedTime: '2026-04-20T00:00:00Z',
@@ -35,7 +35,7 @@ export default function CVExamplesByIndustry() {
             CV Examples
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            CV Examples UK 2026: 15 Industry-Specific CVs That Got Interviews
+            Best CV Examples UK 2026: 15 Good, Professional CV Samples
           </h1>
           <div className="flex items-center space-x-6 text-slate-300 text-sm">
             <span>January 8, 2025</span>
@@ -66,6 +66,14 @@ export default function CVExamplesByIndustry() {
               Job seekers who study CV examples from their target industry are <strong>40% more likely to get interviews</strong> than those who use generic templates.
             </p>
           </div>
+
+          <h2 className="text-4xl font-black text-white mt-12 mb-6">What Makes a Good CV Example in the UK?</h2>
+          <p className="text-gray-300 leading-relaxed mb-6">
+            The best CV examples for UK jobs are clear, achievement-led and easy for recruiters to scan. A good CV sample should show a professional summary, recent experience, measurable results, relevant skills and a clean layout that works in applicant tracking systems.
+          </p>
+          <p className="text-gray-300 leading-relaxed mb-6">
+            Use the examples below as practical UK CV samples, not copy-and-paste scripts. Keep the format simple, rewrite each bullet around your own evidence, and tailor the keywords to the role you are applying for.
+          </p>
 
           <h2 className="text-4xl font-black text-white mt-12 mb-6">15 CV Examples by Industry</h2>
 

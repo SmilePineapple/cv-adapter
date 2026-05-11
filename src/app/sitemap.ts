@@ -174,7 +174,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/blog/cv-examples-by-industry-uk`,
-      lastModified: new Date('2026-04-20'),
+      lastModified: new Date('2026-05-11'),
       changeFrequency: 'weekly',
       priority: 0.92,
     },

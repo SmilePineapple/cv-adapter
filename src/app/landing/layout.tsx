@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
-  description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers. 95% success rate. Start free trial today.',
+  title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
+  description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Upload your CV, paste a job description, and get an ATS-friendly, tailored CV in minutes. Start free today.',
   keywords: [
     'CV writing services',
     'AI CV optimization',
@@ -41,40 +41,44 @@ export const metadata: Metadata = {
     'CV writing service reviews',
     'affordable CV writing service',
     'CV writing service cost',
-    'CV writing service guarantee'
+    'CV writing service guarantee',
+    'mycv',
+    'mycv buddy',
+    'my cv buddy',
+    'mycv builder'
   ],
-  authors: [{ name: 'CV Buddy Team' }],
-  creator: 'CV Buddy',
-  publisher: 'CV Buddy',
+  authors: [{ name: 'My CV Buddy Team' }],
+  creator: 'My CV Buddy',
+  publisher: 'My CV Buddy',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://mycvbuddy.com'),
+  metadataBase: new URL('https://www.mycvbuddy.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_GB',
-    url: 'https://mycvbuddy.com',
-    title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
-    description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers. 95% success rate.',
-    siteName: 'CV Buddy',
+    url: 'https://www.mycvbuddy.com',
+    title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
+    description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Upload your CV, paste a job description, and get an ATS-friendly, tailored CV in minutes.',
+    siteName: 'My CV Buddy',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'CV Buddy - AI CV Optimization for UK Job Seekers',
+        alt: 'My CV Buddy - AI CV Builder for UK Job Seekers',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CV Writing Services | AI CV Optimization for UK Job Seekers | CV Buddy',
-    description: 'Transform your job search with AI-powered CV optimization. Get ATS-friendly, professionally tailored resumes that impress UK employers.',
+    title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
+    description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Create an ATS-friendly, tailored CV in minutes.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -87,10 +91,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
   },
 }
 

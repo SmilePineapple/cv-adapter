@@ -62,6 +62,7 @@ CV Adapter is an AI-powered web application that helps job seekers tailor their 
 - **Render-based repair loop**: PDF export can run one guarded AI repair pass from actual render measurements using `src/lib/cv-render-repair.ts`; sparse pages trigger page-specific expansion, while clipped fixed-page content triggers condensation.
 - **Explicit page-plan rendering**: Multi-page PDFs use fixed A4 page containers and blueprint zones from `src/lib/page-plan-renderer.ts`.
 - **Manual QA checklist**: Multi-page CV testing steps are documented in `docs/multi-page-cv-qa-checklist.md`.
+- **SEO metadata alignment**: Marketing metadata should use the canonical `https://www.mycvbuddy.com` domain and keep high-impression brand terms (`mycv`, `mycv buddy`, `my cv buddy`) aligned with page titles/descriptions.
 
 ## 📋 Prerequisites
 
