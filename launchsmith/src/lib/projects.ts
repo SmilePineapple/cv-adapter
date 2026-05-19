@@ -195,8 +195,12 @@ export const projects: Project[] = [
       "Designed to feel calm, not like a productivity tool",
       "Insight tracking for themes and mood",
     ],
-    coverImage: "/portfolio/voice-journal/cover.png",
-    galleryImages: ["/portfolio/voice-journal/cover.png", "/portfolio/voice-journal/page.png"],
+    coverImage: "/portfolio/voice-journal/shot-1.jpg",
+    galleryImages: [
+      "/portfolio/voice-journal/shot-1.jpg",
+      "/portfolio/voice-journal/shot-2.jpg",
+      "/portfolio/voice-journal/shot-3.jpg",
+    ],
     external: { label: "App Store", url: "https://apps.apple.com/gb/app/voice-journal/id6768273622" },
   },
   {
@@ -215,8 +219,12 @@ export const projects: Project[] = [
       "Offline-friendly relaxation sounds",
       "Focused UI that stays out of the way",
     ],
-    coverImage: "/portfolio/satisfy-sounds/cover.png",
-    galleryImages: ["/portfolio/satisfy-sounds/cover.png", "/portfolio/satisfy-sounds/page.png"],
+    coverImage: "/portfolio/satisfy-sounds/shot-1.jpg",
+    galleryImages: [
+      "/portfolio/satisfy-sounds/shot-1.jpg",
+      "/portfolio/satisfy-sounds/shot-2.jpg",
+      "/portfolio/satisfy-sounds/shot-3.jpg",
+    ],
     external: { label: "App Store", url: "https://apps.apple.com/gb/app/satisfy-sounds/id6752653608" },
   },
   {
@@ -235,10 +243,11 @@ export const projects: Project[] = [
       "Contact import and quick actions",
       "Designed for speed and clarity",
     ],
-    coverImage: "/portfolio/birthday-reminder-pro/cover.png",
+    coverImage: "/portfolio/birthday-reminder-pro/shot-1.jpg",
     galleryImages: [
-      "/portfolio/birthday-reminder-pro/cover.png",
-      "/portfolio/birthday-reminder-pro/page.png",
+      "/portfolio/birthday-reminder-pro/shot-1.jpg",
+      "/portfolio/birthday-reminder-pro/shot-2.jpg",
+      "/portfolio/birthday-reminder-pro/shot-3.jpg",
     ],
     external: {
       label: "App Store",
@@ -261,8 +270,12 @@ export const projects: Project[] = [
       "Sync/enrichment via BoardGameGeek",
       "Built for collectors and groups",
     ],
-    coverImage: "/portfolio/board-game-scanner/cover.png",
-    galleryImages: ["/portfolio/board-game-scanner/cover.png", "/portfolio/board-game-scanner/page.png"],
+    coverImage: "/portfolio/board-game-scanner/shot-1.jpg",
+    galleryImages: [
+      "/portfolio/board-game-scanner/shot-1.jpg",
+      "/portfolio/board-game-scanner/shot-2.jpg",
+      "/portfolio/board-game-scanner/shot-3.jpg",
+    ],
     external: {
       label: "App Store",
       url: "https://apps.apple.com/gb/app/board-game-scanner-bgg-sync/id6755399454",
