@@ -12,53 +12,55 @@ export default function HomePage() {
     <div className="bg-white">
       <section className="border-b border-zinc-200">
         <Container className="py-16 sm:py-24">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold text-zinc-600">{site.role}</p>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
-              Web + mobile builds, end to end.
+          <div className="max-w-3xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-600">
+              {site.role}
+            </div>
+            <h1 className="mt-6 font-serif text-5xl font-semibold tracking-tight text-zinc-950 sm:text-6xl">
+              Build. Launch. Iterate.
             </h1>
-            <p className="mt-5 text-lg leading-8 text-zinc-600">
-              I build websites, web apps, and mobile apps — clean UX, modern stacks,
-              and a professional finish. Tell me what you want to build and I’ll
-              help you ship it.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">
+              I build websites, web apps, and iOS apps — clean UX, modern stacks,
+              and a professional finish. If you can describe what you want, we can
+              ship it.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/contact"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--accent)] px-6 text-sm font-semibold text-white hover:opacity-95"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--accent)] px-7 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:opacity-95"
               >
                 Send a message
               </Link>
               <Link
                 href="/portfolio"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 bg-white px-6 text-sm font-semibold text-zinc-950 hover:bg-zinc-50"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-zinc-200 bg-white px-7 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-zinc-50"
               >
-                View portfolio
+                View work
               </Link>
             </div>
           </div>
         </Container>
       </section>
 
-      <section>
+      <section className="bg-[var(--surface)]">
         <Container className="py-14 sm:py-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
                 Services
+              </div>
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+                What I build
               </h2>
-              <p className="mt-2 text-sm text-zinc-600">
-                A focused set of services, built for shipping.
-              </p>
             </div>
             <Link
               href="/services"
-              className="text-sm font-semibold text-[var(--accent)] hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
             >
               See all services
             </Link>
           </div>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 title: "Websites",
@@ -79,9 +81,9 @@ export default function HomePage() {
             ].map((s) => (
               <div
                 key={s.title}
-                className="rounded-2xl border border-zinc-200 bg-white p-6"
+                className="rounded-3xl border border-zinc-200 bg-white p-6"
               >
-                <h3 className="text-sm font-semibold tracking-tight text-zinc-950">
+                <h3 className="font-serif text-xl font-semibold tracking-tight text-zinc-950">
                   {s.title}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-zinc-600">{s.desc}</p>
@@ -91,25 +93,25 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="border-y border-zinc-200 bg-zinc-50">
+      <section className="border-y border-zinc-200 bg-white">
         <Container className="py-14 sm:py-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
-                Featured work
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                Selected work
+              </div>
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+                Featured projects
               </h2>
-              <p className="mt-2 text-sm text-zinc-600">
-                A few recent builds. Links are placeholders for now.
-              </p>
             </div>
             <Link
               href="/portfolio"
-              className="text-sm font-semibold text-[var(--accent)] hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
             >
               Browse portfolio
             </Link>
           </div>
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {featured.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
@@ -119,7 +121,13 @@ export default function HomePage() {
 
       <section>
         <Container className="py-14 sm:py-16">
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            Testimonials
+          </div>
+          <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+            What clients say
+          </h2>
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {[
               {
                 quote:
@@ -142,10 +150,10 @@ export default function HomePage() {
             ].map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-zinc-200 bg-white p-6"
+                className="rounded-3xl border border-zinc-200 bg-white p-6"
               >
-                <p className="text-sm leading-6 text-zinc-800">“{t.quote}”</p>
-                <div className="mt-4 text-sm font-semibold text-zinc-950">
+                <p className="text-sm leading-7 text-zinc-800">“{t.quote}”</p>
+                <div className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-950">
                   {t.name}
                 </div>
                 <div className="mt-1 text-xs text-zinc-600">{t.role}</div>
@@ -155,11 +163,14 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="border-t border-zinc-200 bg-zinc-50">
+      <section className="border-t border-zinc-200 bg-[var(--surface)]">
         <Container className="py-14 sm:py-16">
           <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-zinc-200 bg-white p-8 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                Contact
+              </div>
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
                 Have something to build?
               </h2>
               <p className="mt-2 text-sm text-zinc-600">
@@ -168,9 +179,9 @@ export default function HomePage() {
             </div>
             <Link
               href="/contact"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--accent)] px-6 text-sm font-semibold text-white hover:opacity-95"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--accent)] px-7 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:opacity-95"
             >
-              Contact
+              Send a message
             </Link>
           </div>
         </Container>

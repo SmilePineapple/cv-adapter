@@ -7,20 +7,22 @@ export function Footer() {
   return (
     <footer className="border-t border-zinc-200 bg-white">
       <Container className="py-10">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="text-sm font-semibold tracking-tight text-zinc-950">
+            <div className="font-serif text-lg font-semibold tracking-tight text-zinc-950">
               {site.name}
             </div>
-            <div className="mt-1 text-sm text-zinc-600">{site.role}</div>
-            <div className="mt-2 text-sm text-zinc-500">CV (coming soon)</div>
+            <div className="mt-2 text-sm text-zinc-600">{site.role}</div>
+            <div className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+              CV (coming soon)
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm text-zinc-600 hover:text-zinc-950"
+                className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600 hover:text-zinc-950"
               >
                 {item.label}
               </Link>
@@ -34,4 +36,3 @@ export function Footer() {
     </footer>
   );
 }
-

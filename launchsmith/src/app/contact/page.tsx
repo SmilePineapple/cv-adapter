@@ -7,7 +7,10 @@ export default function ContactPage() {
       <Container className="py-14 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
           <div className="max-w-2xl">
-            <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              Contact
+            </div>
+            <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
               Contact
             </h1>
             <p className="mt-4 text-lg leading-8 text-zinc-600">
@@ -55,4 +58,3 @@ export default function ContactPage() {
     </div>
   );
 }
-

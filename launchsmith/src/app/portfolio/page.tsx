@@ -12,22 +12,25 @@ export default function PortfolioPage() {
     <div className="bg-white">
       <Container className="py-14 sm:py-16">
         <div className="max-w-2xl">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
             Portfolio
+          </div>
+          <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+            Selected work
           </h1>
           <p className="mt-4 text-lg leading-8 text-zinc-600">
-            Case studies and builds. Links are placeholders for now and can be swapped
-            to your real GitHub and live URLs anytime.
+            A mix of web products, websites, and iOS apps — with clean case studies and
+            direct links to each live project.
           </p>
         </div>
 
         <div className="mt-10">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+            <h2 className="font-serif text-2xl font-semibold tracking-tight text-zinc-950">
               Featured
             </h2>
           </div>
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
             {featured.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
@@ -36,17 +39,17 @@ export default function PortfolioPage() {
 
         <div className="mt-16">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+            <h2 className="font-serif text-2xl font-semibold tracking-tight text-zinc-950">
               More projects
             </h2>
             <Link
               href="/contact"
-              className="text-sm font-semibold text-[var(--accent)] hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
             >
               Contact
             </Link>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {more.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
@@ -56,4 +59,3 @@ export default function PortfolioPage() {
     </div>
   );
 }
-
