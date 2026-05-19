@@ -24,17 +24,17 @@ export default async function ProjectPage({
         <div className="max-w-3xl">
           <Link
             href="/portfolio"
-            className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
+            className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent-2)] hover:underline"
           >
             Back to portfolio
           </Link>
-          <div className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="mt-8 text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
             {project.category}
           </div>
-          <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+          <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             {project.title}
           </h1>
-          <p className="mt-4 text-lg leading-8 text-zinc-700">{project.summary}</p>
+          <p className="mt-4 text-lg leading-8 text-white/70">{project.summary}</p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -47,13 +47,13 @@ export default async function ProjectPage({
             </a>
             <Link
               href="/contact"
-              className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-6 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-white/80"
+              className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-white/10 px-6 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-white/10"
             >
               Enquire
             </Link>
           </div>
 
-          <div className="mt-10 overflow-hidden rounded-3xl border border-zinc-200/70 bg-[var(--surface-muted)] shadow-sm shadow-zinc-950/5">
+          <div className="mt-10 overflow-hidden rounded-3xl border border-white/10 bg-[var(--surface-muted)] ring-glow">
             <div className="relative aspect-[16/10]">
               <Image
                 src={project.coverImage}
@@ -66,40 +66,40 @@ export default async function ProjectPage({
           </div>
 
           <div className="mt-12 grid gap-5">
-            <section className="rounded-3xl border border-zinc-200/70 p-7 card-glass shadow-sm shadow-zinc-950/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <section className="rounded-3xl border border-white/10 p-7 card-glass">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Highlights
               </div>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-zinc-700">
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-white/70">
                 {project.highlights.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </section>
 
-            <section className="rounded-3xl border border-zinc-200/70 p-7 card-glass shadow-sm shadow-zinc-950/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <section className="rounded-3xl border border-white/10 p-7 card-glass">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Problem
               </div>
-              <p className="mt-4 text-sm leading-7 text-zinc-700">{project.problem}</p>
+              <p className="mt-4 text-sm leading-7 text-white/70">{project.problem}</p>
             </section>
 
-            <section className="rounded-3xl border border-zinc-200/70 p-7 card-glass shadow-sm shadow-zinc-950/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <section className="rounded-3xl border border-white/10 p-7 card-glass">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Solution
               </div>
-              <p className="mt-4 text-sm leading-7 text-zinc-700">{project.solution}</p>
+              <p className="mt-4 text-sm leading-7 text-white/70">{project.solution}</p>
             </section>
 
-            <section className="rounded-3xl border border-zinc-200/70 p-7 card-glass shadow-sm shadow-zinc-950/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <section className="rounded-3xl border border-white/10 p-7 card-glass">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Tech
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-zinc-200 px-2.5 py-1 text-xs text-zinc-700"
+                    className="chip rounded-full border border-white/10 px-2.5 py-1 text-xs text-white/70"
                   >
                     {tag}
                   </span>
@@ -107,15 +107,15 @@ export default async function ProjectPage({
               </div>
             </section>
 
-            <section className="rounded-3xl border border-zinc-200/70 p-7 card-glass shadow-sm shadow-zinc-950/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <section className="rounded-3xl border border-white/10 p-7 card-glass">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Gallery
               </div>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 {project.galleryImages.slice(0, 4).map((src) => (
                   <div
                     key={src}
-                    className="overflow-hidden rounded-2xl border border-zinc-200/70 bg-[var(--surface-muted)]"
+                    className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface-muted)]"
                   >
                     <div className="relative aspect-[16/10]">
                       <Image
@@ -132,7 +132,7 @@ export default async function ProjectPage({
             </section>
           </div>
 
-          <div className="mt-12 border-t border-zinc-200 pt-10">
+          <div className="mt-12 border-t border-white/10 pt-10">
             <div className="flex flex-wrap gap-3">
               <a
                 href={project.external.url}
@@ -144,7 +144,7 @@ export default async function ProjectPage({
               </a>
               <Link
                 href="/contact"
-                className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-6 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-white/80"
+                className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-white/10 px-6 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-white/10"
               >
                 Build something similar
               </Link>

@@ -61,13 +61,13 @@ export default function ServicesPage() {
     <div className="bg-transparent">
       <Container className="py-14 sm:py-16">
         <div className="max-w-2xl">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
             Services
           </div>
-          <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+          <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Services
           </h1>
-          <p className="mt-4 text-lg leading-8 text-zinc-700">
+          <p className="mt-4 text-lg leading-8 text-white/70">
             No packages and no hard pricing here — just a clean conversation about
             what you need, and a build plan that fits.
           </p>
@@ -77,27 +77,27 @@ export default function ServicesPage() {
           {services.map((s) => (
             <section
               key={s.title}
-              className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+              className="rounded-2xl border border-white/10 p-6 card-glass"
             >
-              <h2 className="text-base font-semibold tracking-tight text-zinc-950">
+              <h2 className="text-base font-semibold tracking-tight text-white">
                 {s.title}
               </h2>
               <div className="mt-4 grid gap-6 sm:grid-cols-2">
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-zinc-600">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-white/60">
                     Outcomes
                   </div>
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-zinc-700">
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-white/70">
                     {s.outcomes.map((o) => (
                       <li key={o}>{o}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-zinc-600">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-white/60">
                     Includes
                   </div>
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-zinc-700">
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-white/70">
                     {s.included.map((i) => (
                       <li key={i}>{i}</li>
                     ))}
@@ -107,7 +107,7 @@ export default function ServicesPage() {
               <div className="mt-6">
                 <Link
                   href="/contact"
-                  className="text-sm font-semibold text-[var(--accent)] hover:underline"
+                  className="text-sm font-semibold text-[var(--accent-2)] hover:underline"
                 >
                   Ask about {s.title.toLowerCase()}
                 </Link>
@@ -117,32 +117,32 @@ export default function ServicesPage() {
         </div>
 
         <div className="mt-16 max-w-3xl">
-          <h2 className="text-xl font-semibold tracking-tight text-zinc-950">FAQ</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-white">FAQ</h2>
           <div className="mt-6 grid gap-4">
             {faq.map((item) => (
               <section
                 key={item.q}
-                className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+                className="rounded-2xl border border-white/10 p-6 card-glass"
               >
-                <h3 className="text-sm font-semibold tracking-tight text-zinc-950">
+                <h3 className="text-sm font-semibold tracking-tight text-white">
                   {item.q}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-700">{item.a}</p>
+                <p className="mt-2 text-sm leading-6 text-white/70">{item.a}</p>
               </section>
             ))}
           </div>
         </div>
 
-        <div className="relative mt-16 overflow-hidden rounded-[36px] border border-zinc-200/70 p-8 card-glass">
+        <div className="relative mt-16 overflow-hidden rounded-[36px] border border-white/10 p-8 card-glass ring-glow">
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(219,39,119,0.18),transparent_70%)] blur-2xl"
+            className="orb pointer-events-none absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.38),transparent_70%)] blur-2xl"
           />
           <div className="relative">
-            <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+            <h2 className="text-xl font-semibold tracking-tight text-white">
               Ready to start?
             </h2>
-            <p className="mt-2 text-sm text-zinc-700">
+            <p className="mt-2 text-sm text-white/70">
               Send a message with what you’re building and your timeline.
             </p>
             <div className="mt-6">

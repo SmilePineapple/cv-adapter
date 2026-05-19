@@ -42,13 +42,13 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5">
+    <div className="rounded-2xl border border-white/10 p-6 card-glass">
       {status === "success" ? (
         <div>
-          <h2 className="text-base font-semibold tracking-tight text-zinc-950">
+          <h2 className="text-base font-semibold tracking-tight text-white">
             Message sent
           </h2>
-          <p className="mt-2 text-sm leading-6 text-zinc-700">
+          <p className="mt-2 text-sm leading-6 text-white/70">
             Thanks — I’ll get back to you as soon as I can.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -61,7 +61,7 @@ export function ContactForm() {
             <button
               type="button"
               onClick={() => setStatus("idle")}
-              className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-5 text-sm font-semibold text-zinc-950 hover:bg-white/80"
+              className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-white/10 px-5 text-sm font-semibold text-white hover:bg-white/10"
             >
               Send another
             </button>
@@ -74,19 +74,19 @@ export function ContactForm() {
           aria-busy={status === "submitting"}
         >
           <div>
-            <label className="text-sm font-semibold text-zinc-900" htmlFor="name">
+            <label className="text-sm font-semibold text-white" htmlFor="name">
               Name
             </label>
             <input
               id="name"
               name="name"
               required
-              className="mt-2 h-11 w-full rounded-xl border border-zinc-200/70 bg-white/70 px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none ring-0 placeholder:text-white/40 focus:border-[var(--accent-2)]"
               placeholder="Your name"
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-zinc-900" htmlFor="email">
+            <label className="text-sm font-semibold text-white" htmlFor="email">
               Email
             </label>
             <input
@@ -94,13 +94,13 @@ export function ContactForm() {
               name="email"
               required
               type="email"
-              className="mt-2 h-11 w-full rounded-xl border border-zinc-200/70 bg-white/70 px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none ring-0 placeholder:text-white/40 focus:border-[var(--accent-2)]"
               placeholder="you@example.com"
             />
           </div>
           <div>
             <label
-              className="text-sm font-semibold text-zinc-900"
+              className="text-sm font-semibold text-white"
               htmlFor="message"
             >
               Message
@@ -110,7 +110,7 @@ export function ContactForm() {
               name="message"
               required
               rows={6}
-              className="mt-2 w-full resize-none rounded-xl border border-zinc-200/70 bg-white/70 px-4 py-3 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none ring-0 placeholder:text-white/40 focus:border-[var(--accent-2)]"
               placeholder="What do you want to build?"
             />
           </div>
@@ -129,7 +129,7 @@ export function ContactForm() {
             >
               {status === "submitting" ? "Sending..." : "Send message"}
             </button>
-            <div className="text-sm text-zinc-500">
+            <div className="text-sm text-white/55">
               You’ll see a confirmation here after submit.
             </div>
           </div>

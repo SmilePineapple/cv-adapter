@@ -9,19 +9,19 @@ export default function AboutPage() {
       <Container className="py-14 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-[320px_1fr] lg:items-start">
           <div>
-            <div className="aspect-square w-full max-w-[320px] rounded-3xl border border-zinc-200/70 bg-white/70 card-glass" />
-            <div className="mt-4 text-sm text-zinc-700">
+            <div className="aspect-square w-full max-w-[320px] rounded-3xl border border-white/10 bg-[var(--surface-muted)] card-glass ring-glow" />
+            <div className="mt-4 text-sm text-white/70">
               Replace this with your headshot later.
             </div>
           </div>
           <div className="max-w-2xl">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
               About
             </div>
-            <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+            <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl">
               About
             </h1>
-            <p className="mt-4 text-lg leading-8 text-zinc-700">
+            <p className="mt-4 text-lg leading-8 text-white/70">
               Launchsmith is a solo builder focused on shipping clean websites, web
               apps, and mobile apps. This is placeholder copy — you can swap it for
               your real story later.
@@ -43,12 +43,12 @@ export default function AboutPage() {
               ].map((s) => (
                 <section
                   key={s.title}
-                  className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+                  className="rounded-2xl border border-white/10 p-6 card-glass"
                 >
-                  <h2 className="text-base font-semibold tracking-tight text-zinc-950">
+                  <h2 className="text-base font-semibold tracking-tight text-white">
                     {s.title}
                   </h2>
-                  <p className="mt-3 text-sm leading-6 text-zinc-700">{s.body}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/70">{s.body}</p>
                 </section>
               ))}
             </div>
@@ -62,13 +62,13 @@ export default function AboutPage() {
               </Link>
               <Link
                 href="/portfolio"
-                className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-5 text-sm font-semibold text-zinc-950 hover:bg-white/80"
+                className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-white/10 px-5 text-sm font-semibold text-white hover:bg-white/10"
               >
                 View work
               </Link>
             </div>
 
-            <div className="mt-10 text-sm text-zinc-500">
+            <div className="mt-10 text-sm text-white/55">
               {site.name} · {site.role}
             </div>
           </div>

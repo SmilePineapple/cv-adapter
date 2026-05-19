@@ -10,28 +10,28 @@ const featured = projects.filter((p) => p.featured).slice(0, 3);
 export default function HomePage() {
   return (
     <div className="bg-transparent">
-      <section className="border-b border-zinc-200/70">
+      <section className="border-b border-white/10">
         <Container className="py-16 sm:py-24">
-          <div className="relative overflow-hidden rounded-[36px] border border-zinc-200/70 p-8 card-glass sm:p-12">
+          <div className="relative overflow-hidden rounded-[36px] border border-white/10 p-8 card-glass ring-glow sm:p-12">
             <div
               aria-hidden
-              className="pointer-events-none absolute -left-28 -top-28 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.35),transparent_70%)] blur-2xl"
+              className="orb pointer-events-none absolute -left-28 -top-28 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(109,40,217,0.75),transparent_70%)] blur-2xl"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute -right-36 top-12 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(219,39,119,0.25),transparent_70%)] blur-2xl"
+              className="orb2 pointer-events-none absolute -right-36 top-8 h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.55),transparent_70%)] blur-2xl"
             />
             <div className="relative max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/70 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-700 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+              <div className="chip inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-2)]" />
                 {site.role}
               </div>
               <h1 className="mt-7 font-serif text-5xl font-semibold tracking-tight sm:text-6xl">
-                <span className="bg-gradient-to-br from-zinc-950 via-zinc-800 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-br from-white via-white to-[var(--accent-2)] bg-clip-text text-transparent">
                   Build. Launch. Iterate.
                 </span>
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-700">
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/70">
                 I build websites, web apps, and iOS apps — clean UX, modern stacks,
                 and a professional finish. If you can describe what you want, we can
                 ship it.
@@ -45,7 +45,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="btn-secondary inline-flex h-12 items-center justify-center rounded-full border border-zinc-200/70 px-7 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-white/80"
+                  className="btn-secondary inline-flex h-12 items-center justify-center rounded-full border border-white/10 px-7 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-white/10"
                 >
                   View work
                 </Link>
@@ -55,20 +55,20 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="bg-white/40">
+      <section className="bg-transparent">
         <Container className="py-14 sm:py-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Services
               </div>
-              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white">
                 What I build
               </h2>
             </div>
             <Link
               href="/services"
-              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent-2)] hover:underline"
             >
               See all services
             </Link>
@@ -94,32 +94,32 @@ export default function HomePage() {
             ].map((s) => (
               <div
                 key={s.title}
-                className="rounded-3xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+                className="rounded-3xl border border-white/10 p-6 card-glass"
               >
-                <h3 className="font-serif text-xl font-semibold tracking-tight text-zinc-950">
+                <h3 className="font-serif text-xl font-semibold tracking-tight text-white">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-700">{s.desc}</p>
+                <p className="mt-2 text-sm leading-6 text-white/70">{s.desc}</p>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      <section className="border-y border-zinc-200/70 bg-transparent">
+      <section className="border-y border-white/10 bg-transparent">
         <Container className="py-14 sm:py-16">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Selected work
               </div>
-              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white">
                 Featured projects
               </h2>
             </div>
             <Link
               href="/portfolio"
-              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent)] hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--accent-2)] hover:underline"
             >
               Browse portfolio
             </Link>
@@ -134,10 +134,10 @@ export default function HomePage() {
 
       <section>
         <Container className="py-14 sm:py-16">
-          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
             Testimonials
           </div>
-          <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+          <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white">
             What clients say
           </h2>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
@@ -163,34 +163,34 @@ export default function HomePage() {
             ].map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-3xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+                className="rounded-3xl border border-white/10 p-6 card-glass"
               >
-                <p className="text-sm leading-7 text-zinc-800">“{t.quote}”</p>
-                <div className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-950">
+                <p className="text-sm leading-7 text-white/80">“{t.quote}”</p>
+                <div className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-white">
                   {t.name}
                 </div>
-                <div className="mt-1 text-xs text-zinc-600">{t.role}</div>
+                <div className="mt-1 text-xs text-white/60">{t.role}</div>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      <section className="border-t border-zinc-200/70 bg-white/40">
+      <section className="border-t border-white/10 bg-transparent">
         <Container className="py-14 sm:py-16">
-          <div className="relative overflow-hidden flex flex-col items-start justify-between gap-6 rounded-[36px] border border-zinc-200/70 p-8 card-glass sm:flex-row sm:items-center">
+          <div className="relative overflow-hidden flex flex-col items-start justify-between gap-6 rounded-[36px] border border-white/10 p-8 card-glass ring-glow sm:flex-row sm:items-center">
             <div
               aria-hidden
-              className="pointer-events-none absolute -left-24 -bottom-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.18),transparent_70%)] blur-2xl"
+              className="orb pointer-events-none absolute -left-24 -bottom-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.32),transparent_70%)] blur-2xl"
             />
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
                 Contact
               </div>
-              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-zinc-950">
+              <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-white">
                 Have something to build?
               </h2>
-              <p className="mt-2 text-sm text-zinc-700">
+              <p className="mt-2 text-sm text-white/70">
                 Send a quick message with what you’re building and your timeline.
               </p>
             </div>

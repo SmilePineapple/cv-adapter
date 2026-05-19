@@ -7,13 +7,13 @@ export default function ContactPage() {
       <Container className="py-14 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
           <div className="max-w-2xl">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
               Contact
             </div>
-            <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+            <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl">
               Contact
             </h1>
-            <p className="mt-4 text-lg leading-8 text-zinc-700">
+            <p className="mt-4 text-lg leading-8 text-white/70">
               Tell me what you want to build. A few lines is enough — I’ll reply
               with next steps and any questions.
             </p>
@@ -34,12 +34,12 @@ export default function ContactPage() {
               ].map((s) => (
                 <section
                   key={s.title}
-                  className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
+                  className="rounded-2xl border border-white/10 p-6 card-glass"
                 >
-                  <h2 className="text-sm font-semibold tracking-tight text-zinc-950">
+                  <h2 className="text-sm font-semibold tracking-tight text-white">
                     {s.title}
                   </h2>
-                  <p className="mt-2 text-sm leading-6 text-zinc-700">{s.body}</p>
+                  <p className="mt-2 text-sm leading-6 text-white/70">{s.body}</p>
                 </section>
               ))}
             </div>
@@ -47,7 +47,7 @@ export default function ContactPage() {
 
           <div>
             <ContactForm />
-            <div className="mt-4 text-xs text-zinc-500">
+            <div className="mt-4 text-xs text-white/55">
               If email sending isn’t configured yet, submissions may fail in this
               sandbox. This is expected until you add environment variables in
               Vercel.
