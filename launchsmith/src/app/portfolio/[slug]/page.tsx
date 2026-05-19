@@ -18,6 +18,8 @@ export default async function ProjectPage({
 
   if (!project) notFound();
 
+  const isIos = project.category === "iOS App";
+
   return (
     <div className="bg-transparent">
       <Container className="py-14 sm:py-16">
@@ -55,12 +57,18 @@ export default async function ProjectPage({
 
           <div className="mt-10 overflow-hidden rounded-3xl border border-white/10 bg-[var(--surface-muted)] ring-glow">
             <div className="relative aspect-[16/10]">
+              {isIos && (
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(6,182,212,0.22),transparent_55%),radial-gradient(circle_at_85%_40%,rgba(109,40,217,0.24),transparent_60%)]"
+                />
+              )}
               <Image
                 src={project.coverImage}
                 alt={`${project.title} cover`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 768px"
-                className="object-cover"
+                className={isIos ? "object-contain p-6" : "object-cover"}
               />
             </div>
           </div>
@@ -118,12 +126,18 @@ export default async function ProjectPage({
                     className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--surface-muted)]"
                   >
                     <div className="relative aspect-[16/10]">
+                      {isIos && (
+                        <div
+                          aria-hidden
+                          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(6,182,212,0.18),transparent_60%),radial-gradient(circle_at_85%_40%,rgba(109,40,217,0.18),transparent_65%)]"
+                        />
+                      )}
                       <Image
                         src={src}
                         alt={`${project.title} screenshot`}
                         fill
                         sizes="(max-width: 1024px) 100vw, 360px"
-                        className="object-cover"
+                        className={isIos ? "object-contain p-5" : "object-cover"}
                       />
                     </div>
                   </div>

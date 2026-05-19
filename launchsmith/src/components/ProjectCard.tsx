@@ -4,16 +4,27 @@ import Link from "next/link";
 import type { Project } from "@/lib/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
+  const isIos = project.category === "iOS App";
+
   return (
     <div className="group overflow-hidden rounded-3xl border border-white/10 card-glass transition-transform hover:-translate-y-0.5">
       <Link href={`/portfolio/${project.slug}`} className="block">
         <div className="relative aspect-[16/10] overflow-hidden bg-[var(--surface-muted)]">
+          {isIos && (
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(6,182,212,0.22),transparent_55%),radial-gradient(circle_at_85%_40%,rgba(109,40,217,0.24),transparent_60%)]"
+            />
+          )}
           <Image
             src={project.coverImage}
             alt={`${project.title} screenshot`}
             fill
             sizes="(max-width: 1024px) 100vw, 33vw"
-            className="object-cover transition duration-700 group-hover:scale-[1.07] group-hover:saturate-125"
+            className={[
+              "transition duration-700 group-hover:scale-[1.07] group-hover:saturate-125",
+              isIos ? "object-contain p-6" : "object-cover",
+            ].join(" ")}
           />
           <div
             aria-hidden

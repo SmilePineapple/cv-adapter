@@ -78,9 +78,8 @@ export const projects: Project[] = [
       "Designed for on-court use: simple UI and fast interactions",
     ],
     featured: true,
-    coverImage: "/portfolio/tournament-generator/cover.png",
+    coverImage: "/portfolio/tournament-generator/shot-1.jpg",
     galleryImages: [
-      "/portfolio/tournament-generator/cover.png",
       "/portfolio/tournament-generator/shot-1.jpg",
       "/portfolio/tournament-generator/shot-2.jpg",
       "/portfolio/tournament-generator/shot-3.jpg",
@@ -172,9 +171,8 @@ export const projects: Project[] = [
       "Designed for accessibility and real-world daily use",
       "Clear, calm UI focused on communication",
     ],
-    coverImage: "/portfolio/communikey/cover.png",
+    coverImage: "/portfolio/communikey/shot-1.jpg",
     galleryImages: [
-      "/portfolio/communikey/cover.png",
       "/portfolio/communikey/shot-1.jpg",
       "/portfolio/communikey/shot-2.jpg",
       "/portfolio/communikey/shot-3.jpg",
@@ -286,9 +284,8 @@ export const projects: Project[] = [
       "Polished templates and export flow",
       "Designed for freelancers who want simplicity",
     ],
-    coverImage: "/portfolio/generate-invoice-pro/cover.png",
+    coverImage: "/portfolio/generate-invoice-pro/shot-1.jpg",
     galleryImages: [
-      "/portfolio/generate-invoice-pro/cover.png",
       "/portfolio/generate-invoice-pro/shot-1.jpg",
       "/portfolio/generate-invoice-pro/shot-2.jpg",
       "/portfolio/generate-invoice-pro/shot-3.jpg",
