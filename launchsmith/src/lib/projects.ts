@@ -81,7 +81,9 @@ export const projects: Project[] = [
     coverImage: "/portfolio/tournament-generator/cover.png",
     galleryImages: [
       "/portfolio/tournament-generator/cover.png",
-      "/portfolio/tournament-generator/page.png",
+      "/portfolio/tournament-generator/shot-1.jpg",
+      "/portfolio/tournament-generator/shot-2.jpg",
+      "/portfolio/tournament-generator/shot-3.jpg",
     ],
     external: {
       label: "App Store",
@@ -171,7 +173,12 @@ export const projects: Project[] = [
       "Clear, calm UI focused on communication",
     ],
     coverImage: "/portfolio/communikey/cover.png",
-    galleryImages: ["/portfolio/communikey/cover.png", "/portfolio/communikey/page.png"],
+    galleryImages: [
+      "/portfolio/communikey/cover.png",
+      "/portfolio/communikey/shot-1.jpg",
+      "/portfolio/communikey/shot-2.jpg",
+      "/portfolio/communikey/shot-3.jpg",
+    ],
     external: { label: "App Store", url: "https://apps.apple.com/gb/app/communikey/id6736987829" },
   },
   {
@@ -282,7 +289,9 @@ export const projects: Project[] = [
     coverImage: "/portfolio/generate-invoice-pro/cover.png",
     galleryImages: [
       "/portfolio/generate-invoice-pro/cover.png",
-      "/portfolio/generate-invoice-pro/page.png",
+      "/portfolio/generate-invoice-pro/shot-1.jpg",
+      "/portfolio/generate-invoice-pro/shot-2.jpg",
+      "/portfolio/generate-invoice-pro/shot-3.jpg",
     ],
     external: {
       label: "App Store",
