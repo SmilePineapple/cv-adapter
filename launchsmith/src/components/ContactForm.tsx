@@ -42,26 +42,26 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-6">
+    <div className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5">
       {status === "success" ? (
         <div>
           <h2 className="text-base font-semibold tracking-tight text-zinc-950">
             Message sent
           </h2>
-          <p className="mt-2 text-sm leading-6 text-zinc-600">
+          <p className="mt-2 text-sm leading-6 text-zinc-700">
             Thanks — I’ll get back to you as soon as I can.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/thanks"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[var(--accent)] px-5 text-sm font-semibold text-white hover:opacity-95"
+              className="btn-primary inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold hover:opacity-95"
             >
               Next steps
             </Link>
             <button
               type="button"
               onClick={() => setStatus("idle")}
-              className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-950 hover:bg-zinc-50"
+              className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-5 text-sm font-semibold text-zinc-950 hover:bg-white/80"
             >
               Send another
             </button>
@@ -81,7 +81,7 @@ export function ContactForm() {
               id="name"
               name="name"
               required
-              className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-white px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 h-11 w-full rounded-xl border border-zinc-200/70 bg-white/70 px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
               placeholder="Your name"
             />
           </div>
@@ -94,7 +94,7 @@ export function ContactForm() {
               name="email"
               required
               type="email"
-              className="mt-2 h-11 w-full rounded-xl border border-zinc-200 bg-white px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 h-11 w-full rounded-xl border border-zinc-200/70 bg-white/70 px-4 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
               placeholder="you@example.com"
             />
           </div>
@@ -110,7 +110,7 @@ export function ContactForm() {
               name="message"
               required
               rows={6}
-              className="mt-2 w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
+              className="mt-2 w-full resize-none rounded-xl border border-zinc-200/70 bg-white/70 px-4 py-3 text-sm text-zinc-950 outline-none ring-0 placeholder:text-zinc-400 focus:border-[var(--accent)]"
               placeholder="What do you want to build?"
             />
           </div>
@@ -125,7 +125,7 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[var(--accent)] px-5 text-sm font-semibold text-white hover:opacity-95 disabled:opacity-60"
+              className="btn-primary inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold hover:opacity-95 disabled:opacity-60"
             >
               {status === "submitting" ? "Sending..." : "Send message"}
             </button>
@@ -138,4 +138,3 @@ export function ContactForm() {
     </div>
   );
 }
-

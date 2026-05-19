@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-transparent">
       <Container className="py-14 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-start">
           <div className="max-w-2xl">
@@ -13,7 +13,7 @@ export default function ContactPage() {
             <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
               Contact
             </h1>
-            <p className="mt-4 text-lg leading-8 text-zinc-600">
+            <p className="mt-4 text-lg leading-8 text-zinc-700">
               Tell me what you want to build. A few lines is enough — I’ll reply
               with next steps and any questions.
             </p>
@@ -34,12 +34,12 @@ export default function ContactPage() {
               ].map((s) => (
                 <section
                   key={s.title}
-                  className="rounded-2xl border border-zinc-200 bg-white p-6"
+                  className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
                 >
                   <h2 className="text-sm font-semibold tracking-tight text-zinc-950">
                     {s.title}
                   </h2>
-                  <p className="mt-2 text-sm leading-6 text-zinc-600">{s.body}</p>
+                  <p className="mt-2 text-sm leading-6 text-zinc-700">{s.body}</p>
                 </section>
               ))}
             </div>

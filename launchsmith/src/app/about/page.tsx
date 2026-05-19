@@ -5,12 +5,12 @@ import { site } from "@/lib/site";
 
 export default function AboutPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-transparent">
       <Container className="py-14 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-[320px_1fr] lg:items-start">
           <div>
-            <div className="aspect-square w-full max-w-[320px] rounded-3xl border border-zinc-200 bg-zinc-50" />
-            <div className="mt-4 text-sm text-zinc-600">
+            <div className="aspect-square w-full max-w-[320px] rounded-3xl border border-zinc-200/70 bg-white/70 card-glass" />
+            <div className="mt-4 text-sm text-zinc-700">
               Replace this with your headshot later.
             </div>
           </div>
@@ -21,7 +21,7 @@ export default function AboutPage() {
             <h1 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
               About
             </h1>
-            <p className="mt-4 text-lg leading-8 text-zinc-600">
+            <p className="mt-4 text-lg leading-8 text-zinc-700">
               Launchsmith is a solo builder focused on shipping clean websites, web
               apps, and mobile apps. This is placeholder copy — you can swap it for
               your real story later.
@@ -43,12 +43,12 @@ export default function AboutPage() {
               ].map((s) => (
                 <section
                   key={s.title}
-                  className="rounded-2xl border border-zinc-200 bg-white p-6"
+                  className="rounded-2xl border border-zinc-200/70 p-6 card-glass shadow-sm shadow-zinc-950/5"
                 >
                   <h2 className="text-base font-semibold tracking-tight text-zinc-950">
                     {s.title}
                   </h2>
-                  <p className="mt-3 text-sm leading-6 text-zinc-600">{s.body}</p>
+                  <p className="mt-3 text-sm leading-6 text-zinc-700">{s.body}</p>
                 </section>
               ))}
             </div>
@@ -56,13 +56,13 @@ export default function AboutPage() {
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex h-11 items-center justify-center rounded-full bg-[var(--accent)] px-5 text-sm font-semibold text-white hover:opacity-95"
+                className="btn-primary inline-flex h-11 items-center justify-center rounded-full px-5 text-sm font-semibold hover:opacity-95"
               >
                 Send a message
               </Link>
               <Link
                 href="/portfolio"
-                className="inline-flex h-11 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-950 hover:bg-zinc-50"
+                className="btn-secondary inline-flex h-11 items-center justify-center rounded-full border border-zinc-200/70 px-5 text-sm font-semibold text-zinc-950 hover:bg-white/80"
               >
                 View work
               </Link>

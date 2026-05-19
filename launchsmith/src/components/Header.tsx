@@ -10,13 +10,15 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-zinc-200/70 bg-white/65 backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
         <Link
           href="/"
           className="font-serif text-lg font-semibold tracking-tight text-zinc-950"
         >
-          {site.name}
+          <span className="bg-gradient-to-br from-zinc-950 via-zinc-800 to-[var(--accent)] bg-clip-text text-transparent">
+            {site.name}
+          </span>
         </Link>
         <nav className="hidden items-center gap-7 sm:flex">
           {navItems.map((item) => (
@@ -37,7 +39,7 @@ export function Header() {
         </nav>
         <Link
           href="/contact"
-          className="inline-flex h-10 items-center justify-center rounded-full bg-[var(--accent)] px-4 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:opacity-95"
+          className="btn-primary inline-flex h-10 items-center justify-center rounded-full px-4 text-xs font-semibold uppercase tracking-[0.14em] hover:opacity-95"
         >
           Contact
         </Link>

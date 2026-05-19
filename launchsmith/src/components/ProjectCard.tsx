@@ -5,7 +5,7 @@ import type { Project } from "@/lib/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white">
+    <div className="group overflow-hidden rounded-3xl border border-zinc-200/70 card-glass shadow-sm shadow-zinc-950/5 transition-shadow hover:shadow-md hover:shadow-zinc-950/10">
       <Link href={`/portfolio/${project.slug}`} className="block">
         <div className="relative aspect-[16/10] overflow-hidden bg-[var(--surface)]">
           <Image
@@ -13,7 +13,11 @@ export function ProjectCard({ project }: { project: Project }) {
             alt={`${project.title} screenshot`}
             fill
             sizes="(max-width: 1024px) 100vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-cover transition duration-700 group-hover:scale-[1.06] group-hover:saturate-110"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-t from-zinc-950/20 via-transparent to-transparent opacity-70"
           />
         </div>
       </Link>
@@ -42,7 +46,7 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
             href={`/portfolio/${project.slug}`}
-            className="inline-flex h-10 items-center justify-center rounded-full bg-zinc-950 px-5 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:opacity-95"
+            className="btn-primary inline-flex h-10 items-center justify-center rounded-full px-5 text-xs font-semibold uppercase tracking-[0.14em] hover:opacity-95"
           >
             Case study
           </Link>
@@ -50,7 +54,7 @@ export function ProjectCard({ project }: { project: Project }) {
             href={project.external.url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-full border border-zinc-200 bg-white px-5 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-zinc-50"
+            className="btn-secondary inline-flex h-10 items-center justify-center rounded-full border border-zinc-200/70 px-5 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-950 hover:bg-white/80"
           >
             {project.external.label}
           </a>
