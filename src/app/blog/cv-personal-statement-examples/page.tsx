@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, User, CheckCircle, Star, BookOpen, Award, Target } from 'lucide-react'
 import type { Metadata } from 'next'
+import { BlogPostBreadcrumb } from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: 'CV Personal Statement Examples 2026: 25 Proven Templates for UK Jobs',
@@ -75,6 +76,14 @@ export default function CVPersonalStatementExamples() {
           </div>
         </div>
       </header>
+
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BlogPostBreadcrumb 
+          category="CV Writing Tips" 
+          title="CV Personal Statement Examples" 
+        />
+      </div>
 
       {/* Article Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

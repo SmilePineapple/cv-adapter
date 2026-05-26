@@ -169,11 +169,88 @@ const faqStructuredData = {
   ]
 }
 
+// WebSite Schema with Sitelinks Searchbox
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "MyCVBuddy - Free AI CV Builder UK",
+  "url": "https://www.mycvbuddy.com",
+  "description": "Free AI-powered CV builder for UK job seekers. Upload your CV, paste a job description, and get a tailored, ATS-optimised CV in minutes.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "MyCVBuddy",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.mycvbuddy.com/logo.png"
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.mycvbuddy.com/blog?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+
+// LocalBusiness Schema for UK presence
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "MyCVBuddy",
+  "description": "Professional CV writing and AI CV optimization services for UK job seekers",
+  "url": "https://www.mycvbuddy.com",
+  "areaServed": {
+    "@type": "Country",
+    "name": "United Kingdom"
+  },
+  "serviceType": "CV Writing Service",
+  "priceRange": "£",
+  "currenciesAccepted": "GBP",
+  "paymentAccepted": "Credit Card, Debit Card",
+  "openingHours": "Mo-Su 00:00-23:59",
+  "isAccessibleForFree": true,
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "CV Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Free CV Generation"
+        },
+        "price": "0",
+        "priceCurrency": "GBP"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Unlimited CV Writing Pro Plan"
+        },
+        "price": "2.99",
+        "priceCurrency": "GBP",
+        "priceValidUntil": "2026-12-31"
+      }
+    ]
+  }
+}
+
 export default function LandingPage() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <>
         {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

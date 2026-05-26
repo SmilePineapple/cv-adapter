@@ -1,0 +1,68 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.mycvbuddy.com/sitemap.xml
+
+# Crawl rate optimization
+Crawl-delay: 1
+
+# Disallow private/auth pages
+Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /upload
+Disallow: /rewrite
+Disallow: /download
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important pages explicitly
+Allow: /blog/
+Allow: /blog/*
+Allow: /pricing
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /cookies
+
+# Googlebot specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+# Bingbot specific
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block AI crawlers that don't respect robots.txt (optional)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Allow legitimate AI crawlers that benefit SEO
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Rate limiting for aggressive crawlers
+User-agent: AhrefsBot
+Crawl-delay: 2
+
+User-agent: SemrushBot
+Crawl-delay: 2
+
+User-agent: MJ12bot
+Crawl-delay: 2

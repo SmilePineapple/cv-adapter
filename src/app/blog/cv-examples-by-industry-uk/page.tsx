@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Briefcase, CheckCircle, Award } from 'lucide-react'
 import type { Metadata } from 'next'
+import { BlogPostBreadcrumb } from '@/components/Breadcrumb'
 
 export const metadata: Metadata = {
   title: 'CV Examples UK 2026: 25 Industry-Specific CVs That Got Interviews',
@@ -73,6 +74,14 @@ export default function CVExamplesByIndustry() {
           </div>
         </div>
       </header>
+
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BlogPostBreadcrumb 
+          category="CV Examples" 
+          title="CV Examples by Industry UK" 
+        />
+      </div>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="prose prose-invert prose-lg max-w-none">
