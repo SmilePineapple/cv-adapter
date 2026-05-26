@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Gradient Background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Accent Gradient -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow Effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(16,185,129,0.1)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="100" r="150" fill="rgba(16,185,129,0.05)"/>
+  <circle cx="1100" cy="530" r="200" fill="rgba(59,130,246,0.05)"/>
+  
+  <!-- Logo Icon -->
+  <g transform="translate(80, 60)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#accentGradient)" filter="url(#glow)"/>
+    <text x="30" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">CV</text>
+  </g>
+  
+  <!-- Brand Name -->
+  <text x="160" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" fill="white">MyCVBuddy</text>
+  
+  <!-- Main Title -->
+  <text x="600" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="68" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-2">CV Examples UK 2026</text>
+  <text x="600" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="700" fill="url(#accentGradient)" text-anchor="middle" letter-spacing="-1">Industry-Specific Samples</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="410" font-family="system-ui, -apple-system, sans-serif" font-size="26" fill="#94a3b8" text-anchor="middle">25 Real CVs That Got Interviews • Marketing • NHS • Finance • Tech</text>
+  
+  <!-- Industry Icons Row -->
+  <g transform="translate(180, 460)">
+    <!-- Marketing -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="140" height="50" rx="25" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+      <text x="70" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#f87171" text-anchor="middle">📈 Marketing</text>
+    </g>
+    
+    <!-- NHS -->
+    <g transform="translate(160, 0)">
+      <rect x="0" y="0" width="100" height="50" rx="25" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+      <text x="50" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#60a5fa" text-anchor="middle">🏥 NHS</text>
+    </g>
+    
+    <!-- Finance -->
+    <g transform="translate(280, 0)">
+      <rect x="0" y="0" width="120" height="50" rx="25" fill="rgba(34,197,94,0.15)" stroke="rgba(34,197,94,0.4)" stroke-width="1"/>
+      <text x="60" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#4ade80" text-anchor="middle">💰 Finance</text>
+    </g>
+    
+    <!-- Tech -->
+    <g transform="translate(420, 0)">
+      <rect x="0" y="0" width="100" height="50" rx="25" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+      <text x="50" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#c084fc" text-anchor="middle">💻 Tech</text>
+    </g>
+    
+    <!-- Teaching -->
+    <g transform="translate(540, 0)">
+      <rect x="0" y="0" width="130" height="50" rx="25" fill="rgba(234,179,8,0.15)" stroke="rgba(234,179,8,0.4)" stroke-width="1"/>
+      <text x="65" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#facc15" text-anchor="middle">📚 Teaching</text>
+    </g>
+    
+    <!-- Business -->
+    <g transform="translate(690, 0)">
+      <rect x="0" y="0" width="130" height="50" rx="25" fill="rgba(99,102,241,0.15)" stroke="rgba(99,102,241,0.4)" stroke-width="1"/>
+      <text x="65" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#818cf8" text-anchor="middle">💼 Business</text>
+    </g>
+  </g>
+  
+  <!-- Stats Bar -->
+  <g transform="translate(350, 550)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">✓ 25 Examples</text>
+    <text x="150" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">✓ ATS-Optimized</text>
+    <text x="320" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">✓ Free Download</text>
+  </g>
+  
+  <!-- URL -->
+  <text x="600" y="610" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#64748b" text-anchor="middle">www.mycvbuddy.com/blog/cv-examples-by-industry-uk</text>
+</svg>
