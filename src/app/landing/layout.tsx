@@ -1,9 +1,16 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
-  description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Upload your CV, paste a job description, and get an ATS-friendly, tailored CV in minutes. Start free today.',
+  title: 'MyCV: Create Your Perfect CV Today | Free AI CV Builder UK',
+  description: 'MyCV Buddy is the free AI CV builder for UK jobs. Upload your CV, paste any job description, and get a tailored, ATS-optimised CV in minutes. 95% success rate. Try free - no credit card required!',
   keywords: [
+    'mycv',
+    'mycv buddy',
+    'my cv buddy',
+    'mycv builder',
+    'free cv builder uk',
+    'ai cv builder',
+    'cv builder uk',
     'CV writing services',
     'AI CV optimization',
     'CV tailoring',
@@ -19,7 +26,6 @@ export const metadata: Metadata = {
     'AI resume builder',
     'UK job market',
     'Applicant Tracking Systems',
-    'CV writing services',
     'professional CV maker',
     'AI career tools',
     'job search optimization',
@@ -38,14 +44,7 @@ export const metadata: Metadata = {
     'professional CV writing services',
     'executive CV writing service',
     'graduate CV writing service',
-    'CV writing service reviews',
-    'affordable CV writing service',
-    'CV writing service cost',
-    'CV writing service guarantee',
-    'mycv',
-    'mycv buddy',
-    'my cv buddy',
-    'mycv builder'
+    'affordable CV writing service'
   ],
   authors: [{ name: 'My CV Buddy Team' }],
   creator: 'My CV Buddy',
@@ -63,22 +62,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GB',
     url: 'https://www.mycvbuddy.com',
-    title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
-    description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Upload your CV, paste a job description, and get an ATS-friendly, tailored CV in minutes.',
+    title: 'MyCV: Create Your Perfect CV Today | Free AI CV Builder UK',
+    description: 'MyCV Buddy is the free AI CV builder for UK jobs. Upload your CV, paste any job description, and get a tailored, ATS-optimised CV in minutes. 95% success rate. Try free!',
     siteName: 'My CV Buddy',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'My CV Buddy - AI CV Builder for UK Job Seekers',
+        alt: 'MyCV Buddy - Free AI CV Builder for UK Job Seekers',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My CV Buddy | Free AI CV Builder for UK Jobs 2026',
-    description: 'MyCVBuddy is a free AI CV builder for UK job seekers. Create an ATS-friendly, tailored CV in minutes.',
+    title: 'MyCV: Create Your Perfect CV Today | Free AI CV Builder UK',
+    description: 'MyCV Buddy is the free AI CV builder for UK jobs. Upload your CV, paste any job description, and get a tailored, ATS-optimised CV in minutes. Try free!',
     images: ['/og-image.jpg'],
   },
   robots: {

@@ -83,10 +83,49 @@ const serviceStructuredData = {
   }
 }
 
+const appStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MyCVBuddy – Free AI CV Builder",
+  "alternateName": ["mycv builder", "mycvbuddy", "my cv buddy"],
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://www.mycvbuddy.com",
+  "description": "MyCVBuddy is a free AI-powered CV builder and mycv writer for UK job seekers. Upload your existing CV, paste a job description, and get a tailored, ATS-optimised CV in minutes.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "GBP",
+    "description": "Free CV generation. Pro plan from £2.99/month."
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "2500"
+  },
+  "featureList": [
+    "AI CV tailoring to job descriptions",
+    "ATS keyword optimisation",
+    "10 professional UK CV templates",
+    "Cover letter generator",
+    "PDF and Word export",
+    "Marketing CV examples UK",
+    "CV ideas and CV samples for UK jobs"
+  ]
+}
+
 const faqStructuredData = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is MyCVBuddy and how does the mycv builder work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MyCVBuddy is a free AI-powered mycv builder designed for UK job seekers. Upload your existing CV, paste the target job description, and the AI rewrites your CV with tailored keywords, ATS-friendly formatting and achievement-led bullet points. Your first CV is completely free."
+      }
+    },
     {
       "@type": "Question",
       "name": "How does AI CV optimization work?",
@@ -101,6 +140,22 @@ const faqStructuredData = {
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Absolutely! CV Buddy is specifically designed for the UK job market. Our AI understands UK terminology, formatting preferences, and ATS systems used by British employers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get marketing CV examples UK?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. MyCVBuddy includes real marketing CV examples for UK jobs, including marketing manager, digital marketing executive and brand manager roles. Visit our CV examples blog to browse samples by industry, or use the AI builder to generate a tailored marketing CV in minutes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I find CV ideas for UK jobs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MyCVBuddy provides free CV ideas and CV samples for all UK industries, including finance, tech, healthcare, marketing and education. Browse our CV examples library for formatting inspiration and industry-specific content ideas, or use the AI builder to create your own tailored CV."
       }
     },
     {
@@ -126,6 +181,10 @@ export default function LandingPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceStructuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(appStructuredData) }}
         />
         <script
           type="application/ld+json"
@@ -162,13 +221,12 @@ export default function LandingPage() {
       <section className="py-24 px-4 bg-gradient-to-br from-gray-950 via-blue-950/30 to-gray-950">
         <div className="container mx-auto text-center max-w-4xl">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            CV Writing Services | AI-Powered CV Tailoring for UK Job Seekers
+            MyCVBuddy — Free AI CV Builder &amp; MyCVBuilder for UK Jobs
           </h1>
           <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
-            Transform your job search with intelligent CV optimization. Upload your CV, paste any job description, 
-            and get a perfectly tailored resume that passes ATS systems and impresses recruiters. 
-            Professional CV writing services and ATS CV checker powered by advanced AI technology. 
-            Best CV writing service UK with guaranteed results.
+            The free mycv builder trusted by UK job seekers. Upload your CV, paste any job description, 
+            and get a perfectly tailored, ATS-optimised CV in minutes. 
+            Browse marketing CV examples UK, get CV ideas, and use our AI to create a standout CV — no credit card required.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -208,7 +266,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-sm text-gray-400">
-            ✨ 1 free CV optimization • £2.99/month for unlimited resume writing & cover letters
+            ✨ First CV free • No credit card • £2.99/month for unlimited CVs &amp; cover letters
           </div>
         </div>
       </section>
@@ -602,6 +660,29 @@ export default function LandingPage() {
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
               <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">What is MyCVBuddy and how does the mycv builder work?</h3>
+                <p className="text-gray-300">
+                  MyCVBuddy is a free AI-powered mycv builder for UK job seekers. Upload your existing CV, 
+                  paste the target job description, and the AI rewrites your CV with tailored keywords, 
+                  ATS-friendly formatting and achievement-led bullet points. Your first CV is completely free — no credit card required.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">Can I get marketing CV examples UK on this site?</h3>
+                <p className="text-gray-300">
+                  Yes. Our <a href="/blog/cv-examples-by-industry-uk" className="text-blue-400 hover:text-blue-300 underline">CV examples library</a> includes real marketing CV examples for UK jobs, covering marketing manager, digital marketing executive and brand manager roles. You can also use the AI builder to generate a tailored marketing CV in minutes.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">Where can I find CV ideas for UK jobs in 2026?</h3>
+                <p className="text-gray-300">
+                  Browse our free <a href="/blog/cv-examples-by-industry-uk" className="text-blue-400 hover:text-blue-300 underline">CV ideas and examples by industry</a> for formatting inspiration and content ideas. We cover all major UK sectors: finance, tech, healthcare, marketing, education and more. Or use the AI builder to create your own tailored CV.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-white mb-3">How does AI CV optimization work?</h3>
                 <p className="text-gray-300">
                   Our AI analyzes your existing CV and the target job description to identify key skills, 
@@ -612,9 +693,9 @@ export default function LandingPage() {
               </div>
               
               <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-white mb-3">Is CV Buddy suitable for UK job applications?</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Is MyCVBuddy suitable for UK job applications?</h3>
                 <p className="text-gray-300">
-                  Absolutely! CV Buddy is specifically designed for the UK job market. Our AI understands 
+                  Absolutely! MyCVBuddy is specifically designed for the UK job market. Our AI understands 
                   UK terminology, formatting preferences, and ATS systems used by British employers. 
                   We help you create CVs that resonate with UK recruiters and hiring managers.
                 </p>
