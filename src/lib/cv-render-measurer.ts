@@ -74,6 +74,53 @@ export function getUnderfilledPages(pageOccupancy: PageOccupancy[], threshold: n
   return pageOccupancy.filter(page => page.occupancy < threshold)
 }
 
+// Vertical coverage = how far the lowest section on a page reaches down the page (0-1).
+// This captures the visible bottom white space a user sees, independent of text density.
+export function getPageBottomCoverage(measurement: Pick<RenderMeasurement, 'pageHeight' | 'actualPages' | 'sectionPlacements'>): number[] {
+  const { pageHeight, actualPages, sectionPlacements } = measurement
+  return Array.from({ length: actualPages }, (_, index) => {
+    const pageTop = index * pageHeight
+    const pageBottom = pageTop + pageHeight
+    const bottoms = sectionPlacements
+      .filter(section => section.bottom > pageTop && section.top < pageBottom)
+      .map(section => Math.min(section.bottom, pageBottom))
+    const lowest = bottoms.length > 0 ? Math.max(...bottoms) : pageTop
+    return Math.min(1, Math.max(0, (lowest - pageTop) / pageHeight))
+  })
+}
+
+export interface FillScaleOptions {
+  maxScale?: number
+  targetCoverage?: number
+  fullPageCap?: number
+}
+
+// Computes a single global spacing multiplier that pushes underfilled page content toward
+// the bottom of the page without overflowing the fullest page. Returns 1 when no fill is
+// needed (single-page target, overflowing, or pages already near-full).
+export function computeFillScale(measurement: RenderMeasurement, options: FillScaleOptions = {}): number {
+  const { maxScale = 1.3, targetCoverage = 0.95, fullPageCap = 0.97 } = options
+
+  if (!measurement.targetPages || measurement.targetPages <= 1) return 1
+  if (measurement.overflowing) return 1
+
+  const coverage = getPageBottomCoverage(measurement)
+  if (coverage.length === 0) return 1
+
+  const bindingMax = Math.max(...coverage)
+  if (bindingMax <= 0) return 1
+
+  // Pages expected to be full are every page except the final one (the last page may be short).
+  const nonFinal = coverage.length > 1 ? coverage.slice(0, coverage.length - 1) : coverage
+  const minNonFinal = Math.min(...nonFinal)
+  if (minNonFinal >= 0.9) return 1
+
+  const safeScale = fullPageCap / bindingMax
+  const wantScale = targetCoverage / minNonFinal
+
+  return Math.min(maxScale, Math.max(1, Math.min(safeScale, wantScale)))
+}
+
 export async function measureRenderedCV(page: Page, targetPages?: number): Promise<RenderMeasurement> {
   const rawMeasurement = await page.evaluate((fallbackPageHeight) => {
     const pageHeight = fallbackPageHeight

@@ -4,6 +4,21 @@
 
 Use this checklist to validate deterministic 2/3/4-page CV generation after the blueprint, validation, render measurement, repair, and page-plan renderer changes.
 
+## Hybrid white-space update (preview/PDF unification + fill)
+
+These checks cover the Hybrid changes that target white space:
+
+- The download preview for `max_pages > 1` now renders via the same `renderPagePlanHTML` used by PDF export, so preview and PDF must look identical (fixed A4 page boxes, same zones).
+- Blueprint char budgets were recalibrated to the real page-plan CSS (single-column ≈ 5,400 chars/page, two-column ≈ 7,200), so generated content should genuinely fill each page rather than ~half.
+- A deterministic spacing fill (`computeFillScale` + `renderPagePlanHTML(..., fillScale)`) runs in PDF export before any AI repair. It scales gaps/line-height (capped at 1.3×) to push content toward the bottom of underfilled pages without overflowing.
+
+For each page count (2/3/4), confirm:
+
+- The preview pages and the exported PDF pages match.
+- Pages 1..(n-1) are filled to the bottom with little visible white space; the final page may be shorter if source content is genuinely limited.
+- No content is clipped at the bottom of a page after the fill scale is applied.
+- Server logs show `Applying deterministic fill scale: <value>` only when a page was underfilled, and the post-fill measurement does not report `overflowing`.
+
 ## Pre-Test Setup
 
 - Confirm OpenAI API access is configured.

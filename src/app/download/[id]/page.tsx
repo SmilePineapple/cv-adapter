@@ -26,6 +26,7 @@ import SkillScoreEditor from '@/components/SkillScoreEditor'
 import PhotoUpload from '@/components/PhotoUpload'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
+import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
 
 interface GenerationData {
   id: string
@@ -34,6 +35,7 @@ interface GenerationData {
   created_at: string
   cv_id: string
   ats_score?: number
+  max_pages?: number
 }
 
 interface AIReview {
@@ -316,7 +318,7 @@ export default function DownloadPage() {
 
       const { data: generation, error } = await supabase
         .from('generations')
-        .select('id, job_title, output_sections, created_at, cv_id, ats_score, cvs(photo_url)')
+        .select('id, job_title, output_sections, created_at, cv_id, ats_score, max_pages, cvs(photo_url)')
         .eq('id', generationId)
         .eq('user_id', user.id)
         .single()
@@ -396,6 +398,14 @@ export default function DownloadPage() {
   }
 
   const generateTemplateHtml = (sections: CVSection[], templateId: string, overrideSkillScores?: { name: string; level: number }[] | null): string => {
+    // Multi-page CVs use the deterministic page-plan renderer so the preview matches the
+    // exported PDF exactly. Template styling intentionally defers to the page-plan layout
+    // for max_pages > 1 (single-page CVs continue to use the selected template below).
+    const maxPages = generationData?.max_pages || 1
+    if (maxPages > 1) {
+      return renderPagePlanHTML(sections, maxPages, templateId)
+    }
+
     // Check if it's a stunning template first
     const stunningTemplateKeys = Object.keys(stunningTemplates)
     if (stunningTemplateKeys.includes(templateId)) {

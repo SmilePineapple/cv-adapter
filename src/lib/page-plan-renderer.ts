@@ -87,7 +87,7 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
   }
 }
 
-export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, templateName: string = 'page-plan'): string {
+export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, templateName: string = 'page-plan', fillScale: number = 1): string {
   const plan = createPagePlan(sections, pageCount)
   const name = getSectionText(sections.find(section => section.type === 'name')?.content) || 'CV'
   const contact = getSectionText(sections.find(section => section.type === 'contact')?.content)
@@ -98,7 +98,7 @@ export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, te
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(name)}</title>
-  <style>${getPagePlanCSS(templateName)}</style>
+  <style>${getPagePlanCSS(templateName, fillScale)}</style>
 </head>
 <body data-template="${escapeHtml(templateName)}" data-page-plan="${plan.blueprint.targetPages}">
   ${plan.pages.map(page => `
@@ -143,25 +143,36 @@ function formatSectionTitle(section: PlannedPageSection): string {
   return section.totalParts && section.totalParts > 1 ? `${title} (${section.part}/${section.totalParts})` : title
 }
 
-function getPagePlanCSS(templateName: string): string {
+function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
   const theme = getTemplateTheme(templateName)
+  // Clamp the fill scale so the page never overflows and text stays readable.
+  const scale = Math.min(Math.max(fillScale, 1), 1.3)
+  // Line-height is scaled more gently than structural spacing to preserve legibility.
+  const lineScale = Math.min(scale, 1.18)
+  const pageGap = (3.2 * scale).toFixed(2)
+  const zoneGap = (3.5 * scale).toFixed(2)
+  const headerPad = (3 * scale).toFixed(2)
+  const headerMargin = (1 * scale).toFixed(2)
+  const h2Margin = (1.4 * scale).toFixed(2)
+  const pMargin = (1.1 * scale).toFixed(2)
+  const bodyLineHeight = (1.36 * lineScale).toFixed(3)
   return `
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #ffffff; color: ${theme.text}; font-family: ${theme.fontFamily}; font-size: ${theme.fontSize}; line-height: 1.36; }
-    .cv-page { position: relative; width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: ${theme.pagePadding}; background: ${theme.background}; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: 3.2mm; }
+    body { margin: 0; background: #ffffff; color: ${theme.text}; font-family: ${theme.fontFamily}; font-size: ${theme.fontSize}; line-height: ${bodyLineHeight}; }
+    .cv-page { position: relative; width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: ${theme.pagePadding}; background: ${theme.background}; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: ${pageGap}mm; }
     .cv-page:last-child { page-break-after: auto; }
-    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: 3mm; margin-bottom: 1mm; }
+    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: ${headerPad}mm; margin-bottom: ${headerMargin}mm; }
     .cv-header h1 { margin: 0 0 2mm; color: ${theme.heading}; font-size: ${theme.nameSize}; line-height: 1.1; letter-spacing: -0.02em; }
     .cv-contact { color: ${theme.muted}; white-space: pre-wrap; font-size: ${theme.contactSize}; }
-    .page-zone { display: grid; gap: 3.5mm; min-height: 0; }
+    .page-zone { display: grid; gap: ${zoneGap}mm; min-height: 0; }
     .page-zone-single-column { grid-template-columns: 1fr; }
     .page-zone-two-column { grid-template-columns: 1fr 1fr; align-items: start; }
     .page-zone-hybrid { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
     .cv-section { break-inside: avoid; page-break-inside: avoid; border-left: 2px solid ${theme.accent}; padding-left: 3mm; min-width: 0; }
-    .cv-section h2 { margin: 0 0 1.4mm; color: ${theme.accent}; font-size: ${theme.sectionTitleSize}; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
+    .cv-section h2 { margin: 0 0 ${h2Margin}mm; color: ${theme.accent}; font-size: ${theme.sectionTitleSize}; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
     .section-content { white-space: normal; overflow-wrap: anywhere; }
-    .section-content p { margin: 0 0 1.1mm; }
+    .section-content p { margin: 0 0 ${pMargin}mm; }
     .section-content p:last-child { margin-bottom: 0; }
     ${theme.extraCss}
     @media print { body { background: #ffffff; } .cv-page { margin: 0; box-shadow: none; } }
@@ -209,44 +220,119 @@ function compactEmptyPages(pages: PlannedPage[]): PlannedPage[] {
   }))
 }
 
-function getTemplateTheme(templateName: string) {
-  if (templateName === 'creative_modern') {
-    return {
-      fontFamily: "'Inter', Arial, sans-serif",
-      fontSize: '9px',
-      pagePadding: '10mm 11mm',
-      background: '#ffffff',
-      text: '#2d3748',
-      heading: '#2d3748',
-      muted: '#4a5568',
-      accent: '#f6ad55',
-      nameSize: '22px',
-      contactSize: '8.8px',
-      sectionTitleSize: '10px',
-      extraCss: `
-        .cv-page::before { content: ''; position: absolute; width: 38mm; height: 38mm; border-radius: 50%; background: #f6ad55; top: -15mm; right: 18mm; opacity: 0.82; }
-        .cv-page::after { content: ''; position: absolute; width: 28mm; height: 28mm; border-radius: 50%; background: #4a5568; top: 5mm; right: -8mm; opacity: 0.78; }
-        .cv-header, .page-zone { position: relative; z-index: 1; }
-        .cv-section { border-left-color: #f6ad55; }
-        .cv-section h2 { color: #2d3748; }
-      `
-    }
-  }
+interface PagePlanTheme {
+  fontFamily: string
+  fontSize: string
+  pagePadding: string
+  background: string
+  text: string
+  heading: string
+  muted: string
+  accent: string
+  nameSize: string
+  contactSize: string
+  sectionTitleSize: string
+  extraCss: string
+}
 
-  return {
-    fontFamily: 'Inter, Arial, sans-serif',
-    fontSize: '10px',
-    pagePadding: '11mm 12mm',
-    background: '#ffffff',
-    text: '#111827',
-    heading: '#111827',
-    muted: '#4b5563',
-    accent: '#2563eb',
-    nameSize: '24px',
-    contactSize: '9px',
-    sectionTitleSize: '10.5px',
-    extraCss: ''
+const BASE_THEME: PagePlanTheme = {
+  fontFamily: 'Inter, Arial, sans-serif',
+  fontSize: '10px',
+  pagePadding: '11mm 12mm',
+  background: '#ffffff',
+  text: '#111827',
+  heading: '#111827',
+  muted: '#4b5563',
+  accent: '#2563eb',
+  nameSize: '24px',
+  contactSize: '9px',
+  sectionTitleSize: '10.5px',
+  extraCss: ''
+}
+
+// Each selectable template (see TEMPLATES in the download page) maps to its own theme so
+// multi-page CVs keep the template's visual identity (accent colour, fonts, header style)
+// while sharing the deterministic page-plan layout that fixes white space.
+const TEMPLATE_THEMES: Record<string, Partial<PagePlanTheme>> = {
+  creative_modern: {
+    fontFamily: "'Inter', Arial, sans-serif",
+    fontSize: '9px',
+    pagePadding: '10mm 11mm',
+    text: '#2d3748',
+    heading: '#2d3748',
+    muted: '#4a5568',
+    accent: '#f6ad55',
+    nameSize: '22px',
+    contactSize: '8.8px',
+    sectionTitleSize: '10px',
+    extraCss: `
+      .cv-page::before { content: ''; position: absolute; width: 38mm; height: 38mm; border-radius: 50%; background: #f6ad55; top: -15mm; right: 18mm; opacity: 0.82; }
+      .cv-page::after { content: ''; position: absolute; width: 28mm; height: 28mm; border-radius: 50%; background: #4a5568; top: 5mm; right: -8mm; opacity: 0.78; }
+      .cv-header, .page-zone { position: relative; z-index: 1; }
+      .cv-section { border-left-color: #f6ad55; }
+      .cv-section h2 { color: #2d3748; }
+    `
+  },
+  professional_columns: {
+    accent: '#3b82f6',
+    heading: '#1e3a8a',
+    extraCss: `
+      .cv-header { border-bottom-width: 3px; border-bottom-color: #3b82f6; }
+      .cv-header h1 { color: #1e3a8a; }
+    `
+  },
+  'professional-metrics': {
+    accent: '#4f46e5',
+    heading: '#312e81',
+    extraCss: `
+      .cv-header { border-bottom-color: #4f46e5; }
+      .cv-header h1 { color: #312e81; }
+      .cv-section h2 { color: #4f46e5; }
+    `
+  },
+  'teal-sidebar': {
+    accent: '#14b8a6',
+    heading: '#115e59',
+    extraCss: `
+      .cv-header { border-bottom-color: #14b8a6; }
+      .cv-header h1 { color: #115e59; }
+      .cv-section h2 { color: #0f766e; }
+    `
+  },
+  'soft-header': {
+    accent: '#8b5cf6',
+    heading: '#5b21b6',
+    extraCss: `
+      .cv-header { border-bottom: 0; padding-bottom: 4mm; background: linear-gradient(90deg, rgba(139,92,246,0.16), rgba(96,165,250,0.16)); padding: 4mm; border-radius: 2mm; }
+      .cv-header h1 { color: #5b21b6; }
+      .cv-section h2 { color: #7c3aed; }
+    `
+  },
+  'artistic-header': {
+    accent: '#ec4899',
+    heading: '#9d174d',
+    extraCss: `
+      .cv-header { border-bottom-color: #ec4899; background-image: radial-gradient(rgba(236,72,153,0.18) 1.2px, transparent 1.2px); background-size: 6px 6px; padding-bottom: 4mm; }
+      .cv-header h1 { color: #9d174d; }
+      .cv-section h2 { color: #db2777; }
+    `
+  },
+  'bold-split': {
+    accent: '#06b6d4',
+    heading: '#0e7490',
+    fontSize: '10.5px',
+    extraCss: `
+      .cv-header { border-bottom-width: 3px; border-bottom-color: #0e7490; }
+      .cv-header h1 { color: #0e7490; font-weight: 800; }
+      .cv-section { border-left-width: 3px; border-left-color: #06b6d4; }
+      .cv-section h2 { color: #0e7490; font-weight: 800; }
+    `
   }
+}
+
+function getTemplateTheme(templateName: string): PagePlanTheme {
+  const override = TEMPLATE_THEMES[templateName]
+  return override ? { ...BASE_THEME, ...override } : { ...BASE_THEME }
 }
 
 function escapeHtml(text: string): string {

@@ -61,84 +61,91 @@ export function formatBlueprintForPrompt(blueprint: CVPageBlueprint): string {
   return `Target pages: ${blueprint.targetPages}\nTotal target: ${blueprint.targetTotalChars} chars; acceptable ${blueprint.minTotalChars}-${blueprint.maxTotalChars} chars\n\nPage zones:\n${zones}\n\nSection budgets:\n${budgets}`
 }
 
+// Budget calibration notes (page-plan-renderer.ts default theme: 10px / line-height 1.36,
+// ~11-12mm padding). Measured usable capacity per A4 page at this density:
+//   - single-column full  ≈ 5,400 chars (~4,800 on page 1 after the name/contact header)
+//   - two-column full      ≈ 7,200 chars
+// Targets below aim for ~88-92% fill so generated content genuinely fills each page.
+// The deterministic spacing-fill pass + render measurement absorb small residual gaps,
+// and the AI condense pass handles the rare overflow case.
 const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
   1: {
     targetPages: 1,
-    minTotalChars: 2600,
-    targetTotalChars: 3300,
-    maxTotalChars: 4200,
+    minTotalChars: 3900,
+    targetTotalChars: 4800,
+    maxTotalChars: 5600,
     zones: [
-      { id: 'single_page_core', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience', 'skills', 'education', 'certifications'], minChars: 2600, targetChars: 3300, maxChars: 4200 }
+      { id: 'single_page_core', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience', 'skills', 'education', 'certifications'], minChars: 3900, targetChars: 4800, maxChars: 5600 }
     ],
     sectionBudgets: [
-      { sectionType: 'summary', minChars: 250, targetChars: 400, maxChars: 550, required: true, preferredPage: 1 },
-      { sectionType: 'experience', minChars: 1500, targetChars: 2000, maxChars: 2600, required: true, preferredPage: 1 },
-      { sectionType: 'skills', minChars: 350, targetChars: 500, maxChars: 700, required: true, preferredPage: 1 },
-      { sectionType: 'education', minChars: 150, targetChars: 250, maxChars: 450, required: false, preferredPage: 1 },
-      { sectionType: 'certifications', minChars: 0, targetChars: 150, maxChars: 300, required: false, preferredPage: 1 }
+      { sectionType: 'summary', minChars: 350, targetChars: 550, maxChars: 750, required: true, preferredPage: 1 },
+      { sectionType: 'experience', minChars: 2400, targetChars: 2900, maxChars: 3500, required: true, preferredPage: 1 },
+      { sectionType: 'skills', minChars: 450, targetChars: 650, maxChars: 900, required: true, preferredPage: 1 },
+      { sectionType: 'education', minChars: 200, targetChars: 400, maxChars: 650, required: false, preferredPage: 1 },
+      { sectionType: 'certifications', minChars: 0, targetChars: 300, maxChars: 550, required: false, preferredPage: 1 }
     ]
   },
   2: {
     targetPages: 2,
-    minTotalChars: 5000,
-    targetTotalChars: 6000,
-    maxTotalChars: 7200,
+    minTotalChars: 9800,
+    targetTotalChars: 12000,
+    maxTotalChars: 13600,
     zones: [
-      { id: 'page_1_profile_experience', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience'], minChars: 2800, targetChars: 3400, maxChars: 4100 },
-      { id: 'page_2_supporting_sections', page: 2, layout: 'two-column', sectionTypes: ['experience', 'skills', 'education', 'certifications', 'projects', 'hobbies'], minChars: 2200, targetChars: 2600, maxChars: 3100 }
+      { id: 'page_1_profile_experience', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience'], minChars: 4000, targetChars: 4800, maxChars: 5600 },
+      { id: 'page_2_supporting_sections', page: 2, layout: 'two-column', sectionTypes: ['experience', 'skills', 'education', 'certifications', 'projects', 'hobbies'], minChars: 5800, targetChars: 7200, maxChars: 8000 }
     ],
     sectionBudgets: [
-      { sectionType: 'summary', minChars: 450, targetChars: 600, maxChars: 800, required: true, preferredPage: 1 },
-      { sectionType: 'experience', minChars: 3000, targetChars: 3700, maxChars: 4500, required: true, preferredPage: 1 },
-      { sectionType: 'skills', minChars: 600, targetChars: 800, maxChars: 1050, required: true, preferredPage: 2 },
-      { sectionType: 'education', minChars: 250, targetChars: 400, maxChars: 650, required: false, preferredPage: 2 },
-      { sectionType: 'certifications', minChars: 150, targetChars: 300, maxChars: 500, required: false, preferredPage: 2 },
-      { sectionType: 'projects', minChars: 0, targetChars: 450, maxChars: 700, required: false, preferredPage: 2, allowGenerated: true },
-      { sectionType: 'hobbies', minChars: 0, targetChars: 180, maxChars: 350, required: false, preferredPage: 2 }
+      { sectionType: 'summary', minChars: 450, targetChars: 650, maxChars: 900, required: true, preferredPage: 1 },
+      { sectionType: 'experience', minChars: 5500, targetChars: 7000, maxChars: 8500, required: true, preferredPage: 1 },
+      { sectionType: 'skills', minChars: 700, targetChars: 1000, maxChars: 1400, required: true, preferredPage: 2 },
+      { sectionType: 'education', minChars: 300, targetChars: 550, maxChars: 850, required: false, preferredPage: 2 },
+      { sectionType: 'certifications', minChars: 200, targetChars: 450, maxChars: 750, required: false, preferredPage: 2 },
+      { sectionType: 'projects', minChars: 0, targetChars: 750, maxChars: 1200, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'hobbies', minChars: 0, targetChars: 320, maxChars: 550, required: false, preferredPage: 2 }
     ]
   },
   3: {
     targetPages: 3,
-    minTotalChars: 7600,
-    targetTotalChars: 8800,
-    maxTotalChars: 10200,
+    minTotalChars: 14000,
+    targetTotalChars: 17000,
+    maxTotalChars: 19200,
     zones: [
-      { id: 'page_1_profile_primary_experience', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience'], minChars: 2900, targetChars: 3400, maxChars: 4000 },
-      { id: 'page_2_experience_achievements', page: 2, layout: 'single-column', sectionTypes: ['experience', 'achievements', 'projects'], minChars: 2600, targetChars: 3100, maxChars: 3600 },
-      { id: 'page_3_supporting_sections', page: 3, layout: 'two-column', sectionTypes: ['skills', 'education', 'certifications', 'projects', 'hobbies'], minChars: 2100, targetChars: 2300, maxChars: 2600 }
+      { id: 'page_1_profile_primary_experience', page: 1, layout: 'single-column', sectionTypes: ['summary', 'experience'], minChars: 4000, targetChars: 4800, maxChars: 5600 },
+      { id: 'page_2_experience_achievements', page: 2, layout: 'single-column', sectionTypes: ['experience', 'achievements', 'projects'], minChars: 4400, targetChars: 5400, maxChars: 6200 },
+      { id: 'page_3_supporting_sections', page: 3, layout: 'two-column', sectionTypes: ['skills', 'education', 'certifications', 'projects', 'hobbies'], minChars: 5800, targetChars: 7000, maxChars: 8000 }
     ],
     sectionBudgets: [
-      { sectionType: 'summary', minChars: 600, targetChars: 750, maxChars: 950, required: true, preferredPage: 1 },
-      { sectionType: 'experience', minChars: 4600, targetChars: 5400, maxChars: 6300, required: true, preferredPage: 1 },
-      { sectionType: 'skills', minChars: 800, targetChars: 1050, maxChars: 1300, required: true, preferredPage: 3 },
-      { sectionType: 'education', minChars: 350, targetChars: 550, maxChars: 800, required: false, preferredPage: 3 },
-      { sectionType: 'certifications', minChars: 250, targetChars: 450, maxChars: 700, required: false, preferredPage: 3 },
-      { sectionType: 'achievements', minChars: 0, targetChars: 700, maxChars: 1000, required: false, preferredPage: 2, allowGenerated: true },
-      { sectionType: 'projects', minChars: 0, targetChars: 650, maxChars: 950, required: false, preferredPage: 2, allowGenerated: true },
-      { sectionType: 'hobbies', minChars: 0, targetChars: 250, maxChars: 450, required: false, preferredPage: 3 }
+      { sectionType: 'summary', minChars: 550, targetChars: 800, maxChars: 1100, required: true, preferredPage: 1 },
+      { sectionType: 'experience', minChars: 7500, targetChars: 9200, maxChars: 11000, required: true, preferredPage: 1 },
+      { sectionType: 'skills', minChars: 900, targetChars: 1300, maxChars: 1700, required: true, preferredPage: 3 },
+      { sectionType: 'education', minChars: 350, targetChars: 650, maxChars: 950, required: false, preferredPage: 3 },
+      { sectionType: 'certifications', minChars: 250, targetChars: 550, maxChars: 850, required: false, preferredPage: 3 },
+      { sectionType: 'achievements', minChars: 0, targetChars: 1200, maxChars: 1700, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'projects', minChars: 0, targetChars: 1050, maxChars: 1500, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'hobbies', minChars: 0, targetChars: 380, maxChars: 650, required: false, preferredPage: 3 }
     ]
   },
   4: {
     targetPages: 4,
-    minTotalChars: 10500,
-    targetTotalChars: 12000,
-    maxTotalChars: 13800,
+    minTotalChars: 20500,
+    targetTotalChars: 25000,
+    maxTotalChars: 28000,
     zones: [
-      { id: 'page_1_work_experience', page: 1, layout: 'single-column', sectionTypes: ['experience'], minChars: 3000, targetChars: 3500, maxChars: 4100 },
-      { id: 'page_2_profile_skills', page: 2, layout: 'two-column', sectionTypes: ['summary', 'skills'], minChars: 2400, targetChars: 2800, maxChars: 3300 },
-      { id: 'page_3_achievements_projects', page: 3, layout: 'two-column', sectionTypes: ['achievements', 'projects', 'experience'], minChars: 2500, targetChars: 3000, maxChars: 3500 },
-      { id: 'page_4_supporting_sections', page: 4, layout: 'two-column', sectionTypes: ['education', 'certifications', 'hobbies', 'additional_information'], minChars: 2600, targetChars: 2700, maxChars: 2900 }
+      { id: 'page_1_work_experience', page: 1, layout: 'single-column', sectionTypes: ['experience'], minChars: 4000, targetChars: 4800, maxChars: 5600 },
+      { id: 'page_2_profile_skills', page: 2, layout: 'two-column', sectionTypes: ['summary', 'skills'], minChars: 5800, targetChars: 7000, maxChars: 8000 },
+      { id: 'page_3_achievements_projects', page: 3, layout: 'two-column', sectionTypes: ['achievements', 'projects', 'experience'], minChars: 5800, targetChars: 7000, maxChars: 8000 },
+      { id: 'page_4_supporting_sections', page: 4, layout: 'two-column', sectionTypes: ['education', 'certifications', 'hobbies', 'additional_information'], minChars: 5800, targetChars: 7000, maxChars: 8000 }
     ],
     sectionBudgets: [
-      { sectionType: 'experience', minChars: 5000, targetChars: 6100, maxChars: 7200, required: true, preferredPage: 1 },
-      { sectionType: 'summary', minChars: 700, targetChars: 900, maxChars: 1100, required: true, preferredPage: 2 },
-      { sectionType: 'skills', minChars: 1000, targetChars: 1300, maxChars: 1600, required: true, preferredPage: 2 },
-      { sectionType: 'education', minChars: 450, targetChars: 700, maxChars: 950, required: false, preferredPage: 4 },
-      { sectionType: 'certifications', minChars: 350, targetChars: 650, maxChars: 900, required: false, preferredPage: 4 },
-      { sectionType: 'achievements', minChars: 600, targetChars: 1000, maxChars: 1400, required: false, preferredPage: 3, allowGenerated: true },
-      { sectionType: 'projects', minChars: 500, targetChars: 900, maxChars: 1300, required: false, preferredPage: 3, allowGenerated: true },
-      { sectionType: 'additional_information', minChars: 0, targetChars: 500, maxChars: 800, required: false, preferredPage: 4, allowGenerated: true },
-      { sectionType: 'hobbies', minChars: 150, targetChars: 300, maxChars: 500, required: false, preferredPage: 4 }
+      { sectionType: 'experience', minChars: 8500, targetChars: 11000, maxChars: 13500, required: true, preferredPage: 1 },
+      { sectionType: 'summary', minChars: 700, targetChars: 1000, maxChars: 1300, required: true, preferredPage: 2 },
+      { sectionType: 'skills', minChars: 1200, targetChars: 1700, maxChars: 2200, required: true, preferredPage: 2 },
+      { sectionType: 'education', minChars: 450, targetChars: 800, maxChars: 1200, required: false, preferredPage: 4 },
+      { sectionType: 'certifications', minChars: 350, targetChars: 700, maxChars: 1100, required: false, preferredPage: 4 },
+      { sectionType: 'achievements', minChars: 800, targetChars: 1600, maxChars: 2300, required: false, preferredPage: 3, allowGenerated: true },
+      { sectionType: 'projects', minChars: 600, targetChars: 1400, maxChars: 2100, required: false, preferredPage: 3, allowGenerated: true },
+      { sectionType: 'additional_information', minChars: 0, targetChars: 850, maxChars: 1400, required: false, preferredPage: 4, allowGenerated: true },
+      { sectionType: 'hobbies', minChars: 200, targetChars: 450, maxChars: 750, required: false, preferredPage: 4 }
     ]
   }
 }

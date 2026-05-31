@@ -20,16 +20,17 @@ describe('cv layout validator', () => {
 
   it('accepts content that fits a selected page budget', () => {
     const sections: CVSection[] = [
-      { type: 'summary', content: 'S'.repeat(650), order: 1 },
-      { type: 'experience', content: 'E'.repeat(3300), order: 2 },
-      { type: 'skills', content: 'K'.repeat(800), order: 3 },
-      { type: 'education', content: 'D'.repeat(300), order: 4 }
+      { type: 'summary', content: 'S'.repeat(800), order: 1 },
+      { type: 'experience', content: 'E'.repeat(7000), order: 2 },
+      { type: 'skills', content: 'K'.repeat(1000), order: 3 },
+      { type: 'education', content: 'D'.repeat(600), order: 4 },
+      { type: 'certifications', content: 'C'.repeat(450), order: 5 }
     ]
 
     const result = validateCVLayout(sections, getCVPageBlueprint(2))
 
     expect(result.isValid).toBe(true)
-    expect(result.totalChars).toBe(5050)
+    expect(result.totalChars).toBe(9850)
   })
 
   it('normalizes profile and work experience section aliases', () => {

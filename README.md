@@ -61,6 +61,9 @@ CV Adapter is an AI-powered web application that helps job seekers tailor their 
 - **Rendered layout diagnostics**: PDF export measures actual rendered page count, occupancy, underfilled pages, and section placement with `src/lib/cv-render-measurer.ts`.
 - **Render-based repair loop**: PDF export can run one guarded AI repair pass from actual render measurements using `src/lib/cv-render-repair.ts`; sparse pages trigger page-specific expansion, while clipped fixed-page content triggers condensation.
 - **Explicit page-plan rendering**: Multi-page PDFs use fixed A4 page containers and blueprint zones from `src/lib/page-plan-renderer.ts`.
+- **Unified preview/PDF rendering**: For `max_pages > 1`, the download preview (`src/app/download/[id]/page.tsx`) renders with the same `renderPagePlanHTML` as the PDF export, so the preview matches the downloaded file (template styling defers to the page plan for multi-page).
+- **Renderer-calibrated budgets**: `src/lib/cv-page-blueprints.ts` char budgets are calibrated to the page-plan CSS (~5,400 chars single-column, ~7,200 two-column per page) so generated content fills pages instead of leaving white space.
+- **Deterministic spacing fill**: PDF export calls `computeFillScale` (`src/lib/cv-render-measurer.ts`) and re-renders via `renderPagePlanHTML(..., fillScale)` to push underfilled page content toward the bottom (gap/line-height scaling capped at 1.3×) before any AI repair.
 - **Manual QA checklist**: Multi-page CV testing steps are documented in `docs/multi-page-cv-qa-checklist.md`.
 - **SEO metadata alignment**: Marketing metadata should use the canonical `https://www.mycvbuddy.com` domain and keep high-impression brand terms (`mycv`, `mycv buddy`, `my cv buddy`) aligned with page titles/descriptions.
 

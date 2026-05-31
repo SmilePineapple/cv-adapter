@@ -10,7 +10,7 @@ import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/l
 import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
-import { measureRenderedCV } from '@/lib/cv-render-measurer'
+import { measureRenderedCV, computeFillScale } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
 
@@ -551,13 +551,35 @@ async function handlePdfExport(
       }))
     })
 
-    const renderRepairPlan = createRenderRepairPlan(renderMeasurement)
+    // Deterministic spacing fill: push underfilled page content toward the bottom of each
+    // page without overflowing, before falling back to any AI-based repair. This removes the
+    // residual white space left after the recalibrated content budgets.
+    let activeMeasurement = renderMeasurement
+    if (maxPages && maxPages > 1) {
+      const fillScale = computeFillScale(renderMeasurement)
+      if (fillScale > 1.02) {
+        console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
+        html = renderPagePlanHTML(sections, maxPages, template, fillScale)
+        await page.setContent(html, { waitUntil: 'networkidle0' })
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+        console.log('📐 Render measurement after fill:', {
+          actualPages: activeMeasurement.actualPages,
+          overflowing: activeMeasurement.overflowing,
+          pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
+            page: item.page,
+            occupancy: Number(item.occupancy.toFixed(2))
+          }))
+        })
+      }
+    }
+
+    const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
     console.log('📐 Render repair plan:', renderRepairPlan)
 
     if (maxPages && maxPages > 1 && renderRepairPlan.shouldRepair && !renderRepairAttempted) {
       console.log('📐 Running one-pass render-based layout repair...')
       try {
-        const repairedSections = await repairSectionsForRenderedLayout(sections, renderMeasurement, renderRepairPlan)
+        const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)
         await browser.close()
         return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, true)
       } catch (repairError) {

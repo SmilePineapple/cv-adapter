@@ -76,6 +76,29 @@ describe('page plan renderer', () => {
     expect(html).not.toContain('#1d4ed8')
   })
 
+  it('maps each selectable template to its own accent colour', () => {
+    const accentByTemplate: Record<string, string> = {
+      'professional-metrics': '#4f46e5',
+      'teal-sidebar': '#14b8a6',
+      'soft-header': '#8b5cf6',
+      'artistic-header': '#ec4899',
+      'bold-split': '#06b6d4',
+      professional_columns: '#3b82f6'
+    }
+
+    for (const [templateId, accent] of Object.entries(accentByTemplate)) {
+      const html = renderPagePlanHTML(sections, 2, templateId)
+      expect(html).toContain(accent)
+      // Non-default templates must not silently fall back to the base blue accent.
+      expect(html).not.toContain('#2563eb')
+    }
+  })
+
+  it('falls back to the base theme for unknown templates', () => {
+    const html = renderPagePlanHTML(sections, 2, 'totally-unknown-template')
+    expect(html).toContain('#2563eb')
+  })
+
   it('escapes section content', () => {
     const html = renderPagePlanHTML([
       { type: 'name', content: '<Alex>', order: 0 },
