@@ -334,194 +334,10 @@ async function handlePdfExport(
   renderRepairAttempted: boolean = false
 ) {
   try {
-    // Check if using advanced template
-    let html: string
-    let useOptimizedMargins = false
-    let compressionLevel: 'none' | 'light' | 'medium' | 'heavy' = 'none'
-    
-    if (maxPages && maxPages > 1) {
-      console.log(`📐 Using deterministic page-plan renderer for ${maxPages}-page PDF`)
-      html = renderPagePlanHTML(sections, maxPages, template)
-    } else if (isAdvancedTemplate(template)) {
-      // Use advanced template with icons and two-column layout
-      const contactSection = sections.find(s => s.type === 'contact')
-      
-      // Extract contact info properly - handle both object and string formats
-      let contactInfo = null
-      if (contactSection?.content) {
-        if (typeof contactSection.content === 'string') {
-          // Parse string content to extract email, phone, address
-          const content = contactSection.content
-          const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
-          const phoneMatch = content.match(/[\d\s()+-]{10,}/)
-          const lines = content.split('\n').filter(l => l.trim())
-          
-          contactInfo = {
-            email: emailMatch ? emailMatch[0] : '',
-            phone: phoneMatch ? phoneMatch[0] : '',
-            location: lines.find(l => !l.includes('@') && !l.match(/[\d\s()+-]{10,}/)) || ''
-          }
-        } else {
-          // Already an object
-          contactInfo = contactSection.content
-        }
-      }
-      
-      // Check stunning templates first
-      const stunningTemplateKeys = Object.keys(stunningTemplates)
-      if (stunningTemplateKeys.includes(template)) {
-        // Get name from name section
-        const nameSection = sections.find(s => s.type === 'name')
-        const userName = getSectionContent(nameSection?.content) || 'Your Name'
-
-        // Get skill scores if available - note: skill_scores is not in CVSection type, handled separately
-        const skillScores = null // Skill scores handled via separate data structure
-
-        console.log('📊 Skill scores for template:', skillScores)
-        console.log('📧 Contact info for template:', contactInfo)
-
-        // Normalize contact info field names (handle both formats)
-        let normalizedContact = {
-          email: '',
-          phone: '',
-          location: '',
-          website: ''
-        }
-
-        if (typeof contactInfo === 'object' && contactInfo) {
-          const contact = contactInfo as Record<string, unknown>
-          normalizedContact = {
-            email: (contact.email_address || contact.email || '') as string,
-            phone: (contact.phone_number || contact.phone || '') as string,
-            location: (contact.address || contact.location || '') as string,
-            website: (contact.web || contact.website || '') as string
-          }
-        }
-
-        // Prepare data for stunning templates
-        const templateData = {
-          name: userName,
-          email: normalizedContact.email,
-          phone: normalizedContact.phone,
-          location: normalizedContact.location,
-          website: normalizedContact.website,
-          summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
-          experience: getSectionContent(sections.find(s => s.type === 'experience')?.content),
-          education: getSectionContent(sections.find(s => s.type === 'education')?.content),
-          skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
-          skillScores: skillScores,
-          languages: '', // Languages not in CVSection type
-          hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
-          certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
-          photoUrl: photoUrl || undefined,
-        }
-        html = stunningTemplates[template as keyof typeof stunningTemplates](templateData)
-      } else if (template === 'creative_modern') {
-        html = generateCreativeModernHTML(sections, contactInfo, maxPages)
-      } else if (template === 'professional_columns') {
-        html = generateProfessionalColumnsHTML(sections, contactInfo)
-      } else if (industryTemplates[template]) {
-        // Industry-specific template
-        const userName = typeof contactInfo === 'string' ? contactInfo : contactInfo?.email || 'Your Name'
-        html = generateIndustryTemplateHTML(template, sections, userName)
-      } else {
-        // Fallback
-        const metrics = analyzeContentDensity(sections)
-
-        // Override compression level based on maxPages constraint
-        if (maxPages && metrics.estimatedPages > maxPages) {
-          const pagesOver = metrics.estimatedPages - maxPages
-          if (pagesOver >= 2) {
-            metrics.compressionLevel = 'heavy'
-          } else if (pagesOver >= 1) {
-            metrics.compressionLevel = 'medium'
-          } else {
-            metrics.compressionLevel = 'light'
-          }
-          console.log(`📏 Advanced template: Adjusting compression to ${metrics.compressionLevel} to fit ${maxPages} pages (estimated ${metrics.estimatedPages})`)
-        }
-
-        const optimizedSpacing = getOptimizedSpacing(metrics)
-        html = generateTemplateHtml(sections, template, optimizedSpacing)
-        useOptimizedMargins = true
-        compressionLevel = metrics.compressionLevel
-      }
-
-      console.log('Using Advanced Template:', template)
-
-      // Analyze content density for advanced templates
-      const metrics = analyzeContentDensity(sections)
-      console.log(`📏 Content analysis for advanced template: estimated=${metrics.estimatedPages} pages, maxPages=${maxPages}, compression=${metrics.compressionLevel}`)
-
-      // Truncate content to fit maxPages for advanced templates
-      if (maxPages) {
-        if (metrics.estimatedPages > maxPages) {
-          const ratio = maxPages / metrics.estimatedPages
-          console.log(`📏 Truncating content to fit ${maxPages} pages (estimated ${metrics.estimatedPages}, ratio: ${ratio.toFixed(2)})`)
-          // Truncate experience section first as it's usually the longest
-          const experienceSection = sections.find(s => s.type === 'experience')
-          if (experienceSection && Array.isArray(experienceSection.content)) {
-            const keepCount = Math.ceil(experienceSection.content.length * ratio)
-            experienceSection.content = experienceSection.content.slice(0, keepCount)
-            // Regenerate HTML with truncated content
-            if (stunningTemplateKeys.includes(template)) {
-              html = stunningTemplates[template as keyof typeof stunningTemplates]({
-                name: getSectionContent(sections.find(s => s.type === 'name')?.content) || 'Your Name',
-                email: typeof contactInfo === 'object' ? (contactInfo as any).email || '' : '',
-                phone: typeof contactInfo === 'object' ? (contactInfo as any).phone || '' : '',
-                location: typeof contactInfo === 'object' ? (contactInfo as any).location || '' : '',
-                website: typeof contactInfo === 'object' ? (contactInfo as any).website || '' : '',
-                summary: getSectionContent(sections.find(s => s.type === 'summary')?.content),
-                experience: getSectionContent(experienceSection.content),
-                education: getSectionContent(sections.find(s => s.type === 'education')?.content),
-                skills: getSectionContent(sections.find(s => s.type === 'skills')?.content),
-                skillScores: null,
-                languages: '',
-                hobbies: getSectionContent(sections.find(s => s.type === 'hobbies')?.content),
-                certifications: getSectionContent(sections.find(s => s.type === 'certifications')?.content),
-                photoUrl: photoUrl || undefined,
-              })
-            } else if (template === 'creative_modern') {
-              html = generateCreativeModernHTML(sections, contactInfo, maxPages)
-            } else if (template === 'professional_columns') {
-              html = generateProfessionalColumnsHTML(sections, contactInfo)
-            }
-          }
-        } else {
-          console.log(`📏 Content fits within ${maxPages} pages (estimated ${metrics.estimatedPages}), no truncation needed`)
-        }
-      }
-    } else {
-      // AI-powered layout optimization for basic templates
-      const metrics = analyzeContentDensity(sections)
-
-      // Override compression level based on maxPages constraint
-      if (maxPages && metrics.estimatedPages > maxPages) {
-        // Calculate required compression level to fit into maxPages
-        const pagesOver = metrics.estimatedPages - maxPages
-        if (pagesOver >= 2) {
-          metrics.compressionLevel = 'heavy'
-        } else if (pagesOver >= 1) {
-          metrics.compressionLevel = 'medium'
-        } else {
-          metrics.compressionLevel = 'light'
-        }
-        console.log(`📏 Adjusting compression to ${metrics.compressionLevel} to fit ${maxPages} pages (estimated ${metrics.estimatedPages})`)
-      }
-
-      const optimizedSpacing = getOptimizedSpacing(metrics)
-
-      console.log('PDF Layout Optimization:', {
-        estimatedPages: metrics.estimatedPages,
-        compressionLevel: metrics.compressionLevel,
-        sectionCount: metrics.sectionCount,
-        maxPages
-      })
-
-      html = generateTemplateHtml(sections, template, optimizedSpacing)
-      useOptimizedMargins = true
-      compressionLevel = metrics.compressionLevel
-    }
+    // Always use deterministic page-plan renderer for consistent layout across all page counts.
+    // This ensures preview/PDF unification and proper spacing fill for both single and multi-page CVs.
+    console.log(`📐 Using deterministic page-plan renderer for ${maxPages || 1}-page PDF`)
+    let html = renderPagePlanHTML(sections, maxPages || 1, template)
     
     // Use chromium for serverless environments (Vercel)
     const browser = await puppeteer.launch({
@@ -554,23 +370,22 @@ async function handlePdfExport(
     // Deterministic spacing fill: push underfilled page content toward the bottom of each
     // page without overflowing, before falling back to any AI-based repair. This removes the
     // residual white space left after the recalibrated content budgets.
+    // Apply to ALL page counts (including 1-page) for consistent spacing.
     let activeMeasurement = renderMeasurement
-    if (maxPages && maxPages > 1) {
-      const fillScale = computeFillScale(renderMeasurement)
-      if (fillScale > 1.02) {
-        console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
-        html = renderPagePlanHTML(sections, maxPages, template, fillScale)
-        await page.setContent(html, { waitUntil: 'networkidle0' })
-        activeMeasurement = await measureRenderedCV(page, maxPages)
-        console.log('📐 Render measurement after fill:', {
-          actualPages: activeMeasurement.actualPages,
-          overflowing: activeMeasurement.overflowing,
-          pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
-            page: item.page,
-            occupancy: Number(item.occupancy.toFixed(2))
-          }))
-        })
-      }
+    const fillScale = computeFillScale(renderMeasurement)
+    if (fillScale > 1.02) {
+      console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
+      html = renderPagePlanHTML(sections, maxPages || 1, template, fillScale)
+      await page.setContent(html, { waitUntil: 'networkidle0' })
+      activeMeasurement = await measureRenderedCV(page, maxPages)
+      console.log('📐 Render measurement after fill:', {
+        actualPages: activeMeasurement.actualPages,
+        overflowing: activeMeasurement.overflowing,
+        pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
+          page: item.page,
+          occupancy: Number(item.occupancy.toFixed(2))
+        }))
+      })
     }
 
     const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
@@ -587,14 +402,8 @@ async function handlePdfExport(
       }
     }
     
-    // Optimized margins based on content density (for basic templates only)
-    const margins = useOptimizedMargins 
-      ? (compressionLevel === 'heavy' 
-        ? { top: '6mm', right: '10mm', bottom: '6mm', left: '10mm' }
-        : compressionLevel === 'medium'
-        ? { top: '7mm', right: '11mm', bottom: '7mm', left: '11mm' }
-        : { top: '8mm', right: '12mm', bottom: '8mm', left: '12mm' })
-      : { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } // Advanced templates handle their own margins
+    // Standard A4 margins for page-plan renderer (template handles internal layout)
+    const margins = { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }
     
     const pdfOptions = {
       format: 'A4' as const,
