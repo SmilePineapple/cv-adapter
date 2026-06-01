@@ -334,10 +334,17 @@ async function handlePdfExport(
   renderRepairAttempted: boolean = false
 ) {
   try {
-    // Always use deterministic page-plan renderer for consistent layout across all page counts.
-    // This ensures preview/PDF unification and proper spacing fill for both single and multi-page CVs.
-    console.log(`📐 Using deterministic page-plan renderer for ${maxPages || 1}-page PDF`)
-    let html = renderPagePlanHTML(sections, maxPages || 1, template)
+    // For single-page CVs, use the original template-specific generators with full designs
+    // For multi-page CVs, use the deterministic page-plan renderer with zone-based layout
+    let html: string
+    
+    if (!maxPages || maxPages === 1) {
+      console.log(`🎨 Using template-specific renderer for single-page PDF (${template})`)
+      html = generateTemplateHtml(sections, template, photoUrl, 1)
+    } else {
+      console.log(`📐 Using deterministic page-plan renderer for ${maxPages}-page PDF`)
+      html = renderPagePlanHTML(sections, maxPages, template)
+    }
     
     // Use chromium for serverless environments (Vercel)
     const browser = await puppeteer.launch({
@@ -367,25 +374,25 @@ async function handlePdfExport(
       }))
     })
 
-    // Deterministic spacing fill: push underfilled page content toward the bottom of each
-    // page without overflowing, before falling back to any AI-based repair. This removes the
-    // residual white space left after the recalibrated content budgets.
-    // Apply to ALL page counts (including 1-page) for consistent spacing.
+    // Deterministic spacing fill: only applies to multi-page CVs using page-plan renderer
+    // For single-page CVs, the template generators handle their own spacing
     let activeMeasurement = renderMeasurement
-    const fillScale = computeFillScale(renderMeasurement)
-    if (fillScale > 1.02) {
-      console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
-      html = renderPagePlanHTML(sections, maxPages || 1, template, fillScale)
-      await page.setContent(html, { waitUntil: 'networkidle0' })
-      activeMeasurement = await measureRenderedCV(page, maxPages)
-      console.log('📐 Render measurement after fill:', {
-        actualPages: activeMeasurement.actualPages,
-        overflowing: activeMeasurement.overflowing,
-        pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
-          page: item.page,
-          occupancy: Number(item.occupancy.toFixed(2))
-        }))
-      })
+    if (maxPages && maxPages > 1) {
+      const fillScale = computeFillScale(renderMeasurement)
+      if (fillScale > 1.02) {
+        console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
+        html = renderPagePlanHTML(sections, maxPages, template, fillScale)
+        await page.setContent(html, { waitUntil: 'networkidle0' })
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+        console.log('📐 Render measurement after fill:', {
+          actualPages: activeMeasurement.actualPages,
+          overflowing: activeMeasurement.overflowing,
+          pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
+            page: item.page,
+            occupancy: Number(item.occupancy.toFixed(2))
+          }))
+        })
+      }
     }
 
     const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
@@ -665,8 +672,34 @@ function handleTxtExport(sections: CVSection[], jobTitle: string) {
 function generateTemplateHtml(
   sections: CVSection[], 
   templateId: string, 
-  optimizedSpacing?: ReturnType<typeof getOptimizedSpacing>
+  optimizedSpacing?: ReturnType<typeof getOptimizedSpacing>,
+  photoUrl?: string | null,
+  maxPages?: number
 ): string {
+  // Check if this is an advanced template that needs special handling
+  const advancedTemplates = ['creative_modern', 'professional_columns']
+  const stunningTemplateIds = ['professional-metrics', 'teal-sidebar', 'soft-header', 'artistic-header', 'bold-split']
+  
+  // For advanced templates, use their specific HTML generators
+  if (advancedTemplates.includes(templateId)) {
+    const contactInfo = extractContactInfoFromSections(sections)
+    if (templateId === 'creative_modern') {
+      return generateCreativeModernHTML(sections, contactInfo, maxPages || 1)
+    }
+    if (templateId === 'professional_columns') {
+      return generateProfessionalColumnsHTML(sections, contactInfo)
+    }
+  }
+  
+  // For stunning templates, use their specific generators
+  if (stunningTemplateIds.includes(templateId)) {
+    const templateData = prepareStunningTemplateData(sections, photoUrl)
+    const generator = stunningTemplates[templateId as keyof typeof stunningTemplates]
+    if (generator) {
+      return generator(templateData)
+    }
+  }
+  
   // Reorder: contact first, then name, then others
   const contactSection = sections.find(s => s.type === 'contact')
   const nameSection = sections.find(s => s.type === 'name')
@@ -896,4 +929,84 @@ function generateHtmlWithStyle(sections: CVSection[], style: string): string {
   `
 
   return html
+}
+
+// Helper to extract contact info from sections for advanced templates
+function extractContactInfoFromSections(sections: CVSection[]) {
+  const contactSection = sections.find(s => s.type === 'contact')
+  if (!contactSection) {
+    return { email: '', phone: '', address: '', website: '', linkedin: '' }
+  }
+  
+  try {
+    const content = getSectionContent(contactSection.content)
+    // Try parsing as JSON first
+    if (content.startsWith('{')) {
+      return JSON.parse(content)
+    }
+    // Otherwise extract from text
+    const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
+    const phoneMatch = content.match(/[\d\s\-\+\(\)]{10,}/)
+    return {
+      email: emailMatch?.[0] || '',
+      phone: phoneMatch?.[0] || '',
+      address: '',
+      website: '',
+      linkedin: ''
+    }
+  } catch {
+    return { email: '', phone: '', address: '', website: '', linkedin: '' }
+  }
+}
+
+// Helper to prepare template data for stunning templates
+function prepareStunningTemplateData(sections: CVSection[], photoUrl?: string | null) {
+  const nameSection = sections.find(s => s.type === 'name')
+  const contactSection = sections.find(s => s.type === 'contact')
+  const summarySection = sections.find(s => s.type === 'summary' || s.type === 'professional_summary')
+  const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+  const educationSection = sections.find(s => s.type === 'education')
+  const skillsSection = sections.find(s => s.type === 'skills')
+  const certificationsSection = sections.find(s => s.type === 'certifications')
+  const languagesSection = sections.find(s => s.type === 'languages')
+  const hobbiesSection = sections.find(s => s.type === 'interests' || s.type === 'hobbies')
+  
+  // Parse contact info
+  let email = '', phone = '', address = '', website = ''
+  if (contactSection) {
+    try {
+      const content = getSectionContent(contactSection.content)
+      if (content.startsWith('{')) {
+        const contact = JSON.parse(content)
+        email = contact.email || ''
+        phone = contact.phone || ''
+        address = contact.address || ''
+        website = contact.website || contact.linkedin || ''
+      } else {
+        const emailMatch = content.match(/[\w.-]+@[\w.-]+\.\w+/)
+        const phoneMatch = content.match(/[\d\s\-\+\(\)]{10,}/)
+        if (emailMatch) email = emailMatch[0]
+        if (phoneMatch) phone = phoneMatch[0]
+      }
+    } catch {
+      // ignore
+    }
+  }
+  
+  return {
+    name: nameSection ? getSectionContent(nameSection.content) : '',
+    email,
+    phone,
+    location: address,
+    website,
+    summary: summarySection ? getSectionContent(summarySection.content) : '',
+    experience: experienceSection ? getSectionContent(experienceSection.content) : '',
+    education: educationSection ? getSectionContent(educationSection.content) : '',
+    skills: skillsSection ? getSectionContent(skillsSection.content) : '',
+    skillScores: null,
+    languages: languagesSection ? getSectionContent(languagesSection.content) : '',
+    hobbies: hobbiesSection ? getSectionContent(hobbiesSection.content) : '',
+    certifications: certificationsSection ? getSectionContent(certificationsSection.content) : '',
+    photoUrl: photoUrl || ''
+  }
 }

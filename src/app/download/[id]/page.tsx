@@ -398,11 +398,97 @@ export default function DownloadPage() {
   }
 
   const generateTemplateHtml = (sections: CVSection[], templateId: string, overrideSkillScores?: { name: string; level: number }[] | null): string => {
-    // Always use the deterministic page-plan renderer so the preview matches the
-    // exported PDF exactly. This ensures consistent layout across all page counts
-    // and proper spacing fill for both single and multi-page CVs.
     const maxPages = generationData?.max_pages || 1
-    return renderPagePlanHTML(sections, maxPages, templateId)
+    
+    // For multi-page CVs (2, 3, 4 pages), use the deterministic page-plan renderer
+    // which handles zone-based layout and spacing fill across multiple A4 pages.
+    if (maxPages > 1) {
+      return renderPagePlanHTML(sections, maxPages, templateId)
+    }
+    
+    // For single-page CVs, use the original template-specific generators
+    // which have full visual designs (two-column layouts, decorative elements, etc.)
+    const contactInfo = extractContactInfo(sections)
+    const templateData = prepareTemplateData(sections, overrideSkillScores)
+    
+    // Map template IDs to their generators
+    const templateGenerators: Record<string, (data: any) => string> = {
+      'creative_modern': () => generateCreativeModernHTML(sections, contactInfo, maxPages),
+      'professional_columns': () => generateProfessionalColumnsHTML(sections, contactInfo),
+      'professional-metrics': (data) => stunningTemplates['professional-metrics'](data),
+      'teal-sidebar': (data) => stunningTemplates['teal-sidebar'](data),
+      'soft-header': (data) => stunningTemplates['soft-header'](data),
+      'artistic-header': (data) => stunningTemplates['artistic-header'](data),
+      'bold-split': (data) => stunningTemplates['bold-split'](data),
+    }
+    
+    const generator = templateGenerators[templateId]
+    if (generator) {
+      return generator(templateData)
+    }
+    
+    // Fallback to creative_modern if template not found
+    return generateCreativeModernHTML(sections, contactInfo, maxPages)
+  }
+  
+  // Helper to prepare template data from sections
+  const prepareTemplateData = (sections: CVSection[], overrideSkillScores?: { name: string; level: number }[] | null) => {
+    const nameSection = sections.find(s => s.type === 'name')
+    const contactSection = sections.find(s => s.type === 'contact')
+    const summarySection = sections.find(s => s.type === 'summary' || s.type === 'professional_summary' || s.type === 'profile')
+    const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+    const educationSection = sections.find(s => s.type === 'education')
+    const skillsSection = sections.find(s => s.type === 'skills')
+    const certificationsSection = sections.find(s => s.type === 'certifications')
+    const languagesSection = sections.find(s => s.type === 'languages')
+    const hobbiesSection = sections.find(s => s.type === 'interests' || s.type === 'hobbies')
+    
+    // Parse contact info
+    let email = '', phone = '', address = '', website = ''
+    if (contactSection) {
+      try {
+        const contact = JSON.parse(getSectionContent(contactSection.content))
+        email = contact.email || ''
+        phone = contact.phone || ''
+        address = contact.address || ''
+        website = contact.website || contact.linkedin || ''
+      } catch {
+        const contactText = getSectionContent(contactSection.content)
+        const emailMatch = contactText.match(/[\w.-]+@[\w.-]+\.\w+/)
+        const phoneMatch = contactText.match(/[\d\s\-\+\(\)]{10,}/)
+        if (emailMatch) email = emailMatch[0]
+        if (phoneMatch) phone = phoneMatch[0]
+      }
+    }
+    
+    return {
+      name: getSectionContent(nameSection?.content || ''),
+      email,
+      phone,
+      location: address,
+      website,
+      summary: getSectionContent(summarySection?.content || ''),
+      experience: getSectionContent(experienceSection?.content || ''),
+      education: getSectionContent(educationSection?.content || ''),
+      skills: getSectionContent(skillsSection?.content || ''),
+      skillScores: overrideSkillScores,
+      languages: getSectionContent(languagesSection?.content || ''),
+      hobbies: getSectionContent(hobbiesSection?.content || ''),
+      certifications: getSectionContent(certificationsSection?.content || ''),
+      photoUrl: generationData?.photo_url || ''
+    }
+  }
+  
+  // Helper to extract contact info object from sections
+  const extractContactInfo = (sections: CVSection[]) => {
+    const contactSection = sections.find(s => s.type === 'contact')
+    if (!contactSection) return { email: '', phone: '', address: '', website: '', linkedin: '' }
+    
+    try {
+      return JSON.parse(getSectionContent(contactSection.content))
+    } catch {
+      return { email: '', phone: '', address: '', website: '', linkedin: '' }
+    }
   }
 
   const handleAIReview = async () => {

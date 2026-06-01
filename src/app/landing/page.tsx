@@ -165,6 +165,38 @@ const faqStructuredData = {
         "@type": "Answer",
         "text": "You can upload CVs in PDF, DOC, and DOCX formats up to 10MB. Download options include PDF, Word, HTML, and plain text formats."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "How long should a UK CV be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most UK roles, a CV should be 2 pages. Graduates and school leavers can use 1 page. Senior executives and NHS professionals may extend to 3 pages. MyCVBuddy automatically formats your CV to the correct length for your experience level."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a CV and a resume in the UK?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In the UK, a CV (Curriculum Vitae) is the standard document used for job applications — typically 2 pages including a personal statement, full work history, education, and skills. A resume is the US term for a shorter 1-page document. UK employers always ask for a CV, not a resume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get my CV to pass an ATS system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To pass an ATS (Applicant Tracking System), your CV must: use standard section headings like Work Experience, Education, and Skills; include keywords from the job description naturally throughout; avoid tables, graphics, and unusual fonts; and use a clean single-column layout. MyCVBuddy automatically does all of this for every CV it generates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does MyCVBuddy write cover letters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! The MyCVBuddy Pro plan includes an AI-powered cover letter generator that creates a personalised cover letter matched to your CV and the specific job description. UK cover letters should be no more than one page and address why you want that specific role at that specific company."
+      }
     }
   ]
 }
@@ -727,6 +759,335 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* CV Buddy vs Competitors Comparison Table */}
+      <section className="py-20 bg-gray-950">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            CV Buddy vs Traditional CV Writing Services
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            See why thousands of UK job seekers choose MyCVBuddy over expensive professional CV writing agencies and generic resume builders.
+          </p>
+          <div className="overflow-x-auto max-w-5xl mx-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-blue-900/40 border border-blue-500/30">
+                  <th className="p-4 text-white font-bold text-lg">Feature</th>
+                  <th className="p-4 text-blue-300 font-bold text-lg text-center">CV Buddy</th>
+                  <th className="p-4 text-gray-300 font-bold text-lg text-center">CV Writing Agencies</th>
+                  <th className="p-4 text-gray-300 font-bold text-lg text-center">Generic Builders</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Price", "Free (£2.99/mo Pro)", "£150–£400+", "£10–£30/mo"],
+                  ["Tailored to job description", "✅ AI-powered match", "✅ Manual (slow)", "❌ Generic templates only"],
+                  ["ATS keyword optimisation", "✅ Automatic", "⚠️ Inconsistent", "❌ Rarely included"],
+                  ["Turnaround time", "⚡ Under 2 minutes", "2–5 business days", "Instant (but generic)"],
+                  ["UK-specific formatting", "✅ Built for UK market", "✅ Yes", "⚠️ Mostly US-focused"],
+                  ["Cover letter included", "✅ Pro plan", "💰 Extra cost", "⚠️ Template only"],
+                  ["Interview prep tools", "✅ Included", "❌ Separate service", "❌ Not available"],
+                  ["Multiple export formats", "✅ PDF, DOCX, HTML, TXT", "📄 PDF only", "⚠️ PDF only usually"],
+                  ["Edit after generation", "✅ Full editor included", "❌ One revision", "✅ Basic editor"],
+                  ["GDPR compliant", "✅ UK data centres", "⚠️ Varies", "⚠️ Varies"],
+                ].map(([feature, buddy, agency, generic], i) => (
+                  <tr key={i} className={`border border-white/10 ${i % 2 === 0 ? "bg-gray-900/60" : "bg-gray-800/40"}`}>
+                    <td className="p-4 text-gray-200 font-medium">{feature}</td>
+                    <td className="p-4 text-green-300 text-center font-semibold">{buddy}</td>
+                    <td className="p-4 text-gray-400 text-center">{agency}</td>
+                    <td className="p-4 text-gray-400 text-center">{generic}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-center text-gray-500 text-sm mt-6">
+            Comparison based on publicly available pricing for UK CV writing agencies as of 2026. Agency prices may vary.
+          </p>
+        </div>
+      </section>
+
+      {/* UK Job Market Context */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            The UK Job Market in 2026: Why Your CV Matters More Than Ever
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            The UK recruitment landscape has changed dramatically. Here&apos;s what every job seeker needs to know before sending another CV.
+          </p>
+          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-12">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-4">ATS Systems Are Now Universal</h3>
+              <p className="text-gray-300 mb-4">
+                Over <strong className="text-white">75% of UK employers</strong> now use Applicant Tracking Systems (ATS) to screen CVs before a human ever reads them. 
+                If your CV isn&apos;t formatted correctly with the right keywords, it will be automatically rejected — even if you&apos;re the perfect candidate.
+              </p>
+              <p className="text-gray-300 mb-4">
+                Major UK employers using ATS include Royal Mail, NHS, Lloyds Banking Group, Barclays, KPMG, Deloitte, PwC, and most FTSE 100 companies. 
+                Even SMEs increasingly use platforms like <strong className="text-white">Workday, Greenhouse, and Lever</strong> that automatically score and rank candidates.
+              </p>
+              <p className="text-gray-300">
+                MyCVBuddy&apos;s AI is trained to understand what these systems look for: correct section headings, keyword density, clean formatting, and achievement-led bullet points that match the specific job description you&apos;re applying for.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-4">UK CV Standards vs US Resume Format</h3>
+              <p className="text-gray-300 mb-4">
+                A UK CV and a US resume are fundamentally different documents. UK CVs typically include a <strong className="text-white">personal statement</strong>, are 2 pages for experienced candidates, and use British English spelling, UK date formats, and specific section ordering.
+              </p>
+              <p className="text-gray-300 mb-4">
+                Many generic AI resume builders are built for the US market and produce documents that feel wrong to UK recruiters — missing the personal statement, using US spellings like &quot;organisation&quot; vs &quot;organization,&quot; and formatting dates in the wrong order.
+              </p>
+              <p className="text-gray-300">
+                MyCVBuddy is <strong className="text-white">built exclusively for the UK job market</strong>. Every CV generated follows UK conventions, uses British English, and is optimised for UK recruiters and ATS systems.
+              </p>
+            </div>
+          </div>
+          {/* UK Job Market Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {[
+              { stat: "75%", label: "of UK employers use ATS screening", color: "text-blue-400" },
+              { stat: "6 sec", label: "average time a recruiter spends on a CV", color: "text-yellow-400" },
+              { stat: "250+", label: "average CVs per UK job posting", color: "text-red-400" },
+              { stat: "3x", label: "more interviews with an ATS-optimised CV", color: "text-green-400" },
+            ].map(({ stat, label, color }, i) => (
+              <div key={i} className="bg-gray-800/60 border border-white/10 rounded-xl p-6 text-center">
+                <div className={`text-3xl font-black mb-2 ${color}`}>{stat}</div>
+                <p className="text-gray-400 text-sm">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who Is This For */}
+      <section className="py-20 bg-gray-950">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            Who Uses MyCVBuddy?
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            Whether you&apos;re a fresh graduate or a seasoned executive, our AI CV builder is designed for every stage of your career.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                emoji: "🎓",
+                title: "Graduates & School Leavers",
+                desc: "Just finished your degree or A-levels? Our AI helps you present limited experience in the most compelling way, highlighting transferable skills, projects, and relevant coursework. Perfect for UK graduate scheme applications.",
+                links: [{ href: "/cv-writing-guide", label: "Graduate CV Writing Guide" }],
+              },
+              {
+                emoji: "🔄",
+                title: "Career Changers",
+                desc: "Switching industries is tough when your CV is full of irrelevant experience. MyCVBuddy reframes your existing skills to match your new target role, drawing out transferable experience that UK recruiters want to see.",
+                links: [{ href: "/how-to-tailor-a-cv", label: "How to Tailor Your CV" }],
+              },
+              {
+                emoji: "📈",
+                title: "Professionals Seeking Promotion",
+                desc: "Moving up the ladder requires a CV that speaks to leadership, impact, and measurable results. Our AI elevates your language and ensures your seniority is immediately apparent to hiring managers.",
+                links: [{ href: "/cv-examples", label: "Professional CV Examples UK" }],
+              },
+              {
+                emoji: "🌍",
+                title: "International Job Seekers",
+                desc: "Moving to the UK from abroad? Your CV needs to follow UK conventions, not the format from your home country. We reformat your experience to match exactly what UK employers expect.",
+                links: [{ href: "/cv-vs-resume", label: "CV vs Resume — UK Guide" }],
+              },
+              {
+                emoji: "⚡",
+                title: "Active Job Seekers (Applying to Multiple Roles)",
+                desc: "Applying for 10+ jobs? Manually tailoring each CV is exhausting. MyCVBuddy lets you upload once and generate a perfectly tailored CV for each job description in under 2 minutes.",
+                links: [{ href: "/tailor-cv-to-job-description", label: "Tailor CV to Job Description" }],
+              },
+              {
+                emoji: "🏆",
+                title: "Executives & Senior Leaders",
+                desc: "C-suite and director-level CVs need to convey strategic vision and business impact. Our AI understands executive language and formats your CV to command the attention of board-level recruiters.",
+                links: [{ href: "/resume-writing-services", label: "Professional CV Writing Services" }],
+              },
+            ].map(({ emoji, title, desc, links }, i) => (
+              <div key={i} className="bg-gray-800/60 border border-white/10 rounded-xl p-6 hover:border-blue-500/30 transition-colors">
+                <div className="text-4xl mb-3">{emoji}</div>
+                <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
+                <p className="text-gray-400 text-sm mb-4">{desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {links.map(({ href, label }) => (
+                    <Link key={href} href={href} className="text-xs text-blue-400 hover:text-blue-300 underline">
+                      {label} →
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What Is a Good UK CV — Helpful Guide Section */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              What Makes a Good UK CV in 2026?
+            </h2>
+            <p className="text-gray-300 mb-8 text-lg">
+              Writing a CV that gets you interviews in the UK requires understanding what recruiters and ATS systems are looking for. Here&apos;s the definitive guide to UK CV best practices:
+            </p>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-3">1. Personal Statement (Profile Summary)</h3>
+                <p className="text-gray-300 mb-3">
+                  Every UK CV should open with a 3–5 sentence personal statement that summarises who you are, what you do, and what you bring to the role. This is the first thing a recruiter reads and should be entirely tailored to the specific job. Generic personal statements are the single biggest reason CVs get rejected.
+                </p>
+                <p className="text-gray-300">
+                  A strong personal statement for a software engineer might read: <em className="text-gray-200">&quot;Results-driven full-stack developer with 6 years&apos; experience building scalable web applications at FTSE 250 companies. Specialist in React, Node.js, and AWS, with a track record of reducing deployment times by 40% and leading cross-functional agile teams. Seeking a senior engineering role where I can drive technical architecture decisions.&quot;</em>
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-3">2. Work Experience: Achievement-Led Bullet Points</h3>
+                <p className="text-gray-300 mb-3">
+                  UK recruiters want to see <strong className="text-white">what you achieved</strong>, not just what your responsibilities were. Transform weak duty-based bullets like &quot;Responsible for managing social media&quot; into achievement-led statements: &quot;Grew Instagram following from 2,000 to 28,000 in 8 months, generating £45,000 in attributed revenue.&quot;
+                </p>
+                <p className="text-gray-300">
+                  Use the <strong className="text-white">CAR method</strong>: Context, Action, Result. Every bullet point should answer: what was the situation, what did you do, and what was the measurable outcome?
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-3">3. ATS Keywords: Match the Job Description</h3>
+                <p className="text-gray-300 mb-3">
+                  ATS systems score your CV by comparing it against the job description. If the job asks for &quot;stakeholder management&quot; and your CV says &quot;working with clients,&quot; the system may score you lower. You need to use the <strong className="text-white">exact language</strong> from the job posting throughout your CV.
+                </p>
+                <p className="text-gray-300">
+                  MyCVBuddy does this automatically — our AI reads the job description and rewrites your CV to include the specific keywords, phrases, and skills that will get you past the ATS and in front of a human recruiter. Try our{" "}
+                  <Link href="/ats-checker" className="text-blue-400 hover:text-blue-300 underline">free ATS CV checker</Link>{" "}
+                  to see how your current CV scores.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-3">4. CV Length: 2 Pages for Most UK Roles</h3>
+                <p className="text-gray-300">
+                  UK CVs should be <strong className="text-white">2 pages for most professionals</strong> (graduates can use 1 page; senior executives may extend to 3). Unlike the US, where a 1-page resume is standard, UK employers expect to see a full account of your career history. However, more than 3 pages will usually work against you. Read our{" "}
+                  <Link href="/cv-writing-guide" className="text-blue-400 hover:text-blue-300 underline">complete UK CV writing guide</Link>{" "}
+                  for detailed formatting advice.
+                </p>
+              </div>
+            </div>
+            <div className="mt-8 p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
+              <p className="text-gray-300">
+                <strong className="text-white">Want a CV that follows all of these best practices automatically?</strong>{" "}
+                MyCVBuddy&apos;s AI generates your CV with the perfect structure, ATS keywords, achievement-led bullet points, and UK formatting — in under 2 minutes.{" "}
+                <Link href="/auth/signup" className="text-blue-400 hover:text-blue-300 underline font-semibold">Try it free →</Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Internal Links Hub */}
+      <section className="py-20 bg-gray-950">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            Free CV Resources for UK Job Seekers
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            Everything you need to land your next UK job — completely free. Guides, examples, templates, and tools.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4">📄 CV Writing Guides</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/cv-writing-guide" className="text-blue-400 hover:text-blue-300 transition-colors">Complete UK CV Writing Guide 2026</Link></li>
+                <li><Link href="/how-to-tailor-a-cv" className="text-blue-400 hover:text-blue-300 transition-colors">How to Tailor a CV to a Job</Link></li>
+                <li><Link href="/ats-optimization-guide" className="text-blue-400 hover:text-blue-300 transition-colors">ATS Optimisation Guide</Link></li>
+                <li><Link href="/cv-vs-resume" className="text-blue-400 hover:text-blue-300 transition-colors">CV vs Resume — UK vs US Format</Link></li>
+                <li><Link href="/customize-resume-for-each-job" className="text-blue-400 hover:text-blue-300 transition-colors">How to Customise Your CV for Each Job</Link></li>
+              </ul>
+            </div>
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4">📝 CV Examples & Templates</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/cv-examples" className="text-blue-400 hover:text-blue-300 transition-colors">CV Examples UK by Industry</Link></li>
+                <li><Link href="/cv-templates" className="text-blue-400 hover:text-blue-300 transition-colors">Free UK CV Templates 2026</Link></li>
+                <li><Link href="/resume-samples" className="text-blue-400 hover:text-blue-300 transition-colors">Resume Samples for UK Roles</Link></li>
+                <li><Link href="/uk-cv-builder" className="text-blue-400 hover:text-blue-300 transition-colors">UK CV Builder</Link></li>
+                <li><Link href="/auto-cv" className="text-blue-400 hover:text-blue-300 transition-colors">Auto CV Generator</Link></li>
+              </ul>
+            </div>
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4">🔧 Free CV Tools</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/ats-checker" className="text-blue-400 hover:text-blue-300 transition-colors">Free ATS CV Checker</Link></li>
+                <li><Link href="/fix-my-cv" className="text-blue-400 hover:text-blue-300 transition-colors">Fix My CV — AI Repair Tool</Link></li>
+                <li><Link href="/tailor-cv-to-job-description" className="text-blue-400 hover:text-blue-300 transition-colors">Tailor CV to Job Description</Link></li>
+                <li><Link href="/rewrite-cv-for-job-application" className="text-blue-400 hover:text-blue-300 transition-colors">Rewrite CV for Job Application</Link></li>
+                <li><Link href="/roast-cv" className="text-blue-400 hover:text-blue-300 transition-colors">Roast My CV — Honest AI Feedback</Link></li>
+              </ul>
+            </div>
+            <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4">🎯 Career Tools</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/interview-prep" className="text-blue-400 hover:text-blue-300 transition-colors">Interview Preparation Tool</Link></li>
+                <li><Link href="/cover-letter" className="text-blue-400 hover:text-blue-300 transition-colors">Cover Letter Generator UK</Link></li>
+                <li><Link href="/career-advice" className="text-blue-400 hover:text-blue-300 transition-colors">UK Career Advice</Link></li>
+                <li><Link href="/resume-tips" className="text-blue-400 hover:text-blue-300 transition-colors">CV & Resume Tips</Link></li>
+                <li><Link href="/blog" className="text-blue-400 hover:text-blue-300 transition-colors">Career Blog & Job Search Tips</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* UK Industry CV Tips */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-4">
+            CV Tips by Industry — UK Job Market 2026
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-12 max-w-3xl mx-auto">
+            Different UK industries have different CV expectations. Here&apos;s what employers in each sector are looking for:
+          </p>
+          <div className="overflow-x-auto max-w-5xl mx-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-800 border border-white/10">
+                  <th className="p-4 text-white font-bold">Industry</th>
+                  <th className="p-4 text-white font-bold">Key CV Requirements</th>
+                  <th className="p-4 text-white font-bold">Must-Have Keywords</th>
+                  <th className="p-4 text-white font-bold">Typical CV Length</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Technology & Software", "GitHub links, project metrics, tech stack list, agile experience", "React, Python, AWS, CI/CD, Agile, Scrum, DevOps", "2 pages"],
+                  ["Finance & Banking", "Qualified accountant status, FCA awareness, P&L responsibility, regulatory knowledge", "ACA, ACCA, CFA, FCA, Basel III, KYC, AML", "2 pages"],
+                  ["Marketing & Digital", "Campaign ROI metrics, platform experience, follower growth data", "SEO, PPC, Google Analytics, CRM, HubSpot, conversion rate", "2 pages"],
+                  ["Healthcare & NHS", "Professional registration numbers, CPD records, patient outcomes", "NMC, GMC, CQC, clinical governance, patient safety", "3+ pages"],
+                  ["Legal", "Qualifying law firm, practice areas, deal values, client sectors", "LPC, GDL, SRA, regulatory, due diligence, M&A", "2 pages"],
+                  ["Education", "Qualified Teacher Status, Ofsted familiarity, subject specialisms", "QTS, PGCE, Key Stage, curriculum, safeguarding, CPD", "2–3 pages"],
+                  ["Engineering", "Professional body membership, CAD software, project values", "CEng, IEng, AutoCAD, BIM, ISO, lean manufacturing", "2 pages"],
+                  ["Retail & Hospitality", "Revenue figures, team size managed, P&L responsibility", "footfall, margin, NPS, EPOS, shrinkage reduction", "1–2 pages"],
+                ].map(([industry, reqs, keywords, length], i) => (
+                  <tr key={i} className={`border border-white/10 ${i % 2 === 0 ? "bg-gray-900/60" : "bg-gray-800/40"}`}>
+                    <td className="p-4 text-white font-semibold text-sm">{industry}</td>
+                    <td className="p-4 text-gray-400 text-sm">{reqs}</td>
+                    <td className="p-4 text-blue-300 text-xs font-mono">{keywords}</td>
+                    <td className="p-4 text-gray-300 text-sm text-center">{length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-center mt-6">
+            <Link href="/cv-writing-guide" className="text-blue-400 hover:text-blue-300 underline">
+              Read our full industry CV guide →
+            </Link>
+          </p>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
@@ -802,6 +1163,55 @@ export default function LandingPage() {
                   Yes! Our platform includes a comprehensive CV editor where you can make manual adjustments 
                   to the AI-generated content. You can also see a side-by-side comparison of changes and 
                   customize any section to better reflect your personal style and experience.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">How long should a UK CV be in 2026?</h3>
+                <p className="text-gray-300">
+                  For most UK roles, a CV should be <strong className="text-white">2 pages</strong>. Graduates and school leavers can use 1 page. Senior executives, academics, and NHS professionals may extend to 3 pages when necessary. Avoid going beyond 3 pages — UK recruiters rarely read further. MyCVBuddy automatically formats your CV to the correct length for your experience level. See our{" "}
+                  <a href="/cv-writing-guide" className="text-blue-400 hover:text-blue-300 underline">UK CV writing guide</a>{" "}
+                  for detailed advice on CV length and formatting.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">What is the difference between a CV and a resume in the UK?</h3>
+                <p className="text-gray-300">
+                  In the UK, a <strong className="text-white">CV (Curriculum Vitae)</strong> is the standard document used for job applications — it&apos;s typically 2 pages and includes a personal statement, full work history, education, and skills. A <strong className="text-white">resume</strong> is the US term for a shorter (usually 1-page) document. UK employers always ask for a CV, not a resume. If you&apos;re applying for UK jobs, you need a properly formatted UK CV. Read our full guide on{" "}
+                  <a href="/cv-vs-resume" className="text-blue-400 hover:text-blue-300 underline">CV vs resume differences</a>.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">Is MyCVBuddy better than CV-Library, Reed CV Builder, or Canva?</h3>
+                <p className="text-gray-300">
+                  MyCVBuddy is different because it doesn&apos;t just format your CV — it <strong className="text-white">rewrites it to match the specific job you&apos;re applying for</strong>. CV-Library, Reed&apos;s CV builder, and Canva all offer templates, but none of them read the job description and tailor your content with AI. If you&apos;re serious about getting interviews for a specific role, a job-matched CV from MyCVBuddy will outperform any static template every time.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">Can MyCVBuddy help with NHS job applications?</h3>
+                <p className="text-gray-300">
+                  Yes. NHS job applications through NHS Jobs require a specific CV format that highlights clinical experience, professional registration numbers (NMC, GMC, HCPC), mandatory training (safeguarding, BLS, fire safety), and competency-based statements aligned to the NHS Values. Our AI understands NHS-specific requirements and can reformat your CV to meet the standards expected by NHS hiring managers and trusts. Healthcare is one of our most popular sectors.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">How do I get my CV to pass an ATS system?</h3>
+                <p className="text-gray-300">
+                  To pass an ATS (Applicant Tracking System), your CV must: (1) use <strong className="text-white">standard section headings</strong> like &quot;Work Experience,&quot; &quot;Education,&quot; and &quot;Skills&quot;; (2) include <strong className="text-white">keywords from the job description</strong> naturally throughout; (3) avoid tables, graphics, headers/footers, and unusual fonts; (4) use a clean, single-column layout. MyCVBuddy automatically does all of this — our AI rewrites your CV to maximise ATS score for each specific job. Try our{" "}
+                  <a href="/ats-checker" className="text-blue-400 hover:text-blue-300 underline">free ATS checker tool</a>{" "}
+                  to score your existing CV.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/60 border border-white/10 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-white mb-3">Does MyCVBuddy write cover letters too?</h3>
+                <p className="text-gray-300">
+                  Yes! Our Pro plan includes an AI-powered <strong className="text-white">cover letter generator</strong> that creates a personalised cover letter matched to your CV and the specific job description. UK cover letters should be no more than one page, address the hiring manager directly, and explain why you want <em>that specific role at that specific company</em> — our AI handles all of this automatically. Visit our{" "}
+                  <a href="/cover-letter" className="text-blue-400 hover:text-blue-300 underline">cover letter generator</a>{" "}
+                  to get started.
                 </p>
               </div>
             </div>

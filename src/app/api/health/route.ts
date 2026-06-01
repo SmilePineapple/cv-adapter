@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase-server'
+import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
 
 /**
@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server'
  */
 export async function GET() {
   try {
-    const supabase = await createClient()
+    const supabase = createSupabaseRouteClient()
 
     // Lightweight query - just checks database connection
     const { error } = await supabase
