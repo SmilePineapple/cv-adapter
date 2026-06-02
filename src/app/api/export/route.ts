@@ -3,6 +3,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { getOpenAIClient } from '@/lib/openai-client'
 import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle } from 'docx'
 import puppeteer from 'puppeteer-core'
+import puppeteerFull from 'puppeteer'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
 import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
@@ -346,12 +347,18 @@ async function handlePdfExport(
       html = renderPagePlanHTML(sections, maxPages, template)
     }
     
-    // Use chromium for serverless environments (Vercel)
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: true,
-    })
+    // Use bundled Chromium in dev, sparticuz in production (Vercel)
+    const isProduction = process.env.NODE_ENV === 'production'
+    const browser = isProduction
+      ? await puppeteer.launch({
+          args: chromium.args,
+          executablePath: await chromium.executablePath(),
+          headless: true,
+        })
+      : await puppeteerFull.launch({
+          headless: true,
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        })
     
     const page = await browser.newPage()
     await page.setContent(html, { waitUntil: 'networkidle0' })
@@ -430,8 +437,7 @@ async function handlePdfExport(
     })
   } catch (error) {
     console.error('PDF generation error:', error)
-    // Fallback to HTML if PDF generation fails
-    return handleHtmlExport(sections, template, jobTitle)
+    return NextResponse.json({ error: 'PDF generation failed. Please try again.' }, { status: 500 })
   }
 }
 

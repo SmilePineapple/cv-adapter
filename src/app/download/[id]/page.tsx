@@ -593,9 +593,13 @@ export default function DownloadPage() {
       
     } catch (error) {
       console.error('Export error:', error)
-      toast.error('Failed to export CV. Please try again.')
-      // Show upgrade modal on export error (likely Pro feature restriction)
-      setShowUpgradeModal(true)
+      const msg = error instanceof Error ? error.message : 'Unknown error'
+      if (msg.toLowerCase().includes('limit') || msg.toLowerCase().includes('upgrade')) {
+        toast.error('Export limit reached. Please upgrade to Pro.')
+        setShowUpgradeModal(true)
+      } else {
+        toast.error('Failed to generate PDF. Please try again or choose a different template.')
+      }
     } finally {
       setTimeout(() => {
         setIsExporting(false)
