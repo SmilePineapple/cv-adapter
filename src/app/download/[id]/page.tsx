@@ -805,9 +805,16 @@ export default function DownloadPage() {
               <iframe
                 key={previewHtml}
                 srcDoc={previewHtml}
-                className="w-full h-auto border-0 bg-white"
+                className="w-full border-0 bg-white"
                 title="CV Preview"
-                style={{ background: '#ffffff', height: 'auto', minHeight: '1200px' }}
+                style={{ background: '#ffffff', height: '1200px' }}
+                onLoad={(e) => {
+                  const iframe = e.currentTarget
+                  try {
+                    const h = iframe.contentDocument?.documentElement?.scrollHeight || iframe.contentDocument?.body?.scrollHeight
+                    if (h && h > 100) iframe.style.height = h + 'px'
+                  } catch {}
+                }}
               />
             </div>
           </div>
