@@ -120,9 +120,28 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createSupabaseRouteClient()
     
-    // Check authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    // Check authentication - try cookie-based auth first, fall back to Bearer token
+    let user = null
+    let activeClient = supabase
+    const { data: { user: cookieUser } } = await supabase.auth.getUser()
+    if (cookieUser) {
+      user = cookieUser
+    } else {
+      // Try Bearer token in Authorization header
+      const authHeader = request.headers.get('authorization')
+      if (authHeader?.startsWith('Bearer ')) {
+        const token = authHeader.slice(7)
+        const { createClient } = await import('@supabase/supabase-js')
+        const tokenClient = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          { global: { headers: { Authorization: `Bearer ${token}` } } }
+        )
+        const { data: { user: tokenUser } } = await tokenClient.auth.getUser()
+        if (tokenUser) { user = tokenUser; activeClient = tokenClient }
+      }
+    }
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -135,7 +154,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch generation data (allow orphaned generations with NULL cv_id)
-    const { data: generation, error: genError } = await supabase
+    const { data: generation, error: genError } = await activeClient
       .from('generations')
       .select(`
         output_sections,
@@ -361,7 +380,8 @@ async function handlePdfExport(
         })
     
     const page = await browser.newPage()
-    await page.setContent(html, { waitUntil: 'networkidle0' })
+    await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await new Promise(r => setTimeout(r, 500))
 
     const renderMeasurement = await measureRenderedCV(page, maxPages)
     console.log('📐 Render measurement:', {
@@ -389,7 +409,8 @@ async function handlePdfExport(
       if (fillScale > 1.02) {
         console.log(`📐 Applying deterministic fill scale: ${fillScale.toFixed(3)}`)
         html = renderPagePlanHTML(sections, maxPages, template, fillScale)
-        await page.setContent(html, { waitUntil: 'networkidle0' })
+        await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await new Promise(r => setTimeout(r, 500))
         activeMeasurement = await measureRenderedCV(page, maxPages)
         console.log('📐 Render measurement after fill:', {
           actualPages: activeMeasurement.actualPages,
