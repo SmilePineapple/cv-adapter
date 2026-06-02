@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -60,6 +60,7 @@ export default function GeneratePage() {
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [maxPages, setMaxPages] = useState(1)
   const [careerMismatch, setCareerMismatch] = useState<string | null>(null)
+  const cvOriginalTextRef = useRef<string>('')
 
   useEffect(() => {
     fetchCVData()
@@ -175,6 +176,7 @@ export default function GeneratePage() {
       }
 
       setCvData(data)
+      cvOriginalTextRef.current = data.original_text || ''
       
       // Set detected language if available
       if (data.detected_language) {
@@ -495,7 +497,7 @@ export default function GeneratePage() {
                   id="jobTitle"
                   type="text"
                   value={jobTitle}
-                  onChange={(e) => { setJobTitle(e.target.value); detectCareerMismatch(cvData?.original_text || '', e.target.value) }}
+                  onChange={(e) => { setJobTitle(e.target.value); detectCareerMismatch(cvOriginalTextRef.current, e.target.value) }}
                   className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-colors"
                   placeholder="e.g. Senior Software Engineer"
                   required
