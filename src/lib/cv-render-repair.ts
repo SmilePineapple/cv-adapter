@@ -19,8 +19,29 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
   const underfilledPages = measurement.underfilledPages.map(page => page.page)
 
   if (!targetPages || targetPages <= 1) {
-    // For single-page CVs, still trigger expansion if the page is severely underfilled
     const singlePageOccupancy = measurement.pageOccupancy[0]?.occupancy ?? 1
+
+    // Single-page CV overflows — condense to fit within 1 page
+    if (measurement.actualPages > 1 || measurement.clippedPages.length > 0) {
+      const overflowingSections = getSectionsNearPage(measurement, 2)
+      return {
+        action: 'condense',
+        shouldRepair: true,
+        reason: `Single-page CV overflows onto ${measurement.actualPages} pages — must be condensed to fit exactly 1 page.`,
+        targetPages: 1,
+        actualPages: measurement.actualPages,
+        underfilledPages,
+        sectionTypesToAdjust: overflowingSections,
+        instructions: [
+          'Condense the CV so all content fits within exactly 1 page.',
+          `Shorten these sections: ${formatSectionList(overflowingSections)}.`,
+          'Remove repetition, trim bullets to 1 line each, shorten the summary to 2–3 sentences.',
+          'Keep the strongest role-specific evidence; cut filler phrases.'
+        ]
+      }
+    }
+
+    // For single-page CVs, trigger expansion if the page is severely underfilled
     if (singlePageOccupancy < 0.6) {
       const expandableSections = getExpandableSections(measurement)
       return {
@@ -40,10 +61,11 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
         ]
       }
     }
+
     return {
       action: 'none',
       shouldRepair: false,
-      reason: 'No multi-page target was selected.',
+      reason: 'Single-page CV fits well (60–100% occupancy).',
       targetPages,
       actualPages: measurement.actualPages,
       underfilledPages,

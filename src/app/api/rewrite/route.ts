@@ -25,26 +25,28 @@ export async function POST(request: NextRequest) {
     // Use the old auth helpers package (proven to work)
     const supabase = await createSupabaseRouteClient()
     
-    console.log('=== AUTH DEBUG ===')
-    
-    // Get user from session
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    console.log('Auth check:', {
-      hasUser: !!user,
-      userId: user?.id,
-      error: authError?.message,
-      errorCode: authError?.status
-    })
-    
-    if (authError || !user) {
-      console.error('=== AUTH FAILED ===')
-      console.error('Error:', authError)
-      
-      // Try to get more details about the session
-      const { data: sessionData } = await supabase.auth.getSession()
-      console.log('Session exists:', !!sessionData.session)
-      
+    // Get user - try cookie auth first, fall back to Bearer token
+    let user = null
+    let activeClient = supabase
+    const { data: { user: cookieUser } } = await supabase.auth.getUser()
+    if (cookieUser) {
+      user = cookieUser
+    } else {
+      const authHeader = request.headers.get('authorization')
+      if (authHeader?.startsWith('Bearer ')) {
+        const token = authHeader.slice(7)
+        const { createClient } = await import('@supabase/supabase-js')
+        const tokenClient = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          { global: { headers: { Authorization: `Bearer ${token}` } } }
+        )
+        const { data: { user: tokenUser } } = await tokenClient.auth.getUser()
+        if (tokenUser) { user = tokenUser; activeClient = tokenClient }
+      }
+    }
+
+    if (!user) {
       return NextResponse.json({ 
         error: 'Unauthorized', 
         details: 'Your session has expired. Please log in again.' 
@@ -72,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check usage limits with new subscription model
-    const { data: usage, error: usageError } = await supabase
+    const { data: usage, error: usageError } = await activeClient
       .from('usage_tracking')
       .select('lifetime_generation_count, subscription_tier, max_lifetime_generations')
       .eq('user_id', user.id)
@@ -120,7 +122,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get CV data with detected language
-    const { data: cvData, error: cvError } = await supabase
+    const { data: cvData, error: cvError } = await activeClient
       .from('cvs')
       .select('original_text, parsed_sections, detected_language')
       .eq('id', cv_id)
@@ -762,7 +764,7 @@ IMPORTANT:
     console.log('Section types being saved:', rewrittenSections.map(s => s.type).join(', '))
 
     // Save generation to database
-    const { data: generationData, error: generationError } = await supabase
+    const { data: generationData, error: generationError } = await activeClient
       .from('generations')
       .insert({
         cv_id,
@@ -805,7 +807,7 @@ IMPORTANT:
       newCount
     })
 
-    const { data: updatedUsage, error: usageUpdateError } = await supabase
+    const { data: updatedUsage, error: usageUpdateError } = await activeClient
       .from('usage_tracking')
       .update({
         lifetime_generation_count: newCount,
@@ -841,7 +843,7 @@ IMPORTANT:
     }
 
     // Update CV last accessed
-    await supabase
+    await activeClient
       .from('cvs')
       .update({ last_accessed_at: new Date().toISOString() })
       .eq('id', cv_id)

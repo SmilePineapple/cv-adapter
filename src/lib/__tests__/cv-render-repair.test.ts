@@ -100,6 +100,28 @@ describe('cv render repair', () => {
     expect(plan.action).toBe('none')
   })
 
+  it('plans condensation for single-page CV that overflows to 2 pages', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 1,
+      actualPages: 2,
+      overflowing: true,
+      pageOccupancy: [
+        { page: 1, occupancy: 0.94, usedHeight: 940, availableHeight: 1000 },
+        { page: 2, occupancy: 0.11, usedHeight: 110, availableHeight: 1000 }
+      ],
+      underfilledPages: [{ page: 2, occupancy: 0.11, usedHeight: 110, availableHeight: 1000 }],
+      sectionPlacements: [
+        { type: 'summary', top: 0, bottom: 300, height: 300, pageStart: 1, pageEnd: 1 },
+        { type: 'experience', top: 300, bottom: 1050, height: 750, pageStart: 1, pageEnd: 2 },
+        { type: 'skills', top: 1050, bottom: 1160, height: 110, pageStart: 2, pageEnd: 2 }
+      ]
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('condense')
+    expect(plan.reason).toContain('overflows')
+  })
+
   it('plans expansion for severely underfilled single-page CV (< 60%)', () => {
     const plan = createRenderRepairPlan(createMeasurement({
       targetPages: 1,
