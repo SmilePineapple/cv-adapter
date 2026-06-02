@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
 
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
     if (authError || !user) {

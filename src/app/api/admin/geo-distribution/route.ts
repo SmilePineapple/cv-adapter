@@ -75,7 +75,7 @@ const COUNTRY_NAMES: { [key: string]: string } = {
 
 export async function GET() {
   try {
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     // Check admin auth
     const { data: { user }, error: authError } = await supabase.auth.getUser()

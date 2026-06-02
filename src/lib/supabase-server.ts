@@ -11,8 +11,9 @@ export const createSupabaseServerClient = () => {
 }
 
 // Route handler client (for use in API routes)
-export const createSupabaseRouteClient = () => {
-  return createRouteHandlerClient({ cookies })
+export const createSupabaseRouteClient = async () => {
+  const cookieStore = await cookies()
+  return createRouteHandlerClient({ cookies: () => cookieStore })
 }
 
 // Admin client (server-side only, with service role key)

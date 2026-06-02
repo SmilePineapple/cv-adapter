@@ -12,7 +12,7 @@ const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     // Check admin auth
     const { data: { user }, error: authError } = await supabase.auth.getUser()

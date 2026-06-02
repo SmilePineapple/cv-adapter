@@ -8,7 +8,7 @@ import { CVSection } from '@/types/database'
 export async function POST(request: NextRequest) {
   try {
     const openai = getOpenAIClient()
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {

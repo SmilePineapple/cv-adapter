@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   try {
     const openai = getOpenAIClient()
     // Use the old auth helpers package (proven to work)
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     console.log('=== AUTH DEBUG ===')
     

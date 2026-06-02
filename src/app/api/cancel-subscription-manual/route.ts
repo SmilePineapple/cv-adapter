@@ -5,7 +5,7 @@ import { createSupabaseRouteClient } from '@/lib/supabase-server'
 // This marks the subscription as "canceling" but keeps access until period_end
 export async function POST(/* request: NextRequest */) {
   try {
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {

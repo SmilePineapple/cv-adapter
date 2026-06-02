@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server'
  */
 export async function GET() {
   try {
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
 
     // Lightweight query - just checks database connection
     const { error } = await supabase

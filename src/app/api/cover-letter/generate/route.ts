@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Use the route client for authentication
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     // Get user from session
     const { data: { user }, error: authError } = await supabase.auth.getUser()

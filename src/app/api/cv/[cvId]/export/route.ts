@@ -66,7 +66,7 @@ export async function POST(
     const { cvId } = await params
 
     // Use route client for authentication (cookies)
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
     if (authError || !user) {

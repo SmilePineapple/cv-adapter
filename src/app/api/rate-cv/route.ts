@@ -7,7 +7,7 @@ import { getOpenAIClient } from '@/lib/openai-client'
 export async function POST(request: NextRequest) {
   try {
     const openai = getOpenAIClient()
-    const supabase = createSupabaseRouteClient()
+    const supabase = await createSupabaseRouteClient()
     
     // Get user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
