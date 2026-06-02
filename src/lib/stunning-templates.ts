@@ -249,9 +249,9 @@ export function generateTealSidebar(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { background: #ffffff; }
+    html, body { background: #ffffff; width: 210mm; height: 297mm; overflow: hidden; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
-    .container { display: flex; min-height: 100vh; }
+    .container { display: flex; height: 297mm; overflow: hidden; }
     .sidebar { width: 80px; background: #F5F5F5; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
     .sidebar-icon { width: 40px; height: 40px; background: #26A69A; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
     .main { flex: 1; padding: 50px 60px; }
@@ -367,7 +367,7 @@ export function generateSoftHeader(data: TemplateData): string {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { background: #ffffff; }
+    html, body { background: #ffffff; width: 210mm; height: 297mm; overflow: hidden; }
     body { font-family: 'Arial', sans-serif; color: #2C3E50; line-height: 1.6; }
     .header { display: flex; background: linear-gradient(135deg, #FFE5E5 0%, #E5F3FF 100%); padding: 30px 50px; align-items: center; justify-content: space-between; }
     .header-left h1 { font-size: 36px; font-weight: 700; margin-bottom: 5px; }

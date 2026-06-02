@@ -360,7 +360,7 @@ async function handlePdfExport(
     
     if (!maxPages || maxPages === 1) {
       console.log(`🎨 Using template-specific renderer for single-page PDF (${template})`)
-      html = generateTemplateHtml(sections, template, photoUrl, 1)
+      html = generateTemplateHtml(sections, template, undefined, photoUrl, 1)
     } else {
       console.log(`📐 Using deterministic page-plan renderer for ${maxPages}-page PDF`)
       html = renderPagePlanHTML(sections, maxPages, template)
@@ -380,6 +380,8 @@ async function handlePdfExport(
         })
     
     const page = await browser.newPage()
+    // Set viewport to A4 at 96dpi so CSS mm units and overflow:hidden match PDF output
+    await page.setViewport({ width: 794, height: 1123, deviceScaleFactor: 1 })
     await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
     await new Promise(r => setTimeout(r, 500))
 
@@ -990,13 +992,13 @@ function extractContactInfoFromSections(sections: CVSection[]) {
 function prepareStunningTemplateData(sections: CVSection[], photoUrl?: string | null) {
   const nameSection = sections.find(s => s.type === 'name')
   const contactSection = sections.find(s => s.type === 'contact')
-  const summarySection = sections.find(s => s.type === 'summary' || s.type === 'professional_summary')
-  const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+  const summarySection = sections.find(s => s.type === 'summary' || (s.type as string) === 'professional_summary')
+  const experienceSection = sections.find(s => s.type === 'experience' || (s.type as string) === 'work_experience')
   const educationSection = sections.find(s => s.type === 'education')
   const skillsSection = sections.find(s => s.type === 'skills')
   const certificationsSection = sections.find(s => s.type === 'certifications')
-  const languagesSection = sections.find(s => s.type === 'languages')
-  const hobbiesSection = sections.find(s => s.type === 'interests' || s.type === 'hobbies')
+  const languagesSection = sections.find(s => (s.type as string) === 'languages')
+  const hobbiesSection = sections.find(s => (s.type as string) === 'interests' || s.type === 'hobbies')
   
   // Parse contact info
   let email = '', phone = '', address = '', website = ''

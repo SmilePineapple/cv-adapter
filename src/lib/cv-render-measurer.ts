@@ -36,7 +36,9 @@ export const UNDERFILLED_PAGE_THRESHOLD = 0.72
 
 export function getActualPageCount(scrollHeight: number, pageHeight: number = A4_HEIGHT_PX): number {
   if (scrollHeight <= 0) return 1
-  return Math.max(1, Math.ceil(scrollHeight / pageHeight))
+  // Allow 0.5px tolerance to prevent float rounding errors (e.g. clientHeight=1123, A4=1122.52 → 1.0004 → rounds to 2 without tolerance)
+  const tolerance = 0.5
+  return Math.max(1, Math.ceil((scrollHeight - tolerance) / pageHeight))
 }
 
 export function calculatePageOccupancy(rects: ElementRect[], pageCount: number, pageHeight: number = A4_HEIGHT_PX): PageOccupancy[] {
@@ -124,12 +126,21 @@ export function computeFillScale(measurement: RenderMeasurement, options: FillSc
 export async function measureRenderedCV(page: Page, targetPages?: number): Promise<RenderMeasurement> {
   const rawMeasurement = await page.evaluate((fallbackPageHeight) => {
     const pageHeight = fallbackPageHeight
-    const scrollHeight = Math.max(
-      document.documentElement.scrollHeight,
-      document.body.scrollHeight,
-      document.documentElement.offsetHeight,
-      document.body.offsetHeight
-    )
+    // When the body/html has overflow:hidden (single-page templates), scrollHeight still
+    // includes hidden overflow content. Use clientHeight in that case so we measure
+    // the actual visible/rendered height, not the overflowing content.
+    const bodyStyle = window.getComputedStyle(document.body)
+    const htmlStyle = window.getComputedStyle(document.documentElement)
+    const isHardClamped = (bodyStyle.overflow === 'hidden' || bodyStyle.overflowY === 'hidden') &&
+                          (htmlStyle.overflow === 'hidden' || htmlStyle.overflowY === 'hidden')
+    const scrollHeight = isHardClamped
+      ? document.body.clientHeight || document.documentElement.clientHeight
+      : Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight,
+          document.documentElement.offsetHeight,
+          document.body.offsetHeight
+        )
 
     const sectionNodes = Array.from(document.querySelectorAll('[data-section-type], [data-type], .section'))
     const sectionPlacements = sectionNodes.map((node) => {
