@@ -398,7 +398,7 @@ async function handlePdfExport(
     const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
     console.log('📐 Render repair plan:', renderRepairPlan)
 
-    if (maxPages && maxPages > 1 && renderRepairPlan.shouldRepair && !renderRepairAttempted) {
+    if (renderRepairPlan.shouldRepair && !renderRepairAttempted) {
       console.log('📐 Running one-pass render-based layout repair...')
       try {
         const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)

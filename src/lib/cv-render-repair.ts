@@ -19,6 +19,27 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
   const underfilledPages = measurement.underfilledPages.map(page => page.page)
 
   if (!targetPages || targetPages <= 1) {
+    // For single-page CVs, still trigger expansion if the page is severely underfilled
+    const singlePageOccupancy = measurement.pageOccupancy[0]?.occupancy ?? 1
+    if (singlePageOccupancy < 0.6) {
+      const expandableSections = getExpandableSections(measurement)
+      return {
+        action: 'expand',
+        shouldRepair: true,
+        reason: `Single-page CV is only ${Math.round(singlePageOccupancy * 100)}% full — content needs to be expanded to fill the page properly.`,
+        targetPages: 1,
+        actualPages: measurement.actualPages,
+        underfilledPages,
+        sectionTypesToAdjust: expandableSections,
+        instructions: [
+          'Expand the CV content so the single page looks full and professional (target 80–90% occupancy).',
+          `Add factual depth to these sections: ${formatSectionList(expandableSections)}.`,
+          'Expand bullet points with responsibilities, tools, outcomes, and measurable impact where supported.',
+          'Expand the summary to 4–5 sentences. Add detail to each role. Do not invent facts.',
+          'Avoid adding fake employers, dates, qualifications, or unverifiable claims.'
+        ]
+      }
+    }
     return {
       action: 'none',
       shouldRepair: false,

@@ -887,7 +887,18 @@ function createRewritePrompt(
       return `${s.type}:\n${content}`
     })
     .join('\n\n')
-  
+
+  // Detect voice and writing style from the original CV
+  const allText = sections.map(s => typeof s.content === 'string' ? s.content : JSON.stringify(s.content)).join(' ').toLowerCase()
+  const isFirstPerson = /\bi('ve| have| am| was| led| built| created| managed| delivered)\b/.test(allText) || /\bmy (experience|background|skills|work|career)\b/.test(allText)
+  const hasMetrics = /\d+[\+%kmb]|\£\d|\$\d|\d+ (clients|people|teams|projects|years)/.test(allText)
+  const voiceInstruction = isFirstPerson
+    ? '\n⚠️ VOICE: This CV uses first-person writing ("I have", "I\'ve led"). You MUST preserve this first-person voice in the summary and any narrative sections. Do NOT convert to third-person.'
+    : ''
+  const metricsInstruction = hasMetrics
+    ? '\n⚠️ METRICS: This CV contains specific numbers and metrics. You MUST preserve ALL real numbers (percentages, £/$ figures, headcounts, years of experience) — do NOT replace them with vague language.'
+    : ''
+
   const languageName = LANGUAGE_NAMES[languageCode] || 'English'
   const styleMap = {
     conservative: 'minimal changes',
@@ -976,7 +987,7 @@ YOU CAN ONLY CHANGE:
 
 REWRITING CV FOR: ${jobTitle}
 KEY REQUIREMENTS: ${keywords.join(', ')}
-${pageLengthInstructions}
+${pageLengthInstructions}${voiceInstruction}${metricsInstruction}
 
 CURRENT CV:
 ${sectionsText}
@@ -1062,16 +1073,13 @@ LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + lang
    ✅ Output: "Filial Therapy in Family Therapy | Manchester | 08/2019"
 
 FOCUS AREAS:
-- Summary: Write 3-4 NEW sentences highlighting transferable skills that connect the candidate's background to ${keywords.slice(0, 3).join(', ')} from job description
+- Summary: Write 3-4 sentences connecting the candidate's background to the target role. PRESERVE any specific numbers ("15 years", "over 50 clients"), named qualifications ("ACCA", "PMP"), and sector expertise from the original summary. If the original uses first-person ("I have", "I've led"), KEEP the first-person voice.
 - Experience: For EACH job, you MUST:
   1. Keep job title | company | dates | location EXACTLY as original
-  2. ADD 3-5 NEW bullet points describing responsibilities using language that emphasizes transferable skills relevant to ${jobTitle}
-  3. Use action verbs like "developed", "managed", "coordinated" (NOT overly technical terms like "engineered" or "architected" unless the original role was technical)
-  4. Example format:
-     "Play Therapist | Child in Mind | 10/2016 – 08/2022 | Manchester, England
-     • Developed and delivered comprehensive therapy programs for 50+ families
-     • Conducted in-depth assessments and created detailed documentation
-     • Collaborated with multidisciplinary teams to improve service delivery"
+  2. REWRITE 3-5 bullet points to emphasize relevance to ${jobTitle}
+  3. PRESERVE any real numbers, metrics, percentages, and named tools from the original (e.g. "50+ clients", "£2M budget", "Selenium", "Salesforce") — do NOT replace them with vague phrases like "multiple clients" or "various tools"
+  4. Keep technical tools named explicitly — do NOT say "automation tools" when the original says "Selenium/TestNG"
+  5. Use action verbs appropriate to the original role level — senior roles get strategic language, technical roles get technical language
 - Skills: Include ALL original skills ONLY, reorder to prioritize job-relevant ones. DO NOT add any new skills that are not in the original CV.
 - Education: COPY 100% EXACTLY - zero modifications allowed
 - Certifications: COPY 100% EXACTLY - zero modifications allowed

@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       : null
 
     const updateFields: Record<string, string> = {
-      status: 'canceling',
+      status: 'active',
       updated_at: new Date().toISOString()
     }
     if (periodEnd) updateFields.current_period_end = periodEnd

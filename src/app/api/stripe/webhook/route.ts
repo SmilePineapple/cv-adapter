@@ -406,7 +406,7 @@ export async function POST(request: NextRequest) {
         await supabase
           .from('subscriptions')
           .update({
-            status: isCancellingAtPeriodEnd ? 'canceling' : 'active',
+            status: 'active',
             current_period_end: currentPeriodEnd.toISOString(),
             updated_at: new Date().toISOString()
           })

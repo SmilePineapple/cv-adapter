@@ -88,6 +88,32 @@ describe('cv render repair', () => {
     expect(plan.underfilledPages).toEqual([2])
   })
 
+  it('plans no repair for single-page CV with adequate occupancy', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 1,
+      actualPages: 1,
+      pageOccupancy: [{ page: 1, occupancy: 0.75, usedHeight: 750, availableHeight: 1000 }],
+      underfilledPages: []
+    }))
+
+    expect(plan.shouldRepair).toBe(false)
+    expect(plan.action).toBe('none')
+  })
+
+  it('plans expansion for severely underfilled single-page CV (< 60%)', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 1,
+      actualPages: 1,
+      pageOccupancy: [{ page: 1, occupancy: 0.43, usedHeight: 430, availableHeight: 1000 }],
+      underfilledPages: [{ page: 1, occupancy: 0.43, usedHeight: 430, availableHeight: 1000 }]
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('expand')
+    expect(plan.reason).toContain('43%')
+    expect(plan.sectionTypesToAdjust.length).toBeGreaterThan(0)
+  })
+
   it('plans expansion across all materially underfilled pages', () => {
     const plan = createRenderRepairPlan(createMeasurement({
       targetPages: 2,

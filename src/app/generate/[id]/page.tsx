@@ -59,6 +59,7 @@ export default function GeneratePage() {
   const [showEnhancedUpgradeModal, setShowEnhancedUpgradeModal] = useState(false)
   const [upgradeModalTrigger, setUpgradeModalTrigger] = useState<'limit_reached' | 'feature_locked' | 'manual'>('manual')
   const [maxPages, setMaxPages] = useState(1)
+  const [careerMismatch, setCareerMismatch] = useState<string | null>(null)
 
   useEffect(() => {
     fetchCVData()
@@ -117,6 +118,41 @@ export default function GeneratePage() {
     }
   }
 
+  const detectCareerMismatch = (cvText: string, targetJobTitle: string) => {
+    if (!cvText || !targetJobTitle || targetJobTitle.length < 3) {
+      setCareerMismatch(null)
+      return
+    }
+    const cvLower = cvText.toLowerCase()
+    const targetLower = targetJobTitle.toLowerCase()
+
+    // Broad sector keywords
+    const sectors: Record<string, string[]> = {
+      tech: ['engineer', 'developer', 'software', 'qa', 'tester', 'devops', 'data', 'analyst', 'architect', 'programmer', 'blockchain', 'cloud', 'cyber'],
+      finance: ['finance', 'accountant', 'auditor', 'cfo', 'controller', 'treasury', 'acca', 'aca', 'financial', 'investment', 'banking'],
+      therapy: ['therapist', 'therapy', 'counsell', 'psycholog', 'mental health', 'social work', 'wellbeing', 'clinical'],
+      spa: ['spa', 'beauty', 'massage', 'aesthetician', 'holistic', 'wellness therapist', 'nail', 'skincare'],
+      sales: ['sales', 'account manager', 'business development', 'revenue', 'commercial', 'crm'],
+      hr: ['hr ', 'human resources', 'recruiter', 'talent', 'people operations'],
+      marketing: ['marketing', 'brand', 'content', 'seo', 'social media', 'campaign'],
+      operations: ['operations', 'programme manager', 'project manager', 'delivery', 'logistics', 'supply chain'],
+      executive: ['executive assistant', 'pa ', 'personal assistant', 'office manager', 'venture', 'chief of staff'],
+      education: ['teacher', 'tutor', 'lecturer', 'education', 'school', 'academic', 'curriculum']
+    }
+
+    const getCVSector = () => Object.entries(sectors).find(([, kws]) => kws.some(kw => cvLower.includes(kw)))?.[0]
+    const getTargetSector = () => Object.entries(sectors).find(([, kws]) => kws.some(kw => targetLower.includes(kw)))?.[0]
+
+    const cvSector = getCVSector()
+    const targetSector = getTargetSector()
+
+    if (cvSector && targetSector && cvSector !== targetSector) {
+      setCareerMismatch(`Your uploaded CV appears to be from the ${cvSector} sector, but you're targeting a ${targetSector} role. The AI will reframe your transferable skills, but results may be limited. Consider whether this is the right target role.`)
+    } else {
+      setCareerMismatch(null)
+    }
+  }
+
   const fetchCVData = async (id?: string) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
@@ -145,6 +181,19 @@ export default function GeneratePage() {
         setDetectedLanguage(data.detected_language)
         setOutputLanguage(data.detected_language) // Default to detected language
       }
+
+      // Auto-suggest page count based on CV content length and experience count
+      const originalText: string = data.original_text || ''
+      const parsedSections = data.parsed_sections as { sections?: Array<{ type: string; content: any }> } | null
+      const experienceSection = parsedSections?.sections?.find((s: { type: string }) => s.type === 'experience')
+      const experienceCount = Array.isArray(experienceSection?.content) ? experienceSection.content.length : 0
+      const charCount = originalText.length
+
+      let suggestedPages = 1
+      if (charCount > 4000 || experienceCount >= 5) suggestedPages = 2
+      if (charCount > 7000 || experienceCount >= 8) suggestedPages = 3
+      if (charCount > 10000 || experienceCount >= 12) suggestedPages = 4
+      setMaxPages(suggestedPages)
     } catch (error) {
       console.error('Error fetching CV:', error)
       toast.error('Failed to load CV')
@@ -446,7 +495,7 @@ export default function GeneratePage() {
                   id="jobTitle"
                   type="text"
                   value={jobTitle}
-                  onChange={(e) => setJobTitle(e.target.value)}
+                  onChange={(e) => { setJobTitle(e.target.value); detectCareerMismatch(cvData?.original_text || '', e.target.value) }}
                   className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-colors"
                   placeholder="e.g. Senior Software Engineer"
                   required
@@ -471,6 +520,13 @@ export default function GeneratePage() {
               <p className="text-sm text-gray-400 mt-1">
                 Tip: Include the full job posting for better keyword matching and ATS optimization
               </p>
+
+            {careerMismatch && (
+              <div className="mt-3 p-3 bg-orange-500/15 border border-orange-500/40 rounded-xl flex items-start gap-2">
+                <span className="text-orange-400 text-lg leading-none mt-0.5">⚠️</span>
+                <p className="text-sm text-orange-300">{careerMismatch}</p>
+              </div>
+            )}
             </div>
 
             {/* Advanced Options */}
@@ -575,6 +631,28 @@ export default function GeneratePage() {
                       {maxPages === 3 && 'Good for senior roles with extensive experience'}
                       {maxPages === 4 && 'For executive, academic, or highly technical positions'}
                     </p>
+                    {cvData && (() => {
+                      const originalText: string = cvData.original_text || ''
+                      const parsedSections = cvData.parsed_sections as { sections?: Array<{ type: string; content: any }> } | null
+                      const expSection = parsedSections?.sections?.find((s: { type: string }) => s.type === 'experience')
+                      const expCount = Array.isArray(expSection?.content) ? expSection.content.length : 0
+                      const chars = originalText.length
+                      let suggested = 1
+                      if (chars > 4000 || expCount >= 5) suggested = 2
+                      if (chars > 7000 || expCount >= 8) suggested = 3
+                      if (chars > 10000 || expCount >= 12) suggested = 4
+                      if (suggested > 1 && maxPages !== suggested) {
+                        return (
+                          <p className="text-xs text-yellow-400 mt-1">
+                            ⚡ Based on your CV ({expCount} roles, {Math.round(chars / 1000)}k chars), we suggest <button className="underline font-bold" onClick={() => setMaxPages(suggested)}>{suggested} pages</button>
+                          </p>
+                        )
+                      }
+                      if (suggested > 1 && maxPages === suggested) {
+                        return <p className="text-xs text-green-400 mt-1">✓ Recommended for your CV length and experience</p>
+                      }
+                      return null
+                    })()}
                   </div>
 
                   {/* Custom Sections */}
