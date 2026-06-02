@@ -775,7 +775,7 @@ IMPORTANT:
         diff_meta: diffMeta,
         ats_score: atsScore,
         output_language: targetLanguage,
-        max_pages: max_pages || 4
+        max_pages: max_pages || 1
       })
       .select()
       .single()
