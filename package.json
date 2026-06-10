@@ -33,6 +33,7 @@
     "@types/diff-match-patch": "^1.0.36",
     "@types/multer": "^2.0.0",
     "@types/pdf-parse": "^1.1.5",
+    "@vercel/speed-insights": "^2.0.0",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "diff-match-patch": "^1.0.5",
