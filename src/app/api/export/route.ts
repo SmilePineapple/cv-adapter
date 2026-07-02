@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
     const photoUrl = generationData.cvs?.photo_url || null
-    const maxPages = generation.max_pages || 4
+    const maxPages = generation.max_pages || 1
 
     console.log('📏 DEBUG: max_pages from generation:', generation.max_pages)
     console.log('📏 DEBUG: using maxPages:', maxPages)
@@ -386,7 +386,7 @@ async function handlePdfExport(
     await new Promise(r => setTimeout(r, 500))
 
     const renderMeasurement = await measureRenderedCV(page, maxPages)
-    console.log('📐 Render measurement:', {
+    const measLog = {
       targetPages: renderMeasurement.targetPages,
       actualPages: renderMeasurement.actualPages,
       overflowing: renderMeasurement.overflowing,
@@ -401,7 +401,8 @@ async function handlePdfExport(
         pageEnd: section.pageEnd,
         height: Math.round(section.height)
       }))
-    })
+    }
+    console.log('📐 Render measurement:', measLog)
 
     // Deterministic spacing fill: only applies to multi-page CVs using page-plan renderer
     // For single-page CVs, the template generators handle their own spacing
@@ -414,14 +415,16 @@ async function handlePdfExport(
         await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
         await new Promise(r => setTimeout(r, 500))
         activeMeasurement = await measureRenderedCV(page, maxPages)
-        console.log('📐 Render measurement after fill:', {
+        const fillLog = {
+          fillScale: fillScale.toFixed(3),
           actualPages: activeMeasurement.actualPages,
           overflowing: activeMeasurement.overflowing,
           pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
             page: item.page,
             occupancy: Number(item.occupancy.toFixed(2))
           }))
-        })
+        }
+        console.log('📐 Render measurement after fill:', fillLog)
       }
     }
 

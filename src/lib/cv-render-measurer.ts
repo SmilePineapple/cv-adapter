@@ -101,7 +101,7 @@ export interface FillScaleOptions {
 // the bottom of the page without overflowing the fullest page. Returns 1 when no fill is
 // needed (single-page target, overflowing, or pages already near-full).
 export function computeFillScale(measurement: RenderMeasurement, options: FillScaleOptions = {}): number {
-  const { maxScale = 1.3, targetCoverage = 0.95, fullPageCap = 0.97 } = options
+  const { maxScale = 1.5, targetCoverage = 0.95, fullPageCap = 0.97 } = options
 
   if (!measurement.targetPages || measurement.targetPages <= 1) return 1
   if (measurement.overflowing) return 1

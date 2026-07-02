@@ -146,7 +146,7 @@ function formatSectionTitle(section: PlannedPageSection): string {
 function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
   const theme = getTemplateTheme(templateName)
   // Clamp the fill scale so the page never overflows and text stays readable.
-  const scale = Math.min(Math.max(fillScale, 1), 1.3)
+  const scale = Math.min(Math.max(fillScale, 1), 1.5)
   // Line-height is scaled more gently than structural spacing to preserve legibility.
   const lineScale = Math.min(scale, 1.18)
   const pageGap = (3.2 * scale).toFixed(2)
@@ -162,10 +162,11 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
     body { margin: 0; background: #ffffff; color: ${theme.text}; font-family: ${theme.fontFamily}; font-size: ${theme.fontSize}; line-height: ${bodyLineHeight}; }
     .cv-page { position: relative; width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: ${theme.pagePadding}; background: ${theme.background}; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: ${pageGap}mm; }
     .cv-page:last-child { page-break-after: auto; }
-    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: ${headerPad}mm; margin-bottom: ${headerMargin}mm; }
+    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: ${headerPad}mm; margin-bottom: ${headerMargin}mm; flex-shrink: 0; }
     .cv-header h1 { margin: 0 0 2mm; color: ${theme.heading}; font-size: ${theme.nameSize}; line-height: 1.1; letter-spacing: -0.02em; }
     .cv-contact { color: ${theme.muted}; white-space: pre-wrap; font-size: ${theme.contactSize}; }
     .page-zone { display: grid; gap: ${zoneGap}mm; min-height: 0; }
+    .page-zone:last-child { flex: 1 1 0; align-content: space-between; min-height: auto; }
     .page-zone-single-column { grid-template-columns: 1fr; }
     .page-zone-two-column { grid-template-columns: 1fr 1fr; align-items: start; }
     .page-zone-hybrid { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
@@ -190,6 +191,16 @@ function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
 }
 
 function splitSection(section: PlannedPageSection, count: number): PlannedPageSection[] {
+  // Experience content is a sequence of jobs, each with its own header line — splitting by
+  // raw line count can cut a job's bullets in half across a page with no repeated header.
+  // Split on job boundaries instead so continuation pages never start mid-job.
+  if (section.type === 'experience') {
+    return splitByJobBoundary(section, count)
+  }
+  return splitByLine(section, count)
+}
+
+function splitByLine(section: PlannedPageSection, count: number): PlannedPageSection[] {
   const paragraphs = section.content.split('\n').map(line => line.trim()).filter(Boolean)
   const chunks = Array.from({ length: count }, () => [] as string[])
   const chunkSize = Math.ceil(paragraphs.length / count)
@@ -199,6 +210,51 @@ function splitSection(section: PlannedPageSection, count: number): PlannedPageSe
     chunks[chunkIndex].push(paragraph)
   })
 
+  return finalizeSplitChunks(section, chunks, count)
+}
+
+function splitByJobBoundary(section: PlannedPageSection, count: number): PlannedPageSection[] {
+  const lines = section.content.split('\n').map(line => line.trim()).filter(Boolean)
+  const isJobHeader = (line: string) => line.includes('|') && !/^[•\-*]/.test(line)
+
+  const jobBlocks: string[][] = []
+  lines.forEach(line => {
+    if (isJobHeader(line) || jobBlocks.length === 0) {
+      jobBlocks.push([line])
+    } else {
+      jobBlocks[jobBlocks.length - 1].push(line)
+    }
+  })
+
+  // No header lines detected (or only one job) — nothing to split on job boundaries, fall
+  // back to a line-based split so every page still gets something.
+  if (jobBlocks.length <= 1) {
+    return splitByLine(section, count)
+  }
+
+  const blockLengths = jobBlocks.map(block => block.join('\n').length)
+  const totalLength = blockLengths.reduce((sum, len) => sum + len, 0)
+  const targetChunkLength = totalLength / count
+
+  const chunks: string[][] = Array.from({ length: count }, () => [])
+  let chunkIndex = 0
+  let currentChunkLength = 0
+
+  jobBlocks.forEach((block, index) => {
+    const blockLength = blockLengths[index]
+    const wouldOverflow = currentChunkLength > 0 && currentChunkLength + blockLength > targetChunkLength
+    if (wouldOverflow && chunkIndex < count - 1) {
+      chunkIndex++
+      currentChunkLength = 0
+    }
+    chunks[chunkIndex].push(...block)
+    currentChunkLength += blockLength
+  })
+
+  return finalizeSplitChunks(section, chunks, count)
+}
+
+function finalizeSplitChunks(section: PlannedPageSection, chunks: string[][], count: number): PlannedPageSection[] {
   return chunks
     .map((chunk, index) => ({
       ...section,

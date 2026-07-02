@@ -868,6 +868,87 @@ export async function sendDeletionWarningEmail(email: string, name: string, dele
 }
 
 /**
+ * Send email to a user whose account was removed due to inactivity.
+ * Notifies them that:
+ * - We noticed their account had been inactive, so we cancelled their subscription
+ * - No further charges will be made
+ * - They've been given a complimentary month of Pro if they'd like to come back
+ */
+export async function sendAccountDeletionApologyEmail(
+  email: string,
+  name: string,
+  _refundAmount?: string
+) {
+  try {
+    const resend = getResendClient()
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: 'Your My CV Buddy Subscription Has Been Cancelled',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f6f9fc; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px 48px 48px;">
+            <h1 style="color: #111827; font-size: 24px; margin-bottom: 16px;">Subscription Cancelled</h1>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">Hi ${name},</p>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              We noticed that your My CV Buddy account had been inactive for some time, so we've gone
+              ahead and cancelled your subscription. No further charges will be made to your payment method.
+            </p>
+            <div style="background: #f0fdf4; border: 2px solid #22c55e; border-radius: 8px; padding: 24px; margin: 24px 0; text-align: center;">
+              <p style="color: #166534; font-size: 18px; font-weight: bold; margin: 0;">
+                We've added a free month of Pro to your account
+              </p>
+              <p style="color: #166534; font-size: 14px; margin: 8px 0 0;">
+                If you'd like to come back, just log in and it'll be ready for you.
+              </p>
+            </div>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              If you'd like to start using My CV Buddy again, simply sign up or log in with your email
+              and you'll have a month of Pro access on us — no payment required.
+            </p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="https://www.mycvbuddy.com/auth/login" style="background: #4F46E5; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold; display: inline-block;">
+                Log In to My Account
+              </a>
+            </div>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              If you have any questions, feel free to reply to this email and we'll be happy to help.
+            </p>
+            <p style="color: #374151; font-size: 16px; line-height: 26px;">
+              The CV Buddy Team
+            </p>
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
+            <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+              <a href="https://www.mycvbuddy.com" style="color: #4F46E5;">mycvbuddy.com</a>
+            </p>
+          </div>
+        </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Account deletion apology email error:', error)
+      return { success: false, error }
+    }
+
+    console.log('Account deletion apology email sent:', data)
+    return { success: true, data }
+  } catch (error) {
+    console.error('Account deletion apology email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
  * Test email sending (for development)
  */
 export async function sendTestEmail(email: string) {

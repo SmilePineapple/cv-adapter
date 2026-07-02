@@ -167,7 +167,9 @@ Rules:
 - Preserve real employers, dates, qualifications, and credentials from the original CV.
 - Do not invent fake companies, dates, degrees, or certifications.
 - Add truthful context, detail, responsibilities, tools, outcomes, and relevant achievements.
-- If the CV is below the acceptable total range, the repaired output must be longer than the current CV.
+- If the CV is below the acceptable total range, the repaired output must be SIGNIFICANTLY longer than the current CV — aim to reach the target of ${blueprint.targetTotalChars} characters.
+- EXPAND each job to at least 6 bullet points with 25-35 words each. ADD new bullets with relevant responsibilities, tools, and outcomes.
+- EXPAND the summary to 5-8 sentences. EXPAND skills to 10-15 items with context.
 - For 3/4-page CVs, generate permitted optional sections when existing content alone cannot fill the selected page count.
 - Use transferable achievements, treatment/service outcomes, client-care strengths, relevant projects, tools, and professional context inferred from the CV and target role.
 - If adding optional sections, only use sections permitted by the layout plan.
