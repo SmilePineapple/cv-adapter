@@ -106,9 +106,9 @@ function get2PageStrategy(capacity: CVContentCapacity): GenerationStrategy {
     densityMultiplier,
     contentHints,
     allowOptionalSections: true,
-    optionalSections: ['projects', 'hobbies'],
+    optionalSections: ['achievements', 'projects'],
     compressionPriority: false,
-    pageTargets: [5400, 8200] // Page 1 (single-column), Page 2 (two-column)
+    pageTargets: [7500, 8500] // Page 1 (two-column), Page 2 (two-column)
   }
 }
 

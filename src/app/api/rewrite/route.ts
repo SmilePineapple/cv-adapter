@@ -465,7 +465,7 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
                 messages: [
                   {
                     role: 'system',
-                    content: systemPrompt + ' The CV is still significantly too short for the target page count. You MUST expand EVERY section substantially. Add more bullet points to every job, expand the summary, add detail to skills, education, and certifications. Return the full sections array.'
+                    content: systemPrompt + ' The CV is still significantly too short for the target page count. You MUST expand EVERY section substantially. Add more bullet points to every job, expand the summary, add detail to skills, education, and certifications. If the layout plan permits generated sections (achievements, projects) and the candidate does not already have them, ADD them with truthful content inferred from their real experience - this is often the fastest way to close a large shortfall. Return the full sections array.'
                   },
                   {
                     role: 'user',
@@ -496,6 +496,69 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
         }
       } catch (layoutRepairError) {
         console.error('❌ Layout repair failed:', layoutRepairError)
+      }
+    }
+
+    // 🎯 Dedicated fill pass for blueprint-designated "bonus" sections (achievements,
+    // projects, additional_information) that the page layout has room for but the
+    // candidate's original CV doesn't have. The generic repair passes above ask for
+    // these among several other instructions and often don't act on it - a narrowly
+    // scoped prompt asking for exactly the missing sections is far more reliable.
+    if (effectivePageCount > 1) {
+      const presentTypes = new Set(rewrittenSections.map(s => normalizeSectionType(s.type)))
+      const missingGeneratable = adjustedBlueprint.sectionBudgets.filter(
+        budget => budget.allowGenerated && !presentTypes.has(normalizeSectionType(budget.sectionType))
+      )
+      const preFillValidation = validateCVLayout(rewrittenSections, adjustedBlueprint)
+
+      if (missingGeneratable.length > 0 && preFillValidation.totalChars < adjustedBlueprint.targetTotalChars) {
+        console.log('📐 Running dedicated fill pass for missing bonus sections:', missingGeneratable.map(b => b.sectionType))
+        try {
+          const fillPrompt = `This CV's page layout has room for these optional sections, which the candidate's original CV does not include: ${missingGeneratable.map(b => `${b.sectionType} (target ~${b.targetChars} characters)`).join(', ')}.
+
+Generate ONLY these missing sections, inferred truthfully from the candidate's real job titles, employers, and responsibilities below. Do not invent employers, dates, qualifications, or unverifiable claims - infer plausible, realistic achievements/projects/details from the actual experience described.
+
+Candidate's current CV sections:
+${JSON.stringify(rewrittenSections, null, 2)}
+
+Target job: ${job_title}
+
+Return JSON only in this format:
+{ "sections": [ { "type": "achievements", "content": "...", "order": 90 } ] }`
+
+          const fillCompletion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            response_format: { type: 'json_object' },
+            messages: [
+              {
+                role: 'system',
+                content: 'You generate truthful, plausible bonus CV sections (achievements, projects, additional information) inferred from a candidate\'s real, existing experience. Never invent employers, dates, or credentials that are not already in the CV.'
+              },
+              {
+                role: 'user',
+                content: fillPrompt
+              }
+            ],
+            temperature: 0.4,
+            max_tokens: 2000
+          })
+
+          const fillResponse = fillCompletion.choices[0]?.message?.content
+          if (fillResponse) {
+            const parsedFill = JSON.parse(fillResponse)
+            if (Array.isArray(parsedFill.sections)) {
+              const newSections = parsedFill.sections.filter((s: any) => s?.type && s?.content)
+              console.log(`✅ Fill pass added ${newSections.length} section(s):`, newSections.map((s: any) => s.type).join(', '))
+              rewrittenSections.push(...newSections.map((s: any, i: number) => ({
+                type: s.type,
+                content: s.content,
+                order: rewrittenSections.length + i + 1
+              })))
+            }
+          }
+        } catch (fillError) {
+          console.error('❌ Bonus section fill pass failed:', fillError)
+        }
       }
     }
 

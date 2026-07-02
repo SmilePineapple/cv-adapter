@@ -90,6 +90,25 @@ export function formatBlueprintForPrompt(blueprint: CVPageBlueprint): string {
 //
 // Targets aim for 85-92% fill. The density multiplier (Phase 2) adjusts for content type.
 // Deterministic spacing-fill + render measurement absorb small gaps.
+//
+// PAGE MAP (the actual per-page-count column assignment - keep in sync with the zones below):
+//
+// 2-page: Page1 [L: summary, education, skills, hobbies | R: experience]
+//         Page2 [L: certifications, (education/skills overflow) | R: experience overflow, achievements*, projects*]
+// 3-page: Page1 [L: summary, skills | R: experience]
+//         Page2 [L: education, certifications | R: experience overflow, achievements*]
+//         Page3 [L: hobbies | R: projects*, achievements* overflow]
+// 4-page: Page1 [L: summary, skills | R: experience]
+//         Page2 [L: education | R: experience overflow]
+//         Page3 [L: certifications, achievements* | R: experience overflow, projects*]
+//         Page4 [L: hobbies | R: projects* overflow, additional_information*]
+//
+// * = allowGenerated: true - the AI is asked to generate these truthfully from the
+// candidate's real experience when the original CV doesn't have them. This is what
+// fills the "bonus" pages/columns beyond what a 1-page CV would show. Getting this to
+// actually happen reliably (not just when a repair pass happens to remember to add it)
+// is handled by the dedicated fill pass in rewrite/route.ts, not by hoping a generic
+// "expand everything" repair instruction covers it.
 // AI condense pass handles rare overflow cases.
 const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
   1: {
