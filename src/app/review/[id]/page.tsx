@@ -934,7 +934,7 @@ export default function ReviewPage() {
                   </div>
                   
                   <div className="flex items-center space-x-2">
-                    {(section.type === 'hobbies' || section.type === 'interests' || section.type === 'hobbies_and_interests') && (
+                    {(section.type === 'hobbies' || (section.type as string) === 'interests' || (section.type as string) === 'hobbies_and_interests') && (
                       <button
                         onClick={() => handleAIGenerateSection(section.type)}
                         disabled={aiGeneratingSection === section.type}

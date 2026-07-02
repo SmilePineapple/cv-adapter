@@ -36,6 +36,7 @@ interface GenerationData {
   cv_id: string
   ats_score?: number
   max_pages?: number
+  photo_url?: string | null
 }
 
 interface AIReview {
@@ -432,13 +433,13 @@ export default function DownloadPage() {
   const prepareTemplateData = (sections: CVSection[], overrideSkillScores?: { name: string; level: number }[] | null) => {
     const nameSection = sections.find(s => s.type === 'name')
     const contactSection = sections.find(s => s.type === 'contact')
-    const summarySection = sections.find(s => s.type === 'summary' || s.type === 'professional_summary' || s.type === 'profile')
-    const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+    const summarySection = sections.find(s => s.type === 'summary' || (s.type as string) === 'professional_summary' || (s.type as string) === 'profile')
+    const experienceSection = sections.find(s => s.type === 'experience' || (s.type as string) === 'work_experience')
     const educationSection = sections.find(s => s.type === 'education')
     const skillsSection = sections.find(s => s.type === 'skills')
     const certificationsSection = sections.find(s => s.type === 'certifications')
-    const languagesSection = sections.find(s => s.type === 'languages')
-    const hobbiesSection = sections.find(s => s.type === 'interests' || s.type === 'hobbies')
+    const languagesSection = sections.find(s => (s.type as string) === 'languages')
+    const hobbiesSection = sections.find(s => (s.type as string) === 'interests' || s.type === 'hobbies')
     
     // Parse contact info
     let email = '', phone = '', address = '', website = ''

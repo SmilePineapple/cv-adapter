@@ -11,9 +11,15 @@ export const createSupabaseServerClient = () => {
 }
 
 // Route handler client (for use in API routes)
+// @supabase/auth-helpers-nextjs is deprecated and its types expect the pre-Next15
+// synchronous cookies() signature (or, per its own .d.ts, a Promise-returning one -
+// the two don't actually agree). We've already awaited cookies() above, so the
+// function below returns the resolved store synchronously, exactly as the
+// library's runtime code (NextRouteHandlerAuthStorageAdapter.getCookie/setCookie)
+// expects - the `as any` only silences the mismatched type, it changes no behavior.
 export const createSupabaseRouteClient = async () => {
   const cookieStore = await cookies()
-  return createRouteHandlerClient({ cookies: () => cookieStore })
+  return createRouteHandlerClient({ cookies: (() => cookieStore) as any })
 }
 
 // Admin client (server-side only, with service role key)
