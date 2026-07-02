@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+
+# temp scripts
+test-multi-page.ps1
 
 # next.js
 /.next/
