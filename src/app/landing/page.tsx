@@ -1210,7 +1210,7 @@ export default function LandingPage() {
                 <h3 className="text-xl font-bold text-white mb-3">Does MyCVBuddy write cover letters too?</h3>
                 <p className="text-gray-300">
                   Yes! Our Pro plan includes an AI-powered <strong className="text-white">cover letter generator</strong> that creates a personalised cover letter matched to your CV and the specific job description. UK cover letters should be no more than one page, address the hiring manager directly, and explain why you want <em>that specific role at that specific company</em> — our AI handles all of this automatically. Visit our{" "}
-                  <a href="/cover-letter" className="text-blue-400 hover:text-blue-300 underline">cover letter generator</a>{" "}
+                  <Link href="/cover-letter" className="text-blue-400 hover:text-blue-300 underline">cover letter generator</Link>{" "}
                   to get started.
                 </p>
               </div>

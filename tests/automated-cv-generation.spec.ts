@@ -71,8 +71,6 @@ test.describe('Automated CV Generation Tests', () => {
       const firstCV = page.locator('[data-testid="cv-card"]').first()
       const cvExists = await firstCV.isVisible().catch(() => false)
 
-      let cvId: string
-
       if (!cvExists) {
         console.log('📝 No CV found, need to upload one first')
         // You'll need to upload a CV manually first, or add upload logic here
@@ -89,7 +87,7 @@ test.describe('Automated CV Generation Tests', () => {
       if (!match) {
         throw new Error('Could not extract CV ID from URL')
       }
-      cvId = match[1]
+      const cvId = match[1]
 
       console.log(`📋 Using CV ID: ${cvId}`)
 

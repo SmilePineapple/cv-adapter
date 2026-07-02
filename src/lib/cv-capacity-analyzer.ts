@@ -279,11 +279,14 @@ function estimateExperienceYears(sections: CVSection[]): number {
     return jobCount * 2 // Assume 2 years per job
   }
   
-  // Calculate range from earliest to latest year
+  // Calculate range from earliest year to latest year - or to now if the most
+  // recent role is still ongoing ("Present"/"Current"), since the literal years
+  // found in the text otherwise understate an ongoing role's actual duration.
   const yearNumbers = years.map(y => parseInt(y))
   const minYear = Math.min(...yearNumbers)
-  const maxYear = Math.max(...yearNumbers)
-  
+  const isOngoing = /\b(present|current|now)\b/i.test(text)
+  const maxYear = isOngoing ? new Date().getFullYear() : Math.max(...yearNumbers)
+
   return maxYear - minYear
 }
 
@@ -378,14 +381,20 @@ function detectQuantifiableAchievements(sections: CVSection[]): boolean {
 }
 
 function determineDetailLevel(
-  sections: CVSection[], 
-  sourceChars: number, 
+  sections: CVSection[],
+  sourceChars: number,
   jobCount: number
 ): 'sparse' | 'moderate' | 'detailed' {
   if (jobCount === 0) return 'sparse'
-  
-  const charsPerJob = sourceChars / jobCount
-  
+
+  // Chars-per-job should reflect how much depth is in the experience bullets
+  // specifically, not the whole CV (summary/skills/education) divided by job
+  // count - otherwise a CV with one job but a full skills/education section
+  // reads as "detailed" even when the experience bullets themselves are thin.
+  const experienceSection = sections.find(s => normalizeSectionType(s.type) === 'experience')
+  const experienceChars = experienceSection ? getSectionText(experienceSection.content).length : sourceChars
+  const charsPerJob = experienceChars / jobCount
+
   if (charsPerJob < 300) return 'sparse'
   if (charsPerJob < 600) return 'moderate'
   return 'detailed'
