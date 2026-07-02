@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { CVSection } from '@/types/database'
-import { createPagePlan, renderPagePlanHTML } from '../page-plan-renderer'
+import { createPagePlan, renderPagePlanHTML, PlannedPageZone } from '../page-plan-renderer'
 
 const sections: CVSection[] = [
   { type: 'name', content: 'Alex Teacher', order: 0 },
@@ -13,6 +13,11 @@ const sections: CVSection[] = [
   { type: 'projects', content: 'Whole-school assessment project.', order: 7 }
 ]
 
+// Two-column zones keep left/right sections separate instead of a flat `sections` list.
+function zoneSectionTypes(zone: PlannedPageZone): string[] {
+  return [...zone.sections, ...(zone.leftSections ?? []), ...(zone.rightSections ?? [])].map(section => section.type)
+}
+
 describe('page plan renderer', () => {
   it('creates the selected number of planned pages', () => {
     const plan = createPagePlan(sections, 3)
@@ -23,7 +28,7 @@ describe('page plan renderer', () => {
 
   it('assigns sections to blueprint zones', () => {
     const plan = createPagePlan(sections, 2)
-    const zoneSections = plan.pages.flatMap(page => page.zones.flatMap(zone => zone.sections.map(section => section.type)))
+    const zoneSections = plan.pages.flatMap(page => page.zones.flatMap(zoneSectionTypes))
 
     expect(zoneSections).toContain('summary')
     expect(zoneSections).toContain('experience')
@@ -32,27 +37,56 @@ describe('page plan renderer', () => {
   })
 
   it('renders fixed page containers and measurable section attributes', () => {
-    const html = renderPagePlanHTML(sections, 4, 'creative_modern')
+    // Give every page genuinely distinct content so none of the 4 pages compact away.
+    const richSections: CVSection[] = [
+      ...sections,
+      { type: 'achievements', content: 'Raised attainment by 12% over two years.', order: 8 } as unknown as CVSection,
+      { type: 'hobbies', content: 'Chess, hiking, amateur radio.', order: 9 },
+      { type: 'additional_information', content: 'Full clean UK driving licence.', order: 10 } as unknown as CVSection
+    ]
+    const html = renderPagePlanHTML(richSections, 4, 'creative_modern')
 
     expect(html).toContain('data-page-plan="4"')
     expect(html.match(/class="cv-page"/g)).toHaveLength(4)
     expect(html).toContain('data-section-type="summary"')
     expect(html).toContain('data-section-type="experience"')
-    expect(html).toContain('data-zone-id="page_1_work_experience"')
+    expect(html).toContain('data-zone-id="page_1_profile_experience"')
   })
 
-  it('splits repeated sections across repeated blueprint zones', () => {
+  it('splits repeated sections across repeated blueprint zones when content genuinely needs it', () => {
+    // Long enough (well over one column's ~4,250-char capacity) that it must spill onto
+    // a second right column - job-boundary formatted so splitByJobBoundary is exercised.
+    const longExperience = Array.from({ length: 6 }, (_, i) =>
+      `Role ${i + 1} | Company ${i + 1} | 20${10 + i}-20${11 + i}\n` + '• '.concat('Delivered measurable improvements across the team. '.repeat(20))
+    ).join('\n')
+
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'experience', content: longExperience, order: 1 },
+      { type: 'summary', content: 'Summary', order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 }
+    ], 4)
+    const pageTwoSections = plan.pages
+      .find(page => page.page === 2)
+      ?.zones.flatMap(zoneSectionTypes)
+
+    expect(pageTwoSections).toContain('experience')
+  })
+
+  it('does not split short content across repeated blueprint zones', () => {
     const plan = createPagePlan([
       { type: 'name', content: 'Alex Teacher', order: 0 },
       { type: 'experience', content: 'Role one\nRole two\nRole three\nRole four', order: 1 },
       { type: 'summary', content: 'Summary', order: 2 },
       { type: 'skills', content: 'Skills', order: 3 }
     ], 4)
-    const pageThreeSections = plan.pages
-      .find(page => page.page === 3)
-      ?.zones.flatMap(zone => zone.sections.map(section => section.type))
+    const pageOneRight = plan.pages.find(page => page.page === 1)?.zones.flatMap(zone => zone.rightSections ?? [])
+    const laterPagesSections = plan.pages
+      .filter(page => page.page !== 1)
+      .flatMap(page => page.zones.flatMap(zoneSectionTypes))
 
-    expect(pageThreeSections).toContain('experience')
+    expect((pageOneRight ?? []).map(s => s.type)).toContain('experience')
+    expect(laterPagesSections).not.toContain('experience')
   })
 
   it('normalizes interests into hobbies on supporting pages', () => {
@@ -63,7 +97,7 @@ describe('page plan renderer', () => {
       { type: 'skills', content: 'Skills', order: 3 },
       { type: 'interests', content: 'Travel and wellbeing', order: 4 } as unknown as CVSection
     ], 4)
-    const allSections = plan.pages.flatMap(page => page.zones.flatMap(zone => zone.sections.map(section => section.type)))
+    const allSections = plan.pages.flatMap(page => page.zones.flatMap(zoneSectionTypes))
 
     expect(allSections).toContain('hobbies')
   })

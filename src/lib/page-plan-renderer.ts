@@ -13,7 +13,12 @@ export interface PlannedPageSection {
 export interface PlannedPageZone {
   id: string
   layout: string
+  // Used for single-column zones.
   sections: PlannedPageSection[]
+  // Used for two-column zones - each column stacks independently instead of
+  // relying on CSS grid auto-placement to interleave a flat list.
+  leftSections?: PlannedPageSection[]
+  rightSections?: PlannedPageSection[]
 }
 
 export interface PlannedPage {
@@ -60,6 +65,23 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     return {
       page: pageNumber,
       zones: pageZones.map(zone => {
+        if (zone.leftSectionTypes || zone.rightSectionTypes) {
+          const leftSections = (zone.leftSectionTypes ?? [])
+            .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+            .sort((a, b) => a.order - b.order)
+          const rightSections = (zone.rightSectionTypes ?? [])
+            .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+            .sort((a, b) => a.order - b.order)
+
+          return {
+            id: zone.id,
+            layout: zone.layout,
+            sections: [],
+            leftSections,
+            rightSections
+          }
+        }
+
         const zoneSections = zone.sectionTypes
           .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
 
@@ -76,8 +98,9 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
   const finalPage = pages[pages.length - 1]
   const finalZone = finalPage?.zones[finalPage.zones.length - 1]
   if (finalZone) {
-    finalZone.sections.push(...unassignedSections)
-    finalZone.sections.sort((a, b) => a.order - b.order)
+    const targetList = finalZone.rightSections ?? finalZone.sections
+    targetList.push(...unassignedSections)
+    targetList.sort((a, b) => a.order - b.order)
   }
 
   return {
@@ -106,7 +129,10 @@ export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, te
       ${page.page === 1 ? renderHeader(name, contact) : ''}
       ${page.zones.map(zone => `
         <section class="page-zone page-zone-${escapeHtml(zone.layout)}" data-zone-id="${escapeHtml(zone.id)}" data-layout="${escapeHtml(zone.layout)}">
-          ${zone.sections.map(section => renderSection(section)).join('')}
+          ${zone.leftSections || zone.rightSections ? `
+            <div class="zone-column zone-column-left">${(zone.leftSections ?? []).map(section => renderSection(section)).join('')}</div>
+            <div class="zone-column zone-column-right">${(zone.rightSections ?? []).map(section => renderSection(section)).join('')}</div>
+          ` : zone.sections.map(section => renderSection(section)).join('')}
         </section>
       `).join('')}
     </main>
@@ -170,6 +196,7 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
     .page-zone-single-column { grid-template-columns: 1fr; }
     .page-zone-two-column { grid-template-columns: 1fr 1fr; align-items: start; }
     .page-zone-hybrid { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
+    .zone-column { display: flex; flex-direction: column; gap: ${zoneGap}mm; min-width: 0; }
     .cv-section { break-inside: avoid; page-break-inside: avoid; border-left: 2px solid ${theme.accent}; padding-left: 3mm; min-width: 0; }
     .cv-section h2 { margin: 0 0 ${h2Margin}mm; color: ${theme.accent}; font-size: ${theme.sectionTitleSize}; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
     .section-content { white-space: normal; overflow-wrap: anywhere; }
@@ -182,22 +209,32 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
 
 function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
   const counts = new Map<string, number>()
+  const countType = (sectionType: string) => counts.set(sectionType, (counts.get(sectionType) || 0) + 1)
   zones.forEach(zone => {
-    zone.sectionTypes.forEach(sectionType => {
-      counts.set(sectionType, (counts.get(sectionType) || 0) + 1)
-    })
+    zone.sectionTypes.forEach(countType)
+    zone.leftSectionTypes?.forEach(countType)
+    zone.rightSectionTypes?.forEach(countType)
   })
   return counts
 }
 
-function splitSection(section: PlannedPageSection, count: number): PlannedPageSection[] {
+// Roughly how many characters fit in one column's worth of a full page height, derived
+// from the blueprint's own calibration note ("two-column full ≈ 8,500 chars" per page,
+// i.e. ~4,250 per column). Used to decide how many chunks a section actually needs,
+// rather than always producing exactly as many chunks as there are zone slots for it -
+// a short section referenced by two page zones should only occupy the first one.
+const CHARS_PER_COLUMN_PAGE = 4250
+
+function splitSection(section: PlannedPageSection, maxCount: number): PlannedPageSection[] {
+  const idealCount = Math.max(1, Math.min(maxCount, Math.ceil(section.content.length / CHARS_PER_COLUMN_PAGE)))
+
   // Experience content is a sequence of jobs, each with its own header line — splitting by
   // raw line count can cut a job's bullets in half across a page with no repeated header.
   // Split on job boundaries instead so continuation pages never start mid-job.
   if (section.type === 'experience') {
-    return splitByJobBoundary(section, count)
+    return splitByJobBoundary(section, idealCount)
   }
-  return splitByLine(section, count)
+  return splitByLine(section, idealCount)
 }
 
 function splitByLine(section: PlannedPageSection, count: number): PlannedPageSection[] {
@@ -265,11 +302,15 @@ function finalizeSplitChunks(section: PlannedPageSection, chunks: string[][], co
     .filter(chunk => chunk.content.trim().length > 0)
 }
 
+function isZoneEmpty(zone: PlannedPageZone): boolean {
+  return zone.sections.length === 0 && (zone.leftSections?.length ?? 0) === 0 && (zone.rightSections?.length ?? 0) === 0
+}
+
 function compactEmptyPages(pages: PlannedPage[]): PlannedPage[] {
-  const emptyPages = pages.filter(page => page.zones.every(zone => zone.sections.length === 0))
+  const emptyPages = pages.filter(page => page.zones.every(isZoneEmpty))
   if (emptyPages.length === 0) return pages
 
-  const nonEmptyPages = pages.filter(page => page.zones.some(zone => zone.sections.length > 0))
+  const nonEmptyPages = pages.filter(page => page.zones.some(zone => !isZoneEmpty(zone)))
   return nonEmptyPages.map((page, index) => ({
     ...page,
     page: index + 1
