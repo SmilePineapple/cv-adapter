@@ -1,6 +1,16 @@
 import { CVSection } from '@/types/database'
 import { CVPageBlueprint, CVSectionType, getBudgetForSection } from './cv-page-blueprints'
 
+// These section types are instructed elsewhere (the main generation prompt) to be
+// copied 100% exactly from the original CV with zero modifications - the AI has no
+// truthful way to "expand" them with new characters, since it isn't allowed to add
+// new facts. Flagging them as under-budget (even without an explicit repair
+// instruction) still surfaces the shortfall in the repair prompt's metrics table,
+// which is enough to pressure the AI into fabricating a plausible-sounding
+// institution/certificate to close the gap - so these are excluded from the
+// under-minimum check entirely, not just from the "expand" instruction.
+const VERBATIM_SECTION_TYPES = new Set(['education', 'certifications', 'hobbies'])
+
 export type LayoutIssueSeverity = 'error' | 'warning'
 export type LayoutIssueCode = 'missing_required_section' | 'total_under_minimum' | 'total_over_maximum' | 'section_under_minimum' | 'section_over_maximum'
 
@@ -88,7 +98,7 @@ export function validateCVLayout(sections: CVSection[], blueprint: CVPageBluepri
       continue
     }
 
-    if (matchingSections.length > 0 && chars < budget.minChars) {
+    if (matchingSections.length > 0 && chars < budget.minChars && !VERBATIM_SECTION_TYPES.has(budget.sectionType)) {
       issues.push({
         code: 'section_under_minimum',
         severity: 'warning',
@@ -185,7 +195,7 @@ function createRepairInstructions(issues: LayoutIssue[], blueprint: CVPageBluepr
       instructions.push(`Add a ${issue.sectionType} section of around ${budget?.targetChars ?? issue.charsNeeded ?? 500} characters.`)
     }
 
-    if (issue.code === 'section_under_minimum' && issue.sectionType) {
+    if (issue.code === 'section_under_minimum' && issue.sectionType && !VERBATIM_SECTION_TYPES.has(issue.sectionType)) {
       instructions.push(`Expand ${issue.sectionType} by about ${Math.max(issue.charsNeeded ?? 250, 150)} characters using relevant, factual detail.`)
     }
 

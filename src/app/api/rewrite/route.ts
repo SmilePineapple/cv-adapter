@@ -465,7 +465,7 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
                 messages: [
                   {
                     role: 'system',
-                    content: systemPrompt + ' The CV is still significantly too short for the target page count. You MUST expand EVERY section substantially. Add more bullet points to every job, expand the summary, add detail to skills, education, and certifications. If the layout plan permits generated sections (achievements, projects) and the candidate does not already have them, ADD them with truthful content inferred from their real experience - this is often the fastest way to close a large shortfall. Return the full sections array.'
+                    content: systemPrompt + ' The CV is still significantly too short for the target page count. You MUST expand EVERY section that is safe to rewrite: add more bullet points to every job, expand the summary, add detail to skills. Do NOT add new content to education, certifications, or hobbies - those must remain a 100% exact copy of the original, so growing them would mean inventing institutions, credentials, or details that are not real. If the layout plan permits generated sections (achievements, projects) and the candidate does not already have them, ADD them with truthful content inferred from their real experience - this is often the fastest way to close a large shortfall without touching the verbatim sections. Return the full sections array.'
                   },
                   {
                     role: 'user',
@@ -893,16 +893,16 @@ SKILLS SECTION:
 - Format: "Skill name - context/application"
 
 EDUCATION SECTION:
-- Expand each entry with coursework, projects, achievements (3-4 bullets per degree)
+- COPY EXACTLY from the original CV - do not add coursework, projects, achievements, or any bullets that aren't already there. If it's short, leave it short.
 
 CERTIFICATIONS SECTION:
-- For each certification: 2-3 bullets describing what was learned and practical applications
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned or practical applications unless already present.
 
 ADDITIONAL SECTIONS (if space allows):
-- Projects: Include relevant projects with 3-4 bullets each
-- Interests: 4-5 interests with brief context
+- Projects: Include relevant projects with 3-4 bullets each (only if this section is being generated fresh because the candidate doesn't already have one - never touch an existing projects section beyond light rewording)
+- Interests: COPY EXACTLY from the original CV - do not add or invent interests.
 
-CRITICAL: Generate SUBSTANTIAL content. Target ~${strategy?.targetChars ?? 14500} total characters. Do NOT be brief.`
+CRITICAL: Generate SUBSTANTIAL content in the summary, experience, and skills sections. Target ~${strategy?.targetChars ?? 14500} total characters. Do NOT be brief in the sections you're allowed to rewrite - but never pad education, certifications, or interests with invented detail to hit the target.`
     } else if (maxPages === 3) {
       pageLengthInstructions += `🔥 CRITICAL: 3-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
 
@@ -928,15 +928,15 @@ SKILLS SECTION:
 - 12-15 skills, each with detailed context (10-15 words)
 
 EDUCATION SECTION:
-- Expand each entry with 4-5 bullets (coursework, projects, achievements, research)
+- COPY EXACTLY from the original CV - do not add coursework, projects, achievements, research, or any bullets that aren't already there. If it's short, leave it short.
 
 CERTIFICATIONS SECTION:
-- For each certification: 3-4 bullets describing what was learned, skills gained, practical applications
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned, skills gained, or practical applications unless already present.
 
 INTERESTS SECTION:
-- 5-6 interests with context (12-15 words each)
+- COPY EXACTLY from the original CV - do not add or invent interests.
 
-CRITICAL: Generate SUBSTANTIAL content. Target ~${strategy?.targetChars ?? 21500} total characters. Do NOT be brief.`
+CRITICAL: Generate SUBSTANTIAL content in the summary, experience, skills, and any newly-generated achievements/projects sections. Target ~${strategy?.targetChars ?? 21500} total characters. Do NOT be brief in the sections you're allowed to rewrite - but never pad education, certifications, or interests with invented detail to hit the target.`
     } else {
       // Specify exact structure for 4-page CV
       pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
@@ -963,28 +963,22 @@ SKILLS SECTION:
 - Example: "Play Therapy - child-centered approaches for emotional expression"
 
 EDUCATION SECTION:
-- For each degree: EXACTLY 5 bullet points
-- Each bullet: 15-20 words
-- Include: coursework completed, projects undertaken, research participation, achievements, relevant modules
+- COPY EXACTLY from the original CV - do not add coursework, projects, research, achievements, or modules that aren't already there. If it's short, leave it short.
 
 CERTIFICATIONS SECTION:
-- For each certification: EXACTLY 4 bullet points
-- Each bullet: 15-20 words
-- Include: what was learned, skills gained, practical applications, duration/intensity
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned, skills gained, practical applications, or duration unless already present.
 
 INTERESTS SECTION:
-- EXACTLY 6 interests
-- Each interest: 12-15 words with context
-- Example: "Traveling - exploring cultures for personal growth and inspiration"
+- COPY EXACTLY from the original CV - do not add or invent interests.
 
-CRITICAL INSTRUCTIONS:
+CRITICAL INSTRUCTIONS (apply to SUMMARY, EXPERIENCE, and SKILLS only - never to EDUCATION, CERTIFICATIONS, or INTERESTS, which must stay an exact copy):
 1. Count the items as you generate - DO NOT guess
 2. If a section has fewer items than specified, add more
 3. If bullets are too short, expand with more detail
 4. Follow the EXACT word counts for each item
 5. DO NOT exceed or fall short of these structure specifications
 6. Your output MUST follow this exact structure to fill 4 pages
-7. Target ~${strategy?.targetChars ?? 31000} total characters. Generate SUBSTANTIAL content for every section.`
+7. Target ~${strategy?.targetChars ?? 31000} total characters. Generate SUBSTANTIAL content in the sections you're allowed to rewrite - never pad education, certifications, or interests with invented detail to hit the target.`
     }
   }
 
