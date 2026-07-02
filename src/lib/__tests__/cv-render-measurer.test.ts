@@ -15,6 +15,7 @@ function createMeasurement(overrides: Partial<RenderMeasurement> = {}): RenderMe
     ],
     underfilledPages: [],
     clippedPages: [],
+    clippedSections: [],
     overflowing: false,
     ...overrides
   }

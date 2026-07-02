@@ -345,13 +345,19 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
+// Cap render-repair rounds at 2: a condense pass can occasionally overcorrect into
+// severe underfill (or vice versa), so a second round gives the pipeline one chance to
+// self-correct before shipping. Mirrors the two-pass repair already used at generation
+// time in api/rewrite - uncapped retries risk runaway latency/cost on a 300s route.
+const MAX_RENDER_REPAIR_ROUNDS = 2
+
 async function handlePdfExport(
   sections: CVSection[],
   template: string,
   jobTitle: string,
   photoUrl?: string | null,
   maxPages?: number,
-  renderRepairAttempted: boolean = false
+  renderRepairRound: number = 0
 ) {
   try {
     // For single-page CVs, use the original template-specific generators with full designs
@@ -431,12 +437,12 @@ async function handlePdfExport(
     const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
     console.log('📐 Render repair plan:', renderRepairPlan)
 
-    if (renderRepairPlan.shouldRepair && !renderRepairAttempted) {
-      console.log('📐 Running one-pass render-based layout repair...')
+    if (renderRepairPlan.shouldRepair && renderRepairRound < MAX_RENDER_REPAIR_ROUNDS) {
+      console.log(`📐 Running render-based layout repair (round ${renderRepairRound + 1}/${MAX_RENDER_REPAIR_ROUNDS})...`)
       try {
         const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)
         await browser.close()
-        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, true)
+        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, renderRepairRound + 1)
       } catch (repairError) {
         console.error('❌ Render-based layout repair failed:', repairError)
       }

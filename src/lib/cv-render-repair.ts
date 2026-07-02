@@ -23,7 +23,8 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
 
     // Single-page CV overflows — condense to fit within 1 page
     if (measurement.actualPages > 1 || measurement.clippedPages.length > 0) {
-      const overflowingSections = getSectionsNearPage(measurement, 2)
+      const clippedTypes = getClippedSectionTypes(measurement)
+      const overflowingSections = clippedTypes.length > 0 ? clippedTypes : getSectionsNearPage(measurement, 2)
       return {
         action: 'condense',
         shouldRepair: true,
@@ -75,9 +76,12 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
   }
 
   if (measurement.actualPages > targetPages || measurement.clippedPages.length > 0) {
-    const overflowingSections = measurement.clippedPages.length > 0
-      ? getSectionsNearPages(measurement, measurement.clippedPages)
-      : getSectionsNearPage(measurement, targetPages + 1)
+    const clippedTypes = getClippedSectionTypes(measurement)
+    const overflowingSections = clippedTypes.length > 0
+      ? clippedTypes
+      : measurement.clippedPages.length > 0
+        ? getSectionsNearPages(measurement, measurement.clippedPages)
+        : getSectionsNearPage(measurement, targetPages + 1)
     const overflowReason = measurement.clippedPages.length > 0
       ? `Rendered CV has clipped content on page(s): ${measurement.clippedPages.join(', ')}.`
       : `Rendered CV exceeds selected ${targetPages}-page target with ${measurement.actualPages} actual pages.`
@@ -89,11 +93,17 @@ export function createRenderRepairPlan(measurement: RenderMeasurement): RenderRe
       actualPages: measurement.actualPages,
       underfilledPages,
       sectionTypesToAdjust: overflowingSections,
-      instructions: [
-        `Condense the CV so all assigned content is visible within exactly ${targetPages} pages.`,
-        `Prioritise shortening clipped or overflowing sections: ${formatSectionList(overflowingSections)}.`,
-        'Remove repetition, shorten bullets, and keep the strongest role-specific evidence.'
-      ]
+      instructions: clippedTypes.length > 0
+        ? [
+            `Condense ONLY the section(s) that actually overflow their page: ${formatClippedSections(measurement)}.`,
+            'Do not shorten other sections that already fit within their page — cutting them would create empty space.',
+            'Remove repetition, shorten bullets, and keep the strongest role-specific evidence.'
+          ]
+        : [
+            `Condense the CV so all assigned content is visible within exactly ${targetPages} pages.`,
+            `Prioritise shortening clipped or overflowing sections: ${formatSectionList(overflowingSections)}.`,
+            'Remove repetition, shorten bullets, and keep the strongest role-specific evidence.'
+          ]
     }
   }
 
@@ -189,6 +199,27 @@ Rules:
 - For sparse 4-page CVs, prefer expanding all existing sections on their assigned pages before adding optional factual sections.
 - You may add achievements, projects, or additional_information sections only from evidence already present in the CV content and job description context.
 - For condensation, remove repetition before removing meaningful evidence.`
+}
+
+function getClippedSectionTypes(measurement: RenderMeasurement): string[] {
+  const types = (measurement.clippedSections ?? [])
+    .map(section => cleanSectionType(section.type))
+    .filter(type => type !== 'header' && type !== 'unknown')
+
+  return Array.from(new Set(types))
+}
+
+function formatClippedSections(measurement: RenderMeasurement): string {
+  const byType = new Map<string, number>()
+  for (const section of measurement.clippedSections ?? []) {
+    const type = cleanSectionType(section.type)
+    if (type === 'header' || type === 'unknown') continue
+    byType.set(type, Math.max(byType.get(type) ?? 0, section.overflowPx))
+  }
+
+  return Array.from(byType.entries())
+    .map(([type, overflowPx]) => `${type} (~${Math.round(overflowPx)}px over the page)`)
+    .join(', ') || 'the overflowing section'
 }
 
 function getSectionsNearPage(measurement: RenderMeasurement, page: number): string[] {

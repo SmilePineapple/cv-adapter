@@ -12,6 +12,12 @@ export interface SectionPlacement extends ElementRect {
   pageEnd: number
 }
 
+export interface ClippedSection {
+  type: string
+  page: number
+  overflowPx: number
+}
+
 export interface PageOccupancy {
   page: number
   occupancy: number
@@ -28,6 +34,7 @@ export interface RenderMeasurement {
   sectionPlacements: SectionPlacement[]
   underfilledPages: PageOccupancy[]
   clippedPages: number[]
+  clippedSections: ClippedSection[]
   overflowing: boolean
 }
 
@@ -162,14 +169,25 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     const bodyRect = document.body.getBoundingClientRect()
     const bodyTop = bodyRect.top + window.scrollY
     const bodyBottom = Math.max(bodyRect.bottom + window.scrollY, scrollHeight)
+    // Track which specific sections overflow their page container (not just which pages),
+    // so a condense repair can target only the actual offender instead of every section on
+    // that page - a broad target caused large overcorrections in practice.
+    const clippedSectionDetails: { type: string; page: number; overflowPx: number }[] = []
     const clippedPages = Array.from(document.querySelectorAll('.cv-page'))
       .map((node, index) => {
         const element = node as HTMLElement
         const pageRect = element.getBoundingClientRect()
         const contentNodes = Array.from(element.querySelectorAll('[data-section-type], [data-type], .section'))
-        const hasClippedContent = contentNodes.some((contentNode) => {
-          const contentRect = (contentNode as HTMLElement).getBoundingClientRect()
-          return contentRect.bottom > pageRect.bottom + 4 || contentRect.right > pageRect.right + 4
+        let hasClippedContent = false
+        contentNodes.forEach((contentNode) => {
+          const el = contentNode as HTMLElement
+          const contentRect = el.getBoundingClientRect()
+          const overflowPx = Math.max(contentRect.bottom - (pageRect.bottom + 4), contentRect.right - (pageRect.right + 4))
+          if (overflowPx > 0) {
+            hasClippedContent = true
+            const type = el.dataset.sectionType || el.dataset.type || el.className || 'unknown'
+            clippedSectionDetails.push({ type, page: index + 1, overflowPx })
+          }
         })
         return hasClippedContent ? index + 1 : null
       })
@@ -180,6 +198,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
       pageHeight,
       sectionPlacements,
       clippedPages,
+      clippedSectionDetails,
       bodyRect: {
         top: bodyTop,
         bottom: bodyBottom,
@@ -204,6 +223,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     sectionPlacements: rawMeasurement.sectionPlacements,
     underfilledPages,
     clippedPages: rawMeasurement.clippedPages,
+    clippedSections: rawMeasurement.clippedSectionDetails,
     overflowing: typeof targetPages === 'number' ? actualPages > targetPages || rawMeasurement.clippedPages.length > 0 : rawMeasurement.clippedPages.length > 0
   }
 }

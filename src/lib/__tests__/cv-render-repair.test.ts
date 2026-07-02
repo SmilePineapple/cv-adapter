@@ -19,6 +19,7 @@ function createMeasurement(overrides: Partial<RenderMeasurement>): RenderMeasure
     ],
     underfilledPages: [],
     clippedPages: [],
+    clippedSections: [],
     overflowing: false,
     ...overrides
   }
@@ -61,6 +62,29 @@ describe('cv render repair', () => {
     expect(plan.reason).toContain('clipped content')
     expect(plan.sectionTypesToAdjust).toContain('experience')
     expect(plan.sectionTypesToAdjust).toContain('skills')
+  })
+
+  it('targets only the section that actually overflows when clip details are available', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 2,
+      actualPages: 2,
+      clippedPages: [1],
+      clippedSections: [{ type: 'education', page: 1, overflowPx: 186 }],
+      overflowing: true,
+      sectionPlacements: [
+        { type: 'summary', top: 0, bottom: 200, height: 200, pageStart: 1, pageEnd: 1 },
+        { type: 'skills', top: 200, bottom: 700, height: 500, pageStart: 1, pageEnd: 1 },
+        { type: 'education', top: 700, bottom: 1186, height: 486, pageStart: 1, pageEnd: 1 },
+        { type: 'experience', top: 0, bottom: 900, height: 900, pageStart: 1, pageEnd: 1 }
+      ]
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('condense')
+    expect(plan.sectionTypesToAdjust).toEqual(['education'])
+    expect(plan.sectionTypesToAdjust).not.toContain('experience')
+    expect(plan.sectionTypesToAdjust).not.toContain('summary')
+    expect(plan.instructions.join(' ')).toContain('186px')
   })
 
   it('plans expansion when rendered pages are below target', () => {
