@@ -115,19 +115,6 @@ const LEGACY_TEMPLATES = [
     screenshot: '/templates/bold-split.png',
     colors: ['#06B6D4', '#22D3EE', '#67E8F9']
   },
-  
-  // ADVANCED TEMPLATES (Free)
-  { 
-    id: 'creative_modern', 
-    name: 'Creative Modern', 
-    description: 'Two-column with icons & decorative elements', 
-    category: 'Advanced', 
-    badge: 'FREE', 
-    advanced: true, 
-    pro: false,
-    screenshot: '/templates/creative-modern.png',
-    colors: ['#7C3AED', '#8B5CF6', '#A78BFA']
-  },
   { 
     id: 'professional_columns', 
     name: 'Professional Columns', 
@@ -138,6 +125,19 @@ const LEGACY_TEMPLATES = [
     pro: false,
     screenshot: '/templates/professional-columns.png',
     colors: ['#3B82F6', '#60A5FA', '#93C5FD']
+  },
+
+  // ACTIVE: Creative Modern with Phase 1-6 calibration
+  { 
+    id: 'creative_modern', 
+    name: 'Creative Modern', 
+    description: 'Two-column with icons & decorative elements', 
+    category: 'Advanced', 
+    badge: 'FREE', 
+    advanced: true, 
+    pro: false,
+    screenshot: '/templates/creative-modern.png',
+    colors: ['#7C3AED', '#8B5CF6', '#A78BFA']
   },
 ]
 

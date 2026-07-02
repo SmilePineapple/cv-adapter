@@ -52,6 +52,9 @@ const EXPANSION_FACTORS = {
 // Page-count character thresholds are authored once in cv-page-blueprints.ts (the
 // calibrated source of truth) and read from there so this file can't drift out of
 // sync with the blueprints the AI prompt and layout validator are actually held to.
+// (origin/main independently re-raised these to 16000/22000 without updating
+// cv-page-blueprints.ts's minTotalChars of 14000/19500 - deriving from the blueprint
+// avoids that class of drift entirely.)
 const PAGE_THRESHOLDS = {
   min1Page: getCVPageBlueprint(1).minTotalChars,
   ideal1Page: getCVPageBlueprint(1).targetTotalChars,
