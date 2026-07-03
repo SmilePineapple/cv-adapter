@@ -66,6 +66,10 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
       page: pageNumber,
       zones: pageZones.map(zone => {
         if (zone.leftSectionTypes || zone.rightSectionTypes) {
+          if (zone.balancedColumns) {
+            return buildBalancedZone(zone, sectionQueues)
+          }
+
           const leftSections = (zone.leftSectionTypes ?? [])
             .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
             .sort((a, b) => a.order - b.order)
@@ -107,6 +111,75 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     blueprint,
     pages: compactEmptyPages(pages),
     unassignedSections
+  }
+}
+
+// Roughly how many characters fit in one column's worth of a full page height, derived
+// from the blueprint's own calibration note ("two-column full ≈ 8,500 chars" per page,
+// i.e. ~4,250 per column). Used both to decide how many chunks a repeated section needs
+// (a short section referenced by two page zones should only occupy the first one) and,
+// via CHARS_PER_PX_ESTIMATE below, to compare sections' relative size for column
+// balancing - not precise per-section-type density, just a relative-size estimate.
+export const CHARS_PER_COLUMN_PAGE = 4250
+const PAGE_HEIGHT_PX_ESTIMATE = 1122.52
+const CHARS_PER_PX_ESTIMATE = CHARS_PER_COLUMN_PAGE / PAGE_HEIGHT_PX_ESTIMATE
+
+function estimateSectionHeight(section: PlannedPageSection): number {
+  return section.content.length / CHARS_PER_PX_ESTIMATE
+}
+
+// A fixed left/right split reliably produces one overflowing column and one nearly-empty
+// one whenever a "bonus" section happens to be short (e.g. only a few real certifications)
+// while another happens to be long (an AI-generated achievements/projects list) - the
+// static assignment has no way to react to that. Balance greedily instead: pin any
+// experience spillover to the right column first (preserves reading-flow continuity from
+// the previous page), then assign every other pooled section to whichever column has
+// less estimated height so far.
+function buildBalancedZone(zone: PageZone, sectionQueues: Map<string, PlannedPageSection[]>): PlannedPageZone {
+  const rightTypes = zone.rightSectionTypes ?? []
+  const leftTypes = zone.leftSectionTypes ?? []
+
+  const rightSections: PlannedPageSection[] = []
+  const poolTypes: string[] = []
+
+  rightTypes.forEach(sectionType => {
+    if (sectionType === 'experience') {
+      const section = sectionQueues.get(sectionType)?.shift()
+      if (section) rightSections.push(section)
+    } else {
+      poolTypes.push(sectionType)
+    }
+  })
+  leftTypes.forEach(sectionType => poolTypes.push(sectionType))
+
+  const pooledSections = poolTypes
+    .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+    .sort((a, b) => a.order - b.order)
+
+  const leftSections: PlannedPageSection[] = []
+  let leftHeight = 0
+  let rightHeight = rightSections.reduce((sum, section) => sum + estimateSectionHeight(section), 0)
+
+  pooledSections.forEach(section => {
+    const height = estimateSectionHeight(section)
+    if (leftHeight <= rightHeight) {
+      leftSections.push(section)
+      leftHeight += height
+    } else {
+      rightSections.push(section)
+      rightHeight += height
+    }
+  })
+
+  leftSections.sort((a, b) => a.order - b.order)
+  rightSections.sort((a, b) => a.order - b.order)
+
+  return {
+    id: zone.id,
+    layout: zone.layout,
+    sections: [],
+    leftSections,
+    rightSections
   }
 }
 
@@ -276,13 +349,6 @@ function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
   })
   return counts
 }
-
-// Roughly how many characters fit in one column's worth of a full page height, derived
-// from the blueprint's own calibration note ("two-column full ≈ 8,500 chars" per page,
-// i.e. ~4,250 per column). Used to decide how many chunks a section actually needs,
-// rather than always producing exactly as many chunks as there are zone slots for it -
-// a short section referenced by two page zones should only occupy the first one.
-export const CHARS_PER_COLUMN_PAGE = 4250
 
 function splitSection(section: PlannedPageSection, maxCount: number): PlannedPageSection[] {
   const idealCount = Math.max(1, Math.min(maxCount, Math.ceil(section.content.length / CHARS_PER_COLUMN_PAGE)))

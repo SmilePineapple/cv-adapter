@@ -36,6 +36,60 @@ describe('page plan renderer', () => {
     expect(zoneSections).toContain('education')
   })
 
+  it('balances a short bonus section against long ones instead of leaving a column empty', () => {
+    // certifications is short (one real credential); achievements/projects are long
+    // (AI-generated bonus content). A fixed left/right split would leave certifications'
+    // column mostly empty while achievements+projects stack up in the other - balancing
+    // should pair certifications with one long section so both columns fill similarly.
+    const longText = 'Detail. '.repeat(200)
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary', order: 1 },
+      { type: 'experience', content: 'Short experience.', order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 },
+      { type: 'certifications', content: 'One real credential.', order: 4 },
+      { type: 'achievements', content: longText, order: 5 },
+      { type: 'projects', content: longText, order: 6 }
+    ], 2)
+
+    const page2 = plan.pages.find(page => page.page === 2)
+    const zone = page2?.zones.find(z => z.id === 'page_2_bonus_sections')
+    expect(zone).toBeDefined()
+
+    const leftTypes = (zone?.leftSections ?? []).map(s => s.type)
+    const rightTypes = (zone?.rightSections ?? []).map(s => s.type)
+
+    // certifications must share its column with at least one other section - it should
+    // never be left alone as the sole (short) occupant of an otherwise-empty column.
+    const certColumn = leftTypes.includes('certifications') ? leftTypes : rightTypes
+    expect(certColumn.length).toBeGreaterThan(1)
+    expect(leftTypes).toEqual(['certifications', 'projects'])
+    expect(rightTypes).toEqual(['achievements'])
+  })
+
+  it('still pins experience spillover to the right column when balancing bonus sections', () => {
+    // Experience must keep reading-flow continuity from the previous page - it should
+    // never get shuffled into the left column even when balancing bonus sections.
+    const longExperience = Array.from({ length: 6 }, (_, i) =>
+      `Role ${i + 1} | Company ${i + 1} | 20${10 + i}-20${11 + i}\n` + '• '.concat('Delivered measurable improvements across the team. '.repeat(20))
+    ).join('\n')
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary', order: 1 },
+      { type: 'experience', content: longExperience, order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 },
+      { type: 'certifications', content: 'One real credential.', order: 4 }
+    ], 2)
+
+    const page2 = plan.pages.find(page => page.page === 2)
+    const zone = page2?.zones.find(z => z.id === 'page_2_bonus_sections')
+    const leftTypes = (zone?.leftSections ?? []).map(s => s.type)
+    const rightTypes = (zone?.rightSections ?? []).map(s => s.type)
+
+    expect(leftTypes).not.toContain('experience')
+    expect(rightTypes[0]).toBe('experience')
+  })
+
   it('renders fixed page containers and measurable section attributes', () => {
     // Give every page genuinely distinct content so none of the 4 pages compact away.
     const richSections: CVSection[] = [

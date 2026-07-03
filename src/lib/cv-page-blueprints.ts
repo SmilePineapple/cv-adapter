@@ -28,6 +28,16 @@ export interface PageZone {
   // CSS grid auto-placement to interleave a flat list unpredictably.
   leftSectionTypes?: CVSectionType[]
   rightSectionTypes?: CVSectionType[]
+  // When true, leftSectionTypes/rightSectionTypes are treated as a combined pool for
+  // page-plan-renderer.ts to greedily balance by estimated height instead of fixed
+  // per-column lists - any 'experience' spillover still pins to the right column first
+  // (preserving reading-flow continuity from the previous page), but the remaining
+  // "bonus" types (certifications, achievements, projects, hobbies, etc.) go wherever
+  // has less content so far. Use for zones whose right column mixes experience
+  // continuation with bonus content - a fixed split there reliably produces one
+  // overflowing column and one empty one, since bonus-section length varies a lot
+  // more than the blueprint's static column assignment can account for.
+  balancedColumns?: boolean
   minChars: number
   targetChars: number
   maxChars: number
@@ -152,7 +162,7 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
     maxTotalChars: 17000,
     zones: [
       { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'education', 'skills', 'hobbies'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 7500, maxChars: 9000 },
-      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], minChars: 5500, targetChars: 8500, maxChars: 11000 }
+      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], balancedColumns: true, minChars: 5500, targetChars: 8500, maxChars: 11000 }
     ],
     sectionBudgets: [
       { sectionType: 'summary', minChars: 600, targetChars: 900, maxChars: 1300, required: true, preferredPage: 1 },
@@ -172,8 +182,8 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
     maxTotalChars: 21000,
     zones: [
       { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'skills'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 7500, maxChars: 9000 },
-      { id: 'page_2_education_experience', page: 2, layout: 'two-column', leftSectionTypes: ['education', 'certifications'], rightSectionTypes: ['experience', 'achievements'], sectionTypes: [], minChars: 7000, targetChars: 8500, maxChars: 10000 },
-      { id: 'page_3_bonus_sections', page: 3, layout: 'two-column', leftSectionTypes: ['hobbies'], rightSectionTypes: ['projects', 'achievements'], sectionTypes: [], minChars: 4000, targetChars: 6000, maxChars: 8000 }
+      { id: 'page_2_education_experience', page: 2, layout: 'two-column', leftSectionTypes: ['education', 'certifications'], rightSectionTypes: ['experience', 'achievements'], sectionTypes: [], balancedColumns: true, minChars: 7000, targetChars: 8500, maxChars: 10000 },
+      { id: 'page_3_bonus_sections', page: 3, layout: 'two-column', leftSectionTypes: ['hobbies'], rightSectionTypes: ['projects', 'achievements'], sectionTypes: [], balancedColumns: true, minChars: 4000, targetChars: 6000, maxChars: 8000 }
     ],
     sectionBudgets: [
       { sectionType: 'summary', minChars: 700, targetChars: 1100, maxChars: 1500, required: true, preferredPage: 1 },
@@ -194,8 +204,8 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
     zones: [
       { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'skills'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 7500, maxChars: 9000 },
       { id: 'page_2_education_experience', page: 2, layout: 'two-column', leftSectionTypes: ['education'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 8500, maxChars: 10000 },
-      { id: 'page_3_achievements_projects', page: 3, layout: 'two-column', leftSectionTypes: ['certifications', 'achievements'], rightSectionTypes: ['experience', 'projects'], sectionTypes: [], minChars: 6000, targetChars: 8500, maxChars: 10000 },
-      { id: 'page_4_bonus_sections', page: 4, layout: 'two-column', leftSectionTypes: ['hobbies'], rightSectionTypes: ['projects', 'additional_information'], sectionTypes: [], minChars: 4000, targetChars: 6500, maxChars: 9000 }
+      { id: 'page_3_achievements_projects', page: 3, layout: 'two-column', leftSectionTypes: ['certifications', 'achievements'], rightSectionTypes: ['experience', 'projects'], sectionTypes: [], balancedColumns: true, minChars: 6000, targetChars: 8500, maxChars: 10000 },
+      { id: 'page_4_bonus_sections', page: 4, layout: 'two-column', leftSectionTypes: ['hobbies'], rightSectionTypes: ['projects', 'additional_information'], sectionTypes: [], balancedColumns: true, minChars: 4000, targetChars: 6500, maxChars: 9000 }
     ],
     sectionBudgets: [
       { sectionType: 'experience', minChars: 6000, targetChars: 11000, maxChars: 18000, required: true, preferredPage: 1 },
