@@ -110,6 +110,24 @@ export function formatBlueprintForPrompt(blueprint: CVPageBlueprint): string {
 // is handled by the dedicated fill pass in rewrite/route.ts, not by hoping a generic
 // "expand everything" repair instruction covers it.
 // AI condense pass handles rare overflow cases.
+//
+// COLUMN CAPACITY CHECK (why the bonus-section budgets below are sized the way they are):
+// For most real CVs, experience/education/skills fit entirely on page 1 without
+// spilling onto later pages (confirmed live: a typical 2-page test CV rendered page 1
+// at 94% occupancy using only its own left/right column content). That means page 2's
+// ENTIRE occupancy comes from whatever budget is assigned to its own dedicated sections
+// - there's no overflow to fall back on. A right column that isn't fully claimed by
+// spillover needs its own sections' targets to sum to roughly CHARS_PER_COLUMN_PAGE
+// (~4,250 chars, the same constant page-plan-renderer.ts uses to decide when experience
+// needs a second column) or that column renders mostly empty. Previously
+// achievements+projects on page 2's right column only targeted 900+1000 = 1,900 chars
+// combined (~45% of a column) - that is the exact, measured cause of page 2 rendering
+// at ~22-37% occupancy in production. Bumped to ~2,200 each (~4,400 combined, matching
+// a full column) below. Certifications (page 2 left column) stays modest and verbatim
+// - it's in VERBATIM_SECTION_TYPES in cv-layout-validator.ts and must never be padded
+// with invented institutions, so its column will legitimately stay shorter for
+// candidates with few real certifications; that's a content-truthfulness constraint,
+// not a budget bug.
 const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
   1: {
     targetPages: 1,
@@ -129,12 +147,12 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
   },
   2: {
     targetPages: 2,
-    minTotalChars: 9000,
-    targetTotalChars: 11500,
-    maxTotalChars: 14000,
+    minTotalChars: 10000,
+    targetTotalChars: 13500,
+    maxTotalChars: 17000,
     zones: [
       { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'education', 'skills', 'hobbies'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 7500, maxChars: 9000 },
-      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], minChars: 7000, targetChars: 8500, maxChars: 10000 }
+      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], minChars: 5500, targetChars: 8500, maxChars: 11000 }
     ],
     sectionBudgets: [
       { sectionType: 'summary', minChars: 600, targetChars: 900, maxChars: 1300, required: true, preferredPage: 1 },
@@ -142,9 +160,9 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
       { sectionType: 'skills', minChars: 1000, targetChars: 1500, maxChars: 2000, required: true, preferredPage: 1 },
       { sectionType: 'education', minChars: 450, targetChars: 750, maxChars: 1200, required: false, preferredPage: 1 },
       { sectionType: 'hobbies', minChars: 0, targetChars: 450, maxChars: 750, required: false, preferredPage: 1 },
-      { sectionType: 'certifications', minChars: 300, targetChars: 650, maxChars: 1000, required: false, preferredPage: 2 },
-      { sectionType: 'achievements', minChars: 0, targetChars: 900, maxChars: 1500, required: false, preferredPage: 2, allowGenerated: true },
-      { sectionType: 'projects', minChars: 0, targetChars: 1000, maxChars: 1600, required: false, preferredPage: 2, allowGenerated: true }
+      { sectionType: 'certifications', minChars: 300, targetChars: 900, maxChars: 1300, required: false, preferredPage: 2 },
+      { sectionType: 'achievements', minChars: 500, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'projects', minChars: 500, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true }
     ]
   },
   3: {

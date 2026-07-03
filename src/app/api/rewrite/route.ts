@@ -213,7 +213,11 @@ export async function POST(request: NextRequest) {
       ? 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
-    // Adjust max_tokens based on the effective (capacity-checked) page count
+    // Adjust max_tokens based on the effective (capacity-checked) page count. Scales
+    // linearly with page count so 3/4-page CVs actually get proportionally more room to
+    // generate content instead of being clamped to the same ceiling as a 2-page CV -
+    // capped just under gpt-4o-mini's real 16,384-token output limit, not an arbitrary
+    // round number.
     const tokensPerPage = 5000 // 5000 tokens per page allows ~20,000 chars per page capacity
     const pageBlueprint = getCVPageBlueprint(effectivePageCount)
     
@@ -232,7 +236,7 @@ export async function POST(request: NextRequest) {
     }
     
     const pageBlueprintPrompt = formatBlueprintForPrompt(pageBlueprint)
-    const adjustedMaxTokens = Math.min(effectivePageCount * tokensPerPage, 12000) // Increased limit to 12000
+    const adjustedMaxTokens = Math.min(effectivePageCount * tokensPerPage, 16000) // gpt-4o-mini's real ceiling is ~16,384
 
     console.log('📐 Density-adjusted blueprint:', {
       baseTotalChars: pageBlueprint.targetTotalChars,
