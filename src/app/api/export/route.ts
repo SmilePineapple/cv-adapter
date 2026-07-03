@@ -524,6 +524,10 @@ async function repairSectionsForRenderedLayout(
   const openai = getOpenAIClient()
   const prompt = createRenderRepairPrompt(sections, renderMeasurement, renderRepairPlan)
 
+  // Hard cap on the AI call itself: observed live taking up to ~56s on its own, which
+  // alone can consume nearly the whole 60s export route budget and starve the final PDF
+  // render step. Abort and fall through to the (fast, deterministic) shrink-scale safety
+  // net rather than let one slow completion risk the whole request timing out.
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     response_format: { type: 'json_object' },
@@ -539,7 +543,7 @@ async function repairSectionsForRenderedLayout(
     ],
     temperature: 0.2,
     max_tokens: 12000
-  })
+  }, { timeout: 25000 })
 
   const content = completion.choices[0]?.message?.content || '{}'
   const parsed = JSON.parse(content)
