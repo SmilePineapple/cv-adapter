@@ -352,13 +352,24 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
 // time in api/rewrite - uncapped retries risk runaway latency/cost on a 300s route.
 const MAX_RENDER_REPAIR_ROUNDS = 2
 
+// This route's Vercel maxDuration (vercel.json) - a single repair round (AI call +
+// re-render + re-measure) has been observed taking 35-45s with gpt-4o-mini, so 2 full
+// rounds can exceed a 60s budget outright. Rather than risk the function being killed
+// mid-repair (a hard export failure, worse than shipping a PDF with minor residual
+// clipping), only start another round if there's realistically enough time left for it
+// to finish AND leave room for the final shrink-scale pass + PDF render + response.
+const EXPORT_MAX_DURATION_MS = 60000
+const ESTIMATED_REPAIR_ROUND_MS = 35000
+const FINAL_STEPS_RESERVE_MS = 8000
+
 async function handlePdfExport(
   sections: CVSection[],
   template: string,
   jobTitle: string,
   photoUrl?: string | null,
   maxPages?: number,
-  renderRepairRound: number = 0
+  renderRepairRound: number = 0,
+  requestStartTime: number = Date.now()
 ) {
   try {
     // For single-page CVs, use the original template-specific generators with full designs
@@ -438,15 +449,20 @@ async function handlePdfExport(
     const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
     console.log('📐 Render repair plan:', renderRepairPlan)
 
-    if (renderRepairPlan.shouldRepair && renderRepairRound < MAX_RENDER_REPAIR_ROUNDS) {
-      console.log(`📐 Running render-based layout repair (round ${renderRepairRound + 1}/${MAX_RENDER_REPAIR_ROUNDS})...`)
+    const elapsedMs = Date.now() - requestStartTime
+    const canAffordAnotherRound = elapsedMs + ESTIMATED_REPAIR_ROUND_MS + FINAL_STEPS_RESERVE_MS <= EXPORT_MAX_DURATION_MS
+
+    if (renderRepairPlan.shouldRepair && renderRepairRound < MAX_RENDER_REPAIR_ROUNDS && canAffordAnotherRound) {
+      console.log(`📐 Running render-based layout repair (round ${renderRepairRound + 1}/${MAX_RENDER_REPAIR_ROUNDS}, ${elapsedMs}ms elapsed)...`)
       try {
         const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)
         await browser.close()
-        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, renderRepairRound + 1)
+        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, renderRepairRound + 1, requestStartTime)
       } catch (repairError) {
         console.error('❌ Render-based layout repair failed:', repairError)
       }
+    } else if (renderRepairPlan.shouldRepair && !canAffordAnotherRound) {
+      console.log(`📐 Skipping render-repair round (${elapsedMs}ms elapsed, not enough time budget left before the route's ${EXPORT_MAX_DURATION_MS}ms limit) - falling through to the deterministic shrink-scale safety net.`)
     }
 
     // Last-resort deterministic safety net: AI condense rounds are exhausted (or weren't
