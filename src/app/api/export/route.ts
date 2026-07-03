@@ -582,7 +582,7 @@ async function repairSectionsForRenderedLayout(
   // empty across two repair rounds - rendering as a section title with nothing under it.
   // Restore this round's input content for any verbatim section that shrank drastically
   // rather than ship a hollowed-out or blank section.
-  return deduped.map(section => {
+  const restored = deduped.map(section => {
     const normalized = normalizeSectionType(section.type)
     if (!VERBATIM_SECTION_TYPES.has(normalized)) return section
 
@@ -598,6 +598,24 @@ async function repairSectionsForRenderedLayout(
 
     return section
   })
+
+  // The shrink-guard above only fixes sections that survived the round but got
+  // hollowed out - it can't restore something the AI omitted from its response
+  // entirely. Seen live: a hobbies section under condense pressure vanished outright
+  // (no entry in parsed.sections at all) rather than being shortened, rendering as a
+  // section title pill with nothing underneath - the exact same content-loss failure
+  // mode, just via omission instead of shrinkage. Add back any verbatim section that
+  // existed in this round's input but is missing from the repaired output.
+  const restoredTypes = new Set(restored.map(section => normalizeSectionType(section.type)))
+  const reinstated = sections.filter(section => {
+    const normalized = normalizeSectionType(section.type)
+    return VERBATIM_SECTION_TYPES.has(normalized) && !restoredTypes.has(normalized)
+  })
+  reinstated.forEach(section => {
+    console.warn(`⚠️ Render repair omitted verbatim section "${normalizeSectionType(section.type)}" entirely - reinstating it.`)
+  })
+
+  return [...restored, ...reinstated]
 }
 
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {
