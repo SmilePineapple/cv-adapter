@@ -39,14 +39,19 @@ export interface PageCountRecommendation {
   confidence: 'high' | 'medium' | 'low'
 }
 
+// projects/achievements match cv-page-blueprints.ts's 2-page targetChars (~2,200 each,
+// bumped there to actually fill a bonus column - see that file's "COLUMN CAPACITY CHECK"
+// comment). Keep these two in sync with the blueprint or maxTruthfulChars understates
+// how much a CV can truthfully expand, wrongly downgrading CVs that can support more
+// pages once bonus sections are generated.
 const EXPANSION_FACTORS = {
   perJob: 1000,              // Each job can expand to ~1000 chars with detailed bullets
   summary: 1000,             // Summary can expand to ~1000 chars
   skills: 1200,              // Skills with context can reach ~1200 chars
   perEducation: 600,         // Each education entry can expand to ~600 chars
   perCertification: 400,     // Each cert can expand to ~400 chars
-  projects: 1500,            // Projects section if relevant
-  achievements: 1600         // Achievements section if relevant
+  projects: 2200,            // Projects section if relevant
+  achievements: 2200         // Achievements section if relevant
 }
 
 // Page-count character thresholds are authored once in cv-page-blueprints.ts (the
