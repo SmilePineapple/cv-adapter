@@ -48,7 +48,7 @@ describe('page plan renderer', () => {
       { type: 'experience', content: 'Short experience.', order: 2 },
       { type: 'skills', content: 'Skills', order: 3 },
       { type: 'certifications', content: 'One real credential.', order: 4 },
-      { type: 'achievements', content: longText, order: 5 },
+      { type: 'achievements', content: longText, order: 5 } as unknown as CVSection,
       { type: 'projects', content: longText, order: 6 }
     ], 2)
 
