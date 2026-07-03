@@ -599,6 +599,35 @@ async function repairSectionsForRenderedLayout(
     return section
   })
 
+  // A condense round is scoped to specific overflowing section(s) - the prompt says so
+  // explicitly ("Do not shorten other sections that already fit") but the model doesn't
+  // reliably honour that. Seen live: asked to condense only "education", the model also
+  // cut "experience" by roughly half as a side effect. For a repeated section like
+  // experience, cutting it far enough drops splitSection's idealChunks (page-plan-renderer.ts)
+  // from 2 to 1, collapsing its entire second-page spillover column - occupancy on that
+  // page cratered from ~95% to ~44%, worse than before the repair round ran. Enforce the
+  // scope in code: any section the plan didn't ask to adjust gets reverted if the model
+  // shrank it materially.
+  const adjustTypes = new Set((renderRepairPlan.sectionTypesToAdjust ?? []).map(type => normalizeSectionType(type)))
+  const scoped = renderRepairPlan.action === 'condense'
+    ? restored.map(section => {
+        const normalized = normalizeSectionType(section.type)
+        if (adjustTypes.has(normalized)) return section
+
+        const before = sections.find(s => normalizeSectionType(s.type) === normalized)
+        if (!before) return section
+
+        const beforeChars = getSectionText(before.content).length
+        const afterChars = getSectionText(section.content).length
+        if (beforeChars > 0 && afterChars < beforeChars * 0.85) {
+          console.warn(`⚠️ Render repair shrank out-of-scope section "${normalized}" from ${beforeChars} to ${afterChars} chars (not in this round's condense target list: ${Array.from(adjustTypes).join(', ') || 'none'}) - restoring original content instead.`)
+          return before
+        }
+
+        return section
+      })
+    : restored
+
   // The shrink-guard above only fixes sections that survived the round but got
   // hollowed out - it can't restore something the AI omitted from its response
   // entirely. Seen live: a hobbies section under condense pressure vanished outright
@@ -606,16 +635,16 @@ async function repairSectionsForRenderedLayout(
   // section title pill with nothing underneath - the exact same content-loss failure
   // mode, just via omission instead of shrinkage. Add back any verbatim section that
   // existed in this round's input but is missing from the repaired output.
-  const restoredTypes = new Set(restored.map(section => normalizeSectionType(section.type)))
+  const scopedTypes = new Set(scoped.map(section => normalizeSectionType(section.type)))
   const reinstated = sections.filter(section => {
     const normalized = normalizeSectionType(section.type)
-    return VERBATIM_SECTION_TYPES.has(normalized) && !restoredTypes.has(normalized)
+    return VERBATIM_SECTION_TYPES.has(normalized) && !scopedTypes.has(normalized)
   })
   reinstated.forEach(section => {
     console.warn(`⚠️ Render repair omitted verbatim section "${normalizeSectionType(section.type)}" entirely - reinstating it.`)
   })
 
-  return [...restored, ...reinstated]
+  return [...scoped, ...reinstated]
 }
 
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {

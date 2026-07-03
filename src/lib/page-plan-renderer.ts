@@ -223,7 +223,7 @@ function renderHeader(name: string, contact: string): string {
 
 // Short, flowing lists read better as chip tags (matches the proven 1-page creative_modern
 // template's .skill-tag styling in advanced-templates.ts) than as stacked paragraphs.
-const CHIP_SECTION_TYPES = new Set(['skills', 'hobbies'])
+const CHIP_SECTION_TYPES = new Set(['skills', 'hobbies', 'languages'])
 // Certification lines are typically a single credential each - a bullet marker reads
 // better than a full paragraph indent.
 const BULLET_SECTION_TYPES = new Set(['certifications'])

@@ -60,6 +60,7 @@ export function normalizeSectionType(type: string): CVSectionType | string {
   if (type === 'key_skills') return 'skills'
   if (type === 'licenses') return 'certifications'
   if (type === 'interests') return 'hobbies'
+  if (type === 'volunteer_work' || type === 'community') return 'volunteering'
   return type
 }
 

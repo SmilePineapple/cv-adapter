@@ -228,6 +228,46 @@ describe('page plan renderer', () => {
     expect(html).not.toContain('<p class="exp-date">Child in Mind</p>')
   })
 
+  it('pools hobbies, languages, and volunteering onto page 2 instead of page 1', () => {
+    // hobbies used to live on page 1 alongside summary/education/skills, which squeezed
+    // it off the bottom of that column once skills started rendering as chips. It now
+    // pools with certifications/languages/volunteering on page 2's balanced bonus zone,
+    // which also gives that zone real "bonus" material to fill instead of leaving
+    // certifications alone in an otherwise-empty column.
+    const plan = createPagePlan([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary', order: 1 },
+      { type: 'experience', content: 'Short experience.', order: 2 },
+      { type: 'skills', content: 'Skills', order: 3 },
+      { type: 'certifications', content: 'One real credential.', order: 4 },
+      { type: 'hobbies', content: 'Chess, hiking.', order: 5 },
+      { type: 'languages', content: 'English - Native', order: 6 } as unknown as CVSection,
+      { type: 'volunteering', content: 'Weekend food bank coordinator.', order: 7 } as unknown as CVSection
+    ], 2)
+
+    const page1 = plan.pages.find(page => page.page === 1)
+    const page2 = plan.pages.find(page => page.page === 2)
+    const page1Types = (page1?.zones ?? []).flatMap(zoneSectionTypes)
+    const page2Types = (page2?.zones ?? []).flatMap(zoneSectionTypes)
+
+    expect(page1Types).not.toContain('hobbies')
+    expect(page2Types).toContain('hobbies')
+    expect(page2Types).toContain('languages')
+    expect(page2Types).toContain('volunteering')
+  })
+
+  it('renders languages as chip tags rather than paragraphs', () => {
+    const html = renderPagePlanHTML([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary text.', order: 1 },
+      { type: 'experience', content: 'Experience text.', order: 2 },
+      { type: 'languages', content: 'English - Native\nFrench - Conversational', order: 3 } as unknown as CVSection
+    ], 2)
+
+    expect(html).toContain('<span class="chip">English - Native</span>')
+    expect(html).not.toContain('<p>English - Native</p>')
+  })
+
   it('renders certifications as a bulleted list', () => {
     const html = renderPagePlanHTML([
       { type: 'name', content: 'Alex Teacher', order: 0 },

@@ -103,8 +103,10 @@ export function formatBlueprintForPrompt(blueprint: CVPageBlueprint): string {
 //
 // PAGE MAP (the actual per-page-count column assignment - keep in sync with the zones below):
 //
-// 2-page: Page1 [L: summary, education, skills, hobbies | R: experience]
-//         Page2 [L: certifications, (education/skills overflow) | R: experience overflow, achievements*, projects*]
+// 2-page: Page1 [L: summary, education, skills | R: experience]
+//         Page2 [L: certifications, hobbies, languages*, volunteering*, (education/skills overflow) | R: experience overflow, achievements*, projects*]
+//         (page 2's left/right split above is nominal - balancedColumns pools all of it
+//         and assigns by estimated height, see buildBalancedZone in page-plan-renderer.ts)
 // 3-page: Page1 [L: summary, skills | R: experience]
 //         Page2 [L: education, certifications | R: experience overflow, achievements*]
 //         Page3 [L: hobbies | R: projects*, achievements* overflow]
@@ -157,12 +159,25 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
   },
   2: {
     targetPages: 2,
-    minTotalChars: 10000,
-    targetTotalChars: 13500,
-    maxTotalChars: 17000,
+    minTotalChars: 10500,
+    targetTotalChars: 14600,
+    maxTotalChars: 18000,
     zones: [
-      { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'education', 'skills', 'hobbies'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 6000, targetChars: 7500, maxChars: 9000 },
-      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], balancedColumns: true, minChars: 5500, targetChars: 8500, maxChars: 11000 }
+      // hobbies moved off page 1 (see page_2_bonus_sections below): with skills now
+      // rendering as chips, keeping hobbies in the same column as summary/education/skills
+      // left it exactly one section too many for the column to reliably fit - and page 1
+      // never lacked for fill (94% occupancy confirmed live) while page 2 was the page
+      // repeatedly reported as having genuine leftover white space.
+      { id: 'page_1_profile_experience', page: 1, layout: 'two-column', leftSectionTypes: ['summary', 'education', 'skills'], rightSectionTypes: ['experience'], sectionTypes: [], minChars: 5700, targetChars: 7100, maxChars: 8600 },
+      // hobbies, languages, and volunteering are all short, verbatim-or-truthfully-inferred
+      // "bonus" sections - pooling three of them here alongside certifications gives
+      // balancedColumns real material to spread across the left column instead of just
+      // certifications (often a single line) sitting alone next to a full achievements/
+      // projects column. languages/volunteering are allowGenerated (see sectionBudgets
+      // below) so the dedicated fill pass in rewrite/route.ts can add them, truthfully
+      // inferred from the candidate's real experience and adapted to the target role,
+      // when the original CV doesn't already have them.
+      { id: 'page_2_bonus_sections', page: 2, layout: 'two-column', leftSectionTypes: ['certifications', 'hobbies', 'languages', 'volunteering', 'education', 'skills'], rightSectionTypes: ['experience', 'achievements', 'projects'], sectionTypes: [], balancedColumns: true, minChars: 6500, targetChars: 9500, maxChars: 12500 }
     ],
     sectionBudgets: [
       { sectionType: 'summary', minChars: 600, targetChars: 900, maxChars: 1300, required: true, preferredPage: 1 },
@@ -174,8 +189,20 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
       // reliably has room left at the bottom of the page instead of getting squeezed off.
       { sectionType: 'skills', minChars: 1000, targetChars: 1300, maxChars: 1700, required: true, preferredPage: 1 },
       { sectionType: 'education', minChars: 450, targetChars: 750, maxChars: 1200, required: false, preferredPage: 1 },
-      { sectionType: 'hobbies', minChars: 0, targetChars: 450, maxChars: 750, required: false, preferredPage: 1 },
+      // Moved to page 2 (see page_2_bonus_sections) to pool with certifications/languages/
+      // volunteering instead of being the section that gets squeezed off page 1's left
+      // column - still verbatim (VERBATIM_SECTION_TYPES in cv-layout-validator.ts), so this
+      // budget can't be met by expansion, only by the candidate's real content.
+      { sectionType: 'hobbies', minChars: 0, targetChars: 450, maxChars: 750, required: false, preferredPage: 2 },
       { sectionType: 'certifications', minChars: 300, targetChars: 900, maxChars: 1300, required: false, preferredPage: 2 },
+      // New bonus sections for page 2's left-column pool alongside certifications/hobbies -
+      // allowGenerated so the dedicated fill pass (rewrite/route.ts) can add them, truthfully
+      // inferred from the candidate's real experience and adapted to the target role, when
+      // the original CV doesn't already list them. Sized similarly to hobbies/certifications
+      // (modest, not full achievements/projects-sized) since they're meant to round out a
+      // short column rather than dominate it.
+      { sectionType: 'languages', minChars: 0, targetChars: 500, maxChars: 800, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'volunteering', minChars: 0, targetChars: 600, maxChars: 900, required: false, preferredPage: 2, allowGenerated: true },
       // minChars raised from 500: live-observed generations were landing at ~1,300-1,400
       // chars for achievements and ~1,000-1,100 for projects - comfortably clearing the
       // old 500-char floor, so validateCVLayout's under-minimum check never fired even
