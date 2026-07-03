@@ -130,6 +130,31 @@ export function computeFillScale(measurement: RenderMeasurement, options: FillSc
   return Math.min(maxScale, Math.max(1, Math.min(safeScale, wantScale)))
 }
 
+export interface ShrinkScaleOptions {
+  minScale?: number
+  safetyMarginPx?: number
+}
+
+// Last-resort deterministic safety net: if AI condense rounds are exhausted and content is
+// STILL clipped, compress spacing/line-height by exactly enough to clear the worst overflow
+// rather than shipping a PDF with visibly missing words. Only applies when the content
+// already fits the target page count (actualPages === targetPages) - if it genuinely needs
+// another physical page, no amount of spacing compression fixes that, and this deliberately
+// returns 1 (no-op) so callers don't mask a real overflow-into-extra-pages case.
+export function computeShrinkScale(measurement: RenderMeasurement, options: ShrinkScaleOptions = {}): number {
+  const { minScale = 0.85, safetyMarginPx = 6 } = options
+
+  if (!measurement.targetPages) return 1
+  if (measurement.actualPages > measurement.targetPages) return 1
+  if (!measurement.clippedSections || measurement.clippedSections.length === 0) return 1
+
+  const maxOverflowPx = Math.max(...measurement.clippedSections.map(section => section.overflowPx))
+  if (maxOverflowPx <= 0) return 1
+
+  const scale = measurement.pageHeight / (measurement.pageHeight + maxOverflowPx + safetyMarginPx)
+  return Math.max(minScale, Math.min(1, scale))
+}
+
 export async function measureRenderedCV(page: Page, targetPages?: number): Promise<RenderMeasurement> {
   const rawMeasurement = await page.evaluate((fallbackPageHeight) => {
     const pageHeight = fallbackPageHeight

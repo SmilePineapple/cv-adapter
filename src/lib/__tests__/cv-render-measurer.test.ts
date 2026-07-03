@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { calculatePageOccupancy, computeFillScale, getActualPageCount, getPageBottomCoverage, getUnderfilledPages, RenderMeasurement } from '../cv-render-measurer'
+import { calculatePageOccupancy, computeFillScale, computeShrinkScale, getActualPageCount, getPageBottomCoverage, getUnderfilledPages, RenderMeasurement } from '../cv-render-measurer'
 
 function createMeasurement(overrides: Partial<RenderMeasurement> = {}): RenderMeasurement {
   return {
@@ -90,5 +90,36 @@ describe('cv render measurer', () => {
       ]
     }))
     expect(scale).toBe(1)
+  })
+
+  it('computes a shrink scale that clears residual overflow after repair rounds are exhausted', () => {
+    // pageHeight 1000, overflow 100px + 6px margin -> scale = 1000/1106 ~= 0.904
+    const scale = computeShrinkScale(createMeasurement({
+      clippedPages: [1],
+      clippedSections: [{ type: 'experience', page: 1, overflowPx: 100 }]
+    }))
+    expect(scale).toBeCloseTo(1000 / 1106, 3)
+    expect(scale).toBeLessThan(1)
+  })
+
+  it('does not shrink when there is no clipped section overflow', () => {
+    expect(computeShrinkScale(createMeasurement({}))).toBe(1)
+  })
+
+  it('does not shrink when content genuinely needs more physical pages', () => {
+    // Spacing compression can't reclaim a whole extra page - only clears a boundary overflow.
+    const scale = computeShrinkScale(createMeasurement({
+      targetPages: 2,
+      actualPages: 3,
+      clippedSections: [{ type: 'experience', page: 2, overflowPx: 400 }]
+    }))
+    expect(scale).toBe(1)
+  })
+
+  it('floors the shrink scale at minScale to keep text legible', () => {
+    const scale = computeShrinkScale(createMeasurement({
+      clippedSections: [{ type: 'experience', page: 1, overflowPx: 5000 }]
+    }), { minScale: 0.85 })
+    expect(scale).toBe(0.85)
   })
 })

@@ -142,4 +142,48 @@ describe('page plan renderer', () => {
     expect(html).toContain('&lt;Alex&gt;')
     expect(html).toContain('&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;')
   })
+
+  it('renders skills and hobbies as chip tags rather than paragraphs', () => {
+    const html = renderPagePlanHTML([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary text.', order: 1 },
+      { type: 'experience', content: 'Experience text.', order: 2 },
+      { type: 'skills', content: 'JavaScript - strong\nReact - strong', order: 3 },
+      { type: 'hobbies', content: 'Chess\nHiking', order: 4 }
+    ], 2)
+
+    expect(html).toContain('<div class="chip-list">')
+    expect(html).toContain('<span class="chip">JavaScript - strong</span>')
+    expect(html).toContain('<span class="chip">Chess</span>')
+    // Skills/hobbies must not also fall through to plain paragraph rendering.
+    expect(html).not.toContain('<p>JavaScript - strong</p>')
+  })
+
+  it('splits experience into dated entries with a divider, without misclassifying bullets', () => {
+    const html = renderPagePlanHTML([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary text.', order: 1 },
+      { type: 'experience', content: '10/2016 - 08/2022\nChild in Mind\nPlay Therapist\nDelivered sessions.\n01/2015 - 10/2016\nBarnardos\nPlay Therapist\nCoordinated sessions.', order: 2 },
+      { type: 'skills', content: 'React', order: 3 }
+    ], 2)
+
+    expect(html).toContain('<div class="experience-entry"><p class="exp-date">10/2016 - 08/2022</p>')
+    expect(html).toContain('<p>Child in Mind</p>')
+    expect(html).toContain('<div class="experience-entry"><p class="exp-date">01/2015 - 10/2016</p>')
+    // Only date lines get the highlighted treatment - company/title/bullets stay plain.
+    expect(html).not.toContain('<p class="exp-date">Child in Mind</p>')
+  })
+
+  it('renders certifications as a bulleted list', () => {
+    const html = renderPagePlanHTML([
+      { type: 'name', content: 'Alex Teacher', order: 0 },
+      { type: 'summary', content: 'Summary text.', order: 1 },
+      { type: 'experience', content: 'Experience text.', order: 2 },
+      { type: 'certifications', content: 'AWS Certified\nCKA', order: 3 }
+    ], 2)
+
+    expect(html).toContain('<ul class="bullet-list">')
+    expect(html).toContain('<li>AWS Certified</li>')
+    expect(html).toContain('<li>CKA</li>')
+  })
 })

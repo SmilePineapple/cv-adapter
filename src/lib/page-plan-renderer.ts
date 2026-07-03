@@ -148,20 +148,65 @@ function renderHeader(name: string, contact: string): string {
   </header>`
 }
 
+// Short, flowing lists read better as chip tags (matches the proven 1-page creative_modern
+// template's .skill-tag styling in advanced-templates.ts) than as stacked paragraphs.
+const CHIP_SECTION_TYPES = new Set(['skills', 'hobbies'])
+// Certification lines are typically a single credential each - a bullet marker reads
+// better than a full paragraph indent.
+const BULLET_SECTION_TYPES = new Set(['certifications'])
+
+// Matches a job's date-range header line (e.g. "10/2016 - 08/2022", "05/2023 - Present",
+// "2019-2021"). Content here is a flattened string (getSectionText has already joined the
+// original job objects' fields into plain lines), so company/job-title can't be reliably
+// told apart from bullet text by position alone - the AI's field order isn't guaranteed.
+// The date line is the one thing that's unambiguous, so only that gets special styling;
+// everything else stays in original order rather than risk misrendering a bullet as a
+// header from a wrong guess.
+const EXPERIENCE_DATE_PATTERN = /(19|20)\d{2}.{0,10}?[-–—].{0,10}?((19|20)\d{2}|present|current)/i
+
 function renderSection(section: PlannedPageSection): string {
   return `<article class="cv-section section" data-section-type="${escapeHtml(section.type)}" data-type="${escapeHtml(section.type)}">
     <h2>${escapeHtml(formatSectionTitle(section))}</h2>
-    <div class="section-content">${formatContent(section.content)}</div>
+    <div class="section-content">${formatContent(section.content, section.type)}</div>
   </article>`
 }
 
-function formatContent(content: string): string {
-  return escapeHtml(content)
+function formatContent(content: string, sectionType?: string): string {
+  const lines = escapeHtml(content)
     .split('\n')
     .map(line => line.trim())
     .filter(Boolean)
-    .map(line => `<p>${line}</p>`)
-    .join('')
+
+  if (sectionType && CHIP_SECTION_TYPES.has(sectionType)) {
+    return `<div class="chip-list">${lines.map(line => `<span class="chip">${line}</span>`).join('')}</div>`
+  }
+
+  if (sectionType && BULLET_SECTION_TYPES.has(sectionType)) {
+    return `<ul class="bullet-list">${lines.map(line => `<li>${line}</li>`).join('')}</ul>`
+  }
+
+  if (sectionType === 'experience' && lines.some(line => EXPERIENCE_DATE_PATTERN.test(line))) {
+    return formatExperienceEntries(lines)
+  }
+
+  return lines.map(line => `<p>${line}</p>`).join('')
+}
+
+function formatExperienceEntries(lines: string[]): string {
+  const entries: string[][] = []
+  lines.forEach(line => {
+    if (EXPERIENCE_DATE_PATTERN.test(line) || entries.length === 0) {
+      entries.push([line])
+    } else {
+      entries[entries.length - 1].push(line)
+    }
+  })
+
+  return entries.map(entryLines => {
+    const [first, ...rest] = entryLines
+    const dateLine = EXPERIENCE_DATE_PATTERN.test(first) ? `<p class="exp-date">${first}</p>` : `<p>${first}</p>`
+    return `<div class="experience-entry">${dateLine}${rest.map(line => `<p>${line}</p>`).join('')}</div>`
+  }).join('')
 }
 
 function formatSectionTitle(section: PlannedPageSection): string {
@@ -171,10 +216,13 @@ function formatSectionTitle(section: PlannedPageSection): string {
 
 function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
   const theme = getTemplateTheme(templateName)
-  // Clamp the fill scale so the page never overflows and text stays readable.
-  const scale = Math.min(Math.max(fillScale, 1), 1.5)
+  // Clamp the scale so the page never overflows past legibility in either direction:
+  // >1 fills underused space (computeFillScale), <1 compresses spacing as a last-resort
+  // safety net when AI condense rounds couldn't fully clear an overflow
+  // (computeShrinkScale) - text staying on the page always wins over ideal spacing.
+  const scale = Math.min(Math.max(fillScale, 0.85), 1.5)
   // Line-height is scaled more gently than structural spacing to preserve legibility.
-  const lineScale = Math.min(scale, 1.18)
+  const lineScale = scale >= 1 ? Math.min(scale, 1.18) : Math.max(scale, 0.92)
   const pageGap = (3.2 * scale).toFixed(2)
   const zoneGap = (3.5 * scale).toFixed(2)
   const headerPad = (3 * scale).toFixed(2)
@@ -202,6 +250,17 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
     .section-content { white-space: normal; overflow-wrap: anywhere; }
     .section-content p { margin: 0 0 ${pMargin}mm; }
     .section-content p:last-child { margin-bottom: 0; }
+    .chip-list { display: flex; flex-wrap: wrap; gap: 1.6mm; margin: 0 0 ${pMargin}mm; }
+    .chip-list:last-child { margin-bottom: 0; }
+    .chip { display: inline-block; background: #f7fafc; border: 0.3mm solid #e2e8f0; border-radius: 4mm; padding: 1.3mm 3mm; line-height: 1.3; }
+    .bullet-list { list-style: none; margin: 0 0 ${pMargin}mm; padding: 0; }
+    .bullet-list:last-child { margin-bottom: 0; }
+    .bullet-list li { position: relative; padding-left: 4mm; margin: 0 0 ${pMargin}mm; }
+    .bullet-list li:last-child { margin-bottom: 0; }
+    .bullet-list li::before { content: '▸'; position: absolute; left: 0; color: ${theme.accent}; font-weight: 700; }
+    .experience-entry { border-bottom: 0.3mm solid #e2e8f0; padding-bottom: ${pMargin}mm; margin-bottom: ${pMargin}mm; }
+    .experience-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .exp-date { color: ${theme.accent}; font-weight: 700; }
     ${theme.extraCss}
     @media print { body { background: #ffffff; } .cv-page { margin: 0; box-shadow: none; } }
   `
@@ -366,8 +425,9 @@ const TEMPLATE_THEMES: Record<string, Partial<PagePlanTheme>> = {
       .cv-page::before { content: ''; position: absolute; width: 38mm; height: 38mm; border-radius: 50%; background: #f6ad55; top: -15mm; right: 18mm; opacity: 0.82; }
       .cv-page::after { content: ''; position: absolute; width: 28mm; height: 28mm; border-radius: 50%; background: #4a5568; top: 5mm; right: -8mm; opacity: 0.78; }
       .cv-header, .page-zone { position: relative; z-index: 1; }
-      .cv-section { border-left-color: #f6ad55; }
-      .cv-section h2 { color: #2d3748; }
+      .cv-section { border-left: none; padding-left: 0; }
+      .cv-section h2 { display: inline-block; background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); color: #ffffff; padding: 1.4mm 4mm; border-radius: 5mm; font-weight: 700; }
+      .chip { background: #edf2f7; border-color: #edf2f7; }
     `
   },
   professional_columns: {

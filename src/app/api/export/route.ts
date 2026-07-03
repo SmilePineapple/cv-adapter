@@ -11,7 +11,7 @@ import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/l
 import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
-import { measureRenderedCV, computeFillScale } from '@/lib/cv-render-measurer'
+import { measureRenderedCV, computeFillScale, computeShrinkScale } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
 import { normalizeSectionType } from '@/lib/cv-layout-validator'
@@ -448,7 +448,33 @@ async function handlePdfExport(
         console.error('❌ Render-based layout repair failed:', repairError)
       }
     }
-    
+
+    // Last-resort deterministic safety net: AI condense rounds are exhausted (or weren't
+    // needed) but content can still be clipped - e.g. the model didn't cut quite enough,
+    // or a repair round shifted a section back over the edge. Shipping that means real
+    // words are visibly missing from the PDF a candidate sends to employers, which is
+    // worse than slightly tighter spacing. Compress deterministically (no AI call, cheap)
+    // rather than let residual overflow reach the final file.
+    if (maxPages && maxPages > 1 && activeMeasurement.overflowing) {
+      const shrinkScale = computeShrinkScale(activeMeasurement)
+      if (shrinkScale < 0.99) {
+        console.log(`📐 Applying deterministic shrink scale (residual overflow after repair rounds): ${shrinkScale.toFixed(3)}`)
+        html = renderPagePlanHTML(sections, maxPages, template, shrinkScale)
+        await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await new Promise(r => setTimeout(r, 500))
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+        console.log('📐 Render measurement after shrink:', {
+          shrinkScale: shrinkScale.toFixed(3),
+          actualPages: activeMeasurement.actualPages,
+          overflowing: activeMeasurement.overflowing,
+          pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
+            page: item.page,
+            occupancy: Number(item.occupancy.toFixed(2))
+          }))
+        })
+      }
+    }
+
     // Standard A4 margins for page-plan renderer (template handles internal layout)
     const margins = { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }
     
