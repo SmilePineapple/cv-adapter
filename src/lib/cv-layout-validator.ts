@@ -9,7 +9,7 @@ import { CVPageBlueprint, CVSectionType, getBudgetForSection } from './cv-page-b
 // which is enough to pressure the AI into fabricating a plausible-sounding
 // institution/certificate to close the gap - so these are excluded from the
 // under-minimum check entirely, not just from the "expand" instruction.
-const VERBATIM_SECTION_TYPES = new Set(['education', 'certifications', 'hobbies'])
+export const VERBATIM_SECTION_TYPES = new Set(['education', 'certifications', 'hobbies'])
 
 export type LayoutIssueSeverity = 'error' | 'warning'
 export type LayoutIssueCode = 'missing_required_section' | 'total_under_minimum' | 'total_over_maximum' | 'section_under_minimum' | 'section_over_maximum'

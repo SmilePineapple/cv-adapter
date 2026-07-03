@@ -14,7 +14,7 @@ import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 import { measureRenderedCV, computeFillScale, computeShrinkScale } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
-import { normalizeSectionType } from '@/lib/cv-layout-validator'
+import { normalizeSectionType, getSectionText, VERBATIM_SECTION_TYPES } from '@/lib/cv-layout-validator'
 
 // Configure runtime for Vercel
 export const runtime = 'nodejs'
@@ -546,11 +546,37 @@ async function repairSectionsForRenderedLayout(
   // template-cloned filler rather than genuinely fuller content. Keep the first of each
   // normalized type only.
   const seenTypes = new Set<string>()
-  return repaired.filter(section => {
+  const deduped = repaired.filter(section => {
     const normalized = normalizeSectionType(section.type)
     if (seenTypes.has(normalized)) return false
     seenTypes.add(normalized)
     return true
+  })
+
+  // Verbatim sections (education/certifications/hobbies) must be copied exactly from the
+  // candidate's real CV - the main generation prompt already forbids the AI from changing
+  // them. A condense instruction asking to "shrink" one of these can still lead the model
+  // to comply by deleting entries or blanking the section outright rather than truly
+  // condensing (there's no truthful way to make a verbatim list shorter without removing
+  // real facts). Seen live: a repeatedly-condensed hobbies section came back completely
+  // empty across two repair rounds - rendering as a section title with nothing under it.
+  // Restore this round's input content for any verbatim section that shrank drastically
+  // rather than ship a hollowed-out or blank section.
+  return deduped.map(section => {
+    const normalized = normalizeSectionType(section.type)
+    if (!VERBATIM_SECTION_TYPES.has(normalized)) return section
+
+    const before = sections.find(s => normalizeSectionType(s.type) === normalized)
+    if (!before) return section
+
+    const beforeChars = getSectionText(before.content).length
+    const afterChars = getSectionText(section.content).length
+    if (beforeChars > 0 && afterChars < beforeChars * 0.6) {
+      console.warn(`⚠️ Render repair shrank verbatim section "${normalized}" from ${beforeChars} to ${afterChars} chars - restoring original content instead.`)
+      return before
+    }
+
+    return section
   })
 }
 
