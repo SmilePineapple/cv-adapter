@@ -167,7 +167,12 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
     sectionBudgets: [
       { sectionType: 'summary', minChars: 600, targetChars: 900, maxChars: 1300, required: true, preferredPage: 1 },
       { sectionType: 'experience', minChars: 2400, targetChars: 3800, maxChars: 7500, required: true, preferredPage: 1 },
-      { sectionType: 'skills', minChars: 1000, targetChars: 1500, maxChars: 2000, required: true, preferredPage: 1 },
+      // Rendered as individual chip tags (page-plan-renderer.ts's CHIP_SECTION_TYPES) -
+      // each item's border/padding/wrap overhead makes chips noticeably less space-dense
+      // than plain paragraph text was when this budget was first calibrated. Trimmed
+      // ~15% from the old 1500/2000 so hobbies (last item in the same left column)
+      // reliably has room left at the bottom of the page instead of getting squeezed off.
+      { sectionType: 'skills', minChars: 1000, targetChars: 1300, maxChars: 1700, required: true, preferredPage: 1 },
       { sectionType: 'education', minChars: 450, targetChars: 750, maxChars: 1200, required: false, preferredPage: 1 },
       { sectionType: 'hobbies', minChars: 0, targetChars: 450, maxChars: 750, required: false, preferredPage: 1 },
       { sectionType: 'certifications', minChars: 300, targetChars: 900, maxChars: 1300, required: false, preferredPage: 2 },
