@@ -13,6 +13,7 @@ function createMeasurement(overrides: Partial<RenderMeasurement> = {}): RenderMe
       { type: 'experience', top: 400, bottom: 800, height: 400, pageStart: 1, pageEnd: 1 },
       { type: 'skills', top: 1000, bottom: 1400, height: 400, pageStart: 2, pageEnd: 2 }
     ],
+    columnPlacements: [],
     underfilledPages: [],
     clippedPages: [],
     clippedSections: [],
@@ -49,6 +50,49 @@ describe('cv render measurer', () => {
 
     expect(occupancy[0].usedHeight).toBe(600)
     expect(occupancy[0].occupancy).toBe(0.6)
+  })
+
+  it('uses the shallower column, not the union of both, for two-column page occupancy', () => {
+    // A page with a tall right column (e.g. hobbies) and a short left column (e.g.
+    // certifications) must read as underfilled - the union-of-sections approach used to
+    // report this as ~90% full just because SOMETHING (the right column) reached that far
+    // down, even though the left column visibly stops much earlier.
+    const occupancy = calculatePageOccupancy([
+      { top: 0, bottom: 900, height: 900 }, // right column reaches 90% down
+      { top: 0, bottom: 300, height: 300 }  // left column stops at 30%
+    ], 1, 1000, [
+      { side: 'left', top: 0, bottom: 300, height: 300, pageStart: 1, pageEnd: 1 },
+      { side: 'right', top: 0, bottom: 900, height: 900, pageStart: 1, pageEnd: 1 }
+    ])
+
+    expect(occupancy[0].occupancy).toBe(0.3)
+  })
+
+  it('falls back to section-union occupancy when a page has no column data', () => {
+    // Single-column pages (or pages with no zone-column divs) keep the old behaviour.
+    const occupancy = calculatePageOccupancy([
+      { top: 0, bottom: 500, height: 500 },
+      { top: 300, bottom: 700, height: 400 }
+    ], 1, 1000, [])
+
+    expect(occupancy[0].usedHeight).toBe(700)
+  })
+
+  it('computes bottom coverage from the shallower column on a two-column page', () => {
+    const coverage = getPageBottomCoverage({
+      pageHeight: 1000,
+      actualPages: 1,
+      sectionPlacements: [
+        { type: 'hobbies', top: 0, bottom: 900, height: 900, pageStart: 1, pageEnd: 1 },
+        { type: 'certifications', top: 0, bottom: 300, height: 300, pageStart: 1, pageEnd: 1 }
+      ],
+      columnPlacements: [
+        { side: 'left', top: 0, bottom: 300, height: 300, pageStart: 1, pageEnd: 1 },
+        { side: 'right', top: 0, bottom: 900, height: 900, pageStart: 1, pageEnd: 1 }
+      ]
+    })
+
+    expect(coverage).toEqual([0.3])
   })
 
   it('identifies underfilled pages', () => {

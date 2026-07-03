@@ -12,6 +12,16 @@ export interface SectionPlacement extends ElementRect {
   pageEnd: number
 }
 
+// One of the two `.zone-column-left`/`.zone-column-right` divs a two-column zone renders
+// (see page-plan-renderer.ts's renderPagePlanHTML). Tracked separately from sectionPlacements
+// because occupancy/whitespace on a two-column page depends on the SHORTER column's reach,
+// not the union of every section's vertical extent regardless of which column it's in.
+export interface ColumnPlacement extends ElementRect {
+  side: 'left' | 'right'
+  pageStart: number
+  pageEnd: number
+}
+
 export interface ClippedSection {
   type: string
   page: number
@@ -32,6 +42,7 @@ export interface RenderMeasurement {
   pageHeight: number
   pageOccupancy: PageOccupancy[]
   sectionPlacements: SectionPlacement[]
+  columnPlacements: ColumnPlacement[]
   underfilledPages: PageOccupancy[]
   clippedPages: number[]
   clippedSections: ClippedSection[]
@@ -48,11 +59,42 @@ export function getActualPageCount(scrollHeight: number, pageHeight: number = A4
   return Math.max(1, Math.ceil((scrollHeight - tolerance) / pageHeight))
 }
 
-export function calculatePageOccupancy(rects: ElementRect[], pageCount: number, pageHeight: number = A4_HEIGHT_PX): PageOccupancy[] {
+// On a two-column page, the visible bottom white space is bounded by whichever column's
+// content ends FIRST - a section rect from the taller column reaching deep down the page
+// says nothing about whether the shorter column is empty underneath it. Returns the shared
+// (left, right) column bottoms clipped to this page, or null if this page doesn't have a
+// genuine two-column split (e.g. a single-column zone, or no column data at all) - callers
+// should fall back to section-based measurement in that case.
+function getColumnBottomsForPage(columnPlacements: ColumnPlacement[], pageTop: number, pageBottom: number): { left: number; right: number } | null {
+  const onPage = columnPlacements.filter(column => column.bottom > pageTop && column.top < pageBottom)
+  const leftColumns = onPage.filter(column => column.side === 'left')
+  const rightColumns = onPage.filter(column => column.side === 'right')
+  if (leftColumns.length === 0 || rightColumns.length === 0) return null
+
+  return {
+    left: Math.max(...leftColumns.map(column => Math.min(column.bottom, pageBottom))),
+    right: Math.max(...rightColumns.map(column => Math.min(column.bottom, pageBottom)))
+  }
+}
+
+export function calculatePageOccupancy(rects: ElementRect[], pageCount: number, pageHeight: number = A4_HEIGHT_PX, columnPlacements: ColumnPlacement[] = []): PageOccupancy[] {
   return Array.from({ length: pageCount }, (_, index) => {
     const page = index + 1
     const pageTop = index * pageHeight
     const pageBottom = pageTop + pageHeight
+
+    const columnBottoms = getColumnBottomsForPage(columnPlacements, pageTop, pageBottom)
+    if (columnBottoms) {
+      const shallowBottom = Math.min(columnBottoms.left, columnBottoms.right)
+      const usedHeight = Math.max(0, shallowBottom - pageTop)
+      return {
+        page,
+        occupancy: Math.min(1, usedHeight / pageHeight),
+        usedHeight,
+        availableHeight: pageHeight
+      }
+    }
+
     const intervals = rects
       .map(rect => ({ top: Math.max(rect.top, pageTop), bottom: Math.min(rect.bottom, pageBottom) }))
       .filter(interval => interval.bottom > interval.top)
@@ -85,11 +127,18 @@ export function getUnderfilledPages(pageOccupancy: PageOccupancy[], threshold: n
 
 // Vertical coverage = how far the lowest section on a page reaches down the page (0-1).
 // This captures the visible bottom white space a user sees, independent of text density.
-export function getPageBottomCoverage(measurement: Pick<RenderMeasurement, 'pageHeight' | 'actualPages' | 'sectionPlacements'>): number[] {
-  const { pageHeight, actualPages, sectionPlacements } = measurement
+export function getPageBottomCoverage(measurement: Pick<RenderMeasurement, 'pageHeight' | 'actualPages' | 'sectionPlacements' | 'columnPlacements'>): number[] {
+  const { pageHeight, actualPages, sectionPlacements, columnPlacements } = measurement
   return Array.from({ length: actualPages }, (_, index) => {
     const pageTop = index * pageHeight
     const pageBottom = pageTop + pageHeight
+
+    const columnBottoms = getColumnBottomsForPage(columnPlacements ?? [], pageTop, pageBottom)
+    if (columnBottoms) {
+      const shallowBottom = Math.min(columnBottoms.left, columnBottoms.right)
+      return Math.min(1, Math.max(0, (shallowBottom - pageTop) / pageHeight))
+    }
+
     const bottoms = sectionPlacements
       .filter(section => section.bottom > pageTop && section.top < pageBottom)
       .map(section => Math.min(section.bottom, pageBottom))
@@ -191,6 +240,23 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
       }
     }).filter(section => section.height > 0)
 
+    const columnNodes = Array.from(document.querySelectorAll('.zone-column-left, .zone-column-right'))
+    const columnPlacements = columnNodes.map((node) => {
+      const element = node as HTMLElement
+      const rect = element.getBoundingClientRect()
+      const top = rect.top + window.scrollY
+      const bottom = rect.bottom + window.scrollY
+      const side: 'left' | 'right' = element.classList.contains('zone-column-left') ? 'left' : 'right'
+      return {
+        side,
+        top,
+        bottom,
+        height: bottom - top,
+        pageStart: Math.floor(top / pageHeight) + 1,
+        pageEnd: Math.floor(Math.max(bottom - 1, top) / pageHeight) + 1
+      }
+    }).filter(column => column.height > 0)
+
     const bodyRect = document.body.getBoundingClientRect()
     const bodyTop = bodyRect.top + window.scrollY
     const bodyBottom = Math.max(bodyRect.bottom + window.scrollY, scrollHeight)
@@ -222,6 +288,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
       scrollHeight,
       pageHeight,
       sectionPlacements,
+      columnPlacements,
       clippedPages,
       clippedSectionDetails,
       bodyRect: {
@@ -236,7 +303,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
   const occupancyRects = rawMeasurement.sectionPlacements.length > 0
     ? rawMeasurement.sectionPlacements
     : [rawMeasurement.bodyRect]
-  const pageOccupancy = calculatePageOccupancy(occupancyRects, actualPages, rawMeasurement.pageHeight)
+  const pageOccupancy = calculatePageOccupancy(occupancyRects, actualPages, rawMeasurement.pageHeight, rawMeasurement.columnPlacements)
   const underfilledPages = getUnderfilledPages(pageOccupancy)
 
   return {
@@ -246,6 +313,7 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     pageHeight: rawMeasurement.pageHeight,
     pageOccupancy,
     sectionPlacements: rawMeasurement.sectionPlacements,
+    columnPlacements: rawMeasurement.columnPlacements,
     underfilledPages,
     clippedPages: rawMeasurement.clippedPages,
     clippedSections: rawMeasurement.clippedSectionDetails,

@@ -18,6 +18,7 @@ function createMeasurement(overrides: Partial<RenderMeasurement>): RenderMeasure
       { type: 'experience', top: 300, bottom: 1400, height: 1100, pageStart: 1, pageEnd: 2 },
       { type: 'skills', top: 1400, bottom: 1800, height: 400, pageStart: 2, pageEnd: 2 }
     ],
+    columnPlacements: [],
     underfilledPages: [],
     clippedPages: [],
     clippedSections: [],
@@ -110,6 +111,7 @@ describe('cv render repair', () => {
         { type: 'experience', top: 0, bottom: 1000, height: 1000, pageStart: 1, pageEnd: 1 },
         { type: 'experience', top: 1000, bottom: 2000, height: 1000, pageStart: 2, pageEnd: 2 }
       ],
+      columnPlacements: [],
       underfilledPages: [],
       clippedPages: [1],
       clippedSections: [{ type: 'experience', page: 1, overflowPx: 900 }],
