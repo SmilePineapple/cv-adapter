@@ -223,7 +223,7 @@ function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
 // i.e. ~4,250 per column). Used to decide how many chunks a section actually needs,
 // rather than always producing exactly as many chunks as there are zone slots for it -
 // a short section referenced by two page zones should only occupy the first one.
-const CHARS_PER_COLUMN_PAGE = 4250
+export const CHARS_PER_COLUMN_PAGE = 4250
 
 function splitSection(section: PlannedPageSection, maxCount: number): PlannedPageSection[] {
   const idealCount = Math.max(1, Math.min(maxCount, Math.ceil(section.content.length / CHARS_PER_COLUMN_PAGE)))

@@ -14,6 +14,7 @@ import { trackExport, trackTemplateSelection } from '@/lib/analytics'
 import { measureRenderedCV, computeFillScale } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
+import { normalizeSectionType } from '@/lib/cv-layout-validator'
 
 // Configure runtime for Vercel
 export const runtime = 'nodejs'
@@ -505,11 +506,26 @@ async function repairSectionsForRenderedLayout(
     throw new Error('Render repair response did not include a sections array.')
   }
 
-  return parsed.sections.map((section: Partial<CVSection>, index: number) => ({
+  const repaired = parsed.sections.map((section: Partial<CVSection>, index: number) => ({
     type: section.type,
     content: section.content,
     order: typeof section.order === 'number' ? section.order : index + 1
   })).filter((section: Partial<CVSection>) => section.type && section.content !== undefined) as CVSection[]
+
+  // The repair prompt asks the model to echo back the full sections array while only
+  // editing a couple of entries - it occasionally duplicates one instead of just editing
+  // it in place. A duplicate CVSection isn't a valid "split" (page-plan-renderer already
+  // splits one section's content across columns internally); it's just leftover content
+  // the unassigned-section fallback then dumps onto the last page, which reads as
+  // template-cloned filler rather than genuinely fuller content. Keep the first of each
+  // normalized type only.
+  const seenTypes = new Set<string>()
+  return repaired.filter(section => {
+    const normalized = normalizeSectionType(section.type)
+    if (seenTypes.has(normalized)) return false
+    seenTypes.add(normalized)
+    return true
+  })
 }
 
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {
