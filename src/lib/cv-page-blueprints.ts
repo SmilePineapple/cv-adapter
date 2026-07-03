@@ -176,8 +176,15 @@ const blueprints: Record<SupportedPageCount, CVPageBlueprint> = {
       { sectionType: 'education', minChars: 450, targetChars: 750, maxChars: 1200, required: false, preferredPage: 1 },
       { sectionType: 'hobbies', minChars: 0, targetChars: 450, maxChars: 750, required: false, preferredPage: 1 },
       { sectionType: 'certifications', minChars: 300, targetChars: 900, maxChars: 1300, required: false, preferredPage: 2 },
-      { sectionType: 'achievements', minChars: 500, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true },
-      { sectionType: 'projects', minChars: 500, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true }
+      // minChars raised from 500: live-observed generations were landing at ~1,300-1,400
+      // chars for achievements and ~1,000-1,100 for projects - comfortably clearing the
+      // old 500-char floor, so validateCVLayout's under-minimum check never fired even
+      // though both sections were well short of the 2,200 target, leaving genuine white
+      // space on page 2 that no repair pass ever addressed. A floor close to (but still
+      // below) target reliably triggers the existing, already-proven repair/expansion
+      // path instead of silently accepting an undershoot.
+      { sectionType: 'achievements', minChars: 1700, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true },
+      { sectionType: 'projects', minChars: 1700, targetChars: 2200, maxChars: 3000, required: false, preferredPage: 2, allowGenerated: true }
     ]
   },
   3: {
