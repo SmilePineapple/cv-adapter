@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
+import { isAdminEmail } from '@/lib/admin-auth'
 
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 const TEST_ACCOUNT = 'jake.rourke@btinternet.com'
 
 export async function POST(request: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Allow admins to reset any user, or test account to reset themselves
-    const isAdmin = ADMIN_EMAILS.includes(user.email || '')
+    const isAdmin = isAdminEmail(user.email)
     const isTestAccountResettingSelf = user.email === TEST_ACCOUNT && userId === user.id
 
     if (!isAdmin && !isTestAccountResettingSelf) {

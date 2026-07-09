@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { createClient } from '@supabase/supabase-js'
-
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
+import { isAdminEmail } from '@/lib/admin-auth'
 
 /**
  * POST /api/admin/snapshot-user-stats
@@ -25,7 +24,7 @@ export async function POST(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
     const { data: { user }, error: userError } = await userClient.auth.getUser(token)
-    if (userError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+    if (userError || !user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
@@ -153,7 +152,7 @@ export async function PATCH(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
     const { data: { user }, error: userError } = await userClient.auth.getUser(token)
-    if (userError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+    if (userError || !user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 

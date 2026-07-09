@@ -17,7 +17,7 @@ export default function PortugueseLandingPage() {
             </Link>
             <div className="flex items-center gap-4">
               <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">English</Link>
-              <Link href="/signup" className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-medium">
+              <Link href="/auth/signup" className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-medium">
                 Começar Grátis
               </Link>
             </div>
@@ -45,11 +45,11 @@ export default function PortugueseLandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <Link href="/signup" className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-semibold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl">
+            <Link href="/auth/signup" className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-semibold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl">
               Experimentar Grátis
               <ArrowRight className="w-5 h-5" />
             </Link>
-            <Link href="/login" className="px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition-all font-semibold text-lg border-2 border-gray-200">
+            <Link href="/auth/login" className="px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition-all font-semibold text-lg border-2 border-gray-200">
               Entrar
             </Link>
           </div>
@@ -66,7 +66,7 @@ export default function PortugueseLandingPage() {
           <p className="text-xl mb-8 opacity-90">
             Junte-se a centenas de profissionais brasileiros e portugueses que usam My CV Buddy
           </p>
-          <Link href="/signup" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg">
+          <Link href="/auth/signup" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg">
             Começar Grátis
             <ArrowRight className="w-5 h-5" />
           </Link>

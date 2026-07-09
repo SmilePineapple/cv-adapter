@@ -21,7 +21,7 @@ export default function HindiLandingPage() {
                 English
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-medium"
               >
                 मुफ्त में शुरू करें
@@ -53,14 +53,14 @@ export default function HindiLandingPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-semibold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl"
             >
               मुफ्त में आज़माएं
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="/login"
+              href="/auth/login"
               className="px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition-all font-semibold text-lg border-2 border-gray-200"
             >
               लॉग इन करें
@@ -124,7 +124,7 @@ export default function HindiLandingPage() {
             सैकड़ों भारतीय पेशेवरों के साथ जुड़ें जो My CV Buddy का उपयोग करते हैं
           </p>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg"
           >
             मुफ्त में शुरू करें

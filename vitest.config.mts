@@ -16,7 +16,8 @@ export default defineConfig({
       '**/e2e/**',
       '**/playwright/**',
       'tests/**',
-      'test-user-flow.spec.ts'
+      'test-user-flow.spec.ts',
+      'cv-adapter/**'
     ],
     coverage: {
       provider: 'v8',

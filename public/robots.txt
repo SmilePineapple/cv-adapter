@@ -20,8 +20,8 @@ Disallow: /admin/
 # Allow important pages explicitly
 Allow: /blog/
 Allow: /blog/*
-Allow: /pricing
-Allow: /about
+Allow: /pricing-comparison
+Allow: /about-us
 Allow: /contact
 Allow: /privacy
 Allow: /terms

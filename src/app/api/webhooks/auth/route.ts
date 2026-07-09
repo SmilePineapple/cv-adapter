@@ -1,18 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createHmac, timingSafeEqual } from 'crypto'
 import { sendWelcomeEmail } from '@/lib/email'
 
 /**
  * Webhook handler for Supabase Auth events
  * Triggers welcome email on user signup
  */
+
+function isValidSignature(rawBody: string, signature: string | null, secret: string): boolean {
+  if (!signature) return false
+  const expected = createHmac('sha256', secret).update(rawBody).digest('hex')
+  const expectedBuf = Buffer.from(expected, 'hex')
+  const providedBuf = Buffer.from(signature, 'hex')
+  if (expectedBuf.length !== providedBuf.length) return false
+  return timingSafeEqual(expectedBuf, providedBuf)
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const payload = await request.json()
-    
-    // Verify webhook signature (optional but recommended)
+    const rawBody = await request.text()
     const signature = request.headers.get('x-supabase-signature')
-    // TODO: Verify signature with SUPABASE_WEBHOOK_SECRET
-    
+    const secret = process.env.SUPABASE_WEBHOOK_SECRET
+
+    if (!secret) {
+      console.error('Auth webhook rejected: SUPABASE_WEBHOOK_SECRET is not configured')
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 })
+    }
+
+    if (!isValidSignature(rawBody, signature, secret)) {
+      console.error('Auth webhook rejected: invalid signature')
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+    }
+
+    const payload = JSON.parse(rawBody)
     const { event, user } = payload
     
     console.log('Auth webhook received:', { event, userId: user?.id })
