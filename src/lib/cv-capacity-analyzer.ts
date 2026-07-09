@@ -1,5 +1,6 @@
 import { CVSection } from '@/types/database'
 import { getSectionText, normalizeSectionType } from './cv-layout-validator'
+import { getCVPageBlueprint } from './cv-page-blueprints'
 
 export interface CVContentCapacity {
   // Source content metrics
@@ -38,29 +39,40 @@ export interface PageCountRecommendation {
   confidence: 'high' | 'medium' | 'low'
 }
 
+// projects/achievements match cv-page-blueprints.ts's 2-page targetChars (~2,200 each,
+// bumped there to actually fill a bonus column - see that file's "COLUMN CAPACITY CHECK"
+// comment). Keep these two in sync with the blueprint or maxTruthfulChars understates
+// how much a CV can truthfully expand, wrongly downgrading CVs that can support more
+// pages once bonus sections are generated.
 const EXPANSION_FACTORS = {
   perJob: 1000,              // Each job can expand to ~1000 chars with detailed bullets
   summary: 1000,             // Summary can expand to ~1000 chars
   skills: 1200,              // Skills with context can reach ~1200 chars
   perEducation: 600,         // Each education entry can expand to ~600 chars
   perCertification: 400,     // Each cert can expand to ~400 chars
-  projects: 1500,            // Projects section if relevant
-  achievements: 1600         // Achievements section if relevant
+  projects: 2200,            // Projects section if relevant
+  achievements: 2200         // Achievements section if relevant
 }
 
+// Page-count character thresholds are authored once in cv-page-blueprints.ts (the
+// calibrated source of truth) and read from there so this file can't drift out of
+// sync with the blueprints the AI prompt and layout validator are actually held to.
+// (origin/main independently re-raised these to 16000/22000 without updating
+// cv-page-blueprints.ts's minTotalChars of 14000/19500 - deriving from the blueprint
+// avoids that class of drift entirely.)
 const PAGE_THRESHOLDS = {
-  min1Page: 3900,
-  ideal1Page: 4800,
-  max1Page: 5600,
-  min2Page: 8000,
-  ideal2Page: 10000,
-  max2Page: 13000,
-  min3Page: 16000,
-  ideal3Page: 19000,
-  max3Page: 23000,
-  min4Page: 22000,
-  ideal4Page: 26000,
-  max4Page: 32000
+  min1Page: getCVPageBlueprint(1).minTotalChars,
+  ideal1Page: getCVPageBlueprint(1).targetTotalChars,
+  max1Page: getCVPageBlueprint(1).maxTotalChars,
+  min2Page: getCVPageBlueprint(2).minTotalChars,
+  ideal2Page: getCVPageBlueprint(2).targetTotalChars,
+  max2Page: getCVPageBlueprint(2).maxTotalChars,
+  min3Page: getCVPageBlueprint(3).minTotalChars,
+  ideal3Page: getCVPageBlueprint(3).targetTotalChars,
+  max3Page: getCVPageBlueprint(3).maxTotalChars,
+  min4Page: getCVPageBlueprint(4).minTotalChars,
+  ideal4Page: getCVPageBlueprint(4).targetTotalChars,
+  max4Page: getCVPageBlueprint(4).maxTotalChars
 }
 
 export function analyzeContentCapacity(sections: CVSection[]): CVContentCapacity {
@@ -272,11 +284,14 @@ function estimateExperienceYears(sections: CVSection[]): number {
     return jobCount * 2 // Assume 2 years per job
   }
   
-  // Calculate range from earliest to latest year
+  // Calculate range from earliest year to latest year - or to now if the most
+  // recent role is still ongoing ("Present"/"Current"), since the literal years
+  // found in the text otherwise understate an ongoing role's actual duration.
   const yearNumbers = years.map(y => parseInt(y))
   const minYear = Math.min(...yearNumbers)
-  const maxYear = Math.max(...yearNumbers)
-  
+  const isOngoing = /\b(present|current|now)\b/i.test(text)
+  const maxYear = isOngoing ? new Date().getFullYear() : Math.max(...yearNumbers)
+
   return maxYear - minYear
 }
 
@@ -371,14 +386,20 @@ function detectQuantifiableAchievements(sections: CVSection[]): boolean {
 }
 
 function determineDetailLevel(
-  sections: CVSection[], 
-  sourceChars: number, 
+  sections: CVSection[],
+  sourceChars: number,
   jobCount: number
 ): 'sparse' | 'moderate' | 'detailed' {
   if (jobCount === 0) return 'sparse'
-  
-  const charsPerJob = sourceChars / jobCount
-  
+
+  // Chars-per-job should reflect how much depth is in the experience bullets
+  // specifically, not the whole CV (summary/skills/education) divided by job
+  // count - otherwise a CV with one job but a full skills/education section
+  // reads as "detailed" even when the experience bullets themselves are thin.
+  const experienceSection = sections.find(s => normalizeSectionType(s.type) === 'experience')
+  const experienceChars = experienceSection ? getSectionText(experienceSection.content).length : sourceChars
+  const charsPerJob = experienceChars / jobCount
+
   if (charsPerJob < 300) return 'sparse'
   if (charsPerJob < 600) return 'moderate'
   return 'detailed'

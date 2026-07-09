@@ -11,6 +11,8 @@ import { rateLimiters } from '@/lib/rate-limit-simple'
 import { sendFirstGenerationEmail, sendLimitReachedEmail } from '@/lib/email'
 import { formatBlueprintForPrompt, getCVPageBlueprint } from '@/lib/cv-page-blueprints'
 import { createLayoutRepairPrompt, validateCVLayout } from '@/lib/cv-layout-validator'
+import { analyzeContentCapacity, getPageCountRecommendation } from '@/lib/cv-capacity-analyzer'
+import { getGenerationStrategy, formatStrategyForPrompt, GenerationStrategy } from '@/lib/page-count-strategies'
 
 // Increase timeout for AI generation with ATS optimization
 // AI generation: ~23s + ATS optimization: ~36s = ~59s total
@@ -24,7 +26,7 @@ export async function POST(request: NextRequest) {
     const openai = getOpenAIClient()
     // Use the old auth helpers package (proven to work)
     const supabase = await createSupabaseRouteClient()
-    
+
     // Get user - try cookie auth first, fall back to Bearer token
     let user = null
     let activeClient = supabase
@@ -142,6 +144,48 @@ export async function POST(request: NextRequest) {
     console.log('CV detected language:', detectedLanguage, `(${LANGUAGE_NAMES[detectedLanguage] || 'English'})`)
     console.log('Target output language:', targetLanguage, `(${LANGUAGE_NAMES[targetLanguage] || 'English'})`)
 
+    // 🎯 PHASE 2: Analyze content capacity to predict max truthful expansion
+    const capacity = analyzeContentCapacity(originalSections.sections)
+    const requestedMaxPages = max_pages || 1
+    const recommendation = getPageCountRecommendation(capacity, requestedMaxPages)
+
+    console.log('📊 Content Capacity Analysis:', {
+      sourceChars: capacity.sourceChars,
+      jobCount: capacity.jobCount,
+      maxTruthfulChars: capacity.maxTruthfulChars,
+      recommendedPageCount: capacity.recommendedPageCount,
+      requestedPageCount: requestedMaxPages,
+      canSupport: recommendation.canSupport,
+      bulletPointRatio: capacity.bulletPointRatio.toFixed(2),
+      detailLevel: capacity.detailLevel
+    })
+
+    // Get density-adjusted generation strategy
+    let strategy = getGenerationStrategy(capacity, requestedMaxPages)
+
+    // 🎯 Enforce the capacity recommendation instead of just logging it: if the content
+    // can't truthfully support the requested page count, downgrade what we actually
+    // generate/render to the recommended count. This is the value used everywhere below
+    // (prompt, blueprint, max_tokens, and what gets persisted to the DB). Recompute the
+    // strategy for the downgraded count so its char targets match what we're actually
+    // generating rather than the original (too-large) request.
+    const effectivePageCount = strategy.autoDowngrade && strategy.suggestedPageCount
+      ? strategy.suggestedPageCount
+      : requestedMaxPages
+
+    if (strategy.warning) {
+      console.warn('⚠️ Page count warning:', strategy.warning, '— downgrading to', effectivePageCount, 'pages')
+      strategy = getGenerationStrategy(capacity, effectivePageCount)
+    }
+
+    console.log('🎯 Generation Strategy:', {
+      targetChars: strategy.targetChars,
+      densityMultiplier: strategy.densityMultiplier,
+      allowOptionalSections: strategy.allowOptionalSections,
+      compressionPriority: strategy.compressionPriority,
+      effectivePageCount
+    })
+
     // Create OpenAI prompt with language awareness
     const prompt = createRewritePrompt(
       originalSections.sections,
@@ -151,7 +195,8 @@ export async function POST(request: NextRequest) {
       tone,
       custom_sections,
       targetLanguage,
-      max_pages
+      effectivePageCount,
+      strategy
     )
 
     console.log(`📏 DEBUG: Prompt length: ${prompt.length} characters`)
@@ -168,27 +213,51 @@ export async function POST(request: NextRequest) {
       ? 'You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness.'
       : `You are an expert CV writer and career coach. Your task is to rewrite CV sections to better match specific job requirements while maintaining authenticity and truthfulness. CRITICAL: Generate ALL output in ${languageName}. Do not translate to English.`
 
-    // Adjust max_tokens based on requested page count
-    const tokensPerPage = 3000 // Increased to 3000 for 4-page CVs to generate 10,000-12,000 characters
-    const requestedMaxPages = max_pages || 1
-    const pageBlueprint = getCVPageBlueprint(requestedMaxPages)
+    // Adjust max_tokens based on the effective (capacity-checked) page count. Scales
+    // linearly with page count so 3/4-page CVs actually get proportionally more room to
+    // generate content instead of being clamped to the same ceiling as a 2-page CV -
+    // capped just under gpt-4o-mini's real 16,384-token output limit, not an arbitrary
+    // round number.
+    const tokensPerPage = 5000 // 5000 tokens per page allows ~20,000 chars per page capacity
+    const pageBlueprint = getCVPageBlueprint(effectivePageCount)
+    
+    // Create density-adjusted blueprint for validation
+    const adjustedBlueprint = {
+      ...pageBlueprint,
+      minTotalChars: strategy.minChars,
+      targetTotalChars: strategy.targetChars,
+      maxTotalChars: strategy.maxChars,
+      sectionBudgets: pageBlueprint.sectionBudgets.map(budget => ({
+        ...budget,
+        minChars: Math.round(budget.minChars * strategy.densityMultiplier),
+        targetChars: Math.round(budget.targetChars * strategy.densityMultiplier),
+        maxChars: Math.round(budget.maxChars * strategy.densityMultiplier)
+      }))
+    }
+    
     const pageBlueprintPrompt = formatBlueprintForPrompt(pageBlueprint)
-    const adjustedMaxTokens = Math.min(requestedMaxPages * tokensPerPage, 12000) // Increased limit to 12000
+    const adjustedMaxTokens = Math.min(effectivePageCount * tokensPerPage, 16000) // gpt-4o-mini's real ceiling is ~16,384
 
-    console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (requested ${requestedMaxPages} pages × ${tokensPerPage} tokens/page)`)
+    console.log('📐 Density-adjusted blueprint:', {
+      baseTotalChars: pageBlueprint.targetTotalChars,
+      adjustedTotalChars: adjustedBlueprint.targetTotalChars,
+      densityMultiplier: strategy.densityMultiplier
+    })
+
+    console.log(`📏 DEBUG: max_tokens setting: ${adjustedMaxTokens} (effective ${effectivePageCount} pages × ${tokensPerPage} tokens/page)`)
     console.log('📐 DEBUG: page blueprint:', pageBlueprintPrompt)
 
     let aiResponse: string
 
     // Two-step approach for multi-page CVs (maxPages > 1)
-    if (requestedMaxPages > 1) {
-      console.log(`🔥 Using two-step AI approach for ${requestedMaxPages}-page CV`)
+    if (effectivePageCount > 1) {
+      console.log(`🔥 Using two-step AI approach for ${effectivePageCount}-page CV`)
 
       // Step 1: Analyze structure and generate outline
       const outlinePrompt = `${prompt}
 
 📋 ADDITIONAL TASK FOR STEP 1:
-Before generating the full CV, first analyze the current CV and provide a detailed outline for expanding it to ${requestedMaxPages} pages.
+Before generating the full CV, first analyze the current CV and provide a detailed outline for expanding it to ${effectivePageCount} pages.
 
 📐 PAGE LAYOUT BLUEPRINT:
 ${pageBlueprintPrompt}
@@ -233,7 +302,7 @@ Then proceed to generate the full CV following this outline.`
           }
         ],
         temperature: 0.7,
-        max_tokens: 2000
+        max_tokens: 3000
       })
 
       const outlineResponse = outlineCompletion.choices[0]?.message?.content
@@ -244,17 +313,28 @@ Then proceed to generate the full CV following this outline.`
 
 📋 STEP 2: Generate Full Content
 You have analyzed the CV structure. Now generate the full CV content following these requirements:
-- Target: ${requestedMaxPages} pages
+- Target: ${effectivePageCount} pages
 - Follow this exact page layout blueprint:
 ${pageBlueprintPrompt}
-- Target total content: ${pageBlueprint.targetTotalChars} characters
-- Acceptable total content range: ${pageBlueprint.minTotalChars}-${pageBlueprint.maxTotalChars} characters
-- Each job: 8-10 bullet points, 25-40 words each
-- Summary: 6-8 sentences (150-200 words)
-- Skills: 8-12 detailed skills with context
-- Education: Expand with coursework, achievements, relevant details
-- Certifications: Add details about what was learned and achieved
-- Return all sections needed by the blueprint
+
+🎯 DENSITY-ADJUSTED TARGETS (based on content analysis):
+${formatStrategyForPrompt(strategy)}
+
+- Target total content: ${strategy.targetChars} characters (density-adjusted from base ${pageBlueprint.targetTotalChars})
+- Acceptable total content range: ${strategy.minChars}-${strategy.maxChars} characters
+
+🎯 MANDATORY PER-SECTION CHARACTER TARGETS (you MUST hit these minimums):
+${pageBlueprint.sectionBudgets.map(b => `- ${b.sectionType}: AT LEAST ${Math.round(b.minChars * strategy.densityMultiplier)} chars (aim for ${Math.round(b.targetChars * strategy.densityMultiplier)})`).join('\n')}
+
+${strategy.contentHints}
+
+🔥 CRITICAL FOR MULTI-PAGE CVs: You MUST EXPAND the content significantly beyond the original CV.
+- The original CV is a starting point — ADD more bullet points to each job, EXPAND the summary, ADD detail to every section.
+- Do NOT just rewrite existing bullets — ADD NEW bullets with relevant responsibilities, outcomes, and context.
+- For each job, generate at least 6 bullet points even if the original had only 2-3.
+- If the blueprint includes optional sections (projects, achievements), GENERATE them with relevant content.
+- Your output MUST be at least ${strategy.minChars} characters total. Current typical output is only 6,000-7,000 chars — you need at LEAST ${strategy.targetChars} chars to fill ${effectivePageCount} pages.
+- COUNT your characters as you generate. If you are under target, EXPAND each section further.
 
 CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, and specific outcomes for EVERY point.`
 
@@ -264,7 +344,7 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
         messages: [
           {
             role: 'system',
-            content: systemPrompt + ' You are in STEP 2. Generate the full expanded CV content based on the analysis.'
+            content: systemPrompt + ' You are in STEP 2. Generate the full expanded CV content based on the analysis. You MUST EXPAND the content significantly — add new bullet points, expand descriptions, and generate optional sections to fill the target page count. Do NOT just rewrite existing content.'
           },
           {
             role: 'user',
@@ -309,21 +389,24 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
     console.log('🤖 AI Response length:', aiResponse.length)
 
     // Parse AI response
-    let { rewrittenSections } = parseAIResponse(aiResponse, originalSections.sections)
-    const { diffMeta } = parseAIResponse(aiResponse, originalSections.sections)
+    const parsedResponse = parseAIResponse(aiResponse, originalSections.sections)
+    let rewrittenSections = parsedResponse.rewrittenSections
+    const diffMeta = parsedResponse.diffMeta
+    diffMeta.page_count = effectivePageCount
 
-    const initialLayoutValidation = validateCVLayout(rewrittenSections, pageBlueprint)
-    console.log('📐 Layout validation after initial generation:', {
+    const initialLayoutValidation = validateCVLayout(rewrittenSections, adjustedBlueprint)
+    console.log('📐 Layout validation after initial generation (density-adjusted):', {
       isValid: initialLayoutValidation.isValid,
       totalChars: initialLayoutValidation.totalChars,
       targetTotalChars: initialLayoutValidation.targetTotalChars,
+      densityMultiplier: strategy.densityMultiplier,
       issues: initialLayoutValidation.issues.map(issue => issue.message)
     })
 
     if (!initialLayoutValidation.isValid || initialLayoutValidation.issues.some(issue => issue.code === 'section_under_minimum' || issue.code === 'section_over_maximum')) {
-      console.log('📐 Running targeted layout repair pass...')
+      console.log('📐 Running targeted layout repair pass with density-adjusted targets...')
       try {
-        const repairPrompt = createLayoutRepairPrompt(rewrittenSections, pageBlueprint, initialLayoutValidation)
+        const repairPrompt = createLayoutRepairPrompt(rewrittenSections, adjustedBlueprint, initialLayoutValidation)
         const repairCompletion = await openai.chat.completions.create({
           model: 'gpt-4o-mini',
           response_format: { type: 'json_object' },
@@ -344,11 +427,12 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
         const repairResponse = repairCompletion.choices[0]?.message?.content || ''
         if (repairResponse) {
           const repaired = parseAIResponse(repairResponse, originalSections.sections)
-          const repairedValidation = validateCVLayout(repaired.rewrittenSections, pageBlueprint)
-          console.log('📐 Layout validation after repair:', {
+          const repairedValidation = validateCVLayout(repaired.rewrittenSections, adjustedBlueprint)
+          console.log('📐 Layout validation after repair (density-adjusted):', {
             isValid: repairedValidation.isValid,
             totalChars: repairedValidation.totalChars,
             targetTotalChars: repairedValidation.targetTotalChars,
+            densityMultiplier: strategy.densityMultiplier,
             issues: repairedValidation.issues.map(issue => issue.message)
           })
           const initialIsTooShort = initialLayoutValidation.issues.some(issue => issue.code === 'total_under_minimum')
@@ -363,160 +447,125 @@ CRITICAL: Generate SUBSTANTIAL content. Do NOT be brief. Add context, examples, 
               repairedTotalChars: repairedValidation.totalChars
             })
           }
+
+          // Second repair pass if still significantly under target
+          const postRepairValidation = validateCVLayout(rewrittenSections, adjustedBlueprint)
+          const stillUnderMinimum = postRepairValidation.totalChars < adjustedBlueprint.minTotalChars
+          const shortfall = adjustedBlueprint.targetTotalChars - postRepairValidation.totalChars
+          console.log('📐 Post-repair validation:', {
+            totalChars: postRepairValidation.totalChars,
+            targetTotalChars: adjustedBlueprint.targetTotalChars,
+            shortfall,
+            stillUnderMinimum
+          })
+
+          if (stillUnderMinimum && shortfall > 2000) {
+            console.log(`📐 Running SECOND repair pass — need ${shortfall} more chars to reach density-adjusted target...`)
+            try {
+              const secondRepairPrompt = createLayoutRepairPrompt(rewrittenSections, adjustedBlueprint, postRepairValidation)
+              const secondRepairCompletion = await openai.chat.completions.create({
+                model: 'gpt-4o-mini',
+                response_format: { type: 'json_object' },
+                messages: [
+                  {
+                    role: 'system',
+                    content: systemPrompt + ' The CV is still significantly too short for the target page count. You MUST expand EVERY section that is safe to rewrite: add more bullet points to every job, expand the summary, add detail to skills. Do NOT add new content to education, certifications, or hobbies - those must remain a 100% exact copy of the original, so growing them would mean inventing institutions, credentials, or details that are not real. If the layout plan permits generated sections (achievements, projects) and the candidate does not already have them, ADD them with truthful content inferred from their real experience - this is often the fastest way to close a large shortfall without touching the verbatim sections. Return the full sections array.'
+                  },
+                  {
+                    role: 'user',
+                    content: secondRepairPrompt
+                  }
+                ],
+                temperature: 0.5,
+                max_tokens: adjustedMaxTokens
+              })
+
+              const secondRepairResponse = secondRepairCompletion.choices[0]?.message?.content || ''
+              if (secondRepairResponse) {
+                const secondRepaired = parseAIResponse(secondRepairResponse, originalSections.sections)
+                const secondValidation = validateCVLayout(secondRepaired.rewrittenSections, pageBlueprint)
+                console.log('📐 Layout validation after second repair:', {
+                  totalChars: secondValidation.totalChars,
+                  targetTotalChars: secondValidation.targetTotalChars,
+                  improvement: secondValidation.totalChars - postRepairValidation.totalChars
+                })
+                if (secondValidation.totalChars > postRepairValidation.totalChars) {
+                  rewrittenSections = secondRepaired.rewrittenSections
+                }
+              }
+            } catch (secondRepairError) {
+              console.error('❌ Second layout repair failed:', secondRepairError)
+            }
+          }
         }
       } catch (layoutRepairError) {
         console.error('❌ Layout repair failed:', layoutRepairError)
       }
     }
-    
-    // For 4-page CVs, validate structure specifications and regenerate if needed
-    if (requestedMaxPages >= 4) {
-      console.log('🔍 Validating 4-page CV structure specifications...')
-      
-      // Local helper to get section content as string
-      const getSectionContentLocal = (content: any): string => {
-        if (!content) return ''
-        if (typeof content === 'string') return content
-        if (Array.isArray(content)) {
-          return content.map((item: any) => {
-            if (typeof item === 'string') return item
-            if (typeof item === 'object' && item !== null) {
-              const parts = []
-              const title = item.title || item.job_title || item.position || ''
-              const company = item.company || item.employer || ''
-              const dates = item.dates || item.duration || item.period || ''
-              if (title || company) {
-                let titleLine = ''
-                if (title && company && dates) {
-                  titleLine = `${title} | ${company} | ${dates}`
-                } else if (title && company) {
-                  titleLine = `${title} | ${company}`
-                } else {
-                  titleLine = title || company
-                }
-                parts.push(titleLine)
+
+    // 🎯 Dedicated fill pass for blueprint-designated "bonus" sections (achievements,
+    // projects, additional_information) that the page layout has room for but the
+    // candidate's original CV doesn't have. The generic repair passes above ask for
+    // these among several other instructions and often don't act on it - a narrowly
+    // scoped prompt asking for exactly the missing sections is far more reliable.
+    if (effectivePageCount > 1) {
+      const presentTypes = new Set(rewrittenSections.map(s => normalizeSectionType(s.type)))
+      const missingGeneratable = adjustedBlueprint.sectionBudgets.filter(
+        budget => budget.allowGenerated && !presentTypes.has(normalizeSectionType(budget.sectionType))
+      )
+      const preFillValidation = validateCVLayout(rewrittenSections, adjustedBlueprint)
+
+      if (missingGeneratable.length > 0 && preFillValidation.totalChars < adjustedBlueprint.targetTotalChars) {
+        console.log('📐 Running dedicated fill pass for missing bonus sections:', missingGeneratable.map(b => b.sectionType))
+        try {
+          const fillPrompt = `This CV's page layout has room for these optional sections, which the candidate's original CV does not include: ${missingGeneratable.map(b => `${b.sectionType} (target ~${b.targetChars} characters)`).join(', ')}.
+
+Generate ONLY these missing sections, inferred truthfully from the candidate's real job titles, employers, and responsibilities below. Do not invent employers, dates, qualifications, or unverifiable claims - infer plausible, realistic achievements/projects/details from the actual experience described.
+
+Candidate's current CV sections:
+${JSON.stringify(rewrittenSections, null, 2)}
+
+Target job: ${job_title}
+
+Return JSON only in this format:
+{ "sections": [ { "type": "achievements", "content": "...", "order": 90 } ] }`
+
+          const fillCompletion = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            response_format: { type: 'json_object' },
+            messages: [
+              {
+                role: 'system',
+                content: 'You generate truthful, plausible bonus CV sections (achievements, projects, additional information) inferred from a candidate\'s real, existing experience. Never invent employers, dates, or credentials that are not already in the CV.'
+              },
+              {
+                role: 'user',
+                content: fillPrompt
               }
-              if (item.bullets && Array.isArray(item.bullets)) {
-                item.bullets.forEach((bullet: string) => {
-                  parts.push(`• ${bullet}`)
-                })
-              } else if (item.responsibilities) {
-                if (typeof item.responsibilities === 'string') {
-                  parts.push(item.responsibilities)
-                } else if (Array.isArray(item.responsibilities)) {
-                  item.responsibilities.forEach((resp: string) => {
-                    parts.push(`• ${resp}`)
-                  })
-                }
-              } else if (item.description) {
-                parts.push(item.description)
-              }
-              return parts.join('\n')
-            }
-            return ''
-          }).join('\n\n')
-        }
-        if (typeof content === 'object') {
-          return Object.values(content).filter((v: any) => typeof v === 'string').join('\n')
-        }
-        return String(content)
-      }
-      
-      try {
-        const expSection = rewrittenSections.find((s: any) => s.type === 'experience')
-        if (expSection) {
-          const expContent = getSectionContentLocal(expSection.content)
-          const expLines = expContent.split('\n').filter((line: string) => line.trim().startsWith('•'))
-          console.log(`💼 Experience bullets count: ${expLines.length} (target: 10 per job)`)
-          
-          // Check if we have enough bullets (should be 10 per job)
-          if (expLines.length < 10) {
-            console.log(`⚠️ Not enough bullets (${expLines.length} < 10), asking AI to expand...`)
-            
-            const expandPrompt = `The experience section has only ${expLines.length} bullet points but needs EXACTLY 10 bullet points per job for a 4-page CV. Each bullet must be 35-40 words.
+            ],
+            temperature: 0.4,
+            max_tokens: 2000
+          })
 
-Current experience content:
-${expContent}
-
-Add ${10 - expLines.length} more detailed bullet points. Each bullet must:
-- Be 35-40 words
-- Include action verb + specific task + quantifiable result + context
-- Be relevant to the job title and company
-
-Respond with ONLY the complete experience section content with all bullet points.`
-            
-            const openai = getOpenAIClient()
-            const expandCompletion = await openai.chat.completions.create({
-              model: 'gpt-4o-mini',
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are a CV content generator. Expand experience sections to meet exact specifications.'
-                },
-                {
-                  role: 'user',
-                  content: expandPrompt
-                }
-              ],
-              temperature: 0.7,
-              max_tokens: 2000
-            })
-            
-            const expandedContent = expandCompletion.choices[0]?.message?.content
-            if (expandedContent) {
-              expSection.content = expandedContent
-              console.log('✅ Experience section expanded')
+          const fillResponse = fillCompletion.choices[0]?.message?.content
+          if (fillResponse) {
+            const parsedFill = JSON.parse(fillResponse)
+            if (Array.isArray(parsedFill.sections)) {
+              const newSections = parsedFill.sections.filter((s: any) => s?.type && s?.content)
+              console.log(`✅ Fill pass added ${newSections.length} section(s):`, newSections.map((s: any) => s.type).join(', '))
+              rewrittenSections.push(...newSections.map((s: any, i: number) => ({
+                type: s.type,
+                content: s.content,
+                order: rewrittenSections.length + i + 1
+              })))
             }
           }
+        } catch (fillError) {
+          console.error('❌ Bonus section fill pass failed:', fillError)
         }
-        
-        const summarySection = rewrittenSections.find((s: any) => s.type === 'summary')
-        if (summarySection) {
-          const summaryContent = getSectionContentLocal(summarySection.content)
-          const summarySentences = summaryContent.split(/[.!?]+/).filter((s: string) => s.trim().length > 0)
-          console.log(`📝 Summary sentences count: ${summarySentences.length} (target: 6)`)
-          
-          if (summarySentences.length < 6) {
-            console.log(`⚠️ Not enough summary sentences (${summarySentences.length} < 6), asking AI to expand...`)
-            
-            const expandPrompt = `The summary section has only ${summarySentences.length} sentences but needs EXACTLY 6 sentences for a 4-page CV. Each sentence should be 12-15 words.
-
-Current summary:
-${summaryContent}
-
-Add ${6 - summarySentences.length} more sentences. Focus on: professional background, key strengths, therapeutic approach, achievements.
-
-Respond with ONLY the complete summary section content.`
-            
-            const openai = getOpenAIClient()
-            const expandCompletion = await openai.chat.completions.create({
-              model: 'gpt-4o-mini',
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are a CV content generator. Expand summary sections to meet exact specifications.'
-                },
-                {
-                  role: 'user',
-                  content: expandPrompt
-                }
-              ],
-              temperature: 0.7,
-              max_tokens: 500
-            })
-            
-            const expandedContent = expandCompletion.choices[0]?.message?.content
-            if (expandedContent) {
-              summarySection.content = expandedContent
-              console.log('✅ Summary section expanded')
-            }
-          }
-        }
-      } catch (error) {
-        console.error('❌ Structure validation failed:', error)
       }
     }
-    
+
     // 🔍 DEBUG: Log parsed sections
     console.log('📋 Parsed sections count:', rewrittenSections.length)
     console.log('📋 Section types:', rewrittenSections.map(s => s.type).join(', '))
@@ -529,93 +578,6 @@ Respond with ONLY the complete summary section content.`
       console.log('💼 Experience content preview:', expContent.substring(0, 300))
     } else {
       console.error('❌ NO EXPERIENCE SECTION IN AI OUTPUT!')
-    }
-
-    // 🎨 AI LAYOUT ANALYSIS: Review CV content and suggest improvements for multi-page CVs
-    if (max_pages === 4) {
-      console.log('🎨 Running AI layout analysis for 4-page CV...')
-      try {
-        const totalContentLength = rewrittenSections.reduce((sum: number, s: any) => {
-          const content = typeof s.content === 'string' ? s.content : JSON.stringify(s.content)
-          return sum + content.length
-        }, 0)
-        
-        console.log(`📏 Total content length: ${totalContentLength} characters`)
-        
-        // Target: ~12,000 characters for 4 pages (3,000 per page)
-        if (totalContentLength < 10000) {
-          console.log('⚠️ Content is too short for 4 pages, requesting AI to add more sections...')
-          
-          const layoutAnalysisPrompt = `
-You are a CV layout expert. Review the following CV content and suggest additional relevant sections to fill white space and improve the layout.
-
-CURRENT CV CONTENT:
-${JSON.stringify(rewrittenSections, null, 2)}
-
-ANALYSIS:
-- Total content length: ${totalContentLength} characters
-- Target for 4-page CV: ~12,000 characters
-- Gap: ${12000 - totalContentLength} characters needed
-
-TASK:
-1. Analyze the current sections and identify gaps
-2. Suggest 2-3 additional sections that would be relevant for this candidate's profile
-3. For each suggested section, provide:
-   - Section type (e.g., "achievements", "projects", "volunteering", "publications", "conferences")
-   - 5-7 bullet points with 15-20 words each
-   - Content should be relevant to the candidate's experience and industry
-
-RESPONSE FORMAT (JSON):
-{
-  "suggested_sections": [
-    {
-      "type": "section_type",
-      "content": "section content with bullet points"
-    }
-  ]
-}
-
-IMPORTANT:
-- Do NOT invent fake experience or companies
-- Use the candidate's actual experience and skills as context
-- Make suggestions relevant to their industry and career level
-- Keep content professional and factual
-`
-
-          const layoutAnalysisResponse = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: [
-              { role: 'system', content: 'You are a CV layout expert who helps optimize CV content for professional presentation.' },
-              { role: 'user', content: layoutAnalysisPrompt }
-            ],
-            temperature: 0.2,
-            response_format: { type: 'json_object' }
-          })
-
-          const layoutAnalysis = JSON.parse(layoutAnalysisResponse.choices[0].message.content || '{}')
-          
-          if (layoutAnalysis.suggested_sections && layoutAnalysis.suggested_sections.length > 0) {
-            console.log(`✅ AI suggested ${layoutAnalysis.suggested_sections.length} additional sections`)
-            
-            // Add suggested sections to the CV
-            for (const section of layoutAnalysis.suggested_sections) {
-              rewrittenSections.push({
-                type: section.type,
-                content: section.content,
-                order: rewrittenSections.length + 1
-              })
-            }
-            
-            console.log(`✅ Added ${layoutAnalysis.suggested_sections.length} sections to CV`)
-            console.log('📋 New section types:', rewrittenSections.map(s => s.type).join(', '))
-          }
-        } else {
-          console.log('✅ Content length is sufficient for 4 pages')
-        }
-      } catch (error) {
-        console.error('❌ AI layout analysis failed:', error)
-        // Continue without layout analysis if it fails
-      }
     }
 
     // 🚨 CRITICAL VALIDATION: Check if AI invented fake jobs or changed companies
@@ -777,7 +739,7 @@ IMPORTANT:
         diff_meta: diffMeta,
         ats_score: atsScore,
         output_language: targetLanguage,
-        max_pages: max_pages || 1
+        max_pages: effectivePageCount
       })
       .select()
       .single()
@@ -877,7 +839,8 @@ function createRewritePrompt(
   tone: string,
   customSections?: string[],
   languageCode: string = 'en',
-  maxPages?: number
+  maxPages?: number,
+  strategy?: GenerationStrategy
 ): string {
   // Extract top keywords from job description (more efficient)
   const keywords = extractTopKeywords(jobDescription, 10)
@@ -915,9 +878,69 @@ function createRewritePrompt(
     if (maxPages === 1) {
       pageLengthInstructions += '- Use concise bullet points (2-3 per job)\n- Focus on most relevant experience only\n- Keep summary to 2-3 sentences'
     } else if (maxPages === 2) {
-      pageLengthInstructions += '- Use standard bullet points (3-4 per job)\n- Include all relevant experience\n- Keep summary to 3-4 sentences'
+      pageLengthInstructions += `🔥 CRITICAL: 2-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
+
+You MUST follow these EXACT structure specifications to fill 2 full pages:
+
+SUMMARY SECTION:
+- 5-6 sentences (120-150 words)
+- Focus: Professional background, key strengths, career trajectory
+
+EXPERIENCE SECTION:
+- For EACH job: 6-8 bullet points
+- Each bullet point: 25-35 words
+- Each bullet MUST include: action verb + specific task + quantifiable result/metric + context
+- Include ALL jobs from the original CV — do not omit any
+
+SKILLS SECTION:
+- 10-12 skills, each with context (8-12 words)
+- Format: "Skill name - context/application"
+
+EDUCATION SECTION:
+- COPY EXACTLY from the original CV - do not add coursework, projects, achievements, or any bullets that aren't already there. If it's short, leave it short.
+
+CERTIFICATIONS SECTION:
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned or practical applications unless already present.
+
+ADDITIONAL SECTIONS (if space allows):
+- Projects: Include relevant projects with 3-4 bullets each (only if this section is being generated fresh because the candidate doesn't already have one - never touch an existing projects section beyond light rewording)
+- Interests: COPY EXACTLY from the original CV - do not add or invent interests.
+
+CRITICAL: Generate SUBSTANTIAL content in the summary, experience, and skills sections. Target ~${strategy?.targetChars ?? 14500} total characters. Do NOT be brief in the sections you're allowed to rewrite - but never pad education, certifications, or interests with invented detail to hit the target.`
     } else if (maxPages === 3) {
-      pageLengthInstructions += '- Use detailed bullet points (4-5 per job)\n- Include comprehensive experience\n- Keep summary to 4-5 sentences'
+      pageLengthInstructions += `🔥 CRITICAL: 3-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
+
+You MUST follow these EXACT structure specifications to fill 3 full pages:
+
+SUMMARY SECTION:
+- 6-8 sentences (150-200 words)
+- Focus: Professional background, key strengths, career trajectory, notable achievements
+
+EXPERIENCE SECTION:
+- For EACH job: 8-10 bullet points
+- Each bullet point: 30-40 words
+- Each bullet MUST include: action verb + specific task + quantifiable result/metric + context
+- Include ALL jobs from the original CV
+
+ACHIEVEMENTS SECTION (generate if not present):
+- 5-6 notable achievements with context and impact (3-4 bullets each)
+
+PROJECTS SECTION (generate if not present):
+- 3-4 relevant projects with 3-5 bullets each
+
+SKILLS SECTION:
+- 12-15 skills, each with detailed context (10-15 words)
+
+EDUCATION SECTION:
+- COPY EXACTLY from the original CV - do not add coursework, projects, achievements, research, or any bullets that aren't already there. If it's short, leave it short.
+
+CERTIFICATIONS SECTION:
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned, skills gained, or practical applications unless already present.
+
+INTERESTS SECTION:
+- COPY EXACTLY from the original CV - do not add or invent interests.
+
+CRITICAL: Generate SUBSTANTIAL content in the summary, experience, skills, and any newly-generated achievements/projects sections. Target ~${strategy?.targetChars ?? 21500} total characters. Do NOT be brief in the sections you're allowed to rewrite - but never pad education, certifications, or interests with invented detail to hit the target.`
     } else {
       // Specify exact structure for 4-page CV
       pageLengthInstructions += `🔥 CRITICAL: 4-PAGE CV REQUIREMENTS - EXACT STRUCTURE SPECIFICATIONS 🔥
@@ -925,10 +948,8 @@ function createRewritePrompt(
 You MUST follow these EXACT structure specifications:
 
 SUMMARY SECTION:
-- EXACTLY 6 sentences
-- Each sentence: 12-15 words
-- Total: ~75-90 words
-- Focus: Professional background, key strengths, therapeutic approach, achievements
+- 6-8 sentences (150-200 words)
+- Focus: Professional background, key strengths, career trajectory, notable achievements
 
 EXPERIENCE SECTION:
 - For EACH job: EXACTLY 10 bullet points
@@ -946,27 +967,22 @@ SKILLS SECTION:
 - Example: "Play Therapy - child-centered approaches for emotional expression"
 
 EDUCATION SECTION:
-- For each degree: EXACTLY 5 bullet points
-- Each bullet: 15-20 words
-- Include: coursework completed, projects undertaken, research participation, achievements, relevant modules
+- COPY EXACTLY from the original CV - do not add coursework, projects, research, achievements, or modules that aren't already there. If it's short, leave it short.
 
 CERTIFICATIONS SECTION:
-- For each certification: EXACTLY 4 bullet points
-- Each bullet: 15-20 words
-- Include: what was learned, skills gained, practical applications, duration/intensity
+- COPY EXACTLY from the original CV - do not add bullets describing what was learned, skills gained, practical applications, or duration unless already present.
 
 INTERESTS SECTION:
-- EXACTLY 6 interests
-- Each interest: 12-15 words with context
-- Example: "Traveling - exploring cultures for personal growth and inspiration"
+- COPY EXACTLY from the original CV - do not add or invent interests.
 
-CRITICAL INSTRUCTIONS:
+CRITICAL INSTRUCTIONS (apply to SUMMARY, EXPERIENCE, and SKILLS only - never to EDUCATION, CERTIFICATIONS, or INTERESTS, which must stay an exact copy):
 1. Count the items as you generate - DO NOT guess
 2. If a section has fewer items than specified, add more
 3. If bullets are too short, expand with more detail
 4. Follow the EXACT word counts for each item
 5. DO NOT exceed or fall short of these structure specifications
-6. Your output MUST follow this exact structure to fill 4 pages`
+6. Your output MUST follow this exact structure to fill 4 pages
+7. Target ~${strategy?.targetChars ?? 31000} total characters. Generate SUBSTANTIAL content in the sections you're allowed to rewrite - never pad education, certifications, or interests with invented detail to hit the target.`
     }
   }
 
@@ -1075,10 +1091,10 @@ LANGUAGE: ${languageName}${languageCode !== 'en' ? ' (output MUST be in ' + lang
    ✅ Output: "Filial Therapy in Family Therapy | Manchester | 08/2019"
 
 FOCUS AREAS:
-- Summary: Write 3-4 sentences connecting the candidate's background to the target role. PRESERVE any specific numbers ("15 years", "over 50 clients"), named qualifications ("ACCA", "PMP"), and sector expertise from the original summary. If the original uses first-person ("I have", "I've led"), KEEP the first-person voice.
+- Summary: Write ${maxPages && maxPages > 1 ? '5-8 sentences' : '3-4 sentences'} connecting the candidate's background to the target role. PRESERVE any specific numbers ("15 years", "over 50 clients"), named qualifications ("ACCA", "PMP"), and sector expertise from the original summary. If the original uses first-person ("I have", "I've led"), KEEP the first-person voice.
 - Experience: For EACH job, you MUST:
   1. Keep job title | company | dates | location EXACTLY as original
-  2. REWRITE 3-5 bullet points to emphasize relevance to ${jobTitle}
+  2. REWRITE ${maxPages === 4 ? '8-10' : maxPages === 3 ? '8-10' : maxPages === 2 ? '6-8' : '3-5'} bullet points to emphasize relevance to ${jobTitle}
   3. PRESERVE any real numbers, metrics, percentages, and named tools from the original (e.g. "50+ clients", "£2M budget", "Selenium", "Salesforce") — do NOT replace them with vague phrases like "multiple clients" or "various tools"
   4. Keep technical tools named explicitly — do NOT say "automation tools" when the original says "Selenium/TestNG"
   5. Use action verbs appropriate to the original role level — senior roles get strategic language, technical roles get technical language
@@ -1100,7 +1116,7 @@ VERIFICATION CHECKLIST (CHECK BEFORE RESPONDING):
 □ All job titles match original exactly?
 □ All company names match original exactly?
 □ All dates match original exactly?
-□ EACH job has 3-5 bullet points describing responsibilities?
+□ EACH job has ${maxPages === 4 ? '8-10' : maxPages === 3 ? '8-10' : maxPages === 2 ? '6-8' : '3-5'} bullet points describing responsibilities?
 □ Education copied 100% exactly (no modifications)?
 □ Certifications copied 100% exactly?
 □ Hobbies copied 100% exactly?

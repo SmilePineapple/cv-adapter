@@ -60,7 +60,7 @@ function estimateMissingLines(sections: CVSection[], targetPageCount: number = 1
  * Also handles semantic duplicates (e.g. interests = hobbies).
  */
 function findMissingOriginalSections(generated: CVSection[], original: CVSection[]): CVSection[] {
-  const generatedTypes = new Set(generated.map(s => s.type))
+  const generatedTypes = new Set<string>(generated.map(s => s.type))
   // Semantic equivalents: if one exists, don't add the other
   const semanticMap: Record<string, string[]> = {
     hobbies: ['interests', 'hobbies'],
@@ -186,7 +186,7 @@ Only include sections that add genuine value. Do not duplicate existing sections
     // For multi-page, cap harder since sections spread across pages with column layout overhead
     const linesPerSection = targetPageCount > 1 ? 20 : 15
     const maxSections = Math.max(1, Math.min(8, Math.floor(missingLines / linesPerSection)))
-    const existingTypes = new Set(generatedSections.map(s => s.type))
+    const existingTypes = new Set<string>(generatedSections.map(s => s.type))
     // Semantic equivalents to prevent duplicate hobbies/interests etc.
     const semanticEquivalents: Record<string, string[]> = {
       hobbies: ['interests', 'hobbies'],

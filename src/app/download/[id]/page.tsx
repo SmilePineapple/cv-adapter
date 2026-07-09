@@ -36,6 +36,7 @@ interface GenerationData {
   cv_id: string
   ats_score?: number
   max_pages?: number
+  photo_url?: string | null
 }
 
 interface AIReview {
@@ -47,9 +48,19 @@ interface AIReview {
   formatting_tips: string[]
 }
 
-const TEMPLATES = [
-  // ✨ ONLY CREATIVE MODERN ACTIVE - Others commented out while fixing white space
-  /* 
+// 🎯 PHASE 4: Simplified to Creative Modern only for predictable rendering
+const TEMPLATE_ID = 'creative_modern'
+const TEMPLATE_NAME = 'Creative Modern'
+
+// Removed all other templates to focus on one high-quality, predictable template
+// This allows us to:
+// - Fine-tune density calibration for one template
+// - Ensure consistent rendering across all page counts
+// - Simplify testing and maintenance
+// - Provide better user experience (no choice paralysis)
+
+const LEGACY_TEMPLATES = [
+  // Kept for reference but not used in UI
   { 
     id: 'professional-metrics', 
     name: '✨ Professional Metrics', 
@@ -116,8 +127,7 @@ const TEMPLATES = [
     screenshot: '/templates/professional-columns.png',
     colors: ['#3B82F6', '#60A5FA', '#93C5FD']
   },
-  */
-  
+
   // ACTIVE: Creative Modern with Phase 1-6 calibration
   { 
     id: 'creative_modern', 
@@ -243,7 +253,8 @@ export default function DownloadPage() {
   const supabase = createSupabaseClient()
 
   const [generationData, setGenerationData] = useState<GenerationData | null>(null)
-  const [selectedTemplate, setSelectedTemplate] = useState('creative_modern')
+  // 🎯 PHASE 4: Hardcoded to Creative Modern (no template selection)
+  const selectedTemplate = TEMPLATE_ID
   const [selectedFormat, setSelectedFormat] = useState('pdf')
   const [isLoading, setIsLoading] = useState(true)
   const [isExporting, setIsExporting] = useState(false)
@@ -274,22 +285,7 @@ export default function DownloadPage() {
     }
   }, [generationData, selectedTemplate])
 
-  // Keyboard navigation for templates
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        const currentIndex = TEMPLATES.findIndex(t => t.id === selectedTemplate)
-        if (e.key === 'ArrowLeft' && currentIndex > 0) {
-          setSelectedTemplate(TEMPLATES[currentIndex - 1].id)
-        } else if (e.key === 'ArrowRight' && currentIndex < TEMPLATES.length - 1) {
-          setSelectedTemplate(TEMPLATES[currentIndex + 1].id)
-        }
-      }
-    }
-    
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [selectedTemplate])
+  // 🎯 PHASE 4: Removed keyboard navigation (single template only)
 
   const checkSubscription = async () => {
     try {
@@ -437,13 +433,13 @@ export default function DownloadPage() {
   const prepareTemplateData = (sections: CVSection[], overrideSkillScores?: { name: string; level: number }[] | null) => {
     const nameSection = sections.find(s => s.type === 'name')
     const contactSection = sections.find(s => s.type === 'contact')
-    const summarySection = sections.find(s => s.type === 'summary' || s.type === 'professional_summary' || s.type === 'profile')
-    const experienceSection = sections.find(s => s.type === 'experience' || s.type === 'work_experience')
+    const summarySection = sections.find(s => s.type === 'summary' || (s.type as string) === 'professional_summary' || (s.type as string) === 'profile')
+    const experienceSection = sections.find(s => s.type === 'experience' || (s.type as string) === 'work_experience')
     const educationSection = sections.find(s => s.type === 'education')
     const skillsSection = sections.find(s => s.type === 'skills')
     const certificationsSection = sections.find(s => s.type === 'certifications')
-    const languagesSection = sections.find(s => s.type === 'languages')
-    const hobbiesSection = sections.find(s => s.type === 'interests' || s.type === 'hobbies')
+    const languagesSection = sections.find(s => (s.type as string) === 'languages')
+    const hobbiesSection = sections.find(s => (s.type as string) === 'interests' || s.type === 'hobbies')
     
     // Parse contact info
     let email = '', phone = '', address = '', website = ''
@@ -711,83 +707,18 @@ export default function DownloadPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Template Slider - Horizontal */}
-        <div className="mb-8">
-          <h2 className="text-xl font-black text-white mb-4">Choose Template</h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide px-1">
-            {TEMPLATES.map((template) => {
-              const isLocked = template.pro && !isPro
-              const isSelected = selectedTemplate === template.id
-              return (
-                <button
-                  key={template.id}
-                  onClick={() => {
-                    if (isLocked) {
-                      setShowUpgradeModal(true)
-                    } else {
-                      setSelectedTemplate(template.id)
-                    }
-                  }}
-                  className={`
-                    relative flex-shrink-0 w-52 p-4 rounded-xl border-2 transition-all snap-start cursor-pointer
-                    hover:scale-[1.02] hover:-translate-y-0.5
-                    ${isSelected 
-                      ? 'border-blue-400 bg-gradient-to-br from-blue-500/20 to-purple-500/20 shadow-lg shadow-blue-500/20 ring-2 ring-blue-400/50' 
-                      : isLocked
-                      ? 'border-white/10 bg-white/5 opacity-60 cursor-not-allowed'
-                      : 'border-white/20 bg-white/10 hover:border-blue-400/50 hover:bg-white/15 hover:shadow-lg'
-                    }
-                  `}
-                >
-                  {/* Selection indicator */}
-                  {isSelected && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  )}
-                  
-                  {/* Colour preview strip */}
-                  <div className="w-full h-10 rounded-lg mb-3 overflow-hidden flex">
-                    {template.colors.map((color, i) => (
-                      <div key={i} className="flex-1" style={{ background: color }} />
-                    ))}
-                  </div>
-
-                  <div className="text-left">
-                    <div className={`font-bold text-sm mb-1 ${isSelected ? 'text-white' : 'text-gray-200'}`}>
-                      {template.name}
-                    </div>
-                    <div className="text-xs text-gray-400 line-clamp-2 mb-3">
-                      {template.description}
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-1">
-                      {template.badge && (
-                        <span className="inline-block px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full">
-                          {template.badge}
-                        </span>
-                      )}
-                      {template.category && (
-                        <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded ${isSelected ? 'bg-blue-500/30 text-blue-200' : 'bg-white/10 text-gray-300'}`}>
-                          {template.category}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {isLocked && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-xl">
-                      <div className="text-center">
-                        <div className="text-2xl mb-1">🔒</div>
-                        <div className="text-xs font-bold text-purple-400">PRO</div>
-                      </div>
-                    </div>
-                  )}
-                </button>
-              )
-            })}
+        {/* 🎯 PHASE 4: Removed template selector - using Creative Modern only */}
+        <div className="mb-6">
+          <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-5 h-5 text-blue-400" />
+              <div>
+                <h3 className="text-sm font-bold text-white">Using {TEMPLATE_NAME} Template</h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Optimized for all page counts with predictable, professional rendering
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1047,7 +978,7 @@ export default function DownloadPage() {
         <div className="hidden">
           <div className="hidden">
             <div className="hidden">
-                {TEMPLATES.map((template) => {
+                {LEGACY_TEMPLATES.map((template) => {
                   const isLocked = template.pro && !isPro
                   return (
                     <label 
@@ -1065,7 +996,7 @@ export default function DownloadPage() {
                         name="template"
                         value={template.id}
                         checked={selectedTemplate === template.id}
-                        onChange={(e) => !isLocked && setSelectedTemplate(e.target.value)}
+                        onChange={() => {/* No-op - template selection removed */}}
                         className="sr-only"
                         disabled={isLocked}
                       />
@@ -1289,16 +1220,15 @@ export default function DownloadPage() {
         </div>
       </div>
 
-      {/* Template Preview Modal */}
+      {/* Template Preview Modal - Disabled (single template only) */}
       {previewTemplate && (
         <TemplatePreview
           templateId={previewTemplate}
-          screenshot={TEMPLATES.find(t => t.id === previewTemplate)?.screenshot}
-          colors={TEMPLATES.find(t => t.id === previewTemplate)?.colors}
+          screenshot={LEGACY_TEMPLATES.find(t => t.id === previewTemplate)?.screenshot}
+          colors={LEGACY_TEMPLATES.find(t => t.id === previewTemplate)?.colors}
           onClose={() => {
-            const templateToSelect = previewTemplate
             setPreviewTemplate(null)
-            setSelectedTemplate(templateToSelect)
+            // Template selection removed - using Creative Modern only
           }}
         />
       )}

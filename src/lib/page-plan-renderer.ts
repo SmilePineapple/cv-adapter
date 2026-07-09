@@ -13,7 +13,12 @@ export interface PlannedPageSection {
 export interface PlannedPageZone {
   id: string
   layout: string
+  // Used for single-column zones.
   sections: PlannedPageSection[]
+  // Used for two-column zones - each column stacks independently instead of
+  // relying on CSS grid auto-placement to interleave a flat list.
+  leftSections?: PlannedPageSection[]
+  rightSections?: PlannedPageSection[]
 }
 
 export interface PlannedPage {
@@ -60,6 +65,27 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
     return {
       page: pageNumber,
       zones: pageZones.map(zone => {
+        if (zone.leftSectionTypes || zone.rightSectionTypes) {
+          if (zone.balancedColumns) {
+            return buildBalancedZone(zone, sectionQueues)
+          }
+
+          const leftSections = (zone.leftSectionTypes ?? [])
+            .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+            .sort((a, b) => a.order - b.order)
+          const rightSections = (zone.rightSectionTypes ?? [])
+            .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+            .sort((a, b) => a.order - b.order)
+
+          return {
+            id: zone.id,
+            layout: zone.layout,
+            sections: [],
+            leftSections,
+            rightSections
+          }
+        }
+
         const zoneSections = zone.sectionTypes
           .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
 
@@ -76,14 +102,84 @@ export function createPagePlan(sections: CVSection[], pageCount?: number): PageP
   const finalPage = pages[pages.length - 1]
   const finalZone = finalPage?.zones[finalPage.zones.length - 1]
   if (finalZone) {
-    finalZone.sections.push(...unassignedSections)
-    finalZone.sections.sort((a, b) => a.order - b.order)
+    const targetList = finalZone.rightSections ?? finalZone.sections
+    targetList.push(...unassignedSections)
+    targetList.sort((a, b) => a.order - b.order)
   }
 
   return {
     blueprint,
     pages: compactEmptyPages(pages),
     unassignedSections
+  }
+}
+
+// Roughly how many characters fit in one column's worth of a full page height, derived
+// from the blueprint's own calibration note ("two-column full ≈ 8,500 chars" per page,
+// i.e. ~4,250 per column). Used both to decide how many chunks a repeated section needs
+// (a short section referenced by two page zones should only occupy the first one) and,
+// via CHARS_PER_PX_ESTIMATE below, to compare sections' relative size for column
+// balancing - not precise per-section-type density, just a relative-size estimate.
+export const CHARS_PER_COLUMN_PAGE = 4250
+const PAGE_HEIGHT_PX_ESTIMATE = 1122.52
+const CHARS_PER_PX_ESTIMATE = CHARS_PER_COLUMN_PAGE / PAGE_HEIGHT_PX_ESTIMATE
+
+function estimateSectionHeight(section: PlannedPageSection): number {
+  return section.content.length / CHARS_PER_PX_ESTIMATE
+}
+
+// A fixed left/right split reliably produces one overflowing column and one nearly-empty
+// one whenever a "bonus" section happens to be short (e.g. only a few real certifications)
+// while another happens to be long (an AI-generated achievements/projects list) - the
+// static assignment has no way to react to that. Balance greedily instead: pin any
+// experience spillover to the right column first (preserves reading-flow continuity from
+// the previous page), then assign every other pooled section to whichever column has
+// less estimated height so far.
+function buildBalancedZone(zone: PageZone, sectionQueues: Map<string, PlannedPageSection[]>): PlannedPageZone {
+  const rightTypes = zone.rightSectionTypes ?? []
+  const leftTypes = zone.leftSectionTypes ?? []
+
+  const rightSections: PlannedPageSection[] = []
+  const poolTypes: string[] = []
+
+  rightTypes.forEach(sectionType => {
+    if (sectionType === 'experience') {
+      const section = sectionQueues.get(sectionType)?.shift()
+      if (section) rightSections.push(section)
+    } else {
+      poolTypes.push(sectionType)
+    }
+  })
+  leftTypes.forEach(sectionType => poolTypes.push(sectionType))
+
+  const pooledSections = poolTypes
+    .flatMap(sectionType => sectionQueues.get(sectionType)?.shift() || [])
+    .sort((a, b) => a.order - b.order)
+
+  const leftSections: PlannedPageSection[] = []
+  let leftHeight = 0
+  let rightHeight = rightSections.reduce((sum, section) => sum + estimateSectionHeight(section), 0)
+
+  pooledSections.forEach(section => {
+    const height = estimateSectionHeight(section)
+    if (leftHeight <= rightHeight) {
+      leftSections.push(section)
+      leftHeight += height
+    } else {
+      rightSections.push(section)
+      rightHeight += height
+    }
+  })
+
+  leftSections.sort((a, b) => a.order - b.order)
+  rightSections.sort((a, b) => a.order - b.order)
+
+  return {
+    id: zone.id,
+    layout: zone.layout,
+    sections: [],
+    leftSections,
+    rightSections
   }
 }
 
@@ -106,7 +202,10 @@ export function renderPagePlanHTML(sections: CVSection[], pageCount?: number, te
       ${page.page === 1 ? renderHeader(name, contact) : ''}
       ${page.zones.map(zone => `
         <section class="page-zone page-zone-${escapeHtml(zone.layout)}" data-zone-id="${escapeHtml(zone.id)}" data-layout="${escapeHtml(zone.layout)}">
-          ${zone.sections.map(section => renderSection(section)).join('')}
+          ${zone.leftSections || zone.rightSections ? `
+            <div class="zone-column zone-column-left">${(zone.leftSections ?? []).map(section => renderSection(section)).join('')}</div>
+            <div class="zone-column zone-column-right">${(zone.rightSections ?? []).map(section => renderSection(section)).join('')}</div>
+          ` : zone.sections.map(section => renderSection(section)).join('')}
         </section>
       `).join('')}
     </main>
@@ -122,20 +221,65 @@ function renderHeader(name: string, contact: string): string {
   </header>`
 }
 
+// Short, flowing lists read better as chip tags (matches the proven 1-page creative_modern
+// template's .skill-tag styling in advanced-templates.ts) than as stacked paragraphs.
+const CHIP_SECTION_TYPES = new Set(['skills', 'hobbies', 'languages'])
+// Certification lines are typically a single credential each - a bullet marker reads
+// better than a full paragraph indent.
+const BULLET_SECTION_TYPES = new Set(['certifications'])
+
+// Matches a job's date-range header line (e.g. "10/2016 - 08/2022", "05/2023 - Present",
+// "2019-2021"). Content here is a flattened string (getSectionText has already joined the
+// original job objects' fields into plain lines), so company/job-title can't be reliably
+// told apart from bullet text by position alone - the AI's field order isn't guaranteed.
+// The date line is the one thing that's unambiguous, so only that gets special styling;
+// everything else stays in original order rather than risk misrendering a bullet as a
+// header from a wrong guess.
+const EXPERIENCE_DATE_PATTERN = /(19|20)\d{2}.{0,10}?[-–—].{0,10}?((19|20)\d{2}|present|current)/i
+
 function renderSection(section: PlannedPageSection): string {
   return `<article class="cv-section section" data-section-type="${escapeHtml(section.type)}" data-type="${escapeHtml(section.type)}">
     <h2>${escapeHtml(formatSectionTitle(section))}</h2>
-    <div class="section-content">${formatContent(section.content)}</div>
+    <div class="section-content">${formatContent(section.content, section.type)}</div>
   </article>`
 }
 
-function formatContent(content: string): string {
-  return escapeHtml(content)
+function formatContent(content: string, sectionType?: string): string {
+  const lines = escapeHtml(content)
     .split('\n')
     .map(line => line.trim())
     .filter(Boolean)
-    .map(line => `<p>${line}</p>`)
-    .join('')
+
+  if (sectionType && CHIP_SECTION_TYPES.has(sectionType)) {
+    return `<div class="chip-list">${lines.map(line => `<span class="chip">${line}</span>`).join('')}</div>`
+  }
+
+  if (sectionType && BULLET_SECTION_TYPES.has(sectionType)) {
+    return `<ul class="bullet-list">${lines.map(line => `<li>${line}</li>`).join('')}</ul>`
+  }
+
+  if (sectionType === 'experience' && lines.some(line => EXPERIENCE_DATE_PATTERN.test(line))) {
+    return formatExperienceEntries(lines)
+  }
+
+  return lines.map(line => `<p>${line}</p>`).join('')
+}
+
+function formatExperienceEntries(lines: string[]): string {
+  const entries: string[][] = []
+  lines.forEach(line => {
+    if (EXPERIENCE_DATE_PATTERN.test(line) || entries.length === 0) {
+      entries.push([line])
+    } else {
+      entries[entries.length - 1].push(line)
+    }
+  })
+
+  return entries.map(entryLines => {
+    const [first, ...rest] = entryLines
+    const dateLine = EXPERIENCE_DATE_PATTERN.test(first) ? `<p class="exp-date">${first}</p>` : `<p>${first}</p>`
+    return `<div class="experience-entry">${dateLine}${rest.map(line => `<p>${line}</p>`).join('')}</div>`
+  }).join('')
 }
 
 function formatSectionTitle(section: PlannedPageSection): string {
@@ -145,10 +289,13 @@ function formatSectionTitle(section: PlannedPageSection): string {
 
 function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
   const theme = getTemplateTheme(templateName)
-  // Clamp the fill scale so the page never overflows and text stays readable.
-  const scale = Math.min(Math.max(fillScale, 1), 1.3)
+  // Clamp the scale so the page never overflows past legibility in either direction:
+  // >1 fills underused space (computeFillScale), <1 compresses spacing as a last-resort
+  // safety net when AI condense rounds couldn't fully clear an overflow
+  // (computeShrinkScale) - text staying on the page always wins over ideal spacing.
+  const scale = Math.min(Math.max(fillScale, 0.85), 1.5)
   // Line-height is scaled more gently than structural spacing to preserve legibility.
-  const lineScale = Math.min(scale, 1.18)
+  const lineScale = scale >= 1 ? Math.min(scale, 1.18) : Math.max(scale, 0.92)
   const pageGap = (3.2 * scale).toFixed(2)
   const zoneGap = (3.5 * scale).toFixed(2)
   const headerPad = (3 * scale).toFixed(2)
@@ -162,18 +309,31 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
     body { margin: 0; background: #ffffff; color: ${theme.text}; font-family: ${theme.fontFamily}; font-size: ${theme.fontSize}; line-height: ${bodyLineHeight}; }
     .cv-page { position: relative; width: 210mm; min-height: 297mm; height: 297mm; margin: 0 auto; padding: ${theme.pagePadding}; background: ${theme.background}; page-break-after: always; overflow: hidden; display: flex; flex-direction: column; gap: ${pageGap}mm; }
     .cv-page:last-child { page-break-after: auto; }
-    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: ${headerPad}mm; margin-bottom: ${headerMargin}mm; }
+    .cv-header { border-bottom: 1.5px solid ${theme.accent}; padding-bottom: ${headerPad}mm; margin-bottom: ${headerMargin}mm; flex-shrink: 0; }
     .cv-header h1 { margin: 0 0 2mm; color: ${theme.heading}; font-size: ${theme.nameSize}; line-height: 1.1; letter-spacing: -0.02em; }
     .cv-contact { color: ${theme.muted}; white-space: pre-wrap; font-size: ${theme.contactSize}; }
     .page-zone { display: grid; gap: ${zoneGap}mm; min-height: 0; }
+    .page-zone:last-child { flex: 1 1 0; align-content: space-between; min-height: auto; }
     .page-zone-single-column { grid-template-columns: 1fr; }
     .page-zone-two-column { grid-template-columns: 1fr 1fr; align-items: start; }
     .page-zone-hybrid { grid-template-columns: 1.25fr 0.75fr; align-items: start; }
+    .zone-column { display: flex; flex-direction: column; gap: ${zoneGap}mm; min-width: 0; }
     .cv-section { break-inside: avoid; page-break-inside: avoid; border-left: 2px solid ${theme.accent}; padding-left: 3mm; min-width: 0; }
     .cv-section h2 { margin: 0 0 ${h2Margin}mm; color: ${theme.accent}; font-size: ${theme.sectionTitleSize}; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.08em; }
     .section-content { white-space: normal; overflow-wrap: anywhere; }
     .section-content p { margin: 0 0 ${pMargin}mm; }
     .section-content p:last-child { margin-bottom: 0; }
+    .chip-list { display: flex; flex-wrap: wrap; gap: 1.6mm; margin: 0 0 ${pMargin}mm; }
+    .chip-list:last-child { margin-bottom: 0; }
+    .chip { display: inline-block; background: #f7fafc; border: 0.3mm solid #e2e8f0; border-radius: 4mm; padding: 1.3mm 3mm; line-height: 1.3; }
+    .bullet-list { list-style: none; margin: 0 0 ${pMargin}mm; padding: 0; }
+    .bullet-list:last-child { margin-bottom: 0; }
+    .bullet-list li { position: relative; padding-left: 4mm; margin: 0 0 ${pMargin}mm; }
+    .bullet-list li:last-child { margin-bottom: 0; }
+    .bullet-list li::before { content: '▸'; position: absolute; left: 0; color: ${theme.accent}; font-weight: 700; }
+    .experience-entry { border-bottom: 0.3mm solid #e2e8f0; padding-bottom: ${pMargin}mm; margin-bottom: ${pMargin}mm; }
+    .experience-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .exp-date { color: ${theme.accent}; font-weight: 700; }
     ${theme.extraCss}
     @media print { body { background: #ffffff; } .cv-page { margin: 0; box-shadow: none; } }
   `
@@ -181,15 +341,28 @@ function getPagePlanCSS(templateName: string, fillScale: number = 1): string {
 
 function getRepeatedSectionTypes(zones: PageZone[]): Map<string, number> {
   const counts = new Map<string, number>()
+  const countType = (sectionType: string) => counts.set(sectionType, (counts.get(sectionType) || 0) + 1)
   zones.forEach(zone => {
-    zone.sectionTypes.forEach(sectionType => {
-      counts.set(sectionType, (counts.get(sectionType) || 0) + 1)
-    })
+    zone.sectionTypes.forEach(countType)
+    zone.leftSectionTypes?.forEach(countType)
+    zone.rightSectionTypes?.forEach(countType)
   })
   return counts
 }
 
-function splitSection(section: PlannedPageSection, count: number): PlannedPageSection[] {
+function splitSection(section: PlannedPageSection, maxCount: number): PlannedPageSection[] {
+  const idealCount = Math.max(1, Math.min(maxCount, Math.ceil(section.content.length / CHARS_PER_COLUMN_PAGE)))
+
+  // Experience content is a sequence of jobs, each with its own header line — splitting by
+  // raw line count can cut a job's bullets in half across a page with no repeated header.
+  // Split on job boundaries instead so continuation pages never start mid-job.
+  if (section.type === 'experience') {
+    return splitByJobBoundary(section, idealCount)
+  }
+  return splitByLine(section, idealCount)
+}
+
+function splitByLine(section: PlannedPageSection, count: number): PlannedPageSection[] {
   const paragraphs = section.content.split('\n').map(line => line.trim()).filter(Boolean)
   const chunks = Array.from({ length: count }, () => [] as string[])
   const chunkSize = Math.ceil(paragraphs.length / count)
@@ -199,6 +372,51 @@ function splitSection(section: PlannedPageSection, count: number): PlannedPageSe
     chunks[chunkIndex].push(paragraph)
   })
 
+  return finalizeSplitChunks(section, chunks, count)
+}
+
+function splitByJobBoundary(section: PlannedPageSection, count: number): PlannedPageSection[] {
+  const lines = section.content.split('\n').map(line => line.trim()).filter(Boolean)
+  const isJobHeader = (line: string) => line.includes('|') && !/^[•\-*]/.test(line)
+
+  const jobBlocks: string[][] = []
+  lines.forEach(line => {
+    if (isJobHeader(line) || jobBlocks.length === 0) {
+      jobBlocks.push([line])
+    } else {
+      jobBlocks[jobBlocks.length - 1].push(line)
+    }
+  })
+
+  // No header lines detected (or only one job) — nothing to split on job boundaries, fall
+  // back to a line-based split so every page still gets something.
+  if (jobBlocks.length <= 1) {
+    return splitByLine(section, count)
+  }
+
+  const blockLengths = jobBlocks.map(block => block.join('\n').length)
+  const totalLength = blockLengths.reduce((sum, len) => sum + len, 0)
+  const targetChunkLength = totalLength / count
+
+  const chunks: string[][] = Array.from({ length: count }, () => [])
+  let chunkIndex = 0
+  let currentChunkLength = 0
+
+  jobBlocks.forEach((block, index) => {
+    const blockLength = blockLengths[index]
+    const wouldOverflow = currentChunkLength > 0 && currentChunkLength + blockLength > targetChunkLength
+    if (wouldOverflow && chunkIndex < count - 1) {
+      chunkIndex++
+      currentChunkLength = 0
+    }
+    chunks[chunkIndex].push(...block)
+    currentChunkLength += blockLength
+  })
+
+  return finalizeSplitChunks(section, chunks, count)
+}
+
+function finalizeSplitChunks(section: PlannedPageSection, chunks: string[][], count: number): PlannedPageSection[] {
   return chunks
     .map((chunk, index) => ({
       ...section,
@@ -209,11 +427,15 @@ function splitSection(section: PlannedPageSection, count: number): PlannedPageSe
     .filter(chunk => chunk.content.trim().length > 0)
 }
 
+function isZoneEmpty(zone: PlannedPageZone): boolean {
+  return zone.sections.length === 0 && (zone.leftSections?.length ?? 0) === 0 && (zone.rightSections?.length ?? 0) === 0
+}
+
 function compactEmptyPages(pages: PlannedPage[]): PlannedPage[] {
-  const emptyPages = pages.filter(page => page.zones.every(zone => zone.sections.length === 0))
+  const emptyPages = pages.filter(page => page.zones.every(isZoneEmpty))
   if (emptyPages.length === 0) return pages
 
-  const nonEmptyPages = pages.filter(page => page.zones.some(zone => zone.sections.length > 0))
+  const nonEmptyPages = pages.filter(page => page.zones.some(zone => !isZoneEmpty(zone)))
   return nonEmptyPages.map((page, index) => ({
     ...page,
     page: index + 1
@@ -269,8 +491,9 @@ const TEMPLATE_THEMES: Record<string, Partial<PagePlanTheme>> = {
       .cv-page::before { content: ''; position: absolute; width: 38mm; height: 38mm; border-radius: 50%; background: #f6ad55; top: -15mm; right: 18mm; opacity: 0.82; }
       .cv-page::after { content: ''; position: absolute; width: 28mm; height: 28mm; border-radius: 50%; background: #4a5568; top: 5mm; right: -8mm; opacity: 0.78; }
       .cv-header, .page-zone { position: relative; z-index: 1; }
-      .cv-section { border-left-color: #f6ad55; }
-      .cv-section h2 { color: #2d3748; }
+      .cv-section { border-left: none; padding-left: 0; }
+      .cv-section h2 { display: inline-block; background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); color: #ffffff; padding: 1.4mm 4mm; border-radius: 5mm; font-weight: 700; }
+      .chip { background: #edf2f7; border-color: #edf2f7; }
     `
   },
   professional_columns: {

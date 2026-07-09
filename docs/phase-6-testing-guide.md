@@ -1,7 +1,6 @@
-jakedalerourke@gmail.com
-Fearnley09
-
 # Phase 6: Comprehensive Testing & Validation Guide
+
+Test login: set `TEST_LOGIN_EMAIL` / `TEST_LOGIN_PASSWORD` env vars before running the automated suite.
 
 ## Overview
 

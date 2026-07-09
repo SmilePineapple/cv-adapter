@@ -38,6 +38,20 @@ export async function GET(request: NextRequest) {
 
     const usageMap = new Map((usageRows || []).map(u => [u.user_id, u]))
 
+    // Also fetch subscriptions table — this is the source of truth for Stripe state
+    // A user may have usage_tracking.plan_type = 'free' but still have an active
+    // Stripe subscription (e.g. after a sync error). We must NEVER warn those users.
+    const { data: subRows } = await supabase
+      .from('subscriptions')
+      .select('user_id, status')
+
+    const activeSubSet = new Set<string>()
+    ;(subRows || []).forEach(r => {
+      if (r.status === 'active' || r.status === 'trialing' || r.status === 'past_due') {
+        activeSubSet.add(r.user_id)
+      }
+    })
+
     // Check who has already been warned (use email_sequences table)
     const { data: alreadyWarned } = await supabase
       .from('email_sequences')
@@ -52,6 +66,8 @@ export async function GET(request: NextRequest) {
       const usage = usageMap.get(u.id)
       // Skip pro users
       if (usage?.plan_type === 'pro' || usage?.subscription_tier?.startsWith('pro')) return false
+      // Also check subscriptions table — if there's an active Stripe sub, skip regardless
+      if (activeSubSet.has(u.id)) return false
       // Skip already warned
       if (warnedSet.has(u.id)) return false
       // Check inactivity window (60-70 days ago)

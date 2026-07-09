@@ -1,6 +1,16 @@
 import { CVSection } from '@/types/database'
 import { CVPageBlueprint, CVSectionType, getBudgetForSection } from './cv-page-blueprints'
 
+// These section types are instructed elsewhere (the main generation prompt) to be
+// copied 100% exactly from the original CV with zero modifications - the AI has no
+// truthful way to "expand" them with new characters, since it isn't allowed to add
+// new facts. Flagging them as under-budget (even without an explicit repair
+// instruction) still surfaces the shortfall in the repair prompt's metrics table,
+// which is enough to pressure the AI into fabricating a plausible-sounding
+// institution/certificate to close the gap - so these are excluded from the
+// under-minimum check entirely, not just from the "expand" instruction.
+export const VERBATIM_SECTION_TYPES = new Set(['education', 'certifications', 'hobbies'])
+
 export type LayoutIssueSeverity = 'error' | 'warning'
 export type LayoutIssueCode = 'missing_required_section' | 'total_under_minimum' | 'total_over_maximum' | 'section_under_minimum' | 'section_over_maximum'
 
@@ -50,6 +60,7 @@ export function normalizeSectionType(type: string): CVSectionType | string {
   if (type === 'key_skills') return 'skills'
   if (type === 'licenses') return 'certifications'
   if (type === 'interests') return 'hobbies'
+  if (type === 'volunteer_work' || type === 'community') return 'volunteering'
   return type
 }
 
@@ -88,7 +99,7 @@ export function validateCVLayout(sections: CVSection[], blueprint: CVPageBluepri
       continue
     }
 
-    if (matchingSections.length > 0 && chars < budget.minChars) {
+    if (matchingSections.length > 0 && chars < budget.minChars && !VERBATIM_SECTION_TYPES.has(budget.sectionType)) {
       issues.push({
         code: 'section_under_minimum',
         severity: 'warning',
@@ -167,7 +178,9 @@ Rules:
 - Preserve real employers, dates, qualifications, and credentials from the original CV.
 - Do not invent fake companies, dates, degrees, or certifications.
 - Add truthful context, detail, responsibilities, tools, outcomes, and relevant achievements.
-- If the CV is below the acceptable total range, the repaired output must be longer than the current CV.
+- If the CV is below the acceptable total range, the repaired output must be SIGNIFICANTLY longer than the current CV — aim to reach the target of ${blueprint.targetTotalChars} characters.
+- EXPAND each job to at least 6 bullet points with 25-35 words each. ADD new bullets with relevant responsibilities, tools, and outcomes.
+- EXPAND the summary to 5-8 sentences. EXPAND skills to 10-15 items with context.
 - For 3/4-page CVs, generate permitted optional sections when existing content alone cannot fill the selected page count.
 - Use transferable achievements, treatment/service outcomes, client-care strengths, relevant projects, tools, and professional context inferred from the CV and target role.
 - If adding optional sections, only use sections permitted by the layout plan.
@@ -183,7 +196,7 @@ function createRepairInstructions(issues: LayoutIssue[], blueprint: CVPageBluepr
       instructions.push(`Add a ${issue.sectionType} section of around ${budget?.targetChars ?? issue.charsNeeded ?? 500} characters.`)
     }
 
-    if (issue.code === 'section_under_minimum' && issue.sectionType) {
+    if (issue.code === 'section_under_minimum' && issue.sectionType && !VERBATIM_SECTION_TYPES.has(issue.sectionType)) {
       instructions.push(`Expand ${issue.sectionType} by about ${Math.max(issue.charsNeeded ?? 250, 150)} characters using relevant, factual detail.`)
     }
 

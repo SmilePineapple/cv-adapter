@@ -244,6 +244,7 @@ export interface DiffMetadata {
     explanation: string
   }>
   summary?: string
+  page_count?: number
 }
 
 // Usage and subscription types

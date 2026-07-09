@@ -30,6 +30,10 @@ import { LoadingProgress } from '@/components/LoadingProgress'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
 import { shouldShowUpgradePrompt, trackPromptShown, incrementGenerationCount } from '@/lib/upgrade-tracking'
+import { analyzeContentCapacity, getPageCountRecommendation, CVContentCapacity, PageCountRecommendation } from '@/lib/cv-capacity-analyzer'
+import { getGenerationStrategy } from '@/lib/page-count-strategies'
+import { CVSection } from '@/types/database'
+import { AlertTriangle } from 'lucide-react'
 
 export default function GeneratePage() {
   const params = useParams()
@@ -61,6 +65,8 @@ export default function GeneratePage() {
   const [maxPages, setMaxPages] = useState(1)
   const [careerMismatch, setCareerMismatch] = useState<string | null>(null)
   const cvOriginalTextRef = useRef<string>('')
+  const [capacity, setCapacity] = useState<CVContentCapacity | null>(null)
+  const [pageCountRecommendation, setPageCountRecommendation] = useState<PageCountRecommendation | null>(null)
 
   useEffect(() => {
     fetchCVData()
@@ -73,6 +79,14 @@ export default function GeneratePage() {
       fetchCVData(selectedCvId)
     }
   }, [selectedCvId])
+
+  // Update page count recommendation when user changes maxPages
+  useEffect(() => {
+    if (capacity) {
+      const recommendation = getPageCountRecommendation(capacity, maxPages)
+      setPageCountRecommendation(recommendation)
+    }
+  }, [maxPages, capacity])
 
   const fetchUsageData = async () => {
     try {
@@ -184,18 +198,31 @@ export default function GeneratePage() {
         setOutputLanguage(data.detected_language) // Default to detected language
       }
 
-      // Auto-suggest page count based on CV content length and experience count
-      const originalText: string = data.original_text || ''
-      const parsedSections = data.parsed_sections as { sections?: Array<{ type: string; content: any }> } | null
-      const experienceSection = parsedSections?.sections?.find((s: { type: string }) => s.type === 'experience')
-      const experienceCount = Array.isArray(experienceSection?.content) ? experienceSection.content.length : 0
-      const charCount = originalText.length
+      // 🎯 PHASE 3: Analyze content capacity to recommend page count
+      const parsedSections = data.parsed_sections as { sections?: CVSection[] } | null
+      if (parsedSections?.sections) {
+        const cvCapacity = analyzeContentCapacity(parsedSections.sections)
+        setCapacity(cvCapacity)
 
-      let suggestedPages = 1
-      if (charCount > 4000 || experienceCount >= 5) suggestedPages = 2
-      if (charCount > 7000 || experienceCount >= 8) suggestedPages = 3
-      if (charCount > 10000 || experienceCount >= 12) suggestedPages = 4
-      setMaxPages(suggestedPages)
+        // Multi-page (2-4 pages) is gated behind "Coming Soon" in the UI below - always
+        // start at 1 page rather than auto-selecting the analyzer's recommendation, which
+        // can be 2-4 for content-rich CVs and would silently bypass the lock.
+        setMaxPages(1)
+
+        // Still compute the recommendation so the capacity info message below can tell the
+        // user their CV would benefit from more pages once multi-page ships.
+        const recommendation = getPageCountRecommendation(cvCapacity, cvCapacity.recommendedPageCount)
+        setPageCountRecommendation(recommendation)
+        
+        console.log('📊 CV Capacity Analysis:', {
+          sourceChars: cvCapacity.sourceChars,
+          jobCount: cvCapacity.jobCount,
+          recommendedPageCount: cvCapacity.recommendedPageCount,
+          canSupport: recommendation.canSupport,
+          bulletPointRatio: cvCapacity.bulletPointRatio.toFixed(2),
+          detailLevel: cvCapacity.detailLevel
+        })
+      }
     } catch (error) {
       console.error('Error fetching CV:', error)
       toast.error('Failed to load CV')
@@ -623,38 +650,29 @@ export default function GeneratePage() {
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
                     >
                       <option value={1} className="bg-black">1 page — Concise (recommended for most roles)</option>
-                      <option value={2} className="bg-black">2 pages — Standard (most common)</option>
-                      <option value={3} className="bg-black">3 pages — Detailed (senior roles)</option>
-                      <option value={4} className="bg-black">4 pages — Comprehensive (executive/academic)</option>
+                      <option value={2} disabled className="bg-black text-gray-500">2 pages — Coming Soon</option>
+                      <option value={3} disabled className="bg-black text-gray-500">3 pages — Coming Soon</option>
+                      <option value={4} disabled className="bg-black text-gray-500">4 pages — Coming Soon</option>
                     </select>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
                       {maxPages === 1 && 'Best for early-career roles and tight ATS systems'}
-                      {maxPages === 2 && 'Standard length for most professionals'}
-                      {maxPages === 3 && 'Good for senior roles with extensive experience'}
-                      {maxPages === 4 && 'For executive, academic, or highly technical positions'}
                     </p>
-                    {cvData && (() => {
-                      const originalText: string = cvData.original_text || ''
-                      const parsedSections = cvData.parsed_sections as { sections?: Array<{ type: string; content: any }> } | null
-                      const expSection = parsedSections?.sections?.find((s: { type: string }) => s.type === 'experience')
-                      const expCount = Array.isArray(expSection?.content) ? expSection.content.length : 0
-                      const chars = originalText.length
-                      let suggested = 1
-                      if (chars > 4000 || expCount >= 5) suggested = 2
-                      if (chars > 7000 || expCount >= 8) suggested = 3
-                      if (chars > 10000 || expCount >= 12) suggested = 4
-                      if (suggested > 1 && maxPages !== suggested) {
-                        return (
-                          <p className="text-xs text-yellow-400 mt-1">
-                            ⚡ Based on your CV ({expCount} roles, {Math.round(chars / 1000)}k chars), we suggest <button className="underline font-bold" onClick={() => setMaxPages(suggested)}>{suggested} pages</button>
+                    <p className="text-xs text-blue-300/80 mt-1 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
+                      Multi-page CVs (2-4 pages) are coming soon — 1 page is fully supported today.
+                    </p>
+
+                    {/* 🎯 PHASE 3: Capacity-based info (page count is locked to 1 while multi-page is in development) */}
+                    {capacity && pageCountRecommendation && pageCountRecommendation.recommended > 1 && (
+                      <div className="mt-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                          <p className="text-xs text-yellow-300/90">
+                            Your CV has enough content to fill {pageCountRecommendation.recommended} pages — once multi-page support ships, you'll be able to use it. For now it'll be condensed to fit 1 page.
                           </p>
-                        )
-                      }
-                      if (suggested > 1 && maxPages === suggested) {
-                        return <p className="text-xs text-green-400 mt-1">✓ Recommended for your CV length and experience</p>
-                      }
-                      return null
-                    })()}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Custom Sections */}

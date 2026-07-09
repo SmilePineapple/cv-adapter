@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { createRenderRepairPlan } from '../cv-render-repair'
+import { createRenderRepairPlan, createRenderRepairPrompt } from '../cv-render-repair'
 import { RenderMeasurement } from '../cv-render-measurer'
+import { CVSection } from '@/types/database'
 
 function createMeasurement(overrides: Partial<RenderMeasurement>): RenderMeasurement {
   return {
@@ -17,8 +18,10 @@ function createMeasurement(overrides: Partial<RenderMeasurement>): RenderMeasure
       { type: 'experience', top: 300, bottom: 1400, height: 1100, pageStart: 1, pageEnd: 2 },
       { type: 'skills', top: 1400, bottom: 1800, height: 400, pageStart: 2, pageEnd: 2 }
     ],
+    columnPlacements: [],
     underfilledPages: [],
     clippedPages: [],
+    clippedSections: [],
     overflowing: false,
     ...overrides
   }
@@ -61,6 +64,64 @@ describe('cv render repair', () => {
     expect(plan.reason).toContain('clipped content')
     expect(plan.sectionTypesToAdjust).toContain('experience')
     expect(plan.sectionTypesToAdjust).toContain('skills')
+  })
+
+  it('targets only the section that actually overflows when clip details are available', () => {
+    const plan = createRenderRepairPlan(createMeasurement({
+      targetPages: 2,
+      actualPages: 2,
+      clippedPages: [1],
+      clippedSections: [{ type: 'education', page: 1, overflowPx: 186 }],
+      overflowing: true,
+      sectionPlacements: [
+        { type: 'summary', top: 0, bottom: 200, height: 200, pageStart: 1, pageEnd: 1 },
+        { type: 'skills', top: 200, bottom: 700, height: 500, pageStart: 1, pageEnd: 1 },
+        { type: 'education', top: 700, bottom: 1186, height: 486, pageStart: 1, pageEnd: 1 },
+        { type: 'experience', top: 0, bottom: 900, height: 900, pageStart: 1, pageEnd: 1 }
+      ]
+    }))
+
+    expect(plan.shouldRepair).toBe(true)
+    expect(plan.action).toBe('condense')
+    expect(plan.sectionTypesToAdjust).toEqual(['education'])
+    expect(plan.sectionTypesToAdjust).not.toContain('experience')
+    expect(plan.sectionTypesToAdjust).not.toContain('summary')
+    expect(plan.instructions.join(' ')).toContain('186px')
+  })
+
+  it('floors the condense char target above the current chunk-count boundary so a repeated section does not collapse to fewer columns', () => {
+    // experience is 8000 chars (2 chunks at CHARS_PER_COLUMN_PAGE=4250) split across two
+    // 1000px placements. A naive overflow-based trim (900px over, ~4 chars/px, +15% margin)
+    // would ask for ~3860 chars - well under the 1-chunk floor of 4250+200=4450 - which
+    // would collapse it from 2 columns down to 1 and leave the following page emptier.
+    const experienceContent = 'E'.repeat(8000)
+    const sections: CVSection[] = [
+      { type: 'experience', content: experienceContent, order: 1 }
+    ]
+    const measurement: RenderMeasurement = {
+      targetPages: 2,
+      actualPages: 2,
+      scrollHeight: 2000,
+      pageHeight: 1000,
+      pageOccupancy: [
+        { page: 1, occupancy: 0.95, usedHeight: 950, availableHeight: 1000 },
+        { page: 2, occupancy: 0.9, usedHeight: 900, availableHeight: 1000 }
+      ],
+      sectionPlacements: [
+        { type: 'experience', top: 0, bottom: 1000, height: 1000, pageStart: 1, pageEnd: 1 },
+        { type: 'experience', top: 1000, bottom: 2000, height: 1000, pageStart: 2, pageEnd: 2 }
+      ],
+      columnPlacements: [],
+      underfilledPages: [],
+      clippedPages: [1],
+      clippedSections: [{ type: 'experience', page: 1, overflowPx: 900 }],
+      overflowing: true
+    }
+    const plan = createRenderRepairPlan(measurement)
+    const prompt = createRenderRepairPrompt(sections, measurement, plan)
+
+    expect(prompt).toContain('Trim to approximately 4450 chars')
+    expect(prompt).toContain('do NOT go below ~4450 chars')
   })
 
   it('plans expansion when rendered pages are below target', () => {

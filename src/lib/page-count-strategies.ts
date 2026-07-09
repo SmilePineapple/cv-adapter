@@ -64,7 +64,7 @@ function get2PageStrategy(capacity: CVContentCapacity): GenerationStrategy {
   const blueprint = getCVPageBlueprint(2)
   
   // Check if CV can support 2 pages
-  if (capacity.maxTruthfulChars < 8000) {
+  if (!capacity.canSupport2Page) {
     return {
       targetChars: blueprint.targetTotalChars,
       minChars: blueprint.minTotalChars,
@@ -106,9 +106,9 @@ function get2PageStrategy(capacity: CVContentCapacity): GenerationStrategy {
     densityMultiplier,
     contentHints,
     allowOptionalSections: true,
-    optionalSections: ['projects', 'hobbies'],
+    optionalSections: ['achievements', 'projects'],
     compressionPriority: false,
-    pageTargets: [5400, 8200] // Page 1 (single-column), Page 2 (two-column)
+    pageTargets: [7500, 8500] // Page 1 (two-column), Page 2 (two-column)
   }
 }
 
@@ -116,7 +116,7 @@ function get3PageStrategy(capacity: CVContentCapacity): GenerationStrategy {
   const blueprint = getCVPageBlueprint(3)
   
   // Check if CV can support 3 pages
-  if (capacity.maxTruthfulChars < 13000) {
+  if (!capacity.canSupport3Page) {
     return {
       targetChars: blueprint.targetTotalChars,
       minChars: blueprint.minTotalChars,
@@ -163,7 +163,7 @@ function get4PageStrategy(capacity: CVContentCapacity): GenerationStrategy {
   const blueprint = getCVPageBlueprint(4)
   
   // Check if CV can support 4 pages
-  if (capacity.maxTruthfulChars < 18000) {
+  if (!capacity.canSupport4Page) {
     return {
       targetChars: blueprint.targetTotalChars,
       minChars: blueprint.minTotalChars,

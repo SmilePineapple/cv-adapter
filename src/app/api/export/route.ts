@@ -11,9 +11,10 @@ import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/l
 import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
-import { measureRenderedCV, computeFillScale } from '@/lib/cv-render-measurer'
+import { measureRenderedCV, computeFillScale, computeShrinkScale } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
+import { normalizeSectionType, getSectionText, VERBATIM_SECTION_TYPES } from '@/lib/cv-layout-validator'
 
 // Configure runtime for Vercel
 export const runtime = 'nodejs'
@@ -178,7 +179,7 @@ export async function POST(request: NextRequest) {
     const jobTitle = generation.job_title
     const cvId = generation.cv_id
     const photoUrl = generationData.cvs?.photo_url || null
-    const maxPages = generation.max_pages || 4
+    const maxPages = generation.max_pages || 1
 
     console.log('📏 DEBUG: max_pages from generation:', generation.max_pages)
     console.log('📏 DEBUG: using maxPages:', maxPages)
@@ -345,13 +346,30 @@ function handleHtmlExport(sections: CVSection[], template: string, jobTitle: str
   })
 }
 
+// Cap render-repair rounds at 2: a condense pass can occasionally overcorrect into
+// severe underfill (or vice versa), so a second round gives the pipeline one chance to
+// self-correct before shipping. Mirrors the two-pass repair already used at generation
+// time in api/rewrite - uncapped retries risk runaway latency/cost on a 300s route.
+const MAX_RENDER_REPAIR_ROUNDS = 2
+
+// This route's Vercel maxDuration (vercel.json) - a single repair round (AI call +
+// re-render + re-measure) has been observed taking 35-45s with gpt-4o-mini, so 2 full
+// rounds can exceed a 60s budget outright. Rather than risk the function being killed
+// mid-repair (a hard export failure, worse than shipping a PDF with minor residual
+// clipping), only start another round if there's realistically enough time left for it
+// to finish AND leave room for the final shrink-scale pass + PDF render + response.
+const EXPORT_MAX_DURATION_MS = 60000
+const ESTIMATED_REPAIR_ROUND_MS = 35000
+const FINAL_STEPS_RESERVE_MS = 8000
+
 async function handlePdfExport(
   sections: CVSection[],
   template: string,
   jobTitle: string,
   photoUrl?: string | null,
   maxPages?: number,
-  renderRepairAttempted: boolean = false
+  renderRepairRound: number = 0,
+  requestStartTime: number = Date.now()
 ) {
   try {
     // For single-page CVs, use the original template-specific generators with full designs
@@ -386,7 +404,7 @@ async function handlePdfExport(
     await new Promise(r => setTimeout(r, 500))
 
     const renderMeasurement = await measureRenderedCV(page, maxPages)
-    console.log('📐 Render measurement:', {
+    const measLog = {
       targetPages: renderMeasurement.targetPages,
       actualPages: renderMeasurement.actualPages,
       overflowing: renderMeasurement.overflowing,
@@ -401,7 +419,8 @@ async function handlePdfExport(
         pageEnd: section.pageEnd,
         height: Math.round(section.height)
       }))
-    })
+    }
+    console.log('📐 Render measurement:', measLog)
 
     // Deterministic spacing fill: only applies to multi-page CVs using page-plan renderer
     // For single-page CVs, the template generators handle their own spacing
@@ -414,7 +433,54 @@ async function handlePdfExport(
         await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
         await new Promise(r => setTimeout(r, 500))
         activeMeasurement = await measureRenderedCV(page, maxPages)
-        console.log('📐 Render measurement after fill:', {
+        const fillLog = {
+          fillScale: fillScale.toFixed(3),
+          actualPages: activeMeasurement.actualPages,
+          overflowing: activeMeasurement.overflowing,
+          pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
+            page: item.page,
+            occupancy: Number(item.occupancy.toFixed(2))
+          }))
+        }
+        console.log('📐 Render measurement after fill:', fillLog)
+      }
+    }
+
+    const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
+    console.log('📐 Render repair plan:', renderRepairPlan)
+
+    const elapsedMs = Date.now() - requestStartTime
+    const canAffordAnotherRound = elapsedMs + ESTIMATED_REPAIR_ROUND_MS + FINAL_STEPS_RESERVE_MS <= EXPORT_MAX_DURATION_MS
+
+    if (renderRepairPlan.shouldRepair && renderRepairRound < MAX_RENDER_REPAIR_ROUNDS && canAffordAnotherRound) {
+      console.log(`📐 Running render-based layout repair (round ${renderRepairRound + 1}/${MAX_RENDER_REPAIR_ROUNDS}, ${elapsedMs}ms elapsed)...`)
+      try {
+        const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)
+        await browser.close()
+        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, renderRepairRound + 1, requestStartTime)
+      } catch (repairError) {
+        console.error('❌ Render-based layout repair failed:', repairError)
+      }
+    } else if (renderRepairPlan.shouldRepair && !canAffordAnotherRound) {
+      console.log(`📐 Skipping render-repair round (${elapsedMs}ms elapsed, not enough time budget left before the route's ${EXPORT_MAX_DURATION_MS}ms limit) - falling through to the deterministic shrink-scale safety net.`)
+    }
+
+    // Last-resort deterministic safety net: AI condense rounds are exhausted (or weren't
+    // needed) but content can still be clipped - e.g. the model didn't cut quite enough,
+    // or a repair round shifted a section back over the edge. Shipping that means real
+    // words are visibly missing from the PDF a candidate sends to employers, which is
+    // worse than slightly tighter spacing. Compress deterministically (no AI call, cheap)
+    // rather than let residual overflow reach the final file.
+    if (maxPages && maxPages > 1 && activeMeasurement.overflowing) {
+      const shrinkScale = computeShrinkScale(activeMeasurement)
+      if (shrinkScale < 0.99) {
+        console.log(`📐 Applying deterministic shrink scale (residual overflow after repair rounds): ${shrinkScale.toFixed(3)}`)
+        html = renderPagePlanHTML(sections, maxPages, template, shrinkScale)
+        await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await new Promise(r => setTimeout(r, 500))
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+        console.log('📐 Render measurement after shrink:', {
+          shrinkScale: shrinkScale.toFixed(3),
           actualPages: activeMeasurement.actualPages,
           overflowing: activeMeasurement.overflowing,
           pageOccupancy: activeMeasurement.pageOccupancy.map(item => ({
@@ -425,20 +491,6 @@ async function handlePdfExport(
       }
     }
 
-    const renderRepairPlan = createRenderRepairPlan(activeMeasurement)
-    console.log('📐 Render repair plan:', renderRepairPlan)
-
-    if (renderRepairPlan.shouldRepair && !renderRepairAttempted) {
-      console.log('📐 Running one-pass render-based layout repair...')
-      try {
-        const repairedSections = await repairSectionsForRenderedLayout(sections, activeMeasurement, renderRepairPlan)
-        await browser.close()
-        return handlePdfExport(repairedSections, template, jobTitle, photoUrl, maxPages, true)
-      } catch (repairError) {
-        console.error('❌ Render-based layout repair failed:', repairError)
-      }
-    }
-    
     // Standard A4 margins for page-plan renderer (template handles internal layout)
     const margins = { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }
     
@@ -472,6 +524,10 @@ async function repairSectionsForRenderedLayout(
   const openai = getOpenAIClient()
   const prompt = createRenderRepairPrompt(sections, renderMeasurement, renderRepairPlan)
 
+  // Hard cap on the AI call itself: observed live taking up to ~56s on its own, which
+  // alone can consume nearly the whole 60s export route budget and starve the final PDF
+  // render step. Abort and fall through to the (fast, deterministic) shrink-scale safety
+  // net rather than let one slow completion risk the whole request timing out.
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     response_format: { type: 'json_object' },
@@ -487,7 +543,7 @@ async function repairSectionsForRenderedLayout(
     ],
     temperature: 0.2,
     max_tokens: 12000
-  })
+  }, { timeout: 25000 })
 
   const content = completion.choices[0]?.message?.content || '{}'
   const parsed = JSON.parse(content)
@@ -496,11 +552,99 @@ async function repairSectionsForRenderedLayout(
     throw new Error('Render repair response did not include a sections array.')
   }
 
-  return parsed.sections.map((section: Partial<CVSection>, index: number) => ({
+  const repaired = parsed.sections.map((section: Partial<CVSection>, index: number) => ({
     type: section.type,
     content: section.content,
     order: typeof section.order === 'number' ? section.order : index + 1
   })).filter((section: Partial<CVSection>) => section.type && section.content !== undefined) as CVSection[]
+
+  // The repair prompt asks the model to echo back the full sections array while only
+  // editing a couple of entries - it occasionally duplicates one instead of just editing
+  // it in place. A duplicate CVSection isn't a valid "split" (page-plan-renderer already
+  // splits one section's content across columns internally); it's just leftover content
+  // the unassigned-section fallback then dumps onto the last page, which reads as
+  // template-cloned filler rather than genuinely fuller content. Keep the first of each
+  // normalized type only.
+  const seenTypes = new Set<string>()
+  const deduped = repaired.filter(section => {
+    const normalized = normalizeSectionType(section.type)
+    if (seenTypes.has(normalized)) return false
+    seenTypes.add(normalized)
+    return true
+  })
+
+  // Verbatim sections (education/certifications/hobbies) must be copied exactly from the
+  // candidate's real CV - the main generation prompt already forbids the AI from changing
+  // them. A condense instruction asking to "shrink" one of these can still lead the model
+  // to comply by deleting entries or blanking the section outright rather than truly
+  // condensing (there's no truthful way to make a verbatim list shorter without removing
+  // real facts). Seen live: a repeatedly-condensed hobbies section came back completely
+  // empty across two repair rounds - rendering as a section title with nothing under it.
+  // Restore this round's input content for any verbatim section that shrank drastically
+  // rather than ship a hollowed-out or blank section.
+  const restored = deduped.map(section => {
+    const normalized = normalizeSectionType(section.type)
+    if (!VERBATIM_SECTION_TYPES.has(normalized)) return section
+
+    const before = sections.find(s => normalizeSectionType(s.type) === normalized)
+    if (!before) return section
+
+    const beforeChars = getSectionText(before.content).length
+    const afterChars = getSectionText(section.content).length
+    if (beforeChars > 0 && afterChars < beforeChars * 0.6) {
+      console.warn(`⚠️ Render repair shrank verbatim section "${normalized}" from ${beforeChars} to ${afterChars} chars - restoring original content instead.`)
+      return before
+    }
+
+    return section
+  })
+
+  // A condense round is scoped to specific overflowing section(s) - the prompt says so
+  // explicitly ("Do not shorten other sections that already fit") but the model doesn't
+  // reliably honour that. Seen live: asked to condense only "education", the model also
+  // cut "experience" by roughly half as a side effect. For a repeated section like
+  // experience, cutting it far enough drops splitSection's idealChunks (page-plan-renderer.ts)
+  // from 2 to 1, collapsing its entire second-page spillover column - occupancy on that
+  // page cratered from ~95% to ~44%, worse than before the repair round ran. Enforce the
+  // scope in code: any section the plan didn't ask to adjust gets reverted if the model
+  // shrank it materially.
+  const adjustTypes = new Set((renderRepairPlan.sectionTypesToAdjust ?? []).map(type => normalizeSectionType(type)))
+  const scoped = renderRepairPlan.action === 'condense'
+    ? restored.map(section => {
+        const normalized = normalizeSectionType(section.type)
+        if (adjustTypes.has(normalized)) return section
+
+        const before = sections.find(s => normalizeSectionType(s.type) === normalized)
+        if (!before) return section
+
+        const beforeChars = getSectionText(before.content).length
+        const afterChars = getSectionText(section.content).length
+        if (beforeChars > 0 && afterChars < beforeChars * 0.85) {
+          console.warn(`⚠️ Render repair shrank out-of-scope section "${normalized}" from ${beforeChars} to ${afterChars} chars (not in this round's condense target list: ${Array.from(adjustTypes).join(', ') || 'none'}) - restoring original content instead.`)
+          return before
+        }
+
+        return section
+      })
+    : restored
+
+  // The shrink-guard above only fixes sections that survived the round but got
+  // hollowed out - it can't restore something the AI omitted from its response
+  // entirely. Seen live: a hobbies section under condense pressure vanished outright
+  // (no entry in parsed.sections at all) rather than being shortened, rendering as a
+  // section title pill with nothing underneath - the exact same content-loss failure
+  // mode, just via omission instead of shrinkage. Add back any verbatim section that
+  // existed in this round's input but is missing from the repaired output.
+  const scopedTypes = new Set(scoped.map(section => normalizeSectionType(section.type)))
+  const reinstated = sections.filter(section => {
+    const normalized = normalizeSectionType(section.type)
+    return VERBATIM_SECTION_TYPES.has(normalized) && !scopedTypes.has(normalized)
+  })
+  reinstated.forEach(section => {
+    console.warn(`⚠️ Render repair omitted verbatim section "${normalizeSectionType(section.type)}" entirely - reinstating it.`)
+  })
+
+  return [...scoped, ...reinstated]
 }
 
 async function handleDocxExport(sections: CVSection[], template: string, jobTitle: string) {

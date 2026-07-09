@@ -14,7 +14,9 @@ export default defineConfig({
       '**/dist/**',
       '**/.next/**',
       '**/e2e/**',
-      '**/playwright/**'
+      '**/playwright/**',
+      'tests/**',
+      'test-user-flow.spec.ts'
     ],
     coverage: {
       provider: 'v8',
