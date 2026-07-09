@@ -203,11 +203,14 @@ export default function GeneratePage() {
       if (parsedSections?.sections) {
         const cvCapacity = analyzeContentCapacity(parsedSections.sections)
         setCapacity(cvCapacity)
-        
-        // Set initial page count to recommended
-        setMaxPages(cvCapacity.recommendedPageCount)
-        
-        // Get recommendation for current selection
+
+        // Multi-page (2-4 pages) is gated behind "Coming Soon" in the UI below - always
+        // start at 1 page rather than auto-selecting the analyzer's recommendation, which
+        // can be 2-4 for content-rich CVs and would silently bypass the lock.
+        setMaxPages(1)
+
+        // Still compute the recommendation so the capacity info message below can tell the
+        // user their CV would benefit from more pages once multi-page ships.
         const recommendation = getPageCountRecommendation(cvCapacity, cvCapacity.recommendedPageCount)
         setPageCountRecommendation(recommendation)
         
@@ -647,57 +650,27 @@ export default function GeneratePage() {
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-white/40 transition-colors"
                     >
                       <option value={1} className="bg-black">1 page — Concise (recommended for most roles)</option>
-                      <option value={2} className="bg-black">2 pages — Standard (most common)</option>
-                      <option value={3} className="bg-black">3 pages — Detailed (senior roles)</option>
-                      <option value={4} className="bg-black">4 pages — Comprehensive (executive/academic)</option>
+                      <option value={2} disabled className="bg-black text-gray-500">2 pages — Coming Soon</option>
+                      <option value={3} disabled className="bg-black text-gray-500">3 pages — Coming Soon</option>
+                      <option value={4} disabled className="bg-black text-gray-500">4 pages — Coming Soon</option>
                     </select>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
                       {maxPages === 1 && 'Best for early-career roles and tight ATS systems'}
-                      {maxPages === 2 && 'Standard length for most professionals'}
-                      {maxPages === 3 && 'Good for senior roles with extensive experience'}
-                      {maxPages === 4 && 'For executive, academic, or highly technical positions'}
                     </p>
-                    
-                    {/* 🎯 PHASE 3: Capacity-based warnings */}
-                    {capacity && pageCountRecommendation && (
-                      <div className="mt-2 space-y-2">
-                        {/* Show warning if selected page count exceeds capacity */}
-                        {pageCountRecommendation.warnings[maxPages] && (
-                          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
-                            <div className="flex items-start gap-2">
-                              <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="text-xs text-yellow-400 font-medium mb-1">
-                                  Page count may be too high
-                                </p>
-                                <p className="text-xs text-yellow-300/90">
-                                  {pageCountRecommendation.warnings[maxPages]}
-                                </p>
-                                <button
-                                  onClick={() => setMaxPages(pageCountRecommendation.recommended)}
-                                  className="mt-2 text-xs font-bold text-yellow-400 hover:text-yellow-300 underline"
-                                >
-                                  Use recommended ({pageCountRecommendation.recommended} page{pageCountRecommendation.recommended !== 1 ? 's' : ''})
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* Show success message if page count matches recommendation */}
-                        {maxPages === pageCountRecommendation.recommended && !pageCountRecommendation.warnings[maxPages] && (
-                          <p className="text-xs text-green-400 flex items-center gap-1">
-                            <span className="text-green-500">✓</span>
-                            Recommended for your CV ({capacity.jobCount} job{capacity.jobCount !== 1 ? 's' : ''}, {Math.round(capacity.sourceChars / 1000)}k chars)
+                    <p className="text-xs text-blue-300/80 mt-1 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
+                      Multi-page CVs (2-4 pages) are coming soon — 1 page is fully supported today.
+                    </p>
+
+                    {/* 🎯 PHASE 3: Capacity-based info (page count is locked to 1 while multi-page is in development) */}
+                    {capacity && pageCountRecommendation && pageCountRecommendation.recommended > 1 && (
+                      <div className="mt-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                          <p className="text-xs text-yellow-300/90">
+                            Your CV has enough content to fill {pageCountRecommendation.recommended} pages — once multi-page support ships, you'll be able to use it. For now it'll be condensed to fit 1 page.
                           </p>
-                        )}
-                        
-                        {/* Show capacity info */}
-                        <p className="text-xs text-gray-500">
-                          Can support: {pageCountRecommendation.canSupport.join(', ')} page{pageCountRecommendation.canSupport.length > 1 ? 's' : ''}
-                          {capacity.bulletPointRatio > 0.7 && ' • Bullet-heavy content'}
-                          {capacity.detailLevel === 'sparse' && ' • Limited detail'}
-                        </p>
+                        </div>
                       </div>
                     )}
                   </div>
