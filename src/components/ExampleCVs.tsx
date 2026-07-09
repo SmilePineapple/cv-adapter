@@ -1,6 +1,6 @@
 'use client'
 
-import { FileText, Briefcase, GraduationCap, Code } from 'lucide-react'
+import { Briefcase, GraduationCap, Code } from 'lucide-react'
 
 const exampleCVs = [
   {

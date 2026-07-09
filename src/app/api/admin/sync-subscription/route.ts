@@ -178,7 +178,6 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     const currentPlanType = usageTracking?.plan_type || 'free'
-    const currentSubscriptionTier = usageTracking?.subscription_tier || 'free'
 
     // Determine action based on Stripe status
     let action: string
@@ -192,7 +191,7 @@ export async function POST(request: NextRequest) {
 
       // Calculate period end - cast to any to access Stripe's current_period_end
       let currentPeriodEnd: Date
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const periodEnd = (stripeSubscription as any).current_period_end
       if (periodEnd) {
         currentPeriodEnd = new Date(periodEnd * 1000)

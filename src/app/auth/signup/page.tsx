@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
@@ -42,7 +41,6 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isOAuthLoading, setIsOAuthLoading] = useState(false)
-  const router = useRouter()
   const supabaseRef = useRef<ReturnType<typeof createSupabaseClient> | null>(null)
 
   // Store tracking data on page load (referrer, UTM params)
@@ -50,8 +48,6 @@ export default function SignupPage() {
     storeTrackingData()
     supabaseRef.current = createSupabaseClient()
   }, [])
-
-  const supabase = supabaseRef.current
 
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -103,7 +99,7 @@ export default function SignupPage() {
           window.location.href = '/dashboard'
         }
       }
-    } catch (error) {
+    } catch {
       toast.error('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -133,7 +129,7 @@ export default function SignupPage() {
         toast.error(getFriendlyError(error.message))
         setIsOAuthLoading(false)
       }
-    } catch (error) {
+    } catch {
       toast.error('An unexpected error occurred')
       setIsOAuthLoading(false)
     }

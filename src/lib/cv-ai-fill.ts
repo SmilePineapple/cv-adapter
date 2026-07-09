@@ -96,8 +96,6 @@ export async function aiFillContent(
   }
 
   const missingOriginal = findMissingOriginalSections(generatedSections, originalSections)
-  const existingTypes = generatedSections.map(s => s.type).join(', ')
-  const missingTypes = missingOriginal.map(s => s.type).join(', ')
 
   // Build context from original CV sections that aren't in the generated CV
   const originalContext = missingOriginal.map(s => {

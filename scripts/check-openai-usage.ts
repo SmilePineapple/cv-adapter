@@ -9,40 +9,6 @@
  * 2. Run: npx tsx scripts/check-openai-usage.ts
  */
 
-import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
-interface UsageData {
-  date: string
-  model: string
-  requests: number
-  tokens: number
-  cost: number
-}
-
-// Pricing as of 2026 (update if needed)
-const PRICING = {
-  'gpt-4o-mini': {
-    input: 0.15 / 1_000_000,  // $0.15 per 1M input tokens
-    output: 0.60 / 1_000_000, // $0.60 per 1M output tokens
-  },
-  'gpt-4o': {
-    input: 2.50 / 1_000_000,  // $2.50 per 1M input tokens
-    output: 10.00 / 1_000_000, // $10.00 per 1M output tokens
-  },
-  'gpt-4-turbo': {
-    input: 10.00 / 1_000_000,
-    output: 30.00 / 1_000_000,
-  },
-  'gpt-3.5-turbo': {
-    input: 0.50 / 1_000_000,
-    output: 1.50 / 1_000_000,
-  },
-}
-
 async function getUsageData() {
   console.log('📊 Fetching OpenAI usage data...\n')
   console.log('Period: October 1, 2025 - Today')

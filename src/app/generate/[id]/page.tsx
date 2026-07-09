@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -26,12 +26,10 @@ import {
 import { LanguageSelector } from '@/components/LanguageSelector'
 import { LanguageBadge } from '@/components/LanguageBadge'
 import { LANGUAGE_NAMES } from '@/lib/language-detection'
-import { LoadingProgress } from '@/components/LoadingProgress'
 import EnhancedUpgradeModal from '@/components/EnhancedUpgradeModal'
 import CVGenerationLoader from '@/components/CVGenerationLoader'
 import { shouldShowUpgradePrompt, trackPromptShown, incrementGenerationCount } from '@/lib/upgrade-tracking'
 import { analyzeContentCapacity, getPageCountRecommendation, CVContentCapacity, PageCountRecommendation } from '@/lib/cv-capacity-analyzer'
-import { getGenerationStrategy } from '@/lib/page-count-strategies'
 import { CVSection } from '@/types/database'
 import { AlertTriangle } from 'lucide-react'
 
@@ -68,18 +66,6 @@ export default function GeneratePage() {
   const [capacity, setCapacity] = useState<CVContentCapacity | null>(null)
   const [pageCountRecommendation, setPageCountRecommendation] = useState<PageCountRecommendation | null>(null)
 
-  useEffect(() => {
-    fetchCVData()
-    fetchAllCvs()
-    fetchUsageData()
-  }, [cvId])
-
-  useEffect(() => {
-    if (selectedCvId !== cvId) {
-      fetchCVData(selectedCvId)
-    }
-  }, [selectedCvId])
-
   // Update page count recommendation when user changes maxPages
   useEffect(() => {
     if (capacity) {
@@ -88,7 +74,7 @@ export default function GeneratePage() {
     }
   }, [maxPages, capacity])
 
-  const fetchUsageData = async () => {
+  const fetchUsageData = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -112,9 +98,9 @@ export default function GeneratePage() {
     } catch (error) {
       console.error('Error fetching usage data:', error)
     }
-  }
+  }, [supabase])
 
-  const fetchAllCvs = async () => {
+  const fetchAllCvs = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -131,7 +117,7 @@ export default function GeneratePage() {
     } catch (error) {
       console.error('Error fetching all CVs:', error)
     }
-  }
+  }, [supabase])
 
   const detectCareerMismatch = (cvText: string, targetJobTitle: string) => {
     if (!cvText || !targetJobTitle || targetJobTitle.length < 3) {
@@ -168,7 +154,7 @@ export default function GeneratePage() {
     }
   }
 
-  const fetchCVData = async (id?: string) => {
+  const fetchCVData = useCallback(async (id?: string) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -229,7 +215,19 @@ export default function GeneratePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, cvId])
+
+  useEffect(() => {
+    fetchCVData()
+    fetchAllCvs()
+    fetchUsageData()
+  }, [cvId, fetchCVData, fetchAllCvs, fetchUsageData])
+
+  useEffect(() => {
+    if (selectedCvId !== cvId) {
+      fetchCVData(selectedCvId)
+    }
+  }, [selectedCvId, cvId, fetchCVData])
 
   const addCustomSection = () => {
     if (!newSectionName.trim()) {

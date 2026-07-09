@@ -1,6 +1,6 @@
 'use client'
 
-import { Crown, Zap, TrendingUp, Upload } from 'lucide-react'
+import { Crown, Zap, Upload } from 'lucide-react'
 import Link from 'next/link'
 
 interface UsageTrackerProps {

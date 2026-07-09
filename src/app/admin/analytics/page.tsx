@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
       } else {
         setSnapshotMsg(`Error: ${json.error}`)
       }
-    } catch (e) {
+    } catch {
       setSnapshotMsg('Snapshot failed')
     } finally {
       setIsSnapshotting(false)

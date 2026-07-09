@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -16,8 +16,7 @@ import {
   CheckCircle,
   HelpCircle,
   Lightbulb,
-  Crown,
-  Lock
+  Crown
 } from 'lucide-react'
 
 export default function InterviewPrepPage() {
@@ -36,22 +35,7 @@ export default function InterviewPrepPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [usageData, setUsageData] = useState<{interview_preps_used: number} | null>(null)
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    await Promise.all([fetchCVs(), checkSubscription()])
-    setIsLoading(false)
-  }
-
-  const fetchCVs = async () => {
+  const fetchCVs = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       router.push('/auth/login')
@@ -70,9 +54,9 @@ export default function InterviewPrepPage() {
         setSelectedCvId(data[0].id)
       }
     }
-  }
+  }, [supabase, router])
 
-  const checkSubscription = async () => {
+  const checkSubscription = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -82,12 +66,27 @@ export default function InterviewPrepPage() {
       .eq('user_id', user.id)
       .single()
 
-    const isProUser = usage?.plan_type === 'pro' || 
-                      usage?.subscription_tier === 'pro_monthly' || 
+    const isProUser = usage?.plan_type === 'pro' ||
+                      usage?.subscription_tier === 'pro_monthly' ||
                       usage?.subscription_tier === 'pro_annual'
     setIsPro(isProUser)
     setUsageData({ interview_preps_used: usage?.interview_preps_used || 0 })
-  }
+  }, [supabase])
+
+  const checkAuth = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      router.push('/auth/signin')
+      return
+    }
+
+    await Promise.all([fetchCVs(), checkSubscription()])
+    setIsLoading(false)
+  }, [supabase, router, fetchCVs, checkSubscription])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const handleCompanyResearch = async () => {
     if (!companyUrl.trim()) {

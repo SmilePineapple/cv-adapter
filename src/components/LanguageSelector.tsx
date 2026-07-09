@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Globe, Check } from 'lucide-react'
-import { LANGUAGE_NAMES } from '@/lib/language-detection'
 
 interface LanguageSelectorProps {
   currentLanguage: string

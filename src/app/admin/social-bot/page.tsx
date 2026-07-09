@@ -114,7 +114,7 @@ export default function SocialBotDashboard() {
       } else {
         toast.error(result.error || 'Cleanup failed')
       }
-    } catch (error) {
+    } catch {
       toast.error('Cleanup failed')
     } finally {
       setCleaningUp(false)

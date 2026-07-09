@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Lightbulb, CheckCircle, Star, Target, FileText, Users } from 'lucide-react'
+import { ArrowRight, CheckCircle, Star, Target, FileText, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Resume Tips & Career Advice - Expert Guidance | MyCVBuddy',

@@ -2,15 +2,14 @@
 
 export const dynamic = 'force-dynamic'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { 
-  ArrowLeft, 
-  FileText, 
-  Calendar,
+  ArrowLeft,
+  FileText,
   Briefcase,
   Download,
   Eye,
@@ -58,12 +57,7 @@ export default function HistoryPage() {
   const [atsScores, setAtsScores] = useState<Record<string, any>>({})
   const [loadingScores, setLoadingScores] = useState<Record<string, boolean>>({})
 
-  useEffect(() => {
-    fetchGenerations()
-    fetchCoverLetters()
-  }, [])
-
-  const fetchGenerations = async () => {
+  const fetchGenerations = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -99,9 +93,9 @@ export default function HistoryPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router])
 
-  const fetchCoverLetters = async () => {
+  const fetchCoverLetters = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -134,7 +128,12 @@ export default function HistoryPage() {
     } catch (error) {
       console.error('Cover letters fetch error:', error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchGenerations()
+    fetchCoverLetters()
+  }, [fetchGenerations, fetchCoverLetters])
 
   const fetchATSScore = async (generationId: string) => {
     if (atsScores[generationId] || loadingScores[generationId]) return

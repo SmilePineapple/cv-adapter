@@ -4,21 +4,18 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
-import { OAuthMetadataHandler } from '@/components/OAuthMetadataHandler'
 import { toast } from 'sonner'
 import UsageTracker from '@/components/UsageTracker'
 import UpgradeModal from '@/components/UpgradeModal'
 import { OnboardingModal } from '@/components/OnboardingModal'
 import { DashboardStatsSkeleton, CardSkeleton } from '@/components/LoadingProgress'
 import ATSOptimizer from '@/components/ATSOptimizer'
-import PhotoUpload from '@/components/PhotoUpload'
-import { trackPageView, trackFeatureUsage } from '@/lib/analytics'
-import { 
-  Upload, 
-  FileText, 
-  Calendar, 
-  BarChart3, 
-  Settings, 
+import { trackPageView } from '@/lib/analytics'
+import {
+  Upload,
+  FileText,
+  BarChart3,
+  Settings,
   LogOut,
   Plus,
   Eye,
@@ -26,7 +23,6 @@ import {
   Trash2,
   Sparkles,
   Zap,
-  Clock,
   Search,
   Filter,
   Edit3,
@@ -34,7 +30,6 @@ import {
   TrendingUp,
   Activity,
   Star,
-  Archive,
   X,
   CheckCircle,
   Shield,
@@ -42,7 +37,6 @@ import {
   User,
   Lock,
   Check,
-  MessageSquare,
   Flame,
   Target,
   RefreshCw,
@@ -132,12 +126,12 @@ export default function DashboardPage() {
   const [interviewPreps, setInterviewPreps] = useState<InterviewPrep[]>([])
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [usage, setUsage] = useState<UsageInfo | null>(null)
-  const [purchase, setPurchase] = useState<PurchaseInfo | null>(null)
+  const [, setPurchase] = useState<PurchaseInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'cvs' | 'generations' | 'cover-letters' | 'interview-prep'>('overview')
   const [searchQuery, setSearchQuery] = useState('')
   const [ratingModalOpen, setRatingModalOpen] = useState(false)
-  const [selectedCvForRating, setSelectedCvForRating] = useState<string | null>(null)
+  const [, setSelectedCvForRating] = useState<string | null>(null)
   const [cvRating, setCvRating] = useState<any>(null)
   const [isRating, setIsRating] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
@@ -250,6 +244,13 @@ export default function DashboardPage() {
     return () => {
       subscription.unsubscribe()
     }
+    // Intentionally run once on mount: fetchDashboardData is a large, non-memoized
+    // function with its own internal auth/session resolution, and this effect already
+    // guards against double-init via the local `initialized` flag (across both the
+    // getSession() callback and onAuthStateChange listener) to avoid the Web Locks
+    // AbortError race described above. router/supabase are stable singletons but
+    // fetchDashboardData is not safely memoizable without a larger refactor.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchDashboardData = async (userId?: string) => {
@@ -413,7 +414,7 @@ export default function DashboardPage() {
         } else {
           setPurchase(purchaseData || { status: null, purchased_at: null })
         }
-      } catch (e) {
+      } catch {
         console.log('Purchases table not available, defaulting to free plan')
         setPurchase({ status: null, purchased_at: null })
       }
@@ -438,11 +439,6 @@ export default function DashboardPage() {
       }
     }
   }, [isLoading, cvs.length, generations.length])
-
-  const handleOnboardingComplete = () => {
-    localStorage.setItem('hasSeenOnboarding', 'true')
-    setShowOnboarding(false)
-  }
 
   const handleRateCV = async (cvId: string) => {
     setSelectedCvForRating(cvId)
@@ -508,7 +504,7 @@ export default function DashboardPage() {
         toast.success('CV deleted successfully')
         setCvs(cvs.filter(cv => cv.id !== cvId))
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete CV')
     }
   }
@@ -530,7 +526,7 @@ export default function DashboardPage() {
         toast.success('Generation deleted successfully')
         setGenerations(generations.filter(gen => gen.id !== generationId))
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete generation')
     }
   }
@@ -552,30 +548,8 @@ export default function DashboardPage() {
         toast.success('Cover letter deleted successfully')
         setCoverLetters(coverLetters.filter(cl => cl.id !== coverLetterId))
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete cover letter')
-    }
-  }
-
-  const handleDeleteInterviewPrep = async (prepId: string) => {
-    if (!confirm('Are you sure you want to delete this interview prep? This action cannot be undone.')) {
-      return
-    }
-
-    try {
-      const { error } = await supabase
-        .from('interview_preps')
-        .delete()
-        .eq('id', prepId)
-
-      if (error) {
-        toast.error('Failed to delete interview prep')
-      } else {
-        toast.success('Interview prep deleted successfully')
-        setInterviewPreps(interviewPreps.filter(prep => prep.id !== prepId))
-      }
-    } catch (error) {
-      toast.error('Failed to delete interview prep')
     }
   }
 

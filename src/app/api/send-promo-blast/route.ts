@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { createClient } from '@supabase/supabase-js'
 import { sendPromoEmail } from '@/lib/email'
@@ -10,10 +10,10 @@ const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
  * POST /api/send-promo-blast
  * Admin only - requires authentication
  */
-export async function POST(request: NextRequest) {
+export async function POST(/* request: NextRequest */) {
   try {
     const supabase = await createSupabaseRouteClient()
-    
+
     // Check admin auth
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {

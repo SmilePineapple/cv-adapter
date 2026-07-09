@@ -3,19 +3,16 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { 
-  ArrowLeft, 
-  Sparkles, 
+  ArrowLeft,
+  Sparkles,
   User,
   Mail,
   Phone,
   MapPin,
   Briefcase,
-  GraduationCap,
   Award,
-  FileText,
   Loader2
 } from 'lucide-react'
 
@@ -44,8 +41,7 @@ interface Education {
 
 export default function AutoCVPage() {
   const router = useRouter()
-  const supabase = createSupabaseClient()
-  
+
   const [step, setStep] = useState(1)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generateProgress, setGenerateProgress] = useState(0)

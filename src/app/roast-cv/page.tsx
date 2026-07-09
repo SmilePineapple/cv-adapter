@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 
@@ -20,15 +20,6 @@ import {
   Copy,
   Share2
 } from 'lucide-react'
-
-interface CV {
-  id: string
-  file_meta: {
-    original_name: string
-  }
-  parsed_content: any
-  created_at: string
-}
 
 interface RoastableItem {
   id: string
@@ -63,55 +54,7 @@ export default function RoastCVPage() {
   const [battleCv2Id, setBattleCv2Id] = useState('')
   const [battleResult, setBattleResult] = useState<{roast1: string, roast2: string, winner: string} | null>(null)
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (!user) {
-        router.push('/auth/signin')
-        return
-      }
-
-      setUser(user)
-
-      // Check if user is Pro and get roast count
-      const { data: usage } = await supabase
-        .from('usage_tracking')
-        .select('plan_type, subscription_tier, roast_count, roast_last_reset')
-        .eq('user_id', user.id)
-        .single()
-
-      const isProUser = usage?.plan_type === 'pro' || 
-                        usage?.subscription_tier === 'pro_monthly' || 
-                        usage?.subscription_tier === 'pro_annual'
-      setIsPro(isProUser)
-      setRoastCount(usage?.roast_count || 0)
-
-      if (!isProUser) {
-        toast.error('Roast Your CV is a Pro feature. Please upgrade to continue.', {
-          duration: 5000,
-          action: {
-            label: 'Upgrade',
-            onClick: () => router.push('/subscription')
-          }
-        })
-      } else {
-        // Load user's CVs
-        loadCVs(user.id)
-      }
-
-      setIsLoading(false)
-    } catch (error) {
-      console.error('Auth check error:', error)
-      router.push('/auth/signin')
-    }
-  }
-
-  const loadCVs = async (userId: string) => {
+  const loadCVs = useCallback(async (userId: string) => {
     const items: RoastableItem[] = []
 
     // Load uploaded CVs
@@ -160,7 +103,55 @@ export default function RoastCVPage() {
       setSelectedItemId(items[0].id)
       setSelectedItemType(items[0].type)
     }
-  }
+  }, [supabase])
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push('/auth/signin')
+        return
+      }
+
+      setUser(user)
+
+      // Check if user is Pro and get roast count
+      const { data: usage } = await supabase
+        .from('usage_tracking')
+        .select('plan_type, subscription_tier, roast_count, roast_last_reset')
+        .eq('user_id', user.id)
+        .single()
+
+      const isProUser = usage?.plan_type === 'pro' ||
+                        usage?.subscription_tier === 'pro_monthly' ||
+                        usage?.subscription_tier === 'pro_annual'
+      setIsPro(isProUser)
+      setRoastCount(usage?.roast_count || 0)
+
+      if (!isProUser) {
+        toast.error('Roast Your CV is a Pro feature. Please upgrade to continue.', {
+          duration: 5000,
+          action: {
+            label: 'Upgrade',
+            onClick: () => router.push('/subscription')
+          }
+        })
+      } else {
+        // Load user's CVs
+        loadCVs(user.id)
+      }
+
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Auth check error:', error)
+      router.push('/auth/signin')
+    }
+  }, [supabase, router, loadCVs])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const handleRoast = async () => {
     if (!selectedItemId) {
@@ -247,17 +238,6 @@ export default function RoastCVPage() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(roastResult)
     toast.success('Roast copied to clipboard!')
-  }
-
-  const shareRoast = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'My CV Got Roasted!',
-        text: roastResult
-      })
-    } else {
-      copyToClipboard()
-    }
   }
 
   const handleComparison = async () => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -32,11 +32,7 @@ export default function PricingComparisonPage() {
   const [isPro, setIsPro] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    checkUserStatus()
-  }, [])
-
-  const checkUserStatus = async () => {
+  const checkUserStatus = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
@@ -55,7 +51,11 @@ export default function PricingComparisonPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    checkUserStatus()
+  }, [checkUserStatus])
 
   const handleUpgrade = () => {
     if (!user) {

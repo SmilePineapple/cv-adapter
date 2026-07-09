@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Sparkles, FileText, Zap, Globe, CheckCircle, ArrowRight } from 'lucide-react'
+import { Sparkles, Globe, ArrowRight } from 'lucide-react'
 
 export default function PortugueseLandingPage() {
   return (

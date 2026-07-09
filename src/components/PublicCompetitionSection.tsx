@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Trophy, Sparkles, TrendingUp } from 'lucide-react'
+import { Trophy, Sparkles } from 'lucide-react'
 import PublicCompetitionGame from './PublicCompetitionGame'
 
 export default function PublicCompetitionSection() {

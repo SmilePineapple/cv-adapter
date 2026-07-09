@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useDropzone } from 'react-dropzone'
@@ -175,13 +175,7 @@ export default function UploadPage() {
     } finally {
       setIsUploading(false)
     }
-  }, [supabase])
-
-  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (!files || files.length === 0) return
-    await onDrop(Array.from(files))
-  }, [onDrop])
+  }, [supabase, router])
 
   const onDropRejected = useCallback((fileRejections: any[]) => {
     fileRejections.forEach((rejection) => {
@@ -644,7 +638,7 @@ export default function UploadPage() {
                 <PhotoUpload
                   cvId={parseResult.cv_id}
                   currentPhotoUrl={null}
-                  onPhotoUploaded={(url) => {
+                  onPhotoUploaded={() => {
                     toast.success('Photo uploaded! It will appear in your CV templates.')
                   }}
                 />

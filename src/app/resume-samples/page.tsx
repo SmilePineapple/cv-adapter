@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Download, Eye, FileText, Briefcase, GraduationCap, Code, Heart, Users, Star, CheckCircle } from 'lucide-react'
+import { ArrowRight, Download, Eye, Briefcase, GraduationCap, Code, Heart, Star, CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Resume Samples & Examples by Industry | MyCVBuddy',

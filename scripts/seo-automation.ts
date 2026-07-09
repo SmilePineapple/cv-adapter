@@ -6,7 +6,7 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
-import { writeFileSync, existsSync } from 'fs'
+import { existsSync } from 'fs'
 
 // Load .env.local only if it exists (local development)
 const envPath = resolve(process.cwd(), '.env.local')

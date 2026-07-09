@@ -229,7 +229,7 @@ export async function generateWeeklyContent(
  * Format post with hashtags for platform
  */
 export function formatPostForPlatform(post: SocialPost): string {
-  const { content, hashtags, platform } = post
+  const { content, hashtags } = post
 
   // Add link to CV Adapter
   const link = 'https://www.mycvbuddy.com'

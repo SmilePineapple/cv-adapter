@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -28,11 +28,7 @@ export default function ViewCoverLetterPage() {
   const [coverLetter, setCoverLetter] = useState<CoverLetterData | null>(null)
   const [copied, setCopied] = useState(false)
 
-  useEffect(() => {
-    fetchCoverLetter()
-  }, [coverLetterId])
-
-  const fetchCoverLetter = async () => {
+  const fetchCoverLetter = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -60,7 +56,11 @@ export default function ViewCoverLetterPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, coverLetterId])
+
+  useEffect(() => {
+    fetchCoverLetter()
+  }, [fetchCoverLetter])
 
   const handleCopy = () => {
     if (coverLetter) {

@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowLeft, User, CheckCircle, Star, BookOpen, Award, Target } from 'lucide-react'
+import { ArrowLeft, User, CheckCircle, Award } from 'lucide-react'
 import type { Metadata } from 'next'
 import { BlogPostBreadcrumb } from '@/components/Breadcrumb'
 

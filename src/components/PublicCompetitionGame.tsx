@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Trophy, X, Zap, Gift, TrendingUp } from 'lucide-react'
+import { Trophy, X, Zap, Gift } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import { toast } from 'sonner'
 

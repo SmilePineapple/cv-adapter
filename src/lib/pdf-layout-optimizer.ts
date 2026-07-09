@@ -4,7 +4,7 @@
  */
 
 import { CVSection } from '@/types/database'
-import { advancedTemplateStyles, sectionIcons, hobbyIcons } from './advanced-templates'
+import { advancedTemplateStyles } from './advanced-templates'
 
 interface LayoutMetrics {
   totalContentLength: number

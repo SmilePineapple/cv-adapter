@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 
 // Manual subscription cancellation for testing (no Stripe required)

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
@@ -28,7 +27,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isOAuthLoading, setIsOAuthLoading] = useState(false)
   const [supabase, setSupabase] = useState<ReturnType<typeof createSupabaseClient> | null>(null)
-  const router = useRouter()
 
   useEffect(() => {
     try {
@@ -58,7 +56,7 @@ export default function LoginPage() {
         toast.success('Logged in successfully!')
         window.location.href = '/dashboard'
       }
-    } catch (error) {
+    } catch {
       toast.error('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -85,7 +83,7 @@ export default function LoginPage() {
         toast.error(getFriendlyError(error.message))
         setIsOAuthLoading(false)
       }
-    } catch (error) {
+    } catch {
       toast.error('An unexpected error occurred')
       setIsOAuthLoading(false)
     }

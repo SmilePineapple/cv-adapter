@@ -72,7 +72,7 @@ test.describe('Jake Test Account - Complete Flow', () => {
     await page.screenshot({ path: 'test-results/01-signup.png', fullPage: true })
   })
 
-  test('Step 2: Upload Jake\'s CV', async ({ page, context }) => {
+  test('Step 2: Upload Jake\'s CV', async ({ page }) => {
     console.log('📄 Testing CV upload...')
     
     // Login first (in case previous test didn't persist session)
@@ -308,7 +308,7 @@ test.describe('Jake Test Account - Complete Flow', () => {
       try {
         const download = await downloadPromise
         console.log('✅ PDF download started:', download.suggestedFilename())
-      } catch (error) {
+      } catch {
         console.log('⚠️ Download event not captured (may still be working)')
       }
     }

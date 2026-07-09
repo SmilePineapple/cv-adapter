@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
         throw new Error('Failed to fetch LinkedIn profile')
       }
 
-      const profileData = await response.json()
+      await response.json()
       // Convert RapidAPI format to sections
       // (Implementation depends on RapidAPI response format)
       

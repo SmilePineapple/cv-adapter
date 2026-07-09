@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -31,11 +31,7 @@ export default function ViewInterviewPrepPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [expandedQuestions, setExpandedQuestions] = useState<{[key: string]: number | null}>({})
 
-  useEffect(() => {
-    fetchPrep()
-  }, [prepId])
-
-  const fetchPrep = async () => {
+  const fetchPrep = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -63,7 +59,11 @@ export default function ViewInterviewPrepPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, prepId])
+
+  useEffect(() => {
+    fetchPrep()
+  }, [fetchPrep])
 
   const toggleQuestion = (category: string, index: number) => {
     setExpandedQuestions(prev => ({

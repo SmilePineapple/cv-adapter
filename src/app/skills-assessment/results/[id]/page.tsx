@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -36,11 +36,7 @@ export default function AssessmentResultsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchResults()
-  }, [assessmentId])
-
-  const fetchResults = async () => {
+  const fetchResults = useCallback(async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
@@ -91,7 +87,11 @@ export default function AssessmentResultsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, assessmentId])
+
+  useEffect(() => {
+    fetchResults()
+  }, [fetchResults])
 
   const getScoreColor = (percentage: number) => {
     if (percentage >= 80) return 'text-green-400'

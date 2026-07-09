@@ -12,9 +12,9 @@ interface LinkedInImportProps {
 }
 
 export default function LinkedInImport({ isOpen, onClose, onSuccess }: LinkedInImportProps) {
-  const [linkedinUrl, setLinkedinUrl] = useState('')
+  const [linkedinUrl] = useState('')
   const [isImporting, setIsImporting] = useState(false)
-  const [importMethod, setImportMethod] = useState<'url' | 'text'>('url')
+  const [importMethod] = useState<'url' | 'text'>('url')
   const [linkedinText, setLinkedinText] = useState('')
   const supabase = createSupabaseClient()
 

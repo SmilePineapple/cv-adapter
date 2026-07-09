@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -15,7 +15,6 @@ import {
   Zap,
   Star,
   CreditCard,
-  Globe,
   Download,
   XCircle,
   FileText,
@@ -81,12 +80,6 @@ export default function SubscriptionPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  useEffect(() => {
-    checkAuth()
-    // Detect user's currency using IP-based detection
-    detectUserCurrency()
-  }, [])
-
   const detectUserCurrency = async () => {
     try {
       // Try IP-based detection first
@@ -117,25 +110,7 @@ export default function SubscriptionPage() {
     }
   }
 
-  const checkAuth = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        router.push('/auth/login')
-        return
-      }
-
-      setUser(user)
-      await fetchPurchaseAndUsage(user.id)
-    } catch (error) {
-      console.error('Auth error:', error)
-      router.push('/auth/login')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const fetchPurchaseAndUsage = async (userId: string) => {
+  const fetchPurchaseAndUsage = useCallback(async (userId: string) => {
     try {
       // Fetch purchase record
       const { data: purchaseData, error: purchaseError } = await supabase
@@ -168,7 +143,31 @@ export default function SubscriptionPage() {
       setPurchase(null)
       setUsage(null)
     }
-  }
+  }, [supabase])
+
+  const checkAuth = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/auth/login')
+        return
+      }
+
+      setUser(user)
+      await fetchPurchaseAndUsage(user.id)
+    } catch (error) {
+      console.error('Auth error:', error)
+      router.push('/auth/login')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [supabase, router, fetchPurchaseAndUsage])
+
+  useEffect(() => {
+    checkAuth()
+    // Detect user's currency using IP-based detection
+    detectUserCurrency()
+  }, [checkAuth])
 
   const fetchInvoices = async () => {
     if (!user) return

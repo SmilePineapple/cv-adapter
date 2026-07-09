@@ -1,10 +1,6 @@
 import { render } from '@react-email/components'
 import { Resend } from 'resend'
-import WelcomeEmail from '@/emails/WelcomeEmail'
-import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
-import LimitReachedEmail from '@/emails/LimitReachedEmail'
 import ReEngagementEmail from '@/emails/ReEngagementEmail'
-import PromoEmail from '@/emails/PromoEmail'
 import ThreeDayReminderEmail from '@/emails/ThreeDayReminderEmail'
 
 /**
@@ -951,8 +947,7 @@ export async function sendDeletionWarningEmail(email: string, name: string, dele
  */
 export async function sendAccountDeletionApologyEmail(
   email: string,
-  name: string,
-  _refundAmount?: string
+  name: string
 ) {
   try {
     const resend = getResendClient()

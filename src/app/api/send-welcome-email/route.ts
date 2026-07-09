@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { sendWelcomeEmail } from '@/lib/email'
 
 /**

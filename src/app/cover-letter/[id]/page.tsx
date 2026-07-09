@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -40,11 +40,7 @@ export default function CoverLetterPage() {
   const [tone, setTone] = useState<'professional' | 'friendly' | 'enthusiastic' | 'formal'>('professional')
   const [hiringManagerName, setHiringManagerName] = useState('')
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -76,7 +72,11 @@ export default function CoverLetterPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, generationId])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const handleGenerate = async () => {
     if (!companyName.trim() || !positionTitle.trim() || !jobDescription.trim()) {
@@ -180,7 +180,7 @@ export default function CoverLetterPage() {
       setCopied(true)
       toast.success('Cover letter copied to clipboard!')
       setTimeout(() => setCopied(false), 2000)
-    } catch (error) {
+    } catch {
       toast.error('Failed to copy to clipboard')
     }
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -18,7 +18,6 @@ import {
   FileText,
   MessageSquare,
   CheckCircle,
-  XCircle,
   Info
 } from 'lucide-react'
 
@@ -43,7 +42,7 @@ export default function InterviewSimulatorPage() {
   const supabase = createSupabaseClient()
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const [user, setUser] = useState<any>(null)
+  const [, setUser] = useState<any>(null)
   const [isPro, setIsPro] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   
@@ -61,10 +60,6 @@ export default function InterviewSimulatorPage() {
   const [interviewStarted, setInterviewStarted] = useState(false)
 
   useEffect(() => {
-    checkAuth()
-  }, [])
-
-  useEffect(() => {
     scrollToBottom()
   }, [messages])
 
@@ -72,7 +67,7 @@ export default function InterviewSimulatorPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -108,7 +103,11 @@ export default function InterviewSimulatorPage() {
       console.error('Auth check error:', error)
       router.push('/auth/signin')
     }
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const startInterview = async () => {
     if (!companyName.trim() || !jobDescription.trim()) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 
@@ -22,16 +22,7 @@ export default function HobbySelectionPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [returnUrl, setReturnUrl] = useState<string | null>(null)
 
-  useEffect(() => {
-    // Get return URL from query params
-    const urlParams = new URLSearchParams(window.location.search)
-    const returnTo = urlParams.get('returnTo')
-    setReturnUrl(returnTo)
-    
-    fetchHobbiesSection()
-  }, [cvId])
-
-  const fetchHobbiesSection = async () => {
+  const fetchHobbiesSection = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -68,7 +59,16 @@ export default function HobbySelectionPage() {
       toast.error('Something went wrong')
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, cvId])
+
+  useEffect(() => {
+    // Get return URL from query params
+    const urlParams = new URLSearchParams(window.location.search)
+    const returnTo = urlParams.get('returnTo')
+    setReturnUrl(returnTo)
+
+    fetchHobbiesSection()
+  }, [cvId, fetchHobbiesSection])
 
   const handleSave = async () => {
     if (selectedHobbies.length === 0) {

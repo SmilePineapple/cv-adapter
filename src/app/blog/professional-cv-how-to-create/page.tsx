@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, Award, CheckCircle, Star } from 'lucide-react'
+import { ArrowLeft, Award, CheckCircle } from 'lucide-react'
 import type { Metadata } from 'next'
 import { DownloadResource } from '@/components/DownloadResource'
 

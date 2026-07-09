@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 
 /**
  * Test CV Generation with Jake's Manually Uploaded CV
@@ -38,7 +38,7 @@ Nice to Have:
 test.describe('Jake CV Generation Test', () => {
   test.setTimeout(180000) // 3 minutes
 
-  test('Generate CV from manually uploaded CV', async ({ page, context }) => {
+  test('Generate CV from manually uploaded CV', async ({ page }) => {
     // Enable console log capture
     const consoleLogs: string[] = []
     const errors: string[] = []

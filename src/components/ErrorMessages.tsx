@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertTriangle, XCircle, WifiOff, Clock, CreditCard, RefreshCw, ArrowRight } from 'lucide-react'
+import { AlertTriangle, XCircle, WifiOff, Clock, RefreshCw, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export type ErrorType = 
@@ -191,7 +191,7 @@ export function InlineError({ message }: { message: string }) {
 /**
  * Payment required error
  */
-export function PaymentRequiredError({ onUpgrade }: { onUpgrade?: () => void }) {
+export function PaymentRequiredError() {
   return (
     <ErrorMessage
       type="limit"

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -15,15 +15,7 @@ export default function VerifyEmailPage() {
   const [isChecking, setIsChecking] = useState(true)
   const [isVerified, setIsVerified] = useState(false)
 
-  useEffect(() => {
-    checkVerificationStatus()
-    
-    // Check every 3 seconds if email is verified
-    const interval = setInterval(checkVerificationStatus, 3000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const checkVerificationStatus = async () => {
+  const checkVerificationStatus = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
@@ -44,7 +36,15 @@ export default function VerifyEmailPage() {
     } else {
       setIsChecking(false)
     }
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    checkVerificationStatus()
+
+    // Check every 3 seconds if email is verified
+    const interval = setInterval(checkVerificationStatus, 3000)
+    return () => clearInterval(interval)
+  }, [checkVerificationStatus])
 
   const resendVerificationEmail = async () => {
     setIsResending(true)

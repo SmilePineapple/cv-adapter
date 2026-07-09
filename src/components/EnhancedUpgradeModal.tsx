@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Check, Crown, Zap, Clock, Users, Shield, Star } from 'lucide-react'
+import { X, Check, Crown, Zap, Users, Shield, Star } from 'lucide-react'
 import Link from 'next/link'
 
 interface EnhancedUpgradeModalProps {
@@ -11,7 +11,7 @@ interface EnhancedUpgradeModalProps {
 }
 
 export default function EnhancedUpgradeModal({ isOpen, onClose, trigger = 'manual' }: EnhancedUpgradeModalProps) {
-  const [timeLeft, setTimeLeft] = useState(600) // 10 minutes in seconds
+  const [, setTimeLeft] = useState(600) // 10 minutes in seconds
   const [showOffer, setShowOffer] = useState(true)
 
   useEffect(() => {
@@ -29,12 +29,6 @@ export default function EnhancedUpgradeModal({ isOpen, onClose, trigger = 'manua
 
     return () => clearInterval(timer)
   }, [isOpen, showOffer])
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
 
   if (!isOpen) return null
 

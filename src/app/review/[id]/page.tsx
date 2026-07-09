@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -190,12 +190,7 @@ export default function ReviewPage() {
   const [isPro, setIsPro] = useState(false)
   const [aiGeneratingSection, setAiGeneratingSection] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchGenerationData()
-    checkSubscription()
-  }, [generationId])
-
-  const checkSubscription = async () => {
+  const checkSubscription = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -212,9 +207,9 @@ export default function ReviewPage() {
     } catch (error) {
       console.error('Error checking subscription:', error)
     }
-  }
+  }, [supabase])
 
-  const fetchGenerationData = async () => {
+  const fetchGenerationData = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -329,7 +324,12 @@ export default function ReviewPage() {
       toast.error('Failed to load generation data')
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, generationId])
+
+  useEffect(() => {
+    fetchGenerationData()
+    checkSubscription()
+  }, [generationId, fetchGenerationData, checkSubscription])
 
   const handleSectionEdit = (sectionType: string, newContent: string) => {
     setEditedSections(prev => 
@@ -431,27 +431,6 @@ export default function ReviewPage() {
     } finally {
       setIsSaving(false)
     }
-  }
-
-  const createDiff = (original: string, modified: string) => {
-    // Simple diff - just show original and modified side by side
-    // For now, we'll highlight the entire text if it's different
-    if (original === modified) {
-      return <span>{original}</span>
-    }
-    
-    return (
-      <div className="space-y-2">
-        <div className="bg-red-50 p-2 rounded border-l-4 border-red-200">
-          <div className="text-xs text-red-400 font-medium mb-1">Original:</div>
-          <div className="text-red-800">{original}</div>
-        </div>
-        <div className="bg-green-50 p-2 rounded border-l-4 border-green-200">
-          <div className="text-xs text-green-400 font-medium mb-1">Updated:</div>
-          <div className="text-green-800">{modified}</div>
-        </div>
-      </div>
-    )
   }
 
   const handleDownload = () => {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { COLOR_SCHEMES, ColorScheme } from '@/lib/modern-templates'
+import { COLOR_SCHEMES } from '@/lib/modern-templates'
 import { Check } from 'lucide-react'
 
 interface ColorSchemeSelectorProps {

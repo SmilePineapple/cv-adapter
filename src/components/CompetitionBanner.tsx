@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Trophy, Sparkles, X, TrendingUp } from 'lucide-react'
 import ProCompetitionGame from './ProCompetitionGame'
 
@@ -14,6 +14,30 @@ export default function CompetitionBanner({ userEmail }: CompetitionBannerProps)
   const [leaderboard, setLeaderboard] = useState<Array<{ rank: number; email: string; score: number }>>([])
   const [userRank, setUserRank] = useState<{ score: number; rank: number; total_players: number } | null>(null)
 
+  const fetchLeaderboard = useCallback(async () => {
+    try {
+      const response = await fetch('/api/competition/submit?limit=5')
+      const data = await response.json()
+      if (data.success) {
+        setLeaderboard(data.leaderboard)
+      }
+    } catch (error) {
+      console.error('Failed to fetch leaderboard:', error)
+    }
+  }, [])
+
+  const fetchUserRank = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/competition/user-rank?email=${encodeURIComponent(userEmail)}`)
+      const data = await response.json()
+      if (data.success && data.rank) {
+        setUserRank(data.rank)
+      }
+    } catch (error) {
+      console.error('Failed to fetch user rank:', error)
+    }
+  }, [userEmail])
+
   useEffect(() => {
     // Check if user dismissed banner
     const isDismissed = localStorage.getItem('competition_banner_dismissed')
@@ -24,31 +48,7 @@ export default function CompetitionBanner({ userEmail }: CompetitionBannerProps)
     // Fetch leaderboard
     fetchLeaderboard()
     fetchUserRank()
-  }, [])
-
-  const fetchLeaderboard = async () => {
-    try {
-      const response = await fetch('/api/competition/submit?limit=5')
-      const data = await response.json()
-      if (data.success) {
-        setLeaderboard(data.leaderboard)
-      }
-    } catch (error) {
-      console.error('Failed to fetch leaderboard:', error)
-    }
-  }
-
-  const fetchUserRank = async () => {
-    try {
-      const response = await fetch(`/api/competition/user-rank?email=${encodeURIComponent(userEmail)}`)
-      const data = await response.json()
-      if (data.success && data.rank) {
-        setUserRank(data.rank)
-      }
-    } catch (error) {
-      console.error('Failed to fetch user rank:', error)
-    }
-  }
+  }, [fetchLeaderboard, fetchUserRank])
 
   const handleDismiss = () => {
     setDismissed(true)
