@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowRight, CheckCircle, Upload, FileText, Download } from 'lucide-react'
+import { ArrowRight, Upload, FileText, Download } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'How to Tailor Your CV to a Job Description | My CV Buddy',

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -38,29 +38,22 @@ export default function CreateCoverLetterPage() {
     length: 'short' as 'short' | 'long',
     tone: 'professional' as 'professional' | 'friendly' | 'enthusiastic' | 'formal'
   })
-  const [isLoading, setIsLoading] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isPro, setIsPro] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const router = useRouter()
   const supabase = createSupabaseClient()
 
-  useEffect(() => {
-    checkAuth()
-    fetchCVs()
-    checkSubscription()
-  }, [])
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       router.push('/auth/login')
       return
     }
     setUser(user)
-  }
+  }, [supabase, router])
 
-  const checkSubscription = async () => {
+  const checkSubscription = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -82,9 +75,9 @@ export default function CreateCoverLetterPage() {
     } catch (error) {
       console.error('Error checking subscription:', error)
     }
-  }
+  }, [supabase])
 
-  const fetchCVs = async () => {
+  const fetchCVs = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -108,7 +101,13 @@ export default function CreateCoverLetterPage() {
       console.error('Error:', error)
       toast.error('Failed to load CVs')
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    checkAuth()
+    fetchCVs()
+    checkSubscription()
+  }, [checkAuth, fetchCVs, checkSubscription])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({

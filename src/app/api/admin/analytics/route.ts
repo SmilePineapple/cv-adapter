@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-
-const ADMIN_EMAILS = [
-  'jakedalerourke@gmail.com',
-  'smilepineapple118@gmail.com',
-  'jake.rourke@btinternet.com'
-]
+import { isAdminEmail } from '@/lib/admin-auth'
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,7 +20,7 @@ export async function GET(request: NextRequest) {
       const token = authHeader.replace('Bearer ', '')
       const { data: { user } } = await supabase.auth.getUser(token)
       
-      if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+      if (!user || !isAdminEmail(user.email)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
       }
     } else {
@@ -105,7 +100,7 @@ export async function GET(request: NextRequest) {
     // Get admin user IDs to exclude from Pro counts
     const adminUserIds = new Set(
       users
-        .filter(u => ADMIN_EMAILS.includes(u.email || ''))
+        .filter(u => isAdminEmail(u.email))
         .map(u => u.id)
     )
     

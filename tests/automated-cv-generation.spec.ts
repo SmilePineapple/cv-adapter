@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, Page } from '@playwright/test'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -60,7 +60,7 @@ test.describe('Automated CV Generation Tests', () => {
   })
 
   for (const job of TEST_JOBS) {
-    test(`Generate ${job.expectedPages}-page CV for ${job.title}`, async ({ page, context }) => {
+    test(`Generate ${job.expectedPages}-page CV for ${job.title}`, async ({ page }) => {
       console.log(`\n🎯 Testing: ${job.title} (${job.expectedPages} pages)`)
 
       // Navigate to CV list
@@ -182,7 +182,7 @@ test.describe('Automated CV Generation Tests', () => {
     })
   }
 
-  test('Summary: Analyze all generated CVs', async ({ page }) => {
+  test('Summary: Analyze all generated CVs', async () => {
     console.log('\n📊 GENERATING SUMMARY REPORT...\n')
 
     // Read all result files

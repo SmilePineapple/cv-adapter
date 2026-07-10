@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseRouteClient, createSupabaseAdminClient } from '@/lib/supabase-server'
+import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx'
 
 // Helper function to safely extract content from section

@@ -204,6 +204,80 @@ export function computeShrinkScale(measurement: RenderMeasurement, options: Shri
   return Math.max(minScale, Math.min(1, scale))
 }
 
+export interface TemplateShrinkScaleOptions {
+  minScale?: number
+  safetyMarginPx?: number
+}
+
+// Last-resort deterministic safety net for single-page template-rendered exports
+// (generateTemplateHtml output), which don't have the .cv-page wrapper page-plan-renderer
+// relies on for clippedSections detection - so computeShrinkScale's per-section overflow
+// math never fires for them. Falls back to whole-document scrollHeight vs the single-page
+// target height instead. Meant to be applied via CSS `zoom` (not `transform: scale`, which
+// doesn't affect layout/scrollHeight in Chromium and so wouldn't be reflected on re-measure).
+export function computeTemplateShrinkScale(measurement: RenderMeasurement, options: TemplateShrinkScaleOptions = {}): number {
+  const { minScale = 0.82, safetyMarginPx = 6 } = options
+
+  if (measurement.targetPages !== 1) return 1
+  if (measurement.actualPages <= 1) return 1
+
+  const overflowPx = measurement.scrollHeight - measurement.pageHeight
+  if (overflowPx <= 0) return 1
+
+  const scale = measurement.pageHeight / (measurement.pageHeight + overflowPx + safetyMarginPx)
+  return Math.max(minScale, Math.min(1, scale))
+}
+
+export interface TemplateFillScaleOptions {
+  maxScale?: number
+  targetOccupancy?: number
+  minOccupancyToFill?: number
+}
+
+// Counterpart to computeTemplateShrinkScale for the underfilled case: single-page template
+// exports have no equivalent of computeFillScale (which only applies to the multi-page
+// page-plan renderer), so a short CV renders with a mostly-blank page instead of the
+// spacing being stretched to use it. Scales content up toward targetOccupancy via the same
+// `zoom` mechanism, capped conservatively (multi-page's fill scale caps at 1.5x, but that
+// pushes underfilled *interior* pages toward a full one; here we're inflating the only page,
+// so oversized text is a much more visible failure mode - keep the cap tight).
+export function computeTemplateFillScale(measurement: RenderMeasurement, options: TemplateFillScaleOptions = {}): number {
+  const { maxScale = 1.18, targetOccupancy = 0.9, minOccupancyToFill = 0.75 } = options
+
+  if (measurement.targetPages !== 1) return 1
+  if (measurement.actualPages > 1 || measurement.overflowing) return 1
+
+  const page1 = measurement.pageOccupancy.find(p => p.page === 1)
+  if (!page1 || page1.occupancy <= 0) return 1
+  if (page1.occupancy >= minOccupancyToFill) return 1
+
+  const scale = targetOccupancy / page1.occupancy
+  return Math.min(maxScale, Math.max(1, scale))
+}
+
+// For the single-column overflow fallback (a CV that couldn't be shrunk to 1 page and now
+// spans N pages): the last page is very often mostly empty, since it only holds whatever
+// spilled past page N-1's boundary. Unlike computeTemplateFillScale (which only fires for a
+// genuinely single-page result), this targets whichever page is actually last, regardless of
+// total page count - the goal is "use the space on the page you shipped", not "get to 1 page".
+export function computeTemplateLastPageFillScale(measurement: RenderMeasurement, options: TemplateFillScaleOptions = {}): number {
+  const { maxScale = 1.15, targetOccupancy = 0.85, minOccupancyToFill = 0.7 } = options
+
+  // Deliberately does NOT check measurement.overflowing: that flag compares actualPages
+  // against the original single-page target, which this function is called after already
+  // accepting as a multi-page result. Only bail if content is genuinely being clipped -
+  // that's the real "don't make this worse" signal here.
+  if (measurement.clippedPages && measurement.clippedPages.length > 0) return 1
+  if (!measurement.actualPages || measurement.actualPages < 1) return 1
+
+  const lastPage = measurement.pageOccupancy.find(p => p.page === measurement.actualPages)
+  if (!lastPage || lastPage.occupancy <= 0) return 1
+  if (lastPage.occupancy >= minOccupancyToFill) return 1
+
+  const scale = targetOccupancy / lastPage.occupancy
+  return Math.min(maxScale, Math.max(1, scale))
+}
+
 export async function measureRenderedCV(page: Page, targetPages?: number): Promise<RenderMeasurement> {
   const rawMeasurement = await page.evaluate((fallbackPageHeight) => {
     const pageHeight = fallbackPageHeight
@@ -214,13 +288,18 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     const htmlStyle = window.getComputedStyle(document.documentElement)
     const isHardClamped = (bodyStyle.overflow === 'hidden' || bodyStyle.overflowY === 'hidden') &&
                           (htmlStyle.overflow === 'hidden' || htmlStyle.overflowY === 'hidden')
+    // When the template-shrink safety net applies `body { zoom }`, Chromium reports
+    // body.scrollHeight/offsetHeight in the body's own zoomed coordinate space, NOT root
+    // pixels - so an already-fitting page still measures as overflowing and the shrink
+    // loop can never converge. Normalize body-based metrics back to root pixels.
+    const bodyZoom = parseFloat((bodyStyle as CSSStyleDeclaration & { zoom?: string }).zoom || '1') || 1
     const scrollHeight = isHardClamped
       ? document.body.clientHeight || document.documentElement.clientHeight
       : Math.max(
           document.documentElement.scrollHeight,
-          document.body.scrollHeight,
+          document.body.scrollHeight * bodyZoom,
           document.documentElement.offsetHeight,
-          document.body.offsetHeight
+          document.body.offsetHeight * bodyZoom
         )
 
     const sectionNodes = Array.from(document.querySelectorAll('[data-section-type], [data-type], .section'))
@@ -319,4 +398,15 @@ export async function measureRenderedCV(page: Page, targetPages?: number): Promi
     clippedSections: rawMeasurement.clippedSectionDetails,
     overflowing: typeof targetPages === 'number' ? actualPages > targetPages || rawMeasurement.clippedPages.length > 0 : rawMeasurement.clippedPages.length > 0
   }
+}
+
+// Counts physical pages in a PDF buffer by counting distinct /Type /Page object
+// dictionaries in the raw bytes. Puppeteer/Chromium's PDF writer emits these
+// uncompressed, so this is a reliable, dependency-free ground-truth page count - used
+// because DOM scrollHeight measurement can diverge from actual print pagination (e.g.
+// flex/grid two-column layouts paginate independently per column under print).
+export function countPdfPages(buffer: Buffer): number {
+  const text = buffer.toString('latin1')
+  const matches = text.match(/\/Type\s*\/Page(?!s)\b/g)
+  return matches ? matches.length : 0
 }

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { getOpenAIClient } from '@/lib/openai-client'
 import { CVSection, GenerationRequest, DiffMetadata } from '@/types/database'
-import { getLanguageInstruction, LANGUAGE_NAMES } from '@/lib/language-detection'
+import { LANGUAGE_NAMES } from '@/lib/language-detection'
 import { trackCVGeneration, trackFunnelStage } from '@/lib/analytics'
 import { calculateATSScore } from '@/lib/ats-calculator-improved'
 import { runATSOptimization } from '@/lib/ats-optimizer'
@@ -865,11 +865,6 @@ function createRewritePrompt(
     : ''
 
   const languageName = LANGUAGE_NAMES[languageCode] || 'English'
-  const styleMap = {
-    conservative: 'minimal changes',
-    balanced: 'moderate improvements',
-    bold: 'significant optimization'
-  }
 
   // Page length instructions with exact structure specifications
   let pageLengthInstructions = ''
@@ -1193,12 +1188,6 @@ function extractTopKeywords(text: string, limit: number = 10): string[] {
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
     .map(([word]) => word)
-}
-
-// Helper: Truncate content for compact prompt
-function truncateContent(content: any, maxLength: number): string {
-  const str = typeof content === 'string' ? content : JSON.stringify(content)
-  return str.length > maxLength ? str.substring(0, maxLength) + '...' : str
 }
 
 // Normalize section types to prevent duplicates

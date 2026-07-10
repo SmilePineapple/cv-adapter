@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowRight, CheckCircle, XCircle, AlertTriangle, Target, Zap, FileText, Search, Award, TrendingUp } from 'lucide-react'
+import { ArrowRight, CheckCircle, XCircle, AlertTriangle, Target, Zap, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'ATS Optimisation Guide 2026: Beat Applicant Tracking Systems (UK)',

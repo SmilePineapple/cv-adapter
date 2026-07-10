@@ -42,7 +42,7 @@ export default function PhotoUpload({ cvId, currentPhotoUrl, onPhotoUploaded }: 
       const filePath = `cv-photos/${fileName}`
 
       // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('cv-assets')
         .upload(filePath, file, {
           cacheControl: '3600',
@@ -116,9 +116,10 @@ export default function PhotoUpload({ cvId, currentPhotoUrl, onPhotoUploaded }: 
         <div className="relative">
           {preview ? (
             <>
-              <img 
-                src={preview} 
-                alt="Profile" 
+              {/* eslint-disable-next-line @next/next/no-img-element -- remote Supabase Storage URL not in next.config images.remotePatterns; user-uploaded, no fixed source domain config */}
+              <img
+                src={preview}
+                alt="Profile"
                 className="w-32 h-32 rounded-full object-cover border-4 border-gray-200 shadow-sm"
               />
               <button

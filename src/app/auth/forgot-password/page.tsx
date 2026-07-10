@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { createSupabaseClient } from '@/lib/supabase'
+import { toast } from 'sonner'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -12,12 +14,24 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    
-    // TODO: Implement password reset logic with Supabase
-    setTimeout(() => {
-      setIsSubmitted(true)
+
+    try {
+      const supabase = createSupabaseClient()
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      })
+
+      if (error) {
+        toast.error(error.message)
+      } else {
+        setIsSubmitted(true)
+      }
+    } catch (err) {
+      console.error('Failed to send password reset email:', err)
+      toast.error('Something went wrong. Please try again.')
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (

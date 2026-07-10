@@ -6,12 +6,11 @@ import puppeteer from 'puppeteer-core'
 import puppeteerFull from 'puppeteer'
 import chromium from '@sparticuz/chromium'
 import { CVSection } from '@/types/database'
-import { analyzeContentDensity, getOptimizedSpacing, generateOptimizedTemplateCSS, isAdvancedTemplate } from '@/lib/pdf-layout-optimizer'
+import { getOptimizedSpacing, generateOptimizedTemplateCSS } from '@/lib/pdf-layout-optimizer'
 import { generateCreativeModernHTML, generateProfessionalColumnsHTML } from '@/lib/advanced-templates'
-import { generateIndustryTemplateHTML, industryTemplates } from '@/lib/industry-templates'
 import { stunningTemplates } from '@/lib/stunning-templates'
 import { trackExport, trackTemplateSelection } from '@/lib/analytics'
-import { measureRenderedCV, computeFillScale, computeShrinkScale } from '@/lib/cv-render-measurer'
+import { measureRenderedCV, computeFillScale, computeShrinkScale, computeTemplateShrinkScale, computeTemplateFillScale, computeTemplateLastPageFillScale, countPdfPages } from '@/lib/cv-render-measurer'
 import { createRenderRepairPlan, createRenderRepairPrompt } from '@/lib/cv-render-repair'
 import { renderPagePlanHTML } from '@/lib/page-plan-renderer'
 import { normalizeSectionType, getSectionText, VERBATIM_SECTION_TYPES } from '@/lib/cv-layout-validator'
@@ -425,6 +424,7 @@ async function handlePdfExport(
     // Deterministic spacing fill: only applies to multi-page CVs using page-plan renderer
     // For single-page CVs, the template generators handle their own spacing
     let activeMeasurement = renderMeasurement
+    let usedSingleColumnFallback = false
     if (maxPages && maxPages > 1) {
       const fillScale = computeFillScale(renderMeasurement)
       if (fillScale > 1.02) {
@@ -489,15 +489,148 @@ async function handlePdfExport(
           }))
         })
       }
+    } else if (!maxPages || maxPages === 1) {
+      // Ground truth for "is this actually 1 page" is the real PDF Chromium's print engine
+      // produces, NOT the screen-viewport scrollHeight measurement above. They can diverge:
+      // flex/grid two-column layouts (e.g. Creative Modern) paginate independently per
+      // column under print, and page-break-inside:avoid on an oversized section can push it
+      // whole onto the next page - both can yield more physical PDF pages than the DOM
+      // height math predicts. So the loop below always confirms against a real probe
+      // page.pdf() page count and keeps shrinking until that hits 1 or the legibility floor,
+      // using the DOM measurement only to size each shrink step, not to decide when to stop.
+      const MIN_SCALE = 0.82
+      const baseHtml = html
+      let cumulativeScale = 1
+      let realPdfPages = countPdfPages(Buffer.from(
+        await page.pdf({ format: 'A4', printBackground: true, margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } })
+      ))
+      console.log('📐 Real PDF page count (initial):', { realPdfPages, domOverflowing: activeMeasurement.overflowing })
+
+      for (let pass = 0; pass < 4 && realPdfPages > 1 && cumulativeScale > MIN_SCALE; pass++) {
+        const stepScale = computeTemplateShrinkScale(activeMeasurement)
+        const nextScale = Math.max(MIN_SCALE, stepScale < 0.99 ? cumulativeScale * stepScale : cumulativeScale - 0.06)
+        if (nextScale >= cumulativeScale - 0.001) break
+        cumulativeScale = nextScale
+
+        console.log(`📐 Applying deterministic template shrink (zoom, pass ${pass + 1}): ${cumulativeScale.toFixed(3)}`)
+        html = injectZoomStyle(baseHtml, cumulativeScale)
+        await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await new Promise(r => setTimeout(r, 500))
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+
+        realPdfPages = countPdfPages(Buffer.from(
+          await page.pdf({ format: 'A4', printBackground: true, margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } })
+        ))
+        console.log('📐 Real PDF page count after pass:', { pass: pass + 1, scale: cumulativeScale.toFixed(3), realPdfPages, domOverflowing: activeMeasurement.overflowing })
+      }
+
+      if (realPdfPages > 1) {
+        console.warn(`⚠️ Single-page export still produced ${realPdfPages} physical PDF pages after deterministic shrink reached its legibility floor (${cumulativeScale.toFixed(3)}). Content genuinely exceeds what spacing compression alone can fix - would need AI condensing.`)
+
+        // The two-column layout genuinely can't paginate cleanly past 1 page: only one
+        // column's overflow spills onto the next page, leaving the other column's half of
+        // that page blank and the content awkwardly hugging one side. Rather than ship that,
+        // fall back to the template's single-column mode (already built for multi-page CVs -
+        // see useSingleColumn in generateCreativeModernHTML) so any genuine overflow reads as
+        // a normal full-width continuation instead of a broken split layout.
+        console.log('📐 Falling back to single-column layout for clean pagination of residual overflow')
+        usedSingleColumnFallback = true
+        const singleColumnMarginHtml = injectPageMarginStyle(
+          generateTemplateHtml(sections, template, undefined, photoUrl, 2),
+          18
+        )
+        const probePdfOpts = { format: 'A4' as const, printBackground: true, margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }, preferCSSPageSize: true }
+
+        html = singleColumnMarginHtml
+        await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        await new Promise(r => setTimeout(r, 500))
+        activeMeasurement = await measureRenderedCV(page, maxPages)
+        realPdfPages = countPdfPages(Buffer.from(await page.pdf(probePdfOpts)))
+
+        let scScale = 1
+        for (let pass = 0; pass < 4 && realPdfPages > 1 && scScale > MIN_SCALE; pass++) {
+          const stepScale = computeTemplateShrinkScale(activeMeasurement)
+          const nextScale = Math.max(MIN_SCALE, stepScale < 0.99 ? scScale * stepScale : scScale - 0.06)
+          if (nextScale >= scScale - 0.001) break
+          scScale = nextScale
+          html = injectZoomStyle(singleColumnMarginHtml, scScale)
+          await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 15000 })
+          await new Promise(r => setTimeout(r, 500))
+          activeMeasurement = await measureRenderedCV(page, maxPages)
+          realPdfPages = countPdfPages(Buffer.from(await page.pdf(probePdfOpts)))
+        }
+        console.log('📐 Real PDF page count after single-column fallback:', { realPdfPages, scale: scScale.toFixed(3) })
+
+        // The last page of this fallback is very often mostly empty (it only holds whatever
+        // spilled past the prior page's boundary) - stretch content to use more of it, the
+        // same way computeTemplateFillScale does for a genuinely single-page result.
+        let lastPageFillScale = computeTemplateLastPageFillScale(activeMeasurement)
+        for (let pass = 0; pass < 3 && lastPageFillScale > 1.001; pass++) {
+          const candidateScale = Math.min(1.3, scScale * lastPageFillScale)
+          const filledHtml = injectZoomStyle(singleColumnMarginHtml, candidateScale)
+          await page.setContent(filledHtml, { waitUntil: 'domcontentloaded', timeout: 15000 })
+          await new Promise(r => setTimeout(r, 500))
+          const filledMeasurement = await measureRenderedCV(page, maxPages)
+          const filledPages = countPdfPages(Buffer.from(await page.pdf(probePdfOpts)))
+          const filledHasClipping = filledMeasurement.clippedPages && filledMeasurement.clippedPages.length > 0
+
+          if (filledPages > realPdfPages || filledHasClipping) {
+            // Not "overflowing" (stale vs the original 1-page target, always true here) -
+            // only reject if page count actually grew or content got clipped.
+            lastPageFillScale = Math.max(1, lastPageFillScale - 0.05)
+            if (lastPageFillScale <= 1.001) break
+            continue
+          }
+
+          html = filledHtml
+          activeMeasurement = filledMeasurement
+          console.log('📐 Applied last-page fill for single-column fallback:', { pass: pass + 1, lastPageFillScale: lastPageFillScale.toFixed(3) })
+          break
+        }
+      } else if (cumulativeScale === 1) {
+        // No shrink was needed (content already fit) - check the opposite failure mode: a
+        // short CV rendering with a mostly-blank page instead of using the space it has.
+        // Only attempt this when shrink never engaged; stretching content that just barely
+        // escaped a shrink pass would risk pushing it back into overflow.
+        const MAX_FILL_SCALE = 1.18
+        let fillScale = computeTemplateFillScale(activeMeasurement, { maxScale: MAX_FILL_SCALE })
+
+        for (let pass = 0; pass < 3 && fillScale > 1.001; pass++) {
+          console.log(`📐 Applying deterministic template fill (zoom, pass ${pass + 1}): ${fillScale.toFixed(3)}`)
+          const filledHtml = injectZoomStyle(baseHtml, fillScale)
+          await page.setContent(filledHtml, { waitUntil: 'domcontentloaded', timeout: 15000 })
+          await new Promise(r => setTimeout(r, 500))
+          const filledMeasurement = await measureRenderedCV(page, maxPages)
+          const filledPdfPages = countPdfPages(Buffer.from(
+            await page.pdf({ format: 'A4', printBackground: true, margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' } })
+          ))
+
+          if (filledPdfPages > 1 || filledMeasurement.overflowing) {
+            // Overshot - back off and stop rather than risk shipping 2 pages for a fill attempt
+            fillScale = Math.max(1, fillScale - 0.06)
+            if (fillScale <= 1.001) break
+            continue
+          }
+
+          html = filledHtml
+          activeMeasurement = filledMeasurement
+          console.log('📐 Real PDF page count after fill pass:', { pass: pass + 1, fillScale: fillScale.toFixed(3), filledPdfPages })
+          break
+        }
+      }
     }
 
-    // Standard A4 margins for page-plan renderer (template handles internal layout)
+    // Standard A4 margins for page-plan renderer (template handles internal layout).
+    // The single-column fallback above injects its own @page margin rules (real top spacing
+    // on continuation pages) - preferCSSPageSize must be set for Chromium to honor those
+    // instead of silently overriding them with this margin object.
     const margins = { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' }
-    
+
     const pdfOptions = {
       format: 'A4' as const,
       printBackground: true,
-      margin: margins
+      margin: margins,
+      ...(usedSingleColumnFallback ? { preferCSSPageSize: true } : {})
     }
 
     const pdf = await page.pdf(pdfOptions)
@@ -1061,6 +1194,37 @@ function escapeHtml(text: string): string {
     "'": '&#039;'
   }
   return text.replace(/[&<>"']/g, (m) => map[m])
+}
+
+// Shrinks a fully-rendered template HTML string by injecting a `zoom` override just before
+// </head>. `zoom` (unlike `transform: scale`) affects Chromium's layout pass, so it's reflected
+// in a re-measured scrollHeight - needed since template HTML varies too much per-template
+// (10+ hand-authored CSS blocks) to shrink via a shared font-size/spacing parameter.
+// Zoom the body ONLY: zooming the html root makes Chromium report documentElement.scrollHeight
+// in unscaled units, so the re-measure never sees the shrink and the loop can't converge.
+function injectZoomStyle(html: string, scale: number): string {
+  const styleTag = `<style>body { zoom: ${scale}; }</style>`
+  return html.includes('</head>')
+    ? html.replace('</head>', `${styleTag}</head>`)
+    : `${styleTag}${html}`
+}
+
+// Gives continuation pages (page 2+) real breathing room at the top when a single-page
+// template overflows into a single-column multi-page fallback. Chromium's print engine
+// collapses/drops element margins that fall exactly at a forced page break, so a plain
+// margin-top on the first element of page 2 has no effect - the reliable lever is the CSS
+// `@page` at-rule, which sets margins per physical page independent of element flow.
+// `:first` targets page 1 only, so the header stays flush at the top as designed while every
+// later page gets an actual gap before its content starts. Requires the paired page.pdf() call
+// to pass `preferCSSPageSize: true`, or Chromium ignores these rules in favor of the JS margin.
+function injectPageMarginStyle(html: string, continuationTopMarginMm: number): string {
+  const styleTag = `<style>
+    @page { size: A4; margin-top: ${continuationTopMarginMm}mm; margin-right: 0; margin-bottom: 0; margin-left: 0; }
+    @page :first { margin-top: 0; }
+  </style>`
+  return html.includes('</head>')
+    ? html.replace('</head>', `${styleTag}</head>`)
+    : `${styleTag}${html}`
 }
 
 function generateHtmlWithStyle(sections: CVSection[], style: string): string {

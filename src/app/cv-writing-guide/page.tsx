@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { CheckCircle, ArrowRight, FileText, Target, Sparkles, Award, TrendingUp, Users } from 'lucide-react'
+import { CheckCircle, ArrowRight, FileText, Target, Sparkles, Award } from 'lucide-react'
 import { CVWritingGuideSchema } from '@/components/CVWritingGuideSchema'
 
 export const metadata: Metadata = {

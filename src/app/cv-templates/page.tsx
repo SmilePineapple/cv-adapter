@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Download, Eye, CheckCircle, Star, FileText, Search, Filter } from 'lucide-react'
+import { ArrowRight, Download, CheckCircle, Star, FileText, Search, Filter } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'CV Templates - Free Professional Downloads | MyCVBuddy',

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -21,11 +21,7 @@ export default function SkillsAssessmentPage() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [isPro, setIsPro] = useState(false)
 
-  useEffect(() => {
-    checkProStatus()
-  }, [])
-
-  const checkProStatus = async () => {
+  const checkProStatus = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -40,7 +36,11 @@ export default function SkillsAssessmentPage() {
     } catch (error) {
       console.error('Error checking pro status:', error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    checkProStatus()
+  }, [checkProStatus])
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()

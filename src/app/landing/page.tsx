@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { ArrowRight, Upload, Zap, Download, CheckCircle, Star, Users, FileText, TrendingUp, Shield, Award, Target } from 'lucide-react'
+import { ArrowRight, Upload, Zap, Download, CheckCircle, Star, Users, FileText, TrendingUp, Shield, Target } from 'lucide-react'
 
 function LoadingFallback() {
   return (

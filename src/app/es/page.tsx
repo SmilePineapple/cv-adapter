@@ -21,7 +21,7 @@ export default function SpanishLandingPage() {
                 English
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-medium"
               >
                 Empezar Gratis
@@ -53,14 +53,14 @@ export default function SpanishLandingPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-semibold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl"
             >
               Probar Gratis
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="/login"
+              href="/auth/login"
               className="px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-gray-50 transition-all font-semibold text-lg border-2 border-gray-200"
             >
               Iniciar Sesión
@@ -206,7 +206,7 @@ export default function SpanishLandingPage() {
                 <div className="text-3xl font-bold text-gray-900 mb-2">0€</div>
                 <p className="text-gray-600 mb-4">Prueba sin compromiso</p>
                 <Link
-                  href="/signup"
+                  href="/auth/signup"
                   className="block w-full px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-semibold text-center"
                 >
                   Empezar Ahora
@@ -249,7 +249,7 @@ export default function SpanishLandingPage() {
             Únete a cientos de profesionales hispanos que usan My CV Buddy
           </p>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition-all font-semibold text-lg shadow-lg"
           >
             Empezar Gratis

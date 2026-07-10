@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -31,11 +31,7 @@ export default function SyncSubscriptionPage() {
   const supabase = createSupabaseClient()
   const router = useRouter()
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
@@ -46,7 +42,11 @@ export default function SyncSubscriptionPage() {
 
     setIsAuthorized(true)
     setIsCheckingAuth(false)
-  }
+  }, [supabase, router])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const syncSubscription = async () => {
     if (!email && !userId) {

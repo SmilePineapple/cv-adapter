@@ -6,7 +6,8 @@ interface PromoBannerProps {
   onClose?: () => void
 }
 
-export default function PromoBanner({ variant = 'homepage', onClose }: PromoBannerProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- props kept for interface compatibility; component is disabled
+export default function PromoBanner({ variant, onClose }: PromoBannerProps) {
   // Promo banner disabled
   return null
 }

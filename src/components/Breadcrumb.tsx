@@ -50,7 +50,7 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             </Link>
           </li>
           
-          {items.map((item, index) => (
+          {items.map((item) => (
             <li key={item.href} className="flex items-center">
               <ChevronRight className="w-4 h-4 text-gray-600 mx-1" />
               {item.current ? (

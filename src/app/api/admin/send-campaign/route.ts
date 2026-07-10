@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { Resend } from 'resend'
-
-const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
+import { isAdminEmail } from '@/lib/admin-auth'
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''))
     
-    if (!user || user.id !== ADMIN_USER_ID) {
+    if (!user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 

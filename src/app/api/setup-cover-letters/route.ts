@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 
 
 
-export async function POST(request: NextRequest) {
+export async function POST(/* request: NextRequest */) {
   try {
     const supabase = createAdminClient()
     // Create cover_letters table with service role key
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       CREATE INDEX IF NOT EXISTS idx_cover_letters_generation_id ON cover_letters(generation_id);
     `
 
-    const { data, error } = await supabase.rpc('exec_sql', { sql: createTableSQL })
+    const { error } = await supabase.rpc('exec_sql', { sql: createTableSQL })
 
     if (error) {
       console.error('SQL execution error:', error)

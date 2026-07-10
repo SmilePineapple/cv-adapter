@@ -8,24 +8,20 @@ import { createSupabaseClient } from '@/lib/supabase'
 export const dynamic = 'force-dynamic'
 import { toast } from 'sonner'
 import { 
-  ArrowLeft, 
-  Save, 
-  Undo, 
-  Redo, 
-  Eye, 
+  ArrowLeft,
+  Save,
+  Undo,
+  Redo,
   Download,
   Plus,
   GripVertical,
   Settings,
   Palette,
-  Type,
-  Layout,
   Loader2,
   FileText,
   Sparkles,
   Trash2,
   X,
-  Check,
   AlertCircle
 } from 'lucide-react'
 
@@ -138,6 +134,11 @@ export default function CVEditorPage() {
   useEffect(() => {
     fetchCVData()
     fetchAiUsage()
+    // Intentionally run once per cvId: fetchCVData and migrateCVToSections call each other
+    // (migrateCVToSections retries fetchCVData via setTimeout on migration), so memoizing
+    // either with useCallback would create a circular dependency chain. supabase/router are
+    // stable; cvId/generationId changes are already the effect's own trigger.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cvId])
 
   const fetchAiUsage = async () => {
@@ -167,7 +168,7 @@ export default function CVEditorPage() {
       if (!error || error.code === 'PGRST116') {
         setAiUsageCount(usage?.usage_count || 0)
       }
-    } catch (error) {
+    } catch {
       // Silently fail - AI usage tracking is optional
     }
   }
@@ -453,6 +454,7 @@ export default function CVEditorPage() {
     addToHistory(newData)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- index kept to match onDragStart call-site signature
   const handleDragStart = (e: React.DragEvent, sectionId: string, index: number) => {
     setDraggedSection(sectionId)
     e.dataTransfer.effectAllowed = 'move'

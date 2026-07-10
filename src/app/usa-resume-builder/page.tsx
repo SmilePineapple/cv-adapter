@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowRight, CheckCircle } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'USA Resume Builder — AI Resume Adapter for American Job Market | My CV Buddy',

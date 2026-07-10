@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, FileText, CheckCircle, AlertCircle } from 'lucide-react'
+import { ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

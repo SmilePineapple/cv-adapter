@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
-
-const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
+import { isAdminEmail } from '@/lib/admin-auth'
 
 /**
  * Get campaign status and progress
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
 
     const { data: { user }, error: authError } = await supabase.auth.getUser(token)
 
-    if (authError || !user || user.id !== ADMIN_USER_ID) {
+    if (authError || !user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

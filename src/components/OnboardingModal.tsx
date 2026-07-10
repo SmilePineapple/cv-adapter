@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
-import { 
-  X, 
-  Briefcase, 
+import {
+  Briefcase,
   TrendingUp, 
   Globe, 
   Rocket,
@@ -23,7 +22,7 @@ interface OnboardingModalProps {
   onComplete: () => void
 }
 
-export function OnboardingModal({ isOpen, onClose, onComplete }: OnboardingModalProps) {
+export function OnboardingModal({ isOpen, onComplete }: OnboardingModalProps) {
   const [step, setStep] = useState(1)
   const [selectedGoal, setSelectedGoal] = useState<string>('')
   const router = useRouter()

@@ -6,7 +6,7 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
-import { writeFileSync, existsSync } from 'fs'
+import { existsSync } from 'fs'
 
 // Load .env.local only if it exists (local development)
 const envPath = resolve(process.cwd(), '.env.local')
@@ -46,41 +46,24 @@ async function logAction(action: string, status: 'success' | 'failed', details: 
   console.log(`${status === 'success' ? '✅' : '❌'} ${action}: ${details}`)
 }
 
-// 1. Auto-generate and submit sitemap to Google
+// 1. Submit the existing hand-maintained sitemap to Google (does NOT regenerate it —
+// public/sitemap.xml is curated by hand/CMS and must not be overwritten with a stub list)
 async function generateAndSubmitSitemap() {
-  console.log('\n🗺️  Generating sitemap...')
-  
+  console.log('\n🗺️  Submitting sitemap...')
+
   const baseUrl = 'https://www.mycvbuddy.com'
-  const pages = [
-    { url: '/', priority: 1.0, changefreq: 'daily' },
-    { url: '/resume-builder-usa', priority: 0.9, changefreq: 'weekly' },
-    { url: '/pricing', priority: 0.8, changefreq: 'weekly' },
-    { url: '/features', priority: 0.8, changefreq: 'weekly' },
-    { url: '/blog', priority: 0.7, changefreq: 'daily' },
-    { url: '/login', priority: 0.5, changefreq: 'monthly' },
-    { url: '/signup', priority: 0.5, changefreq: 'monthly' },
-  ]
+  const sitemapPath = resolve(process.cwd(), 'public/sitemap.xml')
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map(page => `  <url>
-    <loc>${baseUrl}${page.url}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`
+  if (!existsSync(sitemapPath)) {
+    await logAction('Submit Sitemap', 'failed', 'public/sitemap.xml does not exist')
+    return
+  }
 
-  // Save sitemap
-  writeFileSync(resolve(process.cwd(), 'public/sitemap.xml'), sitemap)
-  await logAction('Generate Sitemap', 'success', 'Sitemap.xml created with 7 pages')
-
-  // Submit to Google Search Console
   try {
     const response = await fetch(
       `https://www.google.com/ping?sitemap=${encodeURIComponent(baseUrl + '/sitemap.xml')}`
     )
-    
+
     if (response.status === 200 || response.status === 202) {
       await logAction('Submit Sitemap', 'success', 'Sitemap submitted to Google')
     } else {
@@ -91,27 +74,18 @@ ${pages.map(page => `  <url>
   }
 }
 
-// 2. Auto-generate robots.txt
+// 2. Validate robots.txt is present and consistent (does NOT regenerate it — see note above)
 async function generateRobotsTxt() {
-  console.log('\n🤖 Generating robots.txt...')
-  
-  const robotsTxt = `# mycvbuddy.com robots.txt
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /edit/
-Disallow: /generate/
-Disallow: /review/
-Disallow: /download/
-Disallow: /history/
-Disallow: /auto-cv/
+  console.log('\n🤖 Validating robots.txt...')
 
-Sitemap: https://www.mycvbuddy.com/sitemap.xml
-Sitemap: https://www.mycvbuddy.co.uk/sitemap.xml`
+  const robotsPath = resolve(process.cwd(), 'public/robots.txt')
 
-  writeFileSync(resolve(process.cwd(), 'public/robots.txt'), robotsTxt)
-  await logAction('Generate Robots.txt', 'success', 'robots.txt updated')
+  if (!existsSync(robotsPath)) {
+    await logAction('Validate Robots.txt', 'failed', 'public/robots.txt does not exist')
+    return
+  }
+
+  await logAction('Validate Robots.txt', 'success', 'robots.txt present, left untouched')
 }
 
 // 3. Check for broken internal links
@@ -119,7 +93,7 @@ async function checkBrokenLinks() {
   console.log('\n🔗 Checking for broken links...')
   
   const baseUrl = 'https://www.mycvbuddy.com'
-  const pagesToCheck = ['/', '/pricing', '/features']
+  const pagesToCheck = ['/', '/pricing-comparison', '/blog']
   
   let brokenLinks = 0
   

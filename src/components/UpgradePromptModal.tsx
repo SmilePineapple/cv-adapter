@@ -15,7 +15,6 @@ interface UpgradePromptModalProps {
 export default function UpgradePromptModal({
   isOpen,
   onClose,
-  trigger,
   generationsUsed,
   maxGenerations
 }: UpgradePromptModalProps) {

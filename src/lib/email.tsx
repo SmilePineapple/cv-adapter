@@ -1,10 +1,6 @@
 import { render } from '@react-email/components'
 import { Resend } from 'resend'
-import WelcomeEmail from '@/emails/WelcomeEmail'
-import FirstGenerationEmail from '@/emails/FirstGenerationEmail'
-import LimitReachedEmail from '@/emails/LimitReachedEmail'
 import ReEngagementEmail from '@/emails/ReEngagementEmail'
-import PromoEmail from '@/emails/PromoEmail'
 import ThreeDayReminderEmail from '@/emails/ThreeDayReminderEmail'
 
 /**
@@ -538,6 +534,81 @@ export async function sendPaymentFailedEmail(email: string, name: string, attemp
 }
 
 /**
+ * Send payment action required email (e.g. 3D Secure / SCA confirmation needed)
+ */
+export async function sendPaymentActionRequiredEmail(email: string, name: string) {
+  try {
+    const resend = getResendClient()
+
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: '⚠️ Action needed to complete your CV Buddy Pro payment',
+      headers: {
+        'List-Unsubscribe': '<https://www.mycvbuddy.com/unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+          <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f6f9fc;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f9fc;padding:40px 0;">
+              <tr><td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
+                  <tr>
+                    <td style="background-color:#D97706;padding:32px;text-align:center;">
+                      <h1 style="color:#ffffff;font-size:26px;margin:0;">Action Needed ⚠️</h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:40px;">
+                      <p style="font-size:16px;line-height:26px;color:#333333;margin:0 0 20px 0;">Hi ${name},</p>
+                      <p style="font-size:16px;line-height:26px;color:#333333;margin:0 0 20px 0;">Your bank requires additional verification (such as 3D Secure) to confirm your CV Buddy Pro payment. Please complete this step to avoid losing Pro access.</p>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td align="center" style="padding:20px 0;">
+                            <a href="https://www.mycvbuddy.com/subscription" style="display:inline-block;padding:16px 32px;background:#4F46E5;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;font-size:16px;">
+                              Confirm Payment →
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="font-size:14px;line-height:22px;color:#6b7280;margin:20px 0 0 0;">
+                        If you need help, reply to this email or contact us at support@mycvbuddy.com
+                      </p>
+                      <p style="font-size:16px;line-height:26px;color:#4b5563;margin:30px 0 0 0;">
+                        Best regards,<br>The CV Buddy Team
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:24px;border-top:1px solid #e5e7eb;text-align:center;background-color:#f9fafb;">
+                      <p style="font-size:14px;color:#6b7280;margin:4px 0;">CV Buddy · <a href="https://www.mycvbuddy.com/unsubscribe" style="color:#7c3aed;">Unsubscribe</a></p>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </body>
+        </html>
+      `,
+    })
+
+    if (error) {
+      console.error('Payment action required email error:', error)
+      return { success: false, error }
+    }
+
+    return { success: true, data }
+  } catch (error) {
+    console.error('Payment action required email exception:', error)
+    return { success: false, error }
+  }
+}
+
+/**
  * Send promotional email (4 days left offer)
  * Using HTML for reliability
  */
@@ -876,8 +947,7 @@ export async function sendDeletionWarningEmail(email: string, name: string, dele
  */
 export async function sendAccountDeletionApologyEmail(
   email: string,
-  name: string,
-  _refundAmount?: string
+  name: string
 ) {
   try {
     const resend = getResendClient()

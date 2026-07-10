@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
 import Stripe from 'stripe'
 import { trackPaymentCompleted } from '@/lib/analytics'
-import { sendUpgradeConfirmationEmail, sendPaymentFailedEmail } from '@/lib/email'
+import { sendUpgradeConfirmationEmail, sendPaymentFailedEmail, sendPaymentActionRequiredEmail } from '@/lib/email'
 
 /**
  * Lazy initialization of Stripe client to avoid build-time errors
@@ -796,11 +796,20 @@ export async function POST(request: NextRequest) {
 
         if (userId) {
           const { data: userData } = await supabase.auth.admin.getUserById(userId)
-          console.log('[Webhook] Payment action required for user:', userData?.user?.email)
-          
-          // TODO: Send email notification to user about payment action required
+          const userEmail = userData?.user?.email
+          const userName = userData?.user?.user_metadata?.full_name || userEmail?.split('@')[0] || 'there'
+          console.log('[Webhook] Payment action required for user:', userEmail)
+
+          if (userEmail) {
+            try {
+              await sendPaymentActionRequiredEmail(userEmail, userName)
+              console.log('[Webhook] Payment action required email sent to:', userEmail)
+            } catch (emailError) {
+              console.error('[Webhook] Failed to send payment action required email:', emailError)
+            }
+          }
         }
-        
+
         break
       }
 

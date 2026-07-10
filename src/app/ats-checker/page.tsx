@@ -2,12 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Upload, CheckCircle, XCircle, AlertCircle, Zap, FileText, Target, Award } from 'lucide-react'
+import { ArrowLeft, CheckCircle, XCircle, AlertCircle, Zap, FileText, Target, Award } from 'lucide-react'
 
 export default function ATSCheckerPage() {
   const [cvText, setCvText] = useState('')
   const [jobDescription, setJobDescription] = useState('')
-  const [email, setEmail] = useState('')
   const [score, setScore] = useState<number | null>(null)
   const [analysis, setAnalysis] = useState<any>(null)
   const [loading, setLoading] = useState(false)
@@ -24,7 +23,7 @@ export default function ATSCheckerPage() {
     setTimeout(() => {
       const calculatedScore = calculateATSScore(cvText, jobDescription)
       setScore(calculatedScore)
-      setAnalysis(generateAnalysis(cvText, jobDescription, calculatedScore))
+      setAnalysis(generateAnalysis(cvText, jobDescription))
       setShowEmailCapture(true)
       setLoading(false)
     }, 2000)
@@ -73,7 +72,7 @@ export default function ATSCheckerPage() {
     return Math.min(Math.round(score), 100)
   }
 
-  const generateAnalysis = (cv: string, jd: string, score: number) => {
+  const generateAnalysis = (cv: string, jd: string) => {
     const cvLower = cv.toLowerCase()
     const jdLower = jd.toLowerCase()
     

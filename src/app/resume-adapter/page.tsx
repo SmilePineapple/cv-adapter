@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowRight, CheckCircle, Zap } from 'lucide-react'
+import { ArrowRight, CheckCircle } from 'lucide-react'
 import Script from 'next/script'
 
 export const metadata: Metadata = {

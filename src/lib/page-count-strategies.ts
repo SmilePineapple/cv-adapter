@@ -1,5 +1,5 @@
 import { CVContentCapacity } from './cv-capacity-analyzer'
-import { CVPageBlueprint, getCVPageBlueprint, SupportedPageCount } from './cv-page-blueprints'
+import { getCVPageBlueprint, SupportedPageCount } from './cv-page-blueprints'
 
 export interface GenerationStrategy {
   targetChars: number

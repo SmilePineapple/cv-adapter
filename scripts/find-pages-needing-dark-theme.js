@@ -1,18 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Pages already updated to dark theme
-const completedPages = [
-  'dashboard',
-  'generate',
-  'review',
-  'download',
-  'blog', // main + 22 individual posts
-  'privacy',
-  'terms',
-  'contact'
-];
-
 // High priority user-facing pages to check
 const pagesToCheck = [
   'upload',

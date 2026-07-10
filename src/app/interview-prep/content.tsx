@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CheckCircle, Target, Lightbulb, Award, TrendingUp, Users } from 'lucide-react'
+import { CheckCircle, Target, Lightbulb, Award } from 'lucide-react'
 
 export function InterviewPrepContent() {
   return (

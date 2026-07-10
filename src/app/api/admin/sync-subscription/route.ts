@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
-
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
+import { isAdminEmail } from '@/lib/admin-auth'
 
 /**
  * Admin API: Sync subscription status between Stripe and database
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
     const token = authHeader.replace('Bearer ', '')
     const { data: { user } } = await supabase.auth.getUser(token)
 
-    if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+    if (!user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
@@ -179,7 +178,6 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     const currentPlanType = usageTracking?.plan_type || 'free'
-    const currentSubscriptionTier = usageTracking?.subscription_tier || 'free'
 
     // Determine action based on Stripe status
     let action: string
@@ -193,7 +191,7 @@ export async function POST(request: NextRequest) {
 
       // Calculate period end - cast to any to access Stripe's current_period_end
       let currentPeriodEnd: Date
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const periodEnd = (stripeSubscription as any).current_period_end
       if (periodEnd) {
         currentPeriodEnd = new Date(periodEnd * 1000)

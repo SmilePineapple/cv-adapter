@@ -29,7 +29,7 @@ export async function safeJsonResponse<T = any>(response: Response): Promise<T> 
   // Response is ok, parse JSON
   try {
     return await response.json()
-  } catch (error) {
+  } catch {
     throw new Error('Failed to parse response as JSON')
   }
 }

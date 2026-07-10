@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -271,23 +271,10 @@ export default function DownloadPage() {
   const [showSkillEditor, setShowSkillEditor] = useState(true)
   const [showPhotoUpload, setShowPhotoUpload] = useState(false)
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState<string | null>(null)
-  const [skillScores, setSkillScores] = useState<{ name: string; level: number }[] | null>(null)
+  const [, setSkillScores] = useState<{ name: string; level: number }[] | null>(null)
   const [showSuccessScreen, setShowSuccessScreen] = useState(false)
 
-  useEffect(() => {
-    fetchGenerationData()
-    checkSubscription()
-  }, [generationId])
-
-  useEffect(() => {
-    if (generationData) {
-      generatePreview()
-    }
-  }, [generationData, selectedTemplate])
-
-  // 🎯 PHASE 4: Removed keyboard navigation (single template only)
-
-  const checkSubscription = async () => {
+  const checkSubscription = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -304,9 +291,9 @@ export default function DownloadPage() {
     } catch (error) {
       console.error('Error checking subscription:', error)
     }
-  }
+  }, [supabase])
 
-  const fetchGenerationData = async () => {
+  const fetchGenerationData = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
@@ -382,18 +369,35 @@ export default function DownloadPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, generationId])
 
-  const generatePreview = async (updatedSkillScores?: { name: string; level: number }[] | null) => {
+  useEffect(() => {
+    fetchGenerationData()
+    checkSubscription()
+  }, [fetchGenerationData, checkSubscription])
+
+  const generatePreview = useCallback(async (updatedSkillScores?: { name: string; level: number }[] | null) => {
     if (!generationData) return
 
     // Use sections from generationData (already fetched from cv_sections in fetchGenerationData)
     const sections = [...generationData.output_sections.sections]
-    
+
     // Generate HTML preview based on template, passing updated skill scores if available
     const html = generateTemplateHtml(sections, selectedTemplate, updatedSkillScores)
     setPreviewHtml(html)
-  }
+    // generateTemplateHtml/prepareTemplateData/extractContactInfo are re-created each render
+    // but only close over generationData/selectedTemplate, both already in this deps array,
+    // so it's safe to omit them here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generationData, selectedTemplate])
+
+  // 🎯 PHASE 4: Removed keyboard navigation (single template only)
+
+  useEffect(() => {
+    if (generationData) {
+      generatePreview()
+    }
+  }, [generationData, selectedTemplate, generatePreview])
 
   const generateTemplateHtml = (sections: CVSection[], templateId: string, overrideSkillScores?: { name: string; level: number }[] | null): string => {
     const maxPages = generationData?.max_pages || 1

@@ -34,7 +34,7 @@ export default function ContactPage() {
 
       setStatus('success')
       setFormData({ name: '', email: '', subject: '', message: '' })
-    } catch (error) {
+    } catch {
       setStatus('error')
       setErrorMessage('Failed to send message. Please try again or email us directly.')
     }

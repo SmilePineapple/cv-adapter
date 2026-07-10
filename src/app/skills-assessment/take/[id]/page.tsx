@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseClient } from '@/lib/supabase'
@@ -27,11 +27,7 @@ export default function TakeAssessmentPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false)
 
-  useEffect(() => {
-    fetchAssessment()
-  }, [assessmentId])
-
-  const fetchAssessment = async () => {
+  const fetchAssessment = useCallback(async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
@@ -76,7 +72,11 @@ export default function TakeAssessmentPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase, router, assessmentId])
+
+  useEffect(() => {
+    fetchAssessment()
+  }, [fetchAssessment])
 
   const handleAnswerSelect = async (answer: string) => {
     const currentQuestion = questions[currentQuestionIndex]
@@ -159,8 +159,6 @@ export default function TakeAssessmentPage() {
         const data = await response.json().catch(() => ({ error: 'Failed to submit assessment' }))
         throw new Error(data.error || 'Failed to submit assessment')
       }
-
-      const data = await response.json()
 
       toast.success('Assessment completed!')
       router.push(`/skills-assessment/results/${assessmentId}`)

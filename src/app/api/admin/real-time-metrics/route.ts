@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createSupabaseRouteClient } from '@/lib/supabase-server'
 import { createClient } from '@supabase/supabase-js'
-
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
+import { isAdminEmail } from '@/lib/admin-auth'
 
 export async function GET() {
   try {
@@ -10,7 +9,7 @@ export async function GET() {
     
     // Check admin auth
     const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+    if (authError || !user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

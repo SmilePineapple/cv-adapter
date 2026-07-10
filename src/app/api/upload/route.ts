@@ -68,7 +68,6 @@ export async function POST(request: NextRequest) {
   const supabaseAdmin = createAdminClient()
   
   try {
-    const openai = getOpenAIClient()
     // Get the authorization header
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {
@@ -473,7 +472,7 @@ function parseCV(text: string): ParsedCV {
 }
 
 // Add OPTIONS handler for CORS preflight
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS(/* request: NextRequest */) {
   return new NextResponse(null, {
     status: 200,
     headers: {

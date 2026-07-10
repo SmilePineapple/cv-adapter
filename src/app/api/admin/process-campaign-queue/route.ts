@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { Resend } from 'resend'
-
-const ADMIN_USER_ID = '75ac6140-bedc-4bbd-84c3-8dfa07356766'
+import { isAdminEmail } from '@/lib/admin-auth'
 
 /**
  * Background worker to process email campaign queue
@@ -22,7 +21,7 @@ export async function POST(request: NextRequest) {
     const isCronRequest = token === process.env.CRON_SECRET
     if (!isCronRequest) {
       const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-      if (authError || !user || user.id !== ADMIN_USER_ID) {
+      if (authError || !user || !isAdminEmail(user.email)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       }
     }

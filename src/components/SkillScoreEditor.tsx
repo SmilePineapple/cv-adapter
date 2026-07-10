@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createSupabaseClient } from '@/lib/supabase'
 import { Sliders, Save, Plus, X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -21,11 +21,7 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
   const [isSaving, setIsSaving] = useState(false)
   const [newSkillName, setNewSkillName] = useState('')
 
-  useEffect(() => {
-    loadSkills()
-  }, [cvId])
-
-  const loadSkills = async () => {
+  const loadSkills = useCallback(async () => {
     try {
       const supabase = createSupabaseClient()
       
@@ -83,7 +79,11 @@ export default function SkillScoreEditor({ cvId, onUpdate }: SkillScoreEditorPro
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [cvId])
+
+  useEffect(() => {
+    loadSkills()
+  }, [loadSkills])
 
   const updateSkillLevel = (index: number, level: number) => {
     const updated = [...skills]

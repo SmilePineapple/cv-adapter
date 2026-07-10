@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase-admin'
 
 
 
-export async function POST(request: NextRequest) {
+export async function POST(/* request: NextRequest */) {
   try {
     const supabase = createAdminClient()
     // Force refresh the schema cache by making a direct SQL call
-    const { data, error } = await supabase.rpc('refresh_schema_cache')
-    
+    const { error } = await supabase.rpc('refresh_schema_cache')
+
     if (error) {
       console.log('RPC refresh failed, trying alternative method...')
-      
+
       // Alternative: Make a simple query to force schema refresh
-      const { data: testData, error: testError } = await supabase
+      const { error: testError } = await supabase
         .from('cover_letters')
         .select('*')
         .limit(0)

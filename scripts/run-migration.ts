@@ -68,7 +68,7 @@ async function runMigration() {
   console.log('Data:', data)
 
   // Verify the table was created
-  const { data: tables, error: tableError } = await supabase
+  const { error: tableError } = await supabase
     .from('seo_metrics')
     .select('*')
     .limit(1)

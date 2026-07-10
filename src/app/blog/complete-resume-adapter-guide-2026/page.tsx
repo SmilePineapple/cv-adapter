@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowRight, CheckCircle, Zap, Target, Award, TrendingUp, FileText, Download, Users, Star } from 'lucide-react'
+import { ArrowRight, CheckCircle, Zap, Target, Award, TrendingUp, FileText, Star } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Complete Resume Adapter Guide 2026: AI-Powered CV Optimization for UK Jobs',

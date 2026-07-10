@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSupabaseClient } from '@/lib/supabase'
 import { toast } from 'sonner'
@@ -13,7 +13,6 @@ import {
   Loader2,
   Sparkles,
   BookOpen,
-  Award,
   Calendar,
   Send,
   Bot,
@@ -65,8 +64,7 @@ export default function CareerCoachPage() {
   
   // Skills Gap State
   const [skillsGap, setSkillsGap] = useState<SkillGap[]>([])
-  const [targetRole, setTargetRole] = useState('')
-  
+
   // Chat State
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatInput, setChatInput] = useState('')
@@ -81,16 +79,26 @@ export default function CareerCoachPage() {
   // Active Tab
   const [activeTab, setActiveTab] = useState<'path' | 'skills' | 'chat' | 'goals'>('path')
 
-  useEffect(() => {
-    checkAuth()
-    scrollToBottom()
-  }, [chatMessages])
-
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const checkAuth = async () => {
+  const loadGoals = useCallback(async (userId: string) => {
+    const { data, error } = await supabase
+      .from('career_goals')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (!error && data) {
+      setGoals(data.map(g => ({
+        ...g,
+        milestones: JSON.parse(g.milestones || '[]')
+      })))
+    }
+  }, [supabase])
+
+  const checkAuth = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -131,22 +139,12 @@ export default function CareerCoachPage() {
       console.error('Auth check error:', error)
       router.push('/auth/signin')
     }
-  }
+  }, [supabase, router, loadGoals])
 
-  const loadGoals = async (userId: string) => {
-    const { data, error } = await supabase
-      .from('career_goals')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-
-    if (!error && data) {
-      setGoals(data.map(g => ({
-        ...g,
-        milestones: JSON.parse(g.milestones || '[]')
-      })))
-    }
-  }
+  useEffect(() => {
+    checkAuth()
+    scrollToBottom()
+  }, [chatMessages, checkAuth])
 
   const analyzeCareerPath = async () => {
     if (!user) return

@@ -5,7 +5,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -17,7 +16,7 @@ interface WelcomeEmailProps {
   email: string
 }
 
-export default function WelcomeEmail({ name, email }: WelcomeEmailProps) {
+export default function WelcomeEmail({ name }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />

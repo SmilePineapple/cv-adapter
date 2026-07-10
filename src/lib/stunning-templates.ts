@@ -3,8 +3,6 @@
  * Based on modern, professional CV designs with unique layouts
  */
 
-import { CVSection } from '@/types/database'
-
 interface TemplateData {
   name: string
   email: string

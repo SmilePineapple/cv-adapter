@@ -300,7 +300,7 @@ Requirements:
     console.log('========================================\n')
   })
 
-  test('Verify image-based PDF rejection', async ({ page }) => {
+  test('Verify image-based PDF rejection', async () => {
     console.log('📍 Testing image-based PDF rejection...')
     
     // This test would require a scanned/image-based PDF

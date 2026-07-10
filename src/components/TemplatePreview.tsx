@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { X, Sparkles, Layout, Palette } from 'lucide-react'
 
 interface TemplatePreviewProps {
@@ -167,8 +166,9 @@ export default function TemplatePreview({ templateId, onClose, screenshot, color
           {/* Preview Image */}
           {screenshot ? (
             <div className="rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg">
-              <img 
-                src={screenshot} 
+              {/* eslint-disable-next-line @next/next/no-img-element -- variable aspect-ratio screenshot with no fixed width/height, fill would require restructuring the layout */}
+              <img
+                src={screenshot}
                 alt={`${preview.name} template preview`}
                 className="w-full h-auto"
                 onError={(e) => {

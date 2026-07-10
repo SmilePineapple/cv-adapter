@@ -5,8 +5,6 @@ import {
   GenerateAssessmentRequest,
   GenerateAssessmentResponse,
   DifficultyLevel,
-  QuestionType,
-  SkillCategory,
   AIGeneratedQuestion
 } from '@/types/skills-assessment'
 
@@ -14,7 +12,6 @@ import {
 
 export async function POST(request: NextRequest) {
   try {
-    const openai = getOpenAIClient()
     const supabase = createSupabaseAdminClient()
     // Get auth token from header
     const authHeader = request.headers.get('authorization')

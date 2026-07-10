@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-
-const ADMIN_EMAILS = [
-  'jakedalerourke@gmail.com',
-  'smilepineapple118@gmail.com',
-  'jake.rourke@btinternet.com',
-]
+import { isAdminEmail } from '@/lib/admin-auth'
 
 /**
  * Debug endpoint — dumps raw Stripe active subscriptions and DB matching results.
@@ -24,7 +19,7 @@ export async function GET(request: NextRequest) {
     if (!authHeader) return NextResponse.json({ error: 'No auth' }, { status: 401 })
     const token = authHeader.replace('Bearer ', '')
     const { data: { user } } = await supabase.auth.getUser(token)
-    if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+    if (!user || !isAdminEmail(user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
@@ -55,7 +50,7 @@ export async function GET(request: NextRequest) {
     const { data: { users: authUsers } } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 })
 
     const adminUserIds = new Set(
-      authUsers.filter(u => ADMIN_EMAILS.includes(u.email || '')).map(u => u.id)
+      authUsers.filter(u => isAdminEmail(u.email)).map(u => u.id)
     )
 
     // 3. Attempt matching for each Stripe sub

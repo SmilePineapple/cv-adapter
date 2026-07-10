@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
+import { isAdminEmail } from '@/lib/admin-auth'
 
-const ADMIN_EMAILS = ['jakedalerourke@gmail.com']
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CV Buddy <noreply@mycvbuddy.com>'
 
 export async function POST(request: NextRequest) {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       const token = authHeader.replace('Bearer ', '')
       const { data: { user } } = await supabase.auth.getUser(token)
       
-      if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+      if (!user || !isAdminEmail(user.email)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
       }
     } else {
