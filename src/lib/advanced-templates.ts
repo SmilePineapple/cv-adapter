@@ -76,27 +76,44 @@ export const advancedTemplateStyles = {
       color: #2d3748;
     }
     
-    /* Two Column Layout */
+    /* Two Column Layout
+       Uses floats, not flex/grid: Chromium's print engine doesn't fragment flex/grid
+       containers across page breaks - an oversized flex container gets pushed whole onto
+       the next page (leaving the previous page blank below the header) instead of flowing
+       content across pages like normal block layout. Floats participate in fragmentation
+       correctly, so overflow content paginates the way a resume actually needs it to. */
     .content-wrapper {
-      display: flex;
-      gap: 20px;
+      display: block;
       padding: 0 30px 30px;
     }
-    
+
+    .content-wrapper::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
     .left-column {
-      flex: 1;
-      min-width: 0;
+      float: left;
+      width: calc(50% - 10px);
     }
-    
+
     .right-column {
-      flex: 1;
-      min-width: 0;
+      float: right;
+      width: calc(50% - 10px);
     }
-    
+
     /* Section Styling */
     .section {
       margin-bottom: 18px;
       page-break-inside: avoid;
+    }
+
+    /* Work Experience holds multiple independent job entries - keep each entry intact
+       (.experience-entry below) but let the section itself break between entries across
+       pages, instead of treating the whole multi-job block as one atomic avoid unit. */
+    .section[data-type="experience"] {
+      page-break-inside: auto;
     }
     
     .left-column .section:first-child,
@@ -136,8 +153,9 @@ export const advancedTemplateStyles = {
       margin-bottom: 12px;
       padding-bottom: 12px;
       border-bottom: 1px solid #e2e8f0;
+      page-break-inside: avoid;
     }
-    
+
     .experience-entry:last-child {
       border-bottom: none;
     }
@@ -161,7 +179,12 @@ export const advancedTemplateStyles = {
       color: #718096;
       margin-bottom: 6px;
     }
-    
+
+    .experience-body {
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
     /* Hobbies Icons Grid */
     .hobbies-grid {
       display: grid;
@@ -293,7 +316,14 @@ export const advancedTemplateStyles = {
       margin-bottom: 20px;
       page-break-inside: avoid;
     }
-    
+
+    /* Work Experience holds multiple independent job entries - keep each entry intact
+       (.experience-entry) but let the section break between entries across pages, instead
+       of treating the whole multi-job block as one atomic avoid unit. */
+    .section[data-type="experience"] {
+      page-break-inside: auto;
+    }
+
     .main-content .section:first-child {
       margin-top: 15px;
     }
@@ -324,6 +354,67 @@ export const advancedTemplateStyles = {
       stroke-width: 2;
     }
     
+    .section-content {
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    /* Work Experience Entries */
+    .experience-entry {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      page-break-inside: avoid;
+    }
+
+    .experience-entry:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .job-title {
+      font-weight: 700;
+      color: #2d3748;
+      font-size: 1.05em;
+      margin-bottom: 3px;
+    }
+
+    .company {
+      font-weight: 600;
+      color: #2c5282;
+      font-size: 0.95em;
+      margin-bottom: 2px;
+    }
+
+    .date-location {
+      font-size: 0.85em;
+      color: #718096;
+      margin-bottom: 6px;
+    }
+
+    .experience-body {
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    /* Skills as pill tags */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 5px 0;
+    }
+
+    .skill-tag {
+      background: #fff;
+      color: #2d3748;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
     /* Skills with progress bars */
     .skill-item {
       margin-bottom: 10px;
@@ -491,6 +582,20 @@ function escapeHtml(text: string): string {
 /**
  * Helper to get section content as string
  */
+// A section object existing in the sections array (e.g. { type: 'certifications', content: [] })
+// is not the same as it having anything to show - CV parsers commonly emit an empty
+// placeholder section for every known type whether or not the user has that content. Gating
+// rendering on "does this section exist" alone (the original behavior) renders a bare colored
+// header with nothing underneath and no way to fill the resulting white space. Gate on this
+// instead everywhere a section is conditionally rendered.
+function hasContent(content: any): boolean {
+  if (content === null || content === undefined) return false
+  if (typeof content === 'string') return content.trim().length > 0
+  if (Array.isArray(content)) return content.length > 0 && content.some(item => hasContent(item))
+  if (typeof content === 'object') return Object.values(content).some(v => hasContent(v))
+  return true
+}
+
 function getSectionContent(content: any): string {
   if (!content) return ''
   if (typeof content === 'string') return content
@@ -503,7 +608,7 @@ function getSectionContent(content: any): string {
         const parts = []
         
         // Work Experience: Title line with company and dates
-        const title = item.title || item.job_title || item.position || ''
+        const title = item.title || item.job_title || item.position || item.role || ''
         const company = item.company || item.employer || ''
         const dates = item.dates || item.duration || item.period || ''
         
@@ -559,18 +664,38 @@ function getSectionContent(content: any): string {
               parts.push(`• ${resp}`)
             })
           }
+        } else if (item.details) {
+          if (typeof item.details === 'string') {
+            parts.push(item.details)
+          } else if (Array.isArray(item.details)) {
+            item.details.forEach((d: string) => {
+              parts.push(`• ${d}`)
+            })
+          }
+        } else if (item.achievements && Array.isArray(item.achievements)) {
+          item.achievements.forEach((a: string) => {
+            parts.push(`• ${a}`)
+          })
         } else if (item.description) {
           parts.push(item.description)
         }
-        
-        // Fallback: Extract all string values if nothing matched
+
+        // Fallback: extract all string values if nothing matched above, INCLUDING strings
+        // nested inside arrays (e.g. an unrecognized "details": [...] bullet-list field) -
+        // the previous version explicitly skipped arrays here, which silently dropped entire
+        // bullet lists for any field name it didn't already know about.
         if (parts.length === 0) {
           const extractAllStrings = (obj: any): string[] => {
             const strings: string[] = []
             for (const value of Object.values(obj)) {
               if (typeof value === 'string' && value.trim()) {
                 strings.push(value.trim())
-              } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+              } else if (Array.isArray(value)) {
+                value.forEach(v => {
+                  if (typeof v === 'string' && v.trim()) strings.push(v.trim())
+                  else if (typeof v === 'object' && v !== null) strings.push(...extractAllStrings(v))
+                })
+              } else if (typeof value === 'object' && value !== null) {
                 strings.push(...extractAllStrings(value))
               }
             }
@@ -592,6 +717,70 @@ function getSectionContent(content: any): string {
     return Object.values(content).filter(v => typeof v === 'string').join('\n')
   }
   return String(content)
+}
+
+/**
+ * Render work experience as structured per-job entries (.experience-entry with
+ * .job-title / .company / .date-location headings) instead of one flat text blob.
+ * Falls back to a plain pre-wrap .section-content div when the content isn't the
+ * expected array-of-job-objects shape (e.g. legacy CVs stored as a single string).
+ */
+export function renderExperienceEntries(content: any): string {
+  // Content sometimes arrives as a JSON string of the array (older rows / re-saves)
+  let items = content
+  if (typeof items === 'string') {
+    const trimmed = items.trim()
+    if (trimmed.startsWith('[')) {
+      try { items = JSON.parse(trimmed) } catch { /* keep as string */ }
+    }
+  }
+
+  if (!Array.isArray(items)) {
+    return `<div class="section-content">${escapeHtml(getSectionContent(content))}</div>`
+  }
+
+  const entries = items.map(item => {
+    if (typeof item === 'string') {
+      return item.trim() ? `<div class="experience-entry"><div class="experience-body">${escapeHtml(item)}</div></div>` : ''
+    }
+    if (typeof item !== 'object' || item === null) return ''
+
+    const title = item.title || item.job_title || item.position || item.role || ''
+    const company = item.company || item.employer || item.organization || ''
+    const dates = item.dates || item.duration || item.period || ''
+
+    let body = ''
+    if (Array.isArray(item.bullets)) {
+      body = item.bullets.map((b: string) => `• ${b}`).join('\n')
+    } else if (Array.isArray(item.responsibilities)) {
+      body = item.responsibilities.map((r: string) => `• ${r}`).join('\n')
+    } else if (Array.isArray(item.details)) {
+      body = item.details.map((d: string) => `• ${d}`).join('\n')
+    } else if (Array.isArray(item.achievements)) {
+      body = item.achievements.map((a: string) => `• ${a}`).join('\n')
+    } else if (typeof item.responsibilities === 'string') {
+      body = item.responsibilities
+    } else if (typeof item.description === 'string') {
+      body = item.description
+    } else if (typeof item.details === 'string') {
+      body = item.details
+    }
+
+    if (!title && !company && !body) {
+      const fallback = getSectionContent([item])
+      return fallback.trim() ? `<div class="experience-entry"><div class="experience-body">${escapeHtml(fallback)}</div></div>` : ''
+    }
+
+    return `
+      <div class="experience-entry">
+        ${title ? `<div class="job-title">${escapeHtml(title)}</div>` : ''}
+        ${company ? `<div class="company">${escapeHtml(company)}</div>` : ''}
+        ${dates ? `<div class="date-location">${escapeHtml(dates)}</div>` : ''}
+        ${body ? `<div class="experience-body">${escapeHtml(body)}</div>` : ''}
+      </div>`
+  }).join('')
+
+  return entries || `<div class="section-content">${escapeHtml(getSectionContent(content))}</div>`
 }
 
 /**
@@ -685,7 +874,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
           ${useSingleColumn ? `
             <!-- Single Column Layout for Multi-Page CVs -->
             <div class="single-column">
-              ${profileSection ? `
+              ${profileSection && hasContent(profileSection.content) ? `
                 <div class="section" data-type="profile">
                   <div class="section-header">
                     ${sectionIcons.profile}
@@ -695,17 +884,17 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
                 </div>
               ` : ''}
               
-              ${experienceSection ? `
+              ${experienceSection && hasContent(experienceSection.content) ? `
                 <div class="section" data-type="experience">
                   <div class="section-header">
                     ${sectionIcons.experience}
                     Work Experience
                   </div>
-                  <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+                  ${renderExperienceEntries(experienceSection.content)}
                 </div>
               ` : ''}
-              
-              ${educationSection ? `
+
+              ${educationSection && hasContent(educationSection.content) ? `
                 <div class="section" data-type="education">
                   <div class="section-header">
                     ${sectionIcons.education}
@@ -745,8 +934,9 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${(() => {
-                const additionalSections = sections.filter(s => 
+                const additionalSections = sections.filter(s =>
                   !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                  && hasContent(s.content)
                 )
                 return additionalSections.map(section => `
                   <div class="section" data-type="${section.type}">
@@ -763,7 +953,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
             <!-- Two Column Layout for Single-Page CVs -->
             <!-- Left Column -->
             <div class="left-column">
-              ${profileSection ? `
+              ${profileSection && hasContent(profileSection.content) ? `
                 <div class="section">
                   <div class="section-header">
                     ${sectionIcons.profile}
@@ -773,7 +963,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
                 </div>
               ` : ''}
               
-              ${educationSection ? `
+              ${educationSection && hasContent(educationSection.content) ? `
                 <div class="section">
                   <div class="section-header">
                     ${sectionIcons.education}
@@ -782,7 +972,7 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
                   <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
                 </div>
               ` : ''}
-              
+
               ${skills.length > 0 ? `
                 <div class="section">
                   <div class="section-header">
@@ -813,8 +1003,9 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
               ` : ''}
               
               ${(() => {
-                const additionalSections = sections.filter(s => 
+                const additionalSections = sections.filter(s =>
                   !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                  && hasContent(s.content)
                 )
                 const leftAdditionalSections = additionalSections.slice(0, Math.ceil(additionalSections.length / 2))
                 return leftAdditionalSections.map(section => `
@@ -831,19 +1022,20 @@ export function generateCreativeModernHTML(sections: any[], contactInfo: any, ma
             
             <!-- Right Column -->
             <div class="right-column">
-              ${experienceSection ? `
-                <div class="section">
+              ${experienceSection && hasContent(experienceSection.content) ? `
+                <div class="section" data-type="experience">
                   <div class="section-header">
                     ${sectionIcons.experience}
                     Work Experience
                   </div>
-                  <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+                  ${renderExperienceEntries(experienceSection.content)}
                 </div>
               ` : ''}
-              
+
               ${(() => {
-                const additionalSections = sections.filter(s => 
+                const additionalSections = sections.filter(s =>
                   !['name', 'contact', 'profile', 'summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests'].includes(s.type)
+                  && hasContent(s.content)
                 )
                 const rightAdditionalSections = additionalSections.slice(Math.ceil(additionalSections.length / 2))
                 return rightAdditionalSections.map(section => `
@@ -925,8 +1117,9 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
   }
   
   // Get remaining sections (not in sidebar or main predefined sections)
-  const remainingSections = sections.filter(s => 
+  const remainingSections = sections.filter(s =>
     !['name', 'contact', 'profile', 'summary', 'professional_summary', 'experience', 'work_experience', 'education', 'skills', 'key_skills', 'hobbies', 'interests', 'certifications', 'licenses', 'languages'].includes(s.type)
+    && hasContent(s.content)
   )
   
   // Split remaining sections: half in sidebar, half in main content
@@ -975,7 +1168,7 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
               </div>
             ` : ''}
             
-            ${educationSection ? `
+            ${educationSection && hasContent(educationSection.content) ? `
               <div class="section">
                 <div class="section-header">
                   ${sectionIcons.education}
@@ -984,8 +1177,8 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
                 <div class="section-content">${escapeHtml(getSectionContent(educationSection.content))}</div>
               </div>
             ` : ''}
-            
-            ${certificationsSection ? `
+
+            ${certificationsSection && hasContent(certificationsSection.content) ? `
               <div class="section">
                 <div class="section-header">
                   ${sectionIcons.certifications}
@@ -1042,7 +1235,7 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
           
           <!-- Main Content -->
           <div class="main-content">
-            ${profileSection ? `
+            ${profileSection && hasContent(profileSection.content) ? `
               <div class="section">
                 <div class="section-header">
                   ${sectionIcons.profile}
@@ -1051,14 +1244,14 @@ export function generateProfessionalColumnsHTML(sections: any[], contactInfo: an
                 <div class="section-content">${escapeHtml(getSectionContent(profileSection.content))}</div>
               </div>
             ` : ''}
-            
-            ${experienceSection ? `
-              <div class="section">
+
+            ${experienceSection && hasContent(experienceSection.content) ? `
+              <div class="section" data-type="experience">
                 <div class="section-header">
                   ${sectionIcons.experience}
                   Work Experience
                 </div>
-                <div class="section-content">${escapeHtml(getSectionContent(experienceSection.content))}</div>
+                ${renderExperienceEntries(experienceSection.content)}
               </div>
             ` : ''}
             
