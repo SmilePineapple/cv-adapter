@@ -515,54 +515,88 @@ export const hobbyIcons: Record<string, string> = {
   writing: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>',
   meditation: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
   art: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>',
-  gardening: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>'
+  gardening: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>',
+  // Fallback for any hobby that doesn't match a keyword below - shown with the
+  // hobby's real text rather than being silently dropped (see detectHobbies).
+  generic: '<svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
 }
 
 /**
- * Detect hobbies/interests from text and return matching icons
+ * Split hobbies/interests text into individual entries and pair each with a
+ * matching icon, keeping every real entry - including ones that don't match
+ * any keyword below (shown with a generic icon instead of being dropped).
+ *
+ * The previous version scanned the whole blob once per keyword category and
+ * returned one entry per matched *category*, discarding anything that didn't
+ * match one of ~12 hardcoded keywords and relabeling survivors with the
+ * generic category name instead of what the CV actually said - so a CV
+ * listing "Hiking, amateur photography, five-a-side football" rendered as
+ * just "Photography" (2 of 5 real hobbies made it through). This now
+ * preserves every entry and its real wording.
  */
 export function detectHobbies(text: string): Array<{ name: string; icon: string }> {
-  const lowerText = text.toLowerCase()
-  const detected: Array<{ name: string; icon: string }> = []
-  
   const hobbyKeywords: Record<string, string[]> = {
-    travel: ['travel', 'exploring', 'distant lands', 'countries', 'world', 'exploring distant'],
+    travel: ['travel', 'exploring', 'distant lands', 'countries', 'world', 'exploring distant', 'hiking', 'hike'],
     reading: ['reading', 'books', 'literature', 'novel', 'lost in a good book', 'book'],
-    photography: ['photography', 'photos', 'camera', 'capturing', 'capturing moments'],
+    photography: ['photography', 'photo', 'camera', 'capturing'],
     music: ['music', 'musical', 'singing', 'instrument', 'feeling the music'],
     swimming: ['swimming', 'swim'],
-    fitness: ['fitness', 'gym', 'exercise', 'workout'],
-    cooking: ['cooking', 'culinary', 'food', 'recipes'],
+    fitness: ['fitness', 'gym', 'exercise', 'workout', 'football', 'sport', 'running', 'cycling'],
+    cooking: ['cooking', 'culinary', 'food', 'recipes', 'baking'],
     gaming: ['gaming', 'games', 'video games'],
     writing: ['writing', 'journaling', 'journal', 'blog'],
     meditation: ['meditation', 'mindfulness', 'yoga', 'zen', 'massage', 'balance'],
     art: ['art', 'painting', 'drawing', 'creative'],
     gardening: ['gardening', 'plants', 'garden']
+    // No 'volunteering' category - falls through to the generic icon below
+    // rather than mapping to a hobbyIcons key that doesn't exist.
   }
-  
-  for (const [hobby, keywords] of Object.entries(hobbyKeywords)) {
-    if (keywords.some(keyword => lowerText.includes(keyword))) {
-      detected.push({
-        name: hobby.charAt(0).toUpperCase() + hobby.slice(1),
-        icon: hobbyIcons[hobby]
-      })
+
+  const entries = text
+    .split(/[•\n]/)
+    .map(s => s.trim())
+    .filter(Boolean)
+    // A blob with no line breaks (a single comma-separated string) still
+    // needs splitting into individual hobbies.
+    .flatMap(line => (line.includes(',') ? line.split(',').map(s => s.trim()) : [line]))
+    .filter(Boolean)
+
+  return entries.slice(0, 9).map(entry => {
+    const lower = entry.toLowerCase()
+    const matched = Object.entries(hobbyKeywords).find(([, keywords]) =>
+      keywords.some(keyword => lower.includes(keyword))
+    )
+    return {
+      name: entry,
+      icon: matched ? hobbyIcons[matched[0]] : hobbyIcons.generic
     }
-  }
-  
-  return detected.slice(0, 9) // Max 9 hobbies for 3x3 grid
+  })
 }
 
 /**
- * Parse skills from text into array
+ * Parse skills from text into array.
+ *
+ * getSectionContent() joins each array-of-skills entry with '\n\n' before this
+ * runs, but individual skills are frequently written as full sentences (e.g.
+ * "Team Leadership - ability to lead, motivate, and develop teams") that
+ * contain their own commas. Splitting on commas unconditionally (the old
+ * behavior) shredded those into meaningless mid-sentence fragments and then
+ * silently dropped any fragment >=50 chars, losing real content. Newlines are
+ * a reliable per-skill boundary whenever they're present (getSectionContent's
+ * '\n\n' join, or bullet-per-line input); only fall back to comma-splitting
+ * for genuinely single-line, comma-separated input (e.g. "Python, SQL, Excel").
  */
 export function parseSkills(text: string): string[] {
-  // Split by common delimiters
-  const skills = text
-    .split(/[,•\n]/)
+  const byLine = text
+    .split(/[•\n]/)
     .map(s => s.trim())
-    .filter(s => s.length > 0 && s.length < 50) // Reasonable skill length
-  
-  return skills.slice(0, 15) // Max 15 skills
+    .filter(Boolean)
+
+  const skills = byLine.length > 1
+    ? byLine
+    : text.split(',').map(s => s.trim()).filter(Boolean)
+
+  return skills.filter(s => s.length > 0).slice(0, 15) // Max 15 skills
 }
 
 /**
