@@ -475,11 +475,22 @@ export async function POST(request: NextRequest) {
           })
           .eq('user_id', userId)
 
-        // Update subscriptions table
-        await supabase
+        // Update subscriptions table. 'canceled' (Stripe/Postgres enum
+        // spelling), not 'cancelled' - the double-l version silently
+        // failed this write with a 22P02 enum error on every real
+        // cancellation (confirmed directly: found a customer whose
+        // Stripe subscription had been canceled for months while our own
+        // subscriptions.status still read 'active', because this
+        // write never actually happened - no error handling here meant
+        // the failure was invisible in normal operation).
+        const { error: cancelSubError } = await supabase
           .from('subscriptions')
-          .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+          .update({ status: 'canceled', updated_at: new Date().toISOString() })
           .eq('user_id', userId)
+
+        if (cancelSubError) {
+          console.error('[Webhook] Failed to mark subscription canceled:', cancelSubError)
+        }
 
         console.log('[Webhook] User fully downgraded to free on subscription.deleted:', userId)
         break
