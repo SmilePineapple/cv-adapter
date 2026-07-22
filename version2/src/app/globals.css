@@ -28,6 +28,7 @@
 
 html {
   background: var(--background);
+  scroll-padding-top: 88px;
 }
 
 body {

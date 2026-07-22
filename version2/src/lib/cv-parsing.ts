@@ -48,7 +48,12 @@ export async function parseCVSections(text: string): Promise<ParsedCV> {
       model: "gpt-4o-mini",
       response_format: { type: "json_object" },
       temperature: 0.1,
-      max_tokens: 3000,
+      // Was 3000 - too tight for the "use EXACT content, don't summarize"
+      // instruction below on longer CVs, for the same reason cv-tailoring.ts's
+      // max_tokens needed raising: an early-stopped response is still valid
+      // JSON, just missing most sections, and nothing here caught that.
+      // gpt-4o-mini's completion limit is 16384.
+      max_tokens: 8000,
       messages: [
         {
           role: "system",
@@ -109,6 +114,24 @@ CRITICAL: Use EXACT content from the CV. Do NOT summarize or skip anything. "con
       .filter((s: CVSection) => s.content.trim().length > 0);
 
     if (sections.length === 0) throw new Error("AI returned no sections");
+
+    // The prompt tells the model to use exact, unsummarized content, so a
+    // healthy parse's total section length should track the source text
+    // fairly closely. A response that's technically valid JSON but stopped
+    // early (see the max_tokens comment above) still passes every check
+    // above while covering only a fraction of the CV - fall back to
+    // simpleFallbackParse (which keeps 100% of the text, just unsectioned)
+    // rather than silently persisting a CV that's mostly missing.
+    const inputSample = text.substring(0, 8000);
+    const totalParsedLength = sections.reduce(
+      (sum, s) => sum + s.content.length,
+      0
+    );
+    if (inputSample.length > 1500 && totalParsedLength < inputSample.length * 0.4) {
+      throw new Error(
+        `AI parsing looks truncated: ${totalParsedLength} chars parsed from ${inputSample.length} chars of source`
+      );
+    }
 
     return { sections, raw_text: text };
   } catch (err) {

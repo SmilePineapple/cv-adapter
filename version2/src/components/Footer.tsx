@@ -39,7 +39,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer className="mx-auto w-full max-w-6xl px-6 py-16 text-sm">
+    <footer className="mx-auto w-full max-w-6xl px-6 pb-4 pt-16 text-sm">
       <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
         <div>
           <span className="font-display text-lg text-foreground">

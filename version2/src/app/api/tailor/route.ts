@@ -53,11 +53,22 @@ export async function POST(request: NextRequest) {
 
   const parsedSections = cv.parsed_sections as ParsedCV;
 
+  // checkAndConsumeGeneration above already spent one of the user's
+  // monthly generations for this request - retry once here so a transient
+  // AI truncation (see cv-tailoring.ts) doesn't burn their quota on a
+  // request they have to immediately repeat themselves.
   let result;
-  try {
-    result = await tailorCV(parsedSections.sections, jobTitle, jobDescription);
-  } catch (err) {
-    console.error("Tailoring failed:", err);
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < 2 && !result; attempt++) {
+    try {
+      result = await tailorCV(parsedSections.sections, jobTitle, jobDescription);
+    } catch (err) {
+      lastErr = err;
+      console.error(`Tailoring attempt ${attempt + 1}/2 failed:`, err);
+    }
+  }
+  if (!result) {
+    console.error("Tailoring failed:", lastErr);
     return NextResponse.json(
       { error: "Failed to tailor CV. Please try again." },
       { status: 500 }

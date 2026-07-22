@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getFreeUsageStatus, FREE_MONTHLY_GENERATION_LIMIT } from "@/lib/subscription";
 import UploadForm from "@/components/UploadForm";
 import QuickTailorForm from "@/components/QuickTailorForm";
 
@@ -49,7 +50,7 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: cvs }, { data: generations }, { data: coverLetters }] =
+  const [{ data: cvs }, { data: generations }, { data: coverLetters }, usage] =
     await Promise.all([
       supabase
         .from("cvs")
@@ -67,6 +68,7 @@ export default async function DashboardPage() {
         .select("id, generation_id, job_title, created_at")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false }),
+      getFreeUsageStatus(supabase, user!.id),
     ]);
 
   const cvList = cvs || [];
@@ -148,19 +150,56 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-2xl border border-border bg-surface p-5"
+      {!usage.pro && (
+        <div
+          className={`mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-5 py-4 ${
+            usage.remaining === 0
+              ? "border-accent/40 bg-accent/5"
+              : "border-border bg-surface"
+          }`}
+        >
+          <p className="text-sm">
+            {usage.remaining === 0 ? (
+              <>
+                <span className="font-medium">
+                  You&apos;ve used your free tailored CV this month.
+                </span>{" "}
+                <span className="text-muted">
+                  Upgrade to Pro for unlimited generations and DOCX export.
+                </span>
+              </>
+            ) : (
+              <span className="text-muted">
+                Free plan — {usage.generationsUsed} of{" "}
+                {FREE_MONTHLY_GENERATION_LIMIT} tailored CV used this month.
+              </span>
+            )}
+          </p>
+          <Link
+            href="/dashboard/billing"
+            className="shrink-0 rounded-full bg-accent px-4 py-2 text-xs font-medium text-black transition-colors hover:bg-accent/90"
           >
-            <stat.icon className="h-4 w-4 text-accent" strokeWidth={1.75} />
-            <p className="mt-3 font-display text-2xl">{stat.value}</p>
-            <p className="mt-1 text-xs text-muted">{stat.label}</p>
-          </div>
-        ))}
-      </div>
+            {usage.remaining === 0 ? "Upgrade to Pro" : "See plans"}
+          </Link>
+        </div>
+      )}
+
+      {/* Stats - a wall of zeros isn't a useful first thing for a brand-new
+          user to see, so this only appears once there's something to show. */}
+      {cvList.length > 0 && (
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-border bg-surface p-5"
+            >
+              <stat.icon className="h-4 w-4 text-accent" strokeWidth={1.75} />
+              <p className="mt-3 font-display text-2xl">{stat.value}</p>
+              <p className="mt-1 text-xs text-muted">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {cvList.length > 0 && (
         <div className="mt-8">

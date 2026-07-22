@@ -18,7 +18,15 @@ export async function tailorCV(
     model: "gpt-4o-mini",
     response_format: { type: "json_object" },
     temperature: 0.4,
-    max_tokens: 3500,
+    // Rewriting every section at full bullet-level detail (not summarizing)
+    // means output size is comparable to or larger than the input CV's own
+    // text. 3500 was too tight - confirmed via production data that it
+    // caused gpt-4o-mini to silently stop early with a technically-valid
+    // but incomplete sections array (e.g. only "hobbies"/"additional"
+    // surviving out of 11 input sections), which sailed through the
+    // Array.isArray check below untouched and got saved/exported as a
+    // near-blank CV. gpt-4o-mini's completion limit is 16384.
+    max_tokens: 8000,
     messages: [
       {
         role: "system",
@@ -60,6 +68,19 @@ Return JSON: {"sections": [{"type": "...", "content": "...", "order": 0}], "ats_
     content: normalizeSectionContent(s.content),
     order: typeof s.order === "number" ? s.order : i,
   }));
+
+  // A truncated/early-stopped response is syntactically valid JSON with
+  // just fewer sections - Array.isArray above doesn't catch that. Rather
+  // than silently persisting (and later exporting) a CV missing most of
+  // its original content, fail loudly so the caller can retry.
+  const inputTypes = new Set(sections.map((s) => s.type));
+  const outputTypes = new Set(tailoredSections.map((s) => s.type));
+  const droppedTypes = [...inputTypes].filter((t) => !outputTypes.has(t));
+  if (droppedTypes.length > 0) {
+    throw new Error(
+      `AI tailoring dropped section(s) present in the original CV: ${droppedTypes.join(", ")}`
+    );
+  }
 
   return {
     sections: tailoredSections,
