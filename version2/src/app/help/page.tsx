@@ -33,7 +33,7 @@ const FAQS = [
   },
   {
     q: "Is there a paid plan?",
-    a: "Yes. Free accounts get 3 tailored CVs a month and PDF export. Pro is £2.99/month for unlimited tailored CVs, DOCX export, and every extra tool — Fix My CV, Roast My CV, Interview Prep, Interview Simulator, Skills Assessment, and Career Coach. Cover letters stay free either way.",
+    a: "Yes. Free accounts get 1 tailored CV a month and PDF export. Pro is £2.99/month for unlimited tailored CVs, DOCX export, and every extra tool — Fix My CV, Roast My CV, Interview Prep, Interview Simulator, Skills Assessment, and Career Coach. Cover letters stay free either way.",
   },
   {
     q: "How do I delete my data?",

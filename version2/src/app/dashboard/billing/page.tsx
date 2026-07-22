@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Check } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { isProUser, FREE_MONTHLY_GENERATION_LIMIT } from "@/lib/subscription";
+import { getFreeUsageStatus, FREE_MONTHLY_GENERATION_LIMIT } from "@/lib/subscription";
 import { UpgradeButton, ManageBillingButton } from "@/components/BillingActions";
 
 export const metadata = { title: "Billing — MyCV Buddy" };
@@ -22,18 +22,7 @@ export default async function BillingPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pro = await isProUser(supabase, user!.id);
-
-  const { data: usage } = await supabase
-    .from("usage_tracking")
-    .select("generation_count, current_month")
-    .eq("user_id", user!.id)
-    .single();
-
-  const now = new Date();
-  const thisMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}-01`;
-  const generationsUsed =
-    usage && usage.current_month === thisMonth ? usage.generation_count : 0;
+  const { pro, generationsUsed } = await getFreeUsageStatus(supabase, user!.id);
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">

@@ -100,7 +100,7 @@ export function renderClassic(sections: TemplateSection[], scale: FillScale = {}
       <div class="contact">${escapeHtml(contact)}</div>
     </div>
   </header>
-  ${body}
+  <div class="content">${body}</div>
 </body>
 </html>`;
 }

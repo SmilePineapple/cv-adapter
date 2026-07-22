@@ -84,7 +84,7 @@ export function renderModern(sections: TemplateSection[], scale: FillScale = {})
     <h1>${escapeHtml(name)}</h1>
     <div class="contact">${escapeHtml(contact)}</div>
   </header>
-  ${body}
+  <div class="content">${body}</div>
 </body>
 </html>`;
 }

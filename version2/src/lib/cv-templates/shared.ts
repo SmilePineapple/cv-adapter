@@ -95,7 +95,41 @@ export type FillScale = {
   font?: number;
   space?: number;
   line?: number;
+  // Set when cv-fill.ts's bisection search hit its max fill amount and
+  // still couldn't bring content up to target page occupancy (a sidebar
+  // with just one short skills list, or a whole CV with barely any
+  // content) - font/line/spacing scaling alone can't stretch three lines
+  // of text to fill an A4 page without looking absurd. Vertically
+  // centering the content block within the page reads as a deliberate,
+  // balanced layout instead of "page trails off into empty space at the
+  // bottom", which font/space/line scaling was already maxed out trying
+  // (and failing) to fix.
+  center?: boolean;
 };
+
+// One page's usable content height in px - same A4-minus-margins math
+// cv-fill.ts uses to measure/target fill, kept here so the "center when
+// maxed out" CSS and the measurement math never drift apart.
+const A4_HEIGHT_MM = 297;
+const MARGIN_TOP_BOTTOM_MM = 16;
+const MM_TO_PX = 96 / 25.4;
+export const A4_CONTENT_HEIGHT_PX =
+  (A4_HEIGHT_MM - 2 * MARGIN_TOP_BOTTOM_MM) * MM_TO_PX;
+
+// Emitted after a template's own body{} rule when scale.center is set, so
+// its min-height/display:flex wins over the earlier declarations without
+// needing !important. The header stays pinned at its natural top position
+// (it's the first flex child); only `.content` (the second child, wrapping
+// every section) gets flex:1 + justify-content:center, so it centers
+// within whatever space is left under the header rather than moving the
+// header itself away from the top.
+export function centerModeStyle(center: boolean | undefined): string {
+  if (!center) return "";
+  return `
+  body { display: flex; flex-direction: column; min-height: ${A4_CONTENT_HEIGHT_PX}px; }
+  body > .content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+`;
+}
 
 // Every template shares this print setup: fixed A4 page size, no forced page
 // count. Content flows onto as many pages as it naturally needs — no
@@ -120,6 +154,7 @@ export function printBase(scale: FillScale = {}): string {
   @page { size: A4; margin: 16mm 18mm; }
   * { box-sizing: border-box; }
   body { margin: 0; }
+  ${centerModeStyle(scale.center)}
   /* A section's own content is allowed to flow/split across a page
      boundary (a paragraph breaking mid-sentence onto the next page reads
      fine, same as any normal document) - what must NOT happen is a

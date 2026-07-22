@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
+import UploadProgress from "./UploadProgress";
 
 export default function UploadForm({
   compact = false,
@@ -19,13 +20,25 @@ export default function UploadForm({
     setPending(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
+      // Sent as base64 JSON, not multipart/form-data - see api/upload's
+      // route comment: Next's multipart parser was confirmed corrupting
+      // certain valid DOCX files' binary content in production.
+      const buffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      const base64 = btoa(binary);
+
       const res = await fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          data: base64,
+        }),
       });
       const data = await res.json();
 
@@ -92,6 +105,11 @@ export default function UploadForm({
           {pending ? "Uploading…" : "Choose file"}
         </button>
       </div>
+      {pending && (
+        <div className="mt-4">
+          <UploadProgress />
+        </div>
+      )}
       {error && (
         <p role="alert" className="mt-4 text-center text-sm text-red-400">
           {error}

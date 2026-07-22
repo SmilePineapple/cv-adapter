@@ -4,6 +4,7 @@ import {
   escapeHtml,
   splitSections,
   renderSectionBody,
+  A4_CONTENT_HEIGHT_PX,
   type FillScale,
   type TemplateSection,
 } from "./shared";
@@ -31,9 +32,28 @@ export function classifyForTwoColumn(sections: TemplateSection[]): {
   return { hasTwoColumns: hasSidebar && hasMain };
 }
 
+// Each column is independently floated, so a column that maxed out its
+// fill search (see FillScale.center's doc comment) needs its own
+// vertical-centering styles applied directly to it - unlike the
+// single-column templates, there's no shared page-level flex wrapper that
+// could center both columns at once, since one column can be fine while
+// the other is genuinely sparse.
+//
+// No explicit height here - `.wrap` becomes a flex row when centering is
+// active (see below), and the default `align-items: stretch` already
+// gives each column the container's full height; an explicit
+// `height: 100%` here was tried first and confirmed NOT to resolve
+// reliably against a flex-row ancestor's computed height in Chromium
+// (measured directly: column stayed at its shrink-to-fit content height
+// instead of stretching), so this relies on stretch instead of fighting
+// it with an explicit value.
 function cssVars(scale: FillScale): string {
-  const { font = 1, space = 1, line = 1 } = scale;
-  return `--font-scale: ${font}; --space-scale: ${space}; --line-scale: ${line};`;
+  const { font = 1, space = 1, line = 1, center = false } = scale;
+  const vars = `--font-scale: ${font}; --space-scale: ${space}; --line-scale: ${line};`;
+  const centering = center
+    ? ` display: flex; flex-direction: column; justify-content: center;`
+    : "";
+  return vars + centering;
 }
 
 // Sidebar + main content. Deliberately built with CSS floats, not
@@ -57,6 +77,7 @@ export function renderTwoColumn(
   const sidebar = rest.filter((s) => SIDEBAR_TYPES.has(s.type));
   const main = rest.filter((s) => !SIDEBAR_TYPES.has(s.type));
   const hasTwoColumns = sidebar.length > 0 && main.length > 0;
+  const anyCenter = Boolean(mainScale.center || sidebarScale.center);
 
   const renderSection = (s: TemplateSection) => `
     <section class="cv-section">
@@ -90,6 +111,24 @@ export function renderTwoColumn(
     line-height: calc(1.5 * var(--line-scale));
   }
   .wrap::after { content: ""; display: table; clear: both; }
+  ${
+    anyCenter
+      ? `/* Gives .wrap/.main--full a definite height equal to whatever's
+           left under the header (not a full page). Floated children don't
+           reliably resolve height:100% against a merely flex-stretched
+           block ancestor (confirmed directly - they kept their natural
+           content height instead) - .wrap itself becomes a flex row here,
+           making .sidebar/.main genuine flex items that stretch to fill
+           it via the default align-items:stretch, same effect as their
+           height:100% but actually resolves. Only reachable when content
+           is confirmed single-page (see FillScale.center's doc comment),
+           so this never has to fragment across a page break the way
+           dense multi-page two-column content relies on floats for. */
+         body { display: flex; flex-direction: column; min-height: ${A4_CONTENT_HEIGHT_PX}px; }
+         body > .wrap, body > .main--full { flex: 1 0 auto; }
+         .wrap { display: flex; }`
+      : ""
+  }
   header {
     background: #17181c;
     color: #fff;

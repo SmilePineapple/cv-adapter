@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Mail, TrendingUp } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { isProUser } from "@/lib/subscription";
+import { getFreeUsageStatus } from "@/lib/subscription";
 import { normalizeSectionContent } from "@/lib/cv-content-normalize";
 import CoverLetterForm from "@/components/CoverLetterForm";
 import ExportPanel from "@/components/ExportPanel";
@@ -49,7 +49,8 @@ export default async function GenerationPage({
 
   if (!generation) notFound();
 
-  const pro = await isProUser(supabase, user!.id);
+  const usage = await getFreeUsageStatus(supabase, user!.id);
+  const pro = usage.pro;
 
   const { data: coverLetters } = await supabase
     .from("cover_letters")
@@ -92,6 +93,26 @@ export default async function GenerationPage({
       <div className="mt-6">
         <ExportPanel generationId={generation.id} />
       </div>
+
+      {!pro && usage.remaining === 0 && (
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-accent/40 bg-accent/5 px-5 py-4">
+          <p className="text-sm">
+            <span className="font-medium">
+              That was your free tailored CV for this month.
+            </span>{" "}
+            <span className="text-muted">
+              Upgrade to Pro for unlimited generations, DOCX export, and every
+              extra tool below.
+            </span>
+          </p>
+          <Link
+            href="/dashboard/billing"
+            className="shrink-0 rounded-full bg-accent px-4 py-2 text-xs font-medium text-black transition-colors hover:bg-accent/90"
+          >
+            Upgrade to Pro
+          </Link>
+        </div>
+      )}
 
       <div className="mt-6">
         {pro ? (

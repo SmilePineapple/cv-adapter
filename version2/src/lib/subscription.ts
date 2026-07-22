@@ -24,7 +24,7 @@ export async function requireProGate(
 // export only. Pro (£2.99/mo): unlimited generations, PDF+DOCX export,
 // and access to Fix My CV, Roast My CV, Interview Prep/Simulator, Skills
 // Assessment, and Career Coach.
-export const FREE_MONTHLY_GENERATION_LIMIT = 3;
+export const FREE_MONTHLY_GENERATION_LIMIT = 1;
 
 export type UsageRow = {
   user_id: string;
@@ -90,4 +90,37 @@ export async function checkAndConsumeGeneration(
     .eq("user_id", userId);
 
   return { allowed: true, remaining: FREE_MONTHLY_GENERATION_LIMIT - (count + 1) };
+}
+
+// Read-only version of the same month/count logic in checkAndConsumeGeneration,
+// for pages that need to *display* usage (dashboard, billing, the
+// post-generation result page) without consuming a generation. Kept as a
+// separate function rather than reusing checkAndConsumeGeneration with a
+// "dry run" flag - that function's whole job is the atomic check-and-increment,
+// mixing a read-only path into it risks the increment accidentally firing
+// on a page load instead of an actual generation.
+export async function getFreeUsageStatus(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<{ pro: boolean; generationsUsed: number; remaining: number }> {
+  const pro = await isProUser(supabase, userId);
+  if (pro) {
+    return { pro: true, generationsUsed: 0, remaining: Infinity };
+  }
+
+  const { data: usage } = await supabase
+    .from("usage_tracking")
+    .select("generation_count, current_month")
+    .eq("user_id", userId)
+    .single();
+
+  const thisMonth = currentMonthStart();
+  const generationsUsed =
+    usage && usage.current_month === thisMonth ? usage.generation_count : 0;
+
+  return {
+    pro: false,
+    generationsUsed,
+    remaining: Math.max(0, FREE_MONTHLY_GENERATION_LIMIT - generationsUsed),
+  };
 }

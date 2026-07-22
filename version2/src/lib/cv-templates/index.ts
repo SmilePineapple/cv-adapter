@@ -4,6 +4,7 @@ import { renderTwoColumn, classifyForTwoColumn } from "./two-column";
 import type { FillScale, TemplateSection } from "./shared";
 
 export type { TemplateSection, FillScale } from "./shared";
+export { A4_CONTENT_HEIGHT_PX } from "./shared";
 export { renderTwoColumn, classifyForTwoColumn };
 
 export type TemplateId = "classic" | "modern" | "two-column";

@@ -2,18 +2,17 @@ import {
   renderTemplate,
   renderTwoColumn,
   classifyForTwoColumn,
+  A4_CONTENT_HEIGHT_PX,
   type FillScale,
   type TemplateSection,
 } from "./cv-templates";
 import { launchBrowser, renderPdfOnPage } from "./pdf-render";
 
-const A4_HEIGHT_MM = 297;
 const A4_WIDTH_MM = 210;
-const MARGIN_TOP_BOTTOM_MM = 16;
 const MARGIN_LEFT_RIGHT_MM = 18;
 const MM_TO_PX = 96 / 25.4;
 
-const CONTENT_HEIGHT_PX = (A4_HEIGHT_MM - 2 * MARGIN_TOP_BOTTOM_MM) * MM_TO_PX;
+const CONTENT_HEIGHT_PX = A4_CONTENT_HEIGHT_PX;
 const CONTENT_WIDTH_PX = Math.round(
   (A4_WIDTH_MM - 2 * MARGIN_LEFT_RIGHT_MM) * MM_TO_PX
 );
@@ -36,11 +35,12 @@ type Page = Awaited<ReturnType<Browser["newPage"]>>;
 // text to fill genuinely sparse content quickly looks absurd. Section
 // spacing and line-height get a much higher ceiling, since generous
 // whitespace reads as normal CV design, not as a hack.
-function scaleAt(t: number): FillScale {
+function scaleAt(t: number, center = false): FillScale {
   return {
     font: 1 + 0.2 * t,
     space: 1 + 2.6 * t,
     line: 1 + 0.4 * t,
+    center,
   };
 }
 
@@ -97,7 +97,12 @@ async function capturePdfWithRetry(
   throw lastErr;
 }
 
-type FillSearchResult = { t: number; pageCount: number };
+// maxedOut: the search hit MAX_T and still fell well short of target
+// occupancy - font/space/line scaling alone can't stretch the content any
+// further. The caller uses this to switch the final render to vertical
+// centering instead (see FillScale.center's doc comment) rather than
+// shipping a page that trails off into empty space at the bottom.
+type FillSearchResult = { t: number; pageCount: number; maxedOut: boolean };
 
 // Bisection-searches the fill dial `t` for one column's worth of content
 // (or a whole single-column page) so its rendered height lands near
@@ -129,7 +134,7 @@ async function bisectFillT(
     lastPageHeight >= UNDERFILLED_THRESHOLD * CONTENT_HEIGHT_PX ||
     lastPageHeight > 1.05 * CONTENT_HEIGHT_PX
   ) {
-    return { t: 0, pageCount };
+    return { t: 0, pageCount, maxedOut: false };
   }
 
   let lo = 0;
@@ -137,8 +142,9 @@ async function bisectFillT(
   const hiHeight = await measureFn(hi);
 
   // Even max fill doesn't reach target (extremely sparse content) — use
-  // the maximum we're willing to apply rather than searching.
-  if (hiHeight < targetPx) return { t: MAX_T, pageCount };
+  // the maximum we're willing to apply rather than searching, and flag it
+  // so the caller can fall back to vertical centering instead.
+  if (hiHeight < targetPx) return { t: MAX_T, pageCount, maxedOut: true };
 
   let best = 0;
   for (let i = 0; i < MAX_BISECTION_STEPS; i++) {
@@ -156,7 +162,7 @@ async function bisectFillT(
     }
     best = lo;
   }
-  return { t: best, pageCount };
+  return { t: best, pageCount, maxedOut: false };
 }
 
 // Renders the final PDF and, if it overflowed past `expectedPages` (the
@@ -231,7 +237,7 @@ async function renderFilledSingleColumnPdf(
 
     return await renderWithPageBudgetSafetyNet(
       browser,
-      (t) => renderTemplate(templateId, sections, scaleAt(t)),
+      (t) => renderTemplate(templateId, sections, scaleAt(t, fill.maxedOut)),
       fill.t,
       fill.pageCount
     );
@@ -271,7 +277,11 @@ async function renderFilledTwoColumnPdf(sections: TemplateSection[]): Promise<Bu
     }
 
     const renderColumns = (mainT: number, sidebarT: number) =>
-      renderTwoColumn(sections, scaleAt(mainT), scaleAt(sidebarT));
+      renderTwoColumn(
+        sections,
+        scaleAt(mainT, mainFill.maxedOut),
+        scaleAt(sidebarT, sidebarFill.maxedOut)
+      );
 
     if (mainFill.t === 0 && sidebarFill.t === 0) {
       return await capturePdfWithRetry(browser, renderColumns(0, 0));

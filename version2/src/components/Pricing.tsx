@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Keep in sync with FREE_MONTHLY_GENERATION_LIMIT in src/lib/subscription.ts
 // — duplicated here rather than imported since that file also imports
 // next/server, which can't be pulled into a "use client" component.
-const FREE_MONTHLY_GENERATION_LIMIT = 3;
+const FREE_MONTHLY_GENERATION_LIMIT = 1;
 
 const tiers = [
   {
@@ -20,7 +20,7 @@ const tiers = [
     cadence: "forever",
     description: "Try it out, no card required.",
     features: [
-      `${FREE_MONTHLY_GENERATION_LIMIT} tailored CVs / month`,
+      `${FREE_MONTHLY_GENERATION_LIMIT} tailored CV / month`,
       "PDF export",
       "ATS match scoring & free ATS Checker",
       "Cover letter generation",

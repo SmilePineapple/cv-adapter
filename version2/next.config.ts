@@ -11,9 +11,19 @@ const nextConfig: NextConfig = {
   // serverExternalPackages keeps puppeteer-core/@sparticuz/chromium out of
   // the bundle so they aren't relocated, and outputFileTracingIncludes
   // forces the binary directory into the deployed function.
-  serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium"],
+  // pdfjs-dist's legacy Node build dynamically imports pdf.worker.mjs as a
+  // fallback "fake worker" - Turbopack's tracer doesn't follow that dynamic
+  // import, so the worker file was missing from the deployed function
+  // (confirmed directly: "Cannot find module '.../pdf.worker.mjs'" in
+  // production only). Same fix shape as chromium below.
+  serverExternalPackages: [
+    "puppeteer-core",
+    "@sparticuz/chromium",
+    "pdfjs-dist",
+  ],
   outputFileTracingIncludes: {
     "/api/export/\\[id\\]": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    "/api/upload": ["./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"],
   },
 };
 
