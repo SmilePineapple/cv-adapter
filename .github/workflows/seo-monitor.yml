@@ -1,9 +1,14 @@
 name: SEO Health Monitor
 
 on:
-  schedule:
-    # Run every day at 9 AM UTC (10 AM UK time)
-    - cron: '0 9 * * *'
+  # Schedule disabled - this checks scripts/seo-monitor.ts's public/sitemap.xml
+  # against www.mycvbuddy.com, but production now serves version2/ (which has
+  # no sitemap.xml of its own - confirmed www.mycvbuddy.com/sitemap.xml 404s),
+  # so this was failing daily against a page set that hasn't been live since
+  # the migration off legacy-v1. Re-enable once version2 has its own sitemap
+  # generation this can check against.
+  # schedule:
+  #   - cron: '0 9 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:

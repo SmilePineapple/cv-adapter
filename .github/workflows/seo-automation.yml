@@ -1,9 +1,12 @@
 name: SEO Automation
 
 on:
-  schedule:
-    # Run every day at 10 AM UTC (11 AM UK time)
-    - cron: '0 10 * * *'
+  # Schedule disabled - see seo-monitor.yml's comment. This was auto-
+  # committing a sitemap.xml/robots.txt for legacy-v1's page structure that
+  # isn't served in production anymore (version2 doesn't publish these
+  # files, so the commits had zero effect on the live site - pure churn).
+  # schedule:
+  #   - cron: '0 10 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
