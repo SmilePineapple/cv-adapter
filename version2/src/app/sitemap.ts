@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
+import { ATS_CHECKER_PAGES } from "@/lib/ats-checker-pages";
 
 const BASE_URL = "https://www.mycvbuddy.com";
 
@@ -33,5 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...languagePages, ...blogPages];
+  const atsCheckerPages: MetadataRoute.Sitemap = ATS_CHECKER_PAGES.map((page) => ({
+    url: `${BASE_URL}/ats-checker/${page.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...languagePages, ...blogPages, ...atsCheckerPages];
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { AtsResult } from "@/lib/ats-score";
+import type { LinePreview } from "@/lib/ats-preview";
 
 export default function AtsCheckerForm() {
   const [cvText, setCvText] = useState("");
@@ -9,12 +11,47 @@ export default function AtsCheckerForm() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AtsResult | null>(null);
+  const [preview, setPreview] = useState<LinePreview | null>(null);
+  const [previewPending, setPreviewPending] = useState(false);
+  const [previewError, setPreviewError] = useState<string | null>(null);
+
+  async function handlePreview() {
+    setPreviewPending(true);
+    setPreviewError(null);
+
+    try {
+      const res = await fetch("/api/ats-check/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cvText,
+          jobDescription,
+          missingKeywords: result?.missingKeywords || [],
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPreviewError(data.error || "Something went wrong. Please try again.");
+        setPreviewPending(false);
+        return;
+      }
+
+      setPreview(data);
+      setPreviewPending(false);
+    } catch {
+      setPreviewError("Something went wrong. Please check your connection.");
+      setPreviewPending(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
     setError(null);
     setResult(null);
+    setPreview(null);
+    setPreviewError(null);
 
     try {
       const res = await fetch("/api/ats-check", {
@@ -162,6 +199,49 @@ export default function AtsCheckerForm() {
                 </div>
               </div>
             )}
+
+            <div className="border-t border-border pt-6">
+              {!preview && (
+                <button
+                  type="button"
+                  onClick={handlePreview}
+                  disabled={previewPending}
+                  className="min-h-[44px] w-full rounded-full border border-border px-6 py-3 text-sm font-medium transition-colors hover:border-foreground/40 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {previewPending ? "Tailoring one line…" : "See one line tailored"}
+                </button>
+              )}
+
+              {previewError && (
+                <p role="alert" className="mt-3 text-sm text-red-400">
+                  {previewError}
+                </p>
+              )}
+
+              {preview && (
+                <div className="space-y-3">
+                  <h3 className="text-xs font-medium uppercase tracking-wide text-muted">
+                    One line, tailored
+                  </h3>
+                  <div className="rounded-lg border border-border/60 bg-background px-4 py-3 text-sm text-muted">
+                    <span className="text-red-400">–</span> {preview.original}
+                  </div>
+                  <div className="rounded-lg border border-accent/40 bg-accent/5 px-4 py-3 text-sm">
+                    <span className="text-accent">+</span> {preview.improved}
+                  </div>
+                  <p className="text-sm text-muted">
+                    That&apos;s one line.{" "}
+                    <Link
+                      href="/signup"
+                      className="text-foreground underline underline-offset-4"
+                    >
+                      Create a free account
+                    </Link>{" "}
+                    to get your whole CV tailored like this.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

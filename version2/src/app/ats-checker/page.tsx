@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AtsCheckerForm from "@/components/AtsCheckerForm";
+import { ATS_CHECKER_PAGES } from "@/lib/ats-checker-pages";
 
 export const metadata = { title: "Free ATS Checker — MyCV Buddy" };
 
@@ -30,6 +31,23 @@ export default function AtsCheckerPage() {
         </Link>{" "}
         and let MyCV Buddy tailor it for you.
       </p>
+
+      <div className="mt-16">
+        <h2 className="text-xs font-medium uppercase tracking-[0.14em] text-muted">
+          Checking for a specific field?
+        </h2>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {ATS_CHECKER_PAGES.map((page) => (
+            <Link
+              key={page.slug}
+              href={`/ats-checker/${page.slug}`}
+              className="text-sm text-foreground underline underline-offset-4"
+            >
+              {page.h1.replace("Free ATS Checker for ", "")}
+            </Link>
+          ))}
+        </div>
+      </div>
     </main>
   );
 }
